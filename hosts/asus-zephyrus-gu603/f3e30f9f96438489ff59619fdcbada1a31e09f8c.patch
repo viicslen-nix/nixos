@@ -1,0 +1,23 @@
+From f3e30f9f96438489ff59619fdcbada1a31e09f8c Mon Sep 17 00:00:00 2001
+From: Piyush Kumar <piyushkumg@gmail.com>
+Date: Sun, 29 May 2022 17:11:49 +0530
+Subject: [PATCH] drm/i915/display: Disable async flips
+
+Signed-off-by: Piyush Kumar <piyushkumg@gmail.com>
+---
+ drivers/gpu/drm/i915/i915_drv.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
+index fa14da84362e..d93743f48568 100644
+--- a/drivers/gpu/drm/i915/i915_drv.h
++++ b/drivers/gpu/drm/i915/i915_drv.h
+@@ -1389,7 +1389,7 @@ IS_SUBPLATFORM(const struct drm_i915_private *i915,
+ 
+ #define HAS_VRR(i915)	(DISPLAY_VER(i915) >= 11)
+ 
+-#define HAS_ASYNC_FLIPS(i915)		(DISPLAY_VER(i915) >= 5)
++#define HAS_ASYNC_FLIPS(i915)		(false)
+ 
+ /* Only valid when HAS_DISPLAY() is true */
+ #define INTEL_DISPLAY_ENABLED(dev_priv) \

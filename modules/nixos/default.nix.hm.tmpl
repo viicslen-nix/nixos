@@ -1,0 +1,25 @@
+{
+  lib,
+  pkgs,
+  config,
+  options,
+  ...
+}:
+with lib; let
+  feature = "firefox";
+  cfg = config.features.${feature};
+  homeManagerLoaded = builtins.hasAttr "home-manager" options;
+in {
+  options.features.${feature} = {
+    enable = mkEnableOption (mdDoc feature);
+  };
+
+  config = mkIf cfg.enable (mkMerge [
+    {
+
+    }
+    (mkIf homeManagerLoaded {
+      
+    })
+  ]);
+}
