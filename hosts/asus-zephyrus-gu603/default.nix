@@ -77,9 +77,6 @@ in {
     asusd = {
       enable = true;
       enableUserService = true;
-      asusdConfig = ''        (
-                bat_charge_limit: 80,
-              )'';
     };
 
     tlp = {
