@@ -25,6 +25,14 @@ in {
       systemd = true;
     };
 
+    systemd.user.services.lan-mouse = {
+      Unit = {
+        After = "graphical-session.target";
+        BindsTo = "graphical-session.target";
+      };
+      Install.WantedBy = ["graphical-session.target"];
+    };
+
     xdg = {
       enable = lib.mkDefault true;
 
