@@ -31,6 +31,7 @@
     microsoft-edge-wayland
     drawing
     kooha
+    openrgb-with-all-plugins
   ];
 
   programs = {
