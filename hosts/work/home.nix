@@ -48,4 +48,6 @@
 
   programs.ray.enable = true;
   programs.tinkerwell.enable = true;
+
+  features.lan-mouse.enable = true;
 }

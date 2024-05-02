@@ -6,18 +6,17 @@
   ...
 }:
 with lib; let
-  cfg = config.features.lan-mouse;
+  name = "lan-mouse";
+  namespace = "features";
+
+  cfg = config.${namespace}.${name};
 in {
   imports = [
     inputs.lan-mouse.homeManagerModules.default
   ];
 
-  options.features.lan-mouse = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable lan-mouse";
-    };
+  options.${namespace}.${name} = {
+    enable = mkEnableOption (mdDoc name);
   };
 
   config = mkIf cfg.enable {
@@ -29,7 +28,7 @@ in {
     xdg = {
       enable = lib.mkDefault true;
 
-      desktopEntries.lan-mouse = {
+      desktopEntries.${name} = {
         name = "Lan Mouse";
         genericName = "KVM";
         exec = "${inputs.lan-mouse.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/lan-mouse %U";
