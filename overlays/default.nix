@@ -35,7 +35,7 @@
   microsoft-edge-wayland = final: _prev: {
     microsoft-edge-wayland = _prev.symlinkJoin {
       name = "microsoft-edge-wayland";
-      paths = [ _prev.microsoft-edge ];
+      paths = [ _prev.stable.microsoft-edge ];
       buildInputs = [ _prev.makeWrapper ];
       postBuild = ''
           wrapProgram $out/bin/microsoft-edge \
