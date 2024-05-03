@@ -65,6 +65,7 @@ in {
           StartupWMClass=1Password
           Comment=Password manager and secure wallet
           MimeType=x-scheme-handler/onepassword;
+          X-GNOME-Autostart-enabled=true
           Categories=Office;
         '');
 
