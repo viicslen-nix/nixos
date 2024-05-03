@@ -54,6 +54,7 @@
     obsidian
     warp-terminal
     jetbrains-toolbox
+    jetbrains.phpstorm
     drawio
     mysql-workbench
     siege

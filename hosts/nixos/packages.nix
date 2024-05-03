@@ -28,7 +28,7 @@
     handbrake
     mailspring
     solaar
-    microsoft-edge-wayland
+    microsoft-edge
     drawing
     kooha
     openrgb-with-all-plugins
