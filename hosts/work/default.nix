@@ -46,6 +46,7 @@
     stable.redisinsight
     kdePackages.kcachegrind
     graphviz
+    luakit
     # tabby-terminal
 
     # Development
