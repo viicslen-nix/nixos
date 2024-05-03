@@ -20,6 +20,7 @@
     tmux
     zoxide
     htop
+    xeyes
   
     # GUI Apps
     libreoffice-fresh
