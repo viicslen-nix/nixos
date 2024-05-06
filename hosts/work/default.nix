@@ -76,11 +76,6 @@
   };
 
   features = {
-    hyprland = {
-      enable = true;
-      inherit user;
-    };
-
     docker = {
       enable = true;
       inherit user;
