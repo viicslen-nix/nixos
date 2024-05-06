@@ -16,7 +16,6 @@ in
       k9s
       popeye
       stern
-      krr
     ];
 
     shellHook = ''
