@@ -13,6 +13,7 @@
   # Modules
   imports = [
     inputs.home-manager.nixosModules.default
+    inputs.chaotic.nixosModules.default
     inputs.nur.nixosModules.nur
     ./shell.nix
     ./packages.nix
