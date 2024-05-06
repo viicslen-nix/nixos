@@ -38,12 +38,12 @@ in {
       ];
 
       setLdLibraryPath = true;
+
+      driSupport = true;
+      driSupport32Bit = true;
     };
 
-    nvidia = {
-      modesetting.enable = true;
-    };
-
+    nvidia.modesetting.enable = true;
     logitech.wireless.enable = true;
   };
 
