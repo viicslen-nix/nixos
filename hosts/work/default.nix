@@ -6,8 +6,7 @@
   lib,
   user,
   ...
-}:
-{
+}: {
   imports = [
     ../nixos
     ./scripts.nix
@@ -73,6 +72,10 @@
   programs.zsh.shellAliases = {
     dep = "composer exec -- dep";
     takeout = "composer global exec -- takeout";
+    nix-dev = "nix develop path:.";
+    ds = "dev-shell";
+    dsl = "dev-shell laravel";
+    dsk = "dev-shell kubernetes";
   };
 
   features = {

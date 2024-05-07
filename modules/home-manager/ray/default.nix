@@ -37,7 +37,7 @@ in {
         icon = name;
         terminal = false;
         comment = "Ray is a tool for debugging and profiling your PHP applications.";
-        categories = [ "Development" ];
+        categories = ["Development"];
         settings = {
           StartupWMClass = name;
         };

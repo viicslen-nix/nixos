@@ -1,4 +1,9 @@
-{pkgs, lib, ...}: with lib; {
+{
+  pkgs,
+  lib,
+  ...
+}:
+with lib; {
   home = {
     sessionVariables = {
       BROWSER = "firefox";

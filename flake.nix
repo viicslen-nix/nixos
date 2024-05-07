@@ -15,7 +15,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     # Community packages
     nur.url = github:nix-community/NUR;
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";

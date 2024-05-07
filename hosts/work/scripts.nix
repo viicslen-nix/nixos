@@ -6,9 +6,9 @@
   environment.systemPackages = with pkgs; [
     (pkgs.writeShellScriptBin "dev-shell" ''
       if [ ''$# -gt 0 ]; then
-          nix develop "/home/${user}/.nix#''$@"
+          nix develop path:"/home/${user}/.nix#''$@"
       else
-          nix develop ''$@
+          nix develop path:''$@
       fi
     '')
     (pkgs.writeShellScriptBin "generate-cert" ''

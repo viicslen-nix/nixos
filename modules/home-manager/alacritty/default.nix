@@ -37,7 +37,7 @@ in {
             y = 0;
             x = 0;
           };
-          
+
           glyph_offset = {
             y = 0;
             x = 0;

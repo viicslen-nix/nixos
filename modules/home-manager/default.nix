@@ -9,4 +9,5 @@
   tinkerwell = import ./tinkerwell;
   ray = import ./ray;
   firefox = import ./firefox;
+  autostart = import ./autostart;
 }

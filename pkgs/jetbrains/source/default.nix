@@ -1,7 +1,4 @@
-{ callPackage
-}:
-
-{
+{callPackage}: {
   idea-community = callPackage ./build.nix {
     buildVer = "233.13135.103";
     buildType = "idea";

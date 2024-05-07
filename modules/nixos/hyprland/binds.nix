@@ -18,8 +18,7 @@ in {
   wayland.windowManager.hyprland.settings = {
     "$fileManager" = "nautilus";
     "$terminal" = "kitty";
-    "$launcher" = "wofi";
-
+    "$launcher" = "walker";
 
     # mouse movements
     bindm = [

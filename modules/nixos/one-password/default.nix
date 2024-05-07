@@ -54,8 +54,8 @@ in {
           GSM_SKIP_SSH_AGENT_WORKAROUND = "1";
         };
 
-         # Configure the 1Password autostart desktop file
-        home.file.".config/autostart/1password.desktop".text = mkIf cfg.autostart (''
+        # Configure the 1Password autostart desktop file
+        home.file.".config/autostart/1password.desktop".text = mkIf cfg.autostart ''
           [Desktop Entry]
           Name=1Password
           Exec=${pkgs._1password}/bin/1password --silent %U
@@ -70,7 +70,7 @@ in {
           X-MATE-Autostart-Delay=10
           X-KDE-autostart-after=panel
           Categories=Office;
-        '');
+        '';
 
         xdg = {
           enable = mkDefault true;

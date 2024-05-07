@@ -31,12 +31,9 @@ in {
           enable = true;
           xwayland.enable = true;
         };
-
-        waybar.enable = true;
       };
 
       environment.systemPackages = with pkgs; [
-        inputs.anyrun.packages.${system}.anyrun
         swaynotificationcenter
         hyprpaper
         wlroots
@@ -46,7 +43,7 @@ in {
         substituters = [
           "https://hyprland.cachix.org"
           "https://anyrun.cachix.org"
-          ];
+        ];
         trusted-public-keys = [
           "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
           "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
@@ -67,6 +64,7 @@ in {
             ./anyrun.nix
             ./binds.nix
             ./rules.nix
+            ./walker.nix
             ./ags
           ];
 
@@ -80,11 +78,6 @@ in {
             wl-clipboard
             wl-screenrec
             wlr-randr
-
-            # Launchers
-            inputs.walker.packages.${pkgs.system}.default 
-            gtk4-layer-shell
-            nwg-drawer
             wofi
 
             inputs.hyprland-contrib.packages.${pkgs.system}.grimblast

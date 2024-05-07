@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   imports = [
     inputs.walker.homeManagerModules.walker
   ];
@@ -12,26 +12,25 @@
     enable = true;
     runAsService = true;
 
-    # All options from the config.json can be used here.
     config = {
-      placeholder = "Example";
-      fullscreen = true;
-      list = {
-        height = 200;
-      };
       modules = [
         {
-          name = "websearch";
-          prefix = "?";
+          name = "applications";
+          prefix = "";
         }
         {
-          name = "switcher";
-          prefix = "/";
+          name = "ssh";
+          prefix = "";
+          switcher_exclusive = true;
+        }
+        {
+          name = "finder";
+          prefix = "";
+          switcher_exclusive = true;
         }
       ];
     };
 
-    # If this is not set the default styling is used.
     style = ''
       * {
         color: #dcd7ba;

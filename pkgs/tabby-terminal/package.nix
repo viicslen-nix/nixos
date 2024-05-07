@@ -1,5 +1,10 @@
-{ stdenv, fetchurl, pkgs, lib, alsa-lib }:
-
+{
+  stdenv,
+  fetchurl,
+  pkgs,
+  lib,
+  alsa-lib,
+}:
 stdenv.mkDerivation rec {
   name = "tabby-terminal";
   version = "1.0.207";
@@ -64,7 +69,7 @@ stdenv.mkDerivation rec {
     homepage = "https://tabby.sh";
     description = "A terminal for a more modern age";
     license = licenses.mit;
-    maintainers = with maintainers; [ ChocolateLoverRaj ];
+    maintainers = with maintainers; [ChocolateLoverRaj];
     mainProgram = "tabby";
     platforms = platforms.linux;
     downloadPage = "https://github.com/Eugeny/tabby/releases/latest";

@@ -4,10 +4,6 @@
 
     shellAliases = {
       cat = "bat";
-      nix-dev = "nix develop path:.";
-      ds = "dev-shell";
-      dsl = "dev-shell laravel";
-      dsk = "dev-shell kubernetes";
       ts = "tmux-session";
     };
 

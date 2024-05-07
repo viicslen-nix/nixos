@@ -21,7 +21,7 @@ in {
 
       extensions = [
         # Steps Recorder by Flonnect Capture
-        { id = "hloeehlfligalbcbajlkjjdfngienilp"; }
+        {id = "hloeehlfligalbcbajlkjjdfngienilp";}
       ];
     };
   };

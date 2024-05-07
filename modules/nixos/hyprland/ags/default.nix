@@ -15,6 +15,7 @@
     procps
     ripgrep
     util-linux
+    sass
   ];
 
   guiDeps = with pkgs; [
