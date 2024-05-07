@@ -32,10 +32,6 @@
     NIXOS_OZONE_WL = "1";
   };
 
-  home.autostart = [
-    pkgs._1password-gui
-  ];
-
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 

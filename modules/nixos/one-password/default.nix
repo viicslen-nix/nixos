@@ -54,24 +54,6 @@ in {
           GSM_SKIP_SSH_AGENT_WORKAROUND = "1";
         };
 
-        # Configure the 1Password autostart desktop file
-        home.file.".config/autostart/1password.desktop".text = mkIf cfg.autostart ''
-          [Desktop Entry]
-          Name=1Password
-          Exec=${pkgs._1password}/bin/1password --silent %U
-          Terminal=false
-          Type=Application
-          Icon=1password
-          StartupWMClass=1Password
-          Comment=Password manager and secure wallet
-          MimeType=x-scheme-handler/onepassword;
-          X-GNOME-Autostart-enabled=true
-          X-GNOME-Autostart-Delay=10
-          X-MATE-Autostart-Delay=10
-          X-KDE-autostart-after=panel
-          Categories=Office;
-        '';
-
         xdg = {
           enable = mkDefault true;
 
@@ -80,6 +62,14 @@ in {
             ${lib.fileContents "${pkgs.gnome.gnome-keyring}/etc/xdg/autostart/gnome-keyring-ssh.desktop"}
             Hidden=true
           '';
+
+          # Configure the 1Password autostart desktop file
+          configFile."autostart/1password.desktop".text = mkIf cfg.autostart (
+            replaceStrings
+            ["Exec=1password %U"]
+            ["Exec=${pkgs._1password-gui}/bin/1password --silent %U"]
+            lib.fileContents "${pkgs._1password-gui}/share/applications/${pkgs._1password-gui.pname}.desktop"
+          );
         };
 
         # Configure the SSH client to use the 1Password socket
