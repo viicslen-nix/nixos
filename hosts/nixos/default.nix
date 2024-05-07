@@ -132,20 +132,6 @@
     })
   ];
 
-  console = {
-    earlySetup = true;
-    font = "FiraCode";
-    packages = with pkgs; [ 
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "DroidSansMono"
-        ];
-      })
-    ];
-    keyMap = "us";
-  };
-
   # Enable Miscellaneous programs
   programs.nix-ld.enable = true;
   programs.direnv = {
