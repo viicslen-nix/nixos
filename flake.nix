@@ -48,6 +48,12 @@
       inputs.nixpkgs.follows = "hyprland/nixpkgs";
       inputs.systems.follows = "hyprland/systems";
     };
+    ags = {
+      url = "github:Aylur/ags";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    walker.url = "github:abenz1267/walker";
+    anyrun.url = "github:fufexan/anyrun";
 
     # Theming
     stylix.url = "github:danth/stylix";

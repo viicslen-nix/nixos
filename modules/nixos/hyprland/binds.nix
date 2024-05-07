@@ -16,6 +16,11 @@ let
     10);
 in {
   wayland.windowManager.hyprland.settings = {
+    "$fileManager" = "nautilus";
+    "$terminal" = "kitty";
+    "$launcher" = "wofi";
+
+
     # mouse movements
     bindm = [
       "$mod, mouse:272, movewindow"
@@ -45,7 +50,7 @@ in {
 
         # utility
         # terminal
-        "$mod, Return, exec, run-as-service foot"
+        "$mod, Return, exec, $terminal"
         # logout menu
         "$mod, Escape, exec, wlogout -p layer-shell"
         # lock screen
@@ -90,7 +95,7 @@ in {
 
     bindr = [
       # launcher
-      "$mod, SUPER_L, exec, pkill .anyrun-wrapped || run-as-service anyrun"
+      "$mod, SUPER_L, exec, $launcher"
     ];
 
     bindl = [

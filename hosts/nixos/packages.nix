@@ -20,8 +20,10 @@
     tmux
     zoxide
     htop
-    xorg.xeyes
-  
+    gcc
+    glibc
+    glib
+
     # GUI Apps
     libreoffice-fresh
     tangram
@@ -36,6 +38,6 @@
   ];
 
   programs = {
-    firefox.enable = true;
+    # firefox.enable = true;
   };
 }

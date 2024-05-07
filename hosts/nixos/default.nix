@@ -117,6 +117,7 @@
     extraSpecialArgs = {inherit inputs outputs user;};
     useUserPackages = true;
     useGlobalPkgs = true;
+    backupFileExtension = "backup";
     users.${user} = import ./home.nix;
   };
 

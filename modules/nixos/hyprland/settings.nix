@@ -1,6 +1,5 @@
 {config, ...}: let
   variant = "dark";
-  c = config.programs.matugen.theme.colors.colors_android.${variant};
   pointer = config.home.pointerCursor;
 in {
   wayland.windowManager.hyprland.settings = {
@@ -13,16 +12,13 @@ in {
     exec-once = [
       # set cursor for HL itself
       "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
-      "systemctl --user start clight"
-      "hyprlock"
+      "systemctl --user start ags"
     ];
 
     general = {
       gaps_in = 5;
       gaps_out = 5;
       border_size = 1;
-      "col.active_border" = "rgba(88888888)";
-      "col.inactive_border" = "rgba(00000088)";
 
       allow_tearing = true;
       resize_on_border = true;
@@ -51,7 +47,6 @@ in {
       shadow_offset = "0 2";
       shadow_range = 20;
       shadow_render_power = 3;
-      "col.shadow" = "rgba(00000055)";
     };
 
     animations = {
@@ -69,9 +64,6 @@ in {
         font_size = 16;
         gradients = false;
       };
-
-      "col.border_active" = "rgba(${c.color_accent_primary}88);";
-      "col.border_inactive" = "rgba(${c.color_accent_primary_variant}88)";
     };
 
     input = {

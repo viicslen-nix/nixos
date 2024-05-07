@@ -8,4 +8,5 @@
   kitty = import ./kitty;
   tinkerwell = import ./tinkerwell;
   ray = import ./ray;
+  firefox = import ./firefox;
 }
