@@ -44,7 +44,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # scheme = cfg.scheme;
+    scheme = cfg.scheme;
 
     stylix = {
       base16Scheme = cfg.scheme;
@@ -57,6 +57,11 @@ in {
           package = (pkgs.nerdfonts.override { fonts = ["FiraCode"]; });
           name = "Fira Code Nerd Font";
         };
+      };
+
+      cursor = {
+        name = "Adwaita";
+        size = 24;
       };
 
       targets = {
