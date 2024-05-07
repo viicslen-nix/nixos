@@ -66,6 +66,9 @@ in {
           Comment=Password manager and secure wallet
           MimeType=x-scheme-handler/onepassword;
           X-GNOME-Autostart-enabled=true
+          X-GNOME-Autostart-Delay=10
+          X-MATE-Autostart-Delay=10
+          X-KDE-autostart-after=panel
           Categories=Office;
         '');
 

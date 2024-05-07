@@ -81,6 +81,11 @@
       inherit user;
     };
 
+    hyprland = {
+      enable = true;
+      inherit user;
+    };
+
     virtualMachines = {
       enable = true;
       inherit user;

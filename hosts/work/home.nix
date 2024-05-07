@@ -29,23 +29,6 @@
     X-KDE-autostart-after=panel
   '';
 
-  xdg = {
-    enable = true;
-
-    # desktopEntries.phpstorm = {
-    #   name = "PhpStorm";
-    #   genericName = "PHP IDE";
-    #   comment = "The Lightning-Smart PHP IDE";
-    #   exec = "${pkgs.bash}/bin/bash /home/${user}/.local/share/JetBrains/Toolbox/scripts/PhpStorm %U";
-    #   icon = "/home/${user}/.local/share/JetBrains/Toolbox/apps/phpstorm/bin/phpstorm.svg";
-    #   categories = ["Development" "IDE"];
-    #   terminal = false;
-    #   settings = {
-    #     StartupWMClass = "jetbrains-phpstorm";
-    #   };
-    # };
-  };
-
   programs.ray.enable = true;
   programs.tinkerwell.enable = true;
 

@@ -54,7 +54,7 @@
       outputs.overlays.modifications
       outputs.overlays.stable-packages
       outputs.overlays.unstable-packages
-      outputs.overlays.microsoft-edge-wayland
+      # outputs.overlays.microsoft-edge-wayland
       inputs.nix-alien.overlays.default
     ];
     # Configure your nixpkgs instance
@@ -131,6 +131,20 @@
       ];
     })
   ];
+
+  console = {
+    earlySetup = true;
+    font = "FiraCode";
+    packages = with pkgs; [ 
+      (nerdfonts.override {
+        fonts = [
+          "FiraCode"
+          "DroidSansMono"
+        ];
+      })
+    ];
+    keyMap = "us";
+  };
 
   # Enable Miscellaneous programs
   programs.nix-ld.enable = true;
