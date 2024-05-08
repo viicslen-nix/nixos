@@ -54,6 +54,8 @@
     warp-terminal
     jetbrains-toolbox
     jetbrains.phpstorm
+    jetbrains.datagrip
+    jetbrains.webstorm
     drawio
     mysql-workbench
     siege
