@@ -68,7 +68,7 @@ in {
             replaceStrings
             ["Exec=1password %U"]
             ["Exec=${pkgs._1password-gui}/bin/1password --silent %U"]
-            lib.fileContents "${pkgs._1password-gui}/share/applications/${pkgs._1password-gui.pname}.desktop"
+            (lib.fileContents "${pkgs._1password-gui}/share/applications/${pkgs._1password-gui.pname}.desktop")
           );
         };
 
