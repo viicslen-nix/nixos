@@ -46,7 +46,14 @@
     kdePackages.kcachegrind
     graphviz
     luakit
-    # tabby-terminal
+    handbrake
+
+    # Browsers
+    opera
+
+    # Devices
+    solaar
+    openrgb-with-all-plugins
 
     # Development
     vscode

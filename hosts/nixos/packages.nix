@@ -28,16 +28,7 @@
     libreoffice-fresh
     tangram
     endeavour
-    handbrake
-    mailspring
-    solaar
-    microsoft-edge
     drawing
     kooha
-    openrgb-with-all-plugins
   ];
-
-  programs = {
-    # firefox.enable = true;
-  };
 }
