@@ -34,9 +34,9 @@ with lib; {
         "svg.context-properties.content.enabled" = true;
 
         "gnomeTheme.hideSingleTab" = true;
-        "gnomeTheme.bookmarksToolbarUnderTabs" = true;
         "gnomeTheme.normalWidthTabs" = false;
         "gnomeTheme.tabsAsHeaderbar" = false;
+        "gnomeTheme.bookmarksToolbarUnderTabs" = true;
       };
       userChrome = ''
         @import "firefox-gnome-theme/userChrome.css";
@@ -55,6 +55,7 @@ with lib; {
 
     desktopEntries.firefox-direct = {
       name = "Firefox (Direct)";
+      icon = "${pkgs.firefox}/share/icons/hicolor/256x256/apps/firefox.png";
       genericName = "Web Browser";
       exec = "${pkgs.mullvad}/bin/mullvad-exclude ${pkgs.firefox}/bin/firefox";
       terminal = false;
