@@ -62,6 +62,7 @@ in {
 
       # Install GNOME Tweaks
       environment.systemPackages = with pkgs; [
+        libgtop
         adw-gtk3
         gnome.gnome-tweaks
         gnome.adwaita-icon-theme
@@ -79,7 +80,13 @@ in {
         gnomeExtensions.forge
         gnomeExtensions.arrange-windows
         gnomeExtensions.rounded-corners
+        gnomeExtensions.tophat
       ];
+
+      # Required for some GNOME extensions
+      environment.variables = {
+        GI_TYPELIB_PATH = "/run/current-system/sw/lib/girepository-1.0";
+      };
     }
     (mkIf homeManagerLoaded {
       home-manager.users.${cfg.user} = {
