@@ -29,6 +29,10 @@
     X-KDE-autostart-after=panel
   '';
 
+  home.packages = with pkgs; [
+    brave
+  ];
+
   programs.ray.enable = true;
   programs.tinkerwell.enable = true;
 
