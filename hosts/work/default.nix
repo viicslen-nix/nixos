@@ -95,7 +95,7 @@
     };
 
     hyprland = {
-      enable = true;
+      enable = false;
       inherit user;
     };
 
