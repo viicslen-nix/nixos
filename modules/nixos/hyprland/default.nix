@@ -55,7 +55,7 @@ in {
         users.${cfg.user} = {
           imports = [
             inputs.hyprland.homeManagerModules.default
-            inputs.hyprlock.homeManagerModules.default
+            # inputs.hyprlock.homeManagerModules.default
             ./hyprpaper.nix
             ./settings.nix
             ./hyprlock.nix
