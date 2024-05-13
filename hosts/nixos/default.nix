@@ -42,6 +42,52 @@
     };
   };
 
+  # Enable earlyoom to prevent system freezes
+  services.earlyoom = {
+    enable = true;
+    enableNotifications = true;
+    extraArgs =
+      let
+        catPatterns = patterns: builtins.concatStringsSep "|" patterns;
+        preferPatterns = [
+          ".firefox-wrappe"
+          "ipfs"
+          "java"
+          ".jupyterhub-wra"
+          "Logseq"
+        ];
+        avoidPatterns = [
+          "bash"
+          "mosh-server"
+          "sshd"
+          "systemd"
+          "systemd-logind"
+          "systemd-udevd"
+          "tmux: client"
+          "tmux: server"
+        ];
+      in
+      [
+        "--prefer '^(${catPatterns preferPatterns})$'"
+        "--avoid '^(${catPatterns avoidPatterns})$'"
+      ];
+  };
+
+  # OOM configuration:
+  systemd = {
+    # Create a separate slice for nix-daemon that is
+    # memory-managed by the userspace systemd-oomd killer
+    slices."nix-daemon".sliceConfig = {
+      ManagedOOMMemoryPressure = "kill";
+      ManagedOOMMemoryPressureLimit = "50%";
+    };
+    services."nix-daemon".serviceConfig.Slice = "nix-daemon.slice";
+
+    # If a kernel-level OOM event does occur anyway,
+    # strongly prefer killing nix-daemon child processes
+    services."nix-daemon".serviceConfig.OOMScoreAdjust = 1000;
+  };
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -88,6 +134,9 @@
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
+
+      # Limit the number of parallel jobs to avoid OOM
+      max-jobs = lib.mkDefault 16;
     };
 
     # Perform garbage collection weekly to maintain low disk usage
