@@ -31,10 +31,30 @@
 
   home.packages = with pkgs; [
     brave
+    vivaldi
+    microsoft-edge-wayland
   ];
+
+  features.lan-mouse.enable = true;
 
   programs.ray.enable = true;
   programs.tinkerwell.enable = true;
 
-  features.lan-mouse.enable = true;
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+    tmux.enableShellIntegration = true;
+  };
+
+  programs.tmux = {
+    enable = true;
+    shortcut = " ";
+    mouse = true;
+    baseIndex = 1;
+    keyMode = "vi";
+    newSession = true;
+    historyLimit = 10000;
+    shell = "${pkgs.zsh}/bin/zsh";
+    tmuxinator.enable = true;
+  };
 }

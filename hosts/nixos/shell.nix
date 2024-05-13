@@ -4,6 +4,7 @@
 
     shellAliases = {
       cat = "bat";
+      vim = "nvim";
       ts = "tmux-session";
     };
 

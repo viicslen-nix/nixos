@@ -6,10 +6,18 @@
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
-  modifications = final: prev: {
-    # example = prev.example.overrideAttrs (oldAttrs: rec {
-    # ...
-    # });
+  modifications = final: _prev: {
+    # Make Microsoft-Edge not be shit on Wayland
+    microsoft-edge-wayland = _prev.symlinkJoin {
+      name = "microsoft-edge-wayland";
+      paths = [_prev.microsoft-edge];
+      buildInputs = [_prev.makeWrapper];
+      postBuild = ''
+        wrapProgram $out/bin/microsoft-edge \
+        --add-flags "--ozone-platform=wayland" \
+        --add-flags "--enable-features=UseOzonePlatform" 
+      '';
+    };
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
@@ -27,22 +35,6 @@
     stable = import inputs.nixpkgs-stable {
       system = final.system;
       config.allowUnfree = true;
-    };
-  };
-
-  # Make Microsoft-Edge not be shit on Wayland
-  # Feed it libGL
-  microsoft-edge-wayland = final: _prev: {
-    microsoft-edge-wayland = _prev.symlinkJoin {
-      name = "microsoft-edge-wayland";
-      paths = [_prev.stable.microsoft-edge];
-      buildInputs = [_prev.makeWrapper];
-      postBuild = ''
-        wrapProgram $out/bin/microsoft-edge \
-        --prefix LD_LIBRARY_PATH : "${_prev.libGL}/lib" \
-        --add-flags "--enable-features=UseOzonePlatform" \
-        --add-flags "--ozone-platform=wayland"
-      '';
     };
   };
 
