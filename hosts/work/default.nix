@@ -47,6 +47,7 @@
     graphviz
     luakit
     handbrake
+    sesh
 
     # Browsers
     opera
