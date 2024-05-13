@@ -1,11 +1,11 @@
-{config, ...}: let
+{config, lib, ...}: let
   variant = "dark";
   # c = config.programs.matugen.theme.colors.colors.${variant};
 
   font_family = "Inter";
 in {
   programs.hyprlock = {
-    enable = true;
+    enable = lib.mkForce true;
 
     general = {
       disable_loading_bar = true;
