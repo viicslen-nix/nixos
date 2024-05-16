@@ -48,6 +48,8 @@
     luakit
     handbrake
     sesh
+    clutter
+    clutter-gtk
 
     # Browsers
     opera
@@ -95,7 +97,7 @@
     };
 
     hyprland = {
-      enable = false;
+      enable = true;
       inherit user;
     };
 
@@ -119,6 +121,7 @@
       "storesites" = "REDACTED";
 
       # Development
+      "home.local" = "127.0.0.1";
       "buggregator.local" = "127.0.0.1";
       "portainer.local" = "127.0.0.1";
       "phpmyadmin.local" = "127.0.0.1";

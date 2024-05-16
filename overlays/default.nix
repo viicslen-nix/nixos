@@ -18,6 +18,17 @@
         --add-flags "--enable-features=UseOzonePlatform" 
       '';
     };
+
+    vivaldi-wayland = _prev.symlinkJoin {
+      name = "vivaldi-wayland";
+      paths = [_prev.vivaldi];
+      buildInputs = [_prev.makeWrapper];
+      postBuild = ''
+        wrapProgram $out/bin/vivaldi \
+        --add-flags "--ozone-platform=wayland" \
+        --add-flags "--enable-features=UseOzonePlatform" 
+      '';
+    };
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
