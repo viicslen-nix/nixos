@@ -21,6 +21,12 @@ in {
       default = "docker0";
       description = "The network interface to allow in the firewall";
     };
+
+    allowTcpPorts = mkOption {
+      type = types.listOf types.int;
+      default = [ 80 443 ];
+      description = "The TCP ports to allow in the firewall";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -35,6 +41,6 @@ in {
     users.users.${cfg.user}.extraGroups = ["docker"];
 
     networking.firewall.trustedInterfaces = [ cfg.networkInterface ];
-    networking.firewall.interfaces.${cfg.networkInterface}.allowedTCPPorts = [ 80 443 ];
+    networking.firewall.interfaces.${cfg.networkInterface}.allowedTCPPorts = allowTcpPorts;
   };
 }

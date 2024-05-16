@@ -94,6 +94,14 @@
     docker = {
       enable = true;
       inherit user;
+      allowTcpPorts = [
+        80
+        443
+        3306
+        8080
+        9003
+        9443
+      ];
     };
 
     hyprland = {
