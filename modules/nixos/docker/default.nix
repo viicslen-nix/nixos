@@ -41,6 +41,6 @@ in {
     users.users.${cfg.user}.extraGroups = ["docker"];
 
     networking.firewall.trustedInterfaces = [ cfg.networkInterface ];
-    networking.firewall.interfaces.${cfg.networkInterface}.allowedTCPPorts = allowTcpPorts;
+    networking.firewall.interfaces.${cfg.networkInterface}.allowedTCPPorts = cfg.allowTcpPorts;
   };
 }
