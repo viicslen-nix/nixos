@@ -114,10 +114,13 @@
       inherit user;
     };
 
-    mullvad.excludedIPs = [
-      "172.66.43.155"
-      "172.66.40.101"
-    ];
+    mullvad = {
+      enableExludeIPs = true;
+      excludedIPs = [
+        "172.66.43.155"
+        "172.66.40.101"
+      ];
+    };
 
     network.hosts = {
       # Docker
