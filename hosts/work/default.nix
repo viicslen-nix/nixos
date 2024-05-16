@@ -95,12 +95,21 @@
       enable = true;
       inherit user;
       allowTcpPorts = [
+        # Traefik
         80
         443
-        3306
         8080
+
+        # PHPStorm Xdebug
         9003
+
+        # Portainer
         9443
+
+        # MySQL
+        3306
+
+        # Ray
         23517
       ];
     };
