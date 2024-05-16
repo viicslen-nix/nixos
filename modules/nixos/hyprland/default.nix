@@ -53,6 +53,8 @@ in {
     (mkIf homeManagerLoaded {
       home-manager = {
         users.${cfg.user} = {
+          disabledModules = [ <home-manager/modules/programs/hyprlock.nix> ];
+
           imports = [
             inputs.hyprland.homeManagerModules.default
             inputs.hyprlock.homeManagerModules.default
