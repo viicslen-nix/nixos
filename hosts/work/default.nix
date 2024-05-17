@@ -69,13 +69,6 @@
     mkcert
     nodejs_20
     corepack_20
-
-    # Postgres
-    postgresql_12
-    postgresql_15
-    postgresql_16
-    pgadmin4-desktopmode
-    pgmanage
   ];
 
   programs.zsh.shellAliases = {
@@ -150,37 +143,4 @@
       ];
     };
   };
-
-  # virtualisation.oci-containers.containers = {
-  #   traefik = {
-  #     image = "traefik:v2.10";
-  #     cmd = [
-  #       "--providers.docker"
-  #       "--api.insecure=true"
-  #       "--entryPoints.web.address=:80"
-  #       "--entryPoints.websecure.address=:443"
-  #       "--providers.file.directory=/etc/traefik/conf"
-  #       "--providers.file.watch=true"
-  #       "--metrics.prometheus=true"
-  #       "--accesslog=true"
-  #     ];
-  #     ports = [
-  #       "80:80"
-  #       "443:443"
-  #       "8080:8080"
-  #     ];
-  #     volumes = [
-  #       "/var/run/docker.sock:/var/run/docker.sock"
-  #     ];
-  #     labels = [
-  #       "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
-  #       "traefik.http.routers.http-catchall.entrypoints=web"
-  #       "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
-  #       "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-  #     ];
-  #     extraOptions = [
-  #       "--network=takeout"
-  #     ];
-  #   };
-  # };
 }
