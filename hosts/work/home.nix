@@ -8,7 +8,6 @@
   ...
 }: {
   home.packages = with pkgs; [
-    vivaldi-wayland
     microsoft-edge-wayland
   ];
 
