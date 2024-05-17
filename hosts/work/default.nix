@@ -88,6 +88,29 @@
   };
 
   features = {
+    hyprland = {
+      enable = true;
+      inherit user;
+    };
+
+    network.hosts = {
+      # Docker
+      "kubernetes.docker.internal" = "127.0.0.1";
+      "host.docker.internal" = "127.0.0.1";
+
+      # Remote
+      "webapps" = "REDACTED";
+      "storesites" = "REDACTED";
+
+      # Development
+      "home.local" = "127.0.0.1";
+      "buggregator.local" = "127.0.0.1";
+      "portainer.local" = "127.0.0.1";
+      "phpmyadmin.local" = "127.0.0.1";
+      "selldiam.test" = "127.0.0.1";
+      "mylisterhub.test" = "127.0.0.1";
+    };
+
     docker = {
       enable = true;
       inherit user;
@@ -111,11 +134,6 @@
       ];
     };
 
-    hyprland = {
-      enable = true;
-      inherit user;
-    };
-
     mullvad = {
       enableExludeIPs = true;
       excludedIPs = [
@@ -130,24 +148,6 @@
         "108.139.10.74"
         "108.139.10.67"
       ];
-    };
-
-    network.hosts = {
-      # Docker
-      "kubernetes.docker.internal" = "127.0.0.1";
-      "host.docker.internal" = "127.0.0.1";
-
-      # Remote
-      "webapps" = "REDACTED";
-      "storesites" = "REDACTED";
-
-      # Development
-      "home.local" = "127.0.0.1";
-      "buggregator.local" = "127.0.0.1";
-      "portainer.local" = "127.0.0.1";
-      "phpmyadmin.local" = "127.0.0.1";
-      "selldiam.test" = "127.0.0.1";
-      "mylisterhub.test" = "127.0.0.1";
     };
   };
 
