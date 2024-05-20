@@ -43,6 +43,25 @@
           echo "''${commit_message:-''$default_message}"
       }
 
+      # Function to prompt for the nh os command with a default
+      get_nh_os_command() {
+          local default_command="switch"
+          local valid_commands=("switch" "boot" "test")
+          local input_command
+
+          while true; do
+              read -p "Enter nh os command (switch/boot/test) [''${default_command}]: " input_command
+              input_command=''${input_command:-''$default_command}
+
+              if [[ " ''${valid_commands[*]} " == *" ''$input_command "* ]]; then
+                  echo "''$input_command"
+                  return
+              else
+                  echo "Invalid command. Please enter one of the following: switch, boot, test."
+              fi
+          done
+      }
+
       # Check if the current directory is a Git repository
       if ${pkgs.git}/bin/git rev-parse --is-inside-work-tree &>/dev/null; then
           echo "This is a Git repository."

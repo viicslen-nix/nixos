@@ -20,8 +20,8 @@ update:
 update-input input:
   nix flake update {{input}}
 
-upgrade:
-  nixos-upgrade
+upgrade command:
+  nixos-upgrade {{command}}
 
 # List all generations of the system profile
 history:
