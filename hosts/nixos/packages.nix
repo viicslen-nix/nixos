@@ -23,6 +23,7 @@
     gcc
     glibc
     glib
+    just
 
     # GUI Apps
     libreoffice-fresh

@@ -9,6 +9,7 @@
 }: {
   home.packages = with pkgs; [
     microsoft-edge-wayland
+    anydesk
   ];
 
   features.lan-mouse.enable = true;
