@@ -20,10 +20,8 @@ update:
 update-input input:
   nix flake update {{input}}
 
-git-upgrade:
-  git add .
-  git commit -m "Update config"
-  nh os switch
+upgrade:
+  nixos-upgrade
 
 # List all generations of the system profile
 history:
