@@ -85,8 +85,11 @@
           echo "This is not a Git repository."
       fi
 
+      # Get the nh os command from the user with a default
+      nh_os_command=$(get_nh_os_command)
+
       # Run the command nh os switch
-      ${pkgs.nh}/bin/nh os switch
+      ${pkgs.nh}/bin/nh os "$nh_os_command"
     '')
   ];
 }
