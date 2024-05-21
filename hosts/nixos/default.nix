@@ -166,7 +166,10 @@
 
   # Home Manager
   home-manager = {
-    extraSpecialArgs = {inherit inputs outputs user;};
+    extraSpecialArgs = {
+      inherit inputs outputs user;
+      colorScheme = config.scheme
+    };
     useUserPackages = true;
     useGlobalPkgs = true;
     backupFileExtension = "backup";
