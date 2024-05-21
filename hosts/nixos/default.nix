@@ -102,7 +102,8 @@
       outputs.overlays.modifications
       outputs.overlays.stable-packages
       outputs.overlays.unstable-packages
-      # outputs.overlays.microsoft-edge-wayland
+      outputs.overlays.flake-inputs
+      
       inputs.nix-alien.overlays.default
     ];
     # Configure your nixpkgs instance

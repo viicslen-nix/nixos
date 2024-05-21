@@ -9,6 +9,7 @@
 }: {
   home.packages = with pkgs; [
     microsoft-edge-wayland
+    tabby-terminal
     anydesk
     thorium
   ];
