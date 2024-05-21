@@ -64,9 +64,11 @@ in {
             ./hypridle.nix
             ./wlogout.nix
             ./anyrun.nix
+            ./walker.nix
+            ./swaync.nix
+            ./waybar.nix
             ./binds.nix
             ./rules.nix
-            ./walker.nix
             ./ags
           ];
 
@@ -81,6 +83,7 @@ in {
             wl-screenrec
             wlr-randr
             wofi
+            rofi
 
             inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
           ];
