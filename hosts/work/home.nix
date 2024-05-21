@@ -10,6 +10,7 @@
   home.packages = with pkgs; [
     microsoft-edge-wayland
     anydesk
+    thorium
   ];
 
   features.lan-mouse.enable = true;
