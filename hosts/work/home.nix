@@ -9,9 +9,10 @@
 }: {
   home.packages = with pkgs; [
     microsoft-edge-wayland
-    tabby-terminal
-    anydesk
     thorium
+    floorp
+
+    tabby-terminal
   ];
 
   features.lan-mouse.enable = true;
