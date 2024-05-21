@@ -18,6 +18,11 @@ in {
       default = "nixos";
       description = "The user to configure hyprland for";
     };
+
+    palette = mkOption {
+      # attribute set
+      type = types.attrsOf types.str;
+    };
   };
 
   imports = [

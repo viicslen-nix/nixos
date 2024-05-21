@@ -24,12 +24,6 @@ in {
   options.features.theming = {
     enable = mkEnableOption (mdDoc "theming");
 
-    scheme = mkOption {
-      type = types.str;
-      default = "${pkgs.base16-schemes}/share/themes/material-darker.yaml";
-      description = "The base16 theme to use";
-    };
-
     polarity = mkOption {
       type = types.str;
       default = "dark";
@@ -44,10 +38,8 @@ in {
   };
 
   config = mkIf cfg.enable {
-    scheme = cfg.scheme;
-
     stylix = {
-      base16Scheme = cfg.scheme;
+      base16Scheme = config.scheme;
 
       image = cfg.wallpaper;
       polarity = cfg.polarity;
