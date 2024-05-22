@@ -3,7 +3,7 @@
   config,
   ...
 }: let
-  palette = config.lib.stylix.colors;
+  colorScheme = config.lib.stylix.colors;
 in {
   home.file.".config/swaync/config.json".text = ''
         {
@@ -119,7 +119,7 @@ in {
     .control-center .notification-row:focus,
     .control-center .notification-row:hover {
         opacity: 0.9;
-        background: #${palette.base00}
+        background: #${colorScheme.base00}
     }
 
     .notification-row {
@@ -135,10 +135,10 @@ in {
     }
 
     .notification-content {
-        background: #${palette.base00};
+        background: #${colorScheme.base00};
         padding: 10px;
         border-radius: 5px;
-        border: 2px solid #${palette.base0D};
+        border: 2px solid #${colorScheme.base0D};
         margin: 0;
     }
 
@@ -149,8 +149,8 @@ in {
     }
 
     .close-button {
-        background: #${palette.base08};
-        color: #${palette.base00};
+        background: #${colorScheme.base08};
+        color: #${colorScheme.base00};
         text-shadow: none;
         padding: 0;
         border-radius: 5px;
@@ -160,14 +160,14 @@ in {
 
     .close-button:hover {
         box-shadow: none;
-        background: #${palette.base0D};
+        background: #${colorScheme.base0D};
         transition: all .15s ease-in-out;
         border: none
     }
 
 
     .notification-action {
-        border: 2px solid #${palette.base0D};
+        border: 2px solid #${colorScheme.base0D};
         border-top: none;
         border-radius: 5px;
     }
@@ -175,8 +175,8 @@ in {
 
     .notification-default-action:hover,
     .notification-action:hover {
-        color: #${palette.base0B};
-        background: #${palette.base0B}
+        color: #${colorScheme.base0B};
+        background: #${colorScheme.base0B}
     }
 
     .notification-default-action {
@@ -191,12 +191,12 @@ in {
 
     .notification-action:first-child {
         border-bottom-left-radius: 10px;
-        background: #${palette.base00}
+        background: #${colorScheme.base00}
     }
 
     .notification-action:last-child {
         border-bottom-right-radius: 10px;
-        background: #${palette.base00}
+        background: #${colorScheme.base00}
     }
 
     .inline-reply {
@@ -204,34 +204,34 @@ in {
     }
 
     .inline-reply-entry {
-        background: #${palette.base00};
-        color: #${palette.base05};
-        caret-color: #${palette.base05};
-        border: 1px solid #${palette.base09};
+        background: #${colorScheme.base00};
+        color: #${colorScheme.base05};
+        caret-color: #${colorScheme.base05};
+        border: 1px solid #${colorScheme.base09};
         border-radius: 5px
     }
 
     .inline-reply-button {
         margin-left: 4px;
-        background: #${palette.base00};
-        border: 1px solid #${palette.base09};
+        background: #${colorScheme.base00};
+        border: 1px solid #${colorScheme.base09};
         border-radius: 5px;
-        color: #${palette.base05}
+        color: #${colorScheme.base05}
     }
 
     .inline-reply-button:disabled {
         background: initial;
-        color: #${palette.base03};
+        color: #${colorScheme.base03};
         border: 1px solid transparent
     }
 
     .inline-reply-button:hover {
-        background: #${palette.base00}
+        background: #${colorScheme.base00}
     }
 
     .body-image {
         margin-top: 6px;
-        background-color: #${palette.base05};
+        background-color: #${colorScheme.base05};
         border-radius: 5px
     }
 
@@ -247,7 +247,7 @@ in {
         font-size: 16px;
         font-weight: 700;
         background: transparent;
-        color: #${palette.base05};
+        color: #${colorScheme.base05};
         text-shadow: none;
         margin-right: 18px
     }
@@ -256,13 +256,13 @@ in {
         font-size: 15px;
         font-weight: 400;
         background: transparent;
-        color: #${palette.base05};
+        color: #${colorScheme.base05};
         text-shadow: none
     }
 
     .control-center {
-        background: #${palette.base00};
-        border: 2px solid #${palette.base0C};
+        background: #${colorScheme.base00};
+        border: 2px solid #${colorScheme.base0C};
         border-radius: 5px;
     }
 
@@ -283,8 +283,8 @@ in {
     }
 
     .widget-title {
-        color: #${palette.base0B};
-        background: #${palette.base00};
+        color: #${colorScheme.base0B};
+        background: #${colorScheme.base00};
         padding: 5px 10px;
         margin: 10px 10px 5px 10px;
         font-size: 1.5rem;
@@ -293,45 +293,45 @@ in {
 
     .widget-title>button {
         font-size: 1rem;
-        color: #${palette.base05};
+        color: #${colorScheme.base05};
         text-shadow: none;
-        background: #${palette.base00};
+        background: #${colorScheme.base00};
         box-shadow: none;
         border-radius: 5px;
     }
 
     .widget-title>button:hover {
-        background: #${palette.base08};
-        color: #${palette.base00};
+        background: #${colorScheme.base08};
+        color: #${colorScheme.base00};
     }
 
     .widget-dnd {
-        background: #${palette.base00};
+        background: #${colorScheme.base00};
         padding: 5px 10px;
         margin: 10px 10px 5px 10px;
         border-radius: 5px;
         font-size: large;
-        color: #${palette.base0B};
+        color: #${colorScheme.base0B};
     }
 
     .widget-dnd>switch {
         border-radius: 5px;
-        /* border: 1px solid #${palette.base0B}; */
-        background: #${palette.base0B};
+        /* border: 1px solid #${colorScheme.base0B}; */
+        background: #${colorScheme.base0B};
     }
 
     .widget-dnd>switch:checked {
-        background: #${palette.base08};
-        border: 1px solid #${palette.base08};
+        background: #${colorScheme.base08};
+        border: 1px solid #${colorScheme.base08};
     }
 
     .widget-dnd>switch slider {
-        background: #${palette.base00};
+        background: #${colorScheme.base00};
         border-radius: 5px
     }
 
     .widget-dnd>switch:checked slider {
-        background: #${palette.base00};
+        background: #${colorScheme.base00};
         border-radius: 5px
     }
 
@@ -341,12 +341,12 @@ in {
 
     .widget-label>label {
         font-size: 1rem;
-        color: #${palette.base05};
+        color: #${colorScheme.base05};
     }
 
     .widget-mpris {
-        color: #${palette.base05};
-        background: #${palette.base00};
+        color: #${colorScheme.base05};
+        background: #${colorScheme.base00};
         padding: 5px 10px;
         margin: 10px 10px 5px 10px;
         border-radius: 5px;
@@ -375,19 +375,19 @@ in {
         padding: 5px;
         margin: 10px 10px 5px 10px;
         border-radius: 5px;
-        background: #${palette.base01};
+        background: #${colorScheme.base01};
     }
 
     .widget-buttons-grid>flowbox>flowboxchild>button {
         margin: 3px;
-        background: #${palette.base00};
+        background: #${colorScheme.base00};
         border-radius: 5px;
-        color: #${palette.base05};
+        color: #${colorScheme.base05};
     }
 
     .widget-buttons-grid>flowbox>flowboxchild>button:hover {
         background: rgba(122, 162, 247, 1);
-        color: #${palette.base00};
+        color: #${colorScheme.base00};
     }
 
     .widget-menubar>box>.menu-button-bar>button {
@@ -401,33 +401,33 @@ in {
     }
 
     .widget-volume {
-        background: #${palette.base01};
+        background: #${colorScheme.base01};
         padding: 5px;
         margin: 10px 10px 5px 10px;
         border-radius: 5px;
         font-size: x-large;
-        color: #${palette.base05};
+        color: #${colorScheme.base05};
     }
 
     .widget-volume>box>button {
-        background: #${palette.base0B};
+        background: #${colorScheme.base0B};
         border: none
     }
 
     .per-app-volume {
-        background-color: #${palette.base00};
+        background-color: #${colorScheme.base00};
         padding: 4px 8px 8px;
         margin: 0 8px 8px;
         border-radius: 5px;
     }
 
     .widget-backlight {
-        background: #${palette.base01};
+        background: #${colorScheme.base01};
         padding: 5px;
         margin: 10px 10px 5px 10px;
         border-radius: 5px;
         font-size: x-large;
-        color: #${palette.base05}
+        color: #${colorScheme.base05}
     }
   '';
 }

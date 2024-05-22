@@ -3,8 +3,8 @@
   lib,
   ...
 }: let
-  variant = "dark";
-  # c = config.programs.matugen.theme.colors.colors.${variant};
+  colorScheme = config.lib.stylix.colors;
+  wallpaper = config.lib.stylix.wallpaper;
 
   font_family = "Inter";
 in {
@@ -20,7 +20,7 @@ in {
     # backgrounds = [
     #   {
     #     monitor = "";
-    #     path = config.features.theming.wallpaper;
+    #     path = wallpaper;
     #   }
     # ];
 
@@ -35,9 +35,9 @@ in {
 
         outline_thickness = 2;
 
-        # outer_color = "rgb(${c.primary})";
-        # inner_color = "rgb(${c.on_primary_container})";
-        # font_color = "rgb(${c.primary_container})";
+        outer_color = "rgb(${colorScheme.base00})";
+        inner_color = "rgb(${colorScheme.base01})";
+        font_color = "rgb(${colorScheme.base05})";
 
         fade_on_empty = false;
         # placeholder_text = ''<span font_family="${font_family}" foreground="##${c.primary_container}">Password...</span>'';
@@ -53,7 +53,7 @@ in {
         text = "$TIME";
         inherit font_family;
         font_size = 50;
-        # color = "rgb(${c.primary})";
+        color = "rgb(${colorScheme.base00})";
 
         position = {
           x = 0;

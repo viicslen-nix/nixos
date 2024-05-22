@@ -16,9 +16,9 @@ let
     10);
 in {
   wayland.windowManager.hyprland.settings = {
+    "$launcher" = "rofi --show drun";
     "$fileManager" = "nautilus";
     "$terminal" = "kitty";
-    "$launcher" = "walker";
 
     # mouse movements
     bindm = [
@@ -28,34 +28,27 @@ in {
     ];
 
     # binds
-    bind = let
-      monocle = "dwindle:no_gaps_when_only";
-    in
-      [
+    bind = [
         # compositor commands
-        "$mod SHIFT, E, exec, pkill Hyprland"
         "$mod, Q, killactive,"
         "$mod, F, fullscreen,"
         "$mod, G, togglegroup,"
-        "$mod SHIFT, N, changegroupactive, f"
-        "$mod SHIFT, P, changegroupactive, b"
         "$mod, R, togglesplit,"
         "$mod, T, togglefloating,"
         "$mod, P, pseudo,"
         "$mod ALT, ,resizeactive,"
 
-        # toggle "monocle" (no_gaps_when_only)
-        "$mod, M, exec, hyprctl keyword ${monocle} $(($(hyprctl getoption ${monocle} -j | jaq -r '.int') ^ 1))"
+        # cycle monitors
+        "$mod SHIFT, bracketleft, focusmonitor, l"
+        "$mod SHIFT, bracketright, focusmonitor, r"
 
-        # utility
-        # terminal
-        "$mod, Return, exec, $terminal"
-        # logout menu
-        "$mod, Escape, exec, wlogout -p layer-shell"
-        # lock screen
-        "$mod, L, exec, loginctl lock-session"
-        # select area to perform OCR on
-        "$mod, O, exec, run-as-service wl-ocr"
+        # send focused workspace to left/right monitors
+        "$mod SHIFT ALT, bracketleft, movecurrentworkspacetomonitor, l"
+        "$mod SHIFT ALT, bracketright, movecurrentworkspacetomonitor, r"
+
+        # cycle workspaces
+        "$mod, bracketleft, workspace, m-1"
+        "$mod, bracketright, workspace, m+1"
 
         # move focus
         "$mod, left, movefocus, l"
@@ -63,8 +56,12 @@ in {
         "$mod, up, movefocus, u"
         "$mod, down, movefocus, d"
 
+        # system
+        "$mod, Escape, exec, wlogout -p layer-shell"
+        "$mod, L, exec, loginctl lock-session"
+        "$mod SHIFT, N, exec, swaync-client -op"
+
         # screenshot
-        # stop animations while screenshotting; makes black border go away
         ", Print, exec, ${screenshotarea}"
         "$mod SHIFT, R, exec, ${screenshotarea}"
 
@@ -74,21 +71,9 @@ in {
         "ALT, Print, exec, grimblast --notify --cursor copysave screen"
         "$mod SHIFT ALT, R, exec, grimblast --notify --cursor copysave screen"
 
-        # special workspace
-        "$mod SHIFT, grave, movetoworkspace, special"
-        "$mod, grave, togglespecialworkspace, eDP-1"
-
-        # cycle workspaces
-        "$mod, bracketleft, workspace, m-1"
-        "$mod, bracketright, workspace, m+1"
-
-        # cycle monitors
-        "$mod SHIFT, bracketleft, focusmonitor, l"
-        "$mod SHIFT, bracketright, focusmonitor, r"
-
-        # send focused workspace to left/right monitors
-        "$mod SHIFT ALT, bracketleft, movecurrentworkspacetomonitor, l"
-        "$mod SHIFT ALT, bracketright, movecurrentworkspacetomonitor, r"
+        # utilities
+        "$mod, Return, exec, $terminal"
+        "Control_L&Shift_L, Space, exec, 1password --quick-access"
       ]
       ++ workspaces;
 

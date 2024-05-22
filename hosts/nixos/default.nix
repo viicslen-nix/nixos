@@ -180,6 +180,7 @@
     (nerdfonts.override {
       fonts = [
         "FiraCode"
+        "JetBrainsMono"
         "DroidSansMono"
       ];
     })

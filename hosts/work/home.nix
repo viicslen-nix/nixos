@@ -13,6 +13,8 @@
     floorp
 
     tabby-terminal
+
+    anydesk
   ];
 
   features.lan-mouse.enable = true;

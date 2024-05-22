@@ -40,8 +40,14 @@ in {
 
       environment.systemPackages = with pkgs; [
         swaynotificationcenter
+        networkmanagerapplet
+        pavucontrol
+        qpwgraph
+
         hyprpaper
         wlroots
+
+        rofi-wayland
       ];
 
       nix.settings = {
@@ -73,9 +79,9 @@ in {
             ./hypridle.nix
             ./walker.nix
 
-            ./wlogout.nix
             ./swaync.nix
-            ./waybar.nix
+            ./wlogout
+            ./waybar
           ];
 
           home.packages = with pkgs; [
@@ -84,12 +90,10 @@ in {
             slurp
 
             # utils
-            # wl-ocr
             wl-clipboard
             wl-screenrec
             wlr-randr
             wofi
-            rofi
 
             inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
           ];
