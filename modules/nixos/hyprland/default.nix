@@ -20,8 +20,8 @@ in {
     };
 
     palette = mkOption {
-      # attribute set
       type = types.attrsOf types.str;
+      default = {};
     };
   };
 
@@ -58,23 +58,24 @@ in {
     (mkIf homeManagerLoaded {
       home-manager = {
         users.${cfg.user} = {
-          disabledModules = [ "programs/hyprlock.nix" ];
+          disabledModules = ["programs/hyprlock.nix"];
 
           imports = [
             inputs.hyprland.homeManagerModules.default
             inputs.hyprlock.homeManagerModules.default
+
+            ./config/settings.nix
+            ./config/rules.nix
+            ./config/binds.nix
+
             ./hyprpaper.nix
-            ./settings.nix
             ./hyprlock.nix
             ./hypridle.nix
-            ./wlogout.nix
-            ./anyrun.nix
             ./walker.nix
+
+            ./wlogout.nix
             ./swaync.nix
             ./waybar.nix
-            ./binds.nix
-            ./rules.nix
-            ./ags
           ];
 
           home.packages = with pkgs; [

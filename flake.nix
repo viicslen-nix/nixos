@@ -58,6 +58,10 @@
     # Theming
     stylix.url = "github:danth/stylix";
     base16.url = "github:SenchoPens/base16.nix";
+    tt-schemes = {
+      url = "github:tinted-theming/schemes";
+      flake = false;
+    };
 
     nix-alien.url = "github:thiagokokada/nix-alien";
     lan-mouse.url = "github:feschber/lan-mouse";

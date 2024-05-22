@@ -1,4 +1,8 @@
-{config, lib, ...}: let
+{
+  config,
+  lib,
+  ...
+}: let
   variant = "dark";
   # c = config.programs.matugen.theme.colors.colors.${variant};
 

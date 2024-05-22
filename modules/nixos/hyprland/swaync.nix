@@ -1,9 +1,10 @@
-{ pkgs, config, ... }:
-
-let
-  palette = config.scheme;
-in
 {
+  pkgs,
+  config,
+  ...
+}: let
+  palette = config.lib.stylix.colors;
+in {
   home.file.".config/swaync/config.json".text = ''
         {
             "$schema": "/etc/xdg/swaync/configSchema.json",

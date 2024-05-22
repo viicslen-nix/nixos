@@ -84,6 +84,7 @@
     hyprland = {
       enable = true;
       inherit user;
+      palette = config.lib.stylix.colors;
     };
 
     network.hosts = {

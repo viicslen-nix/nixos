@@ -46,31 +46,30 @@
   services.earlyoom = {
     enable = true;
     enableNotifications = true;
-    extraArgs =
-      let
-        catPatterns = patterns: builtins.concatStringsSep "|" patterns;
-        preferPatterns = [
-          ".firefox-wrappe"
-          "ipfs"
-          "java"
-          ".jupyterhub-wra"
-          "Logseq"
-        ];
-        avoidPatterns = [
-          "bash"
-          "mosh-server"
-          "sshd"
-          "systemd"
-          "systemd-logind"
-          "systemd-udevd"
-          "tmux: client"
-          "tmux: server"
-        ];
-      in
-      [
-        "--prefer '^(${catPatterns preferPatterns})$'"
-        "--avoid '^(${catPatterns avoidPatterns})$'"
+    extraArgs = let
+      catPatterns = patterns: builtins.concatStringsSep "|" patterns;
+      preferPatterns = [
+        ".firefox-wrappe"
+        "ipfs"
+        "java"
+        ".jupyterhub-wra"
+        "Logseq"
       ];
+      avoidPatterns = [
+        "tlp"
+        "bash"
+        "mosh-server"
+        "sshd"
+        "systemd"
+        "systemd-logind"
+        "systemd-udevd"
+        "tmux: client"
+        "tmux: server"
+      ];
+    in [
+      "--prefer '^(${catPatterns preferPatterns})$'"
+      "--avoid '^(${catPatterns avoidPatterns})$'"
+    ];
   };
 
   # OOM configuration:
@@ -103,7 +102,7 @@
       outputs.overlays.stable-packages
       outputs.overlays.unstable-packages
       outputs.overlays.flake-inputs
-      
+
       inputs.nix-alien.overlays.default
     ];
     # Configure your nixpkgs instance
@@ -125,6 +124,7 @@
     settings = {
       # Enable flakes and new 'nix' command
       experimental-features = "nix-command flakes";
+      
       # Deduplicate and optimize nix store
       auto-optimise-store = true;
 
@@ -166,10 +166,7 @@
 
   # Home Manager
   home-manager = {
-    extraSpecialArgs = {
-      inherit inputs outputs user;
-      colorScheme = config.scheme
-    };
+    extraSpecialArgs = {inherit inputs outputs user;};
     useUserPackages = true;
     useGlobalPkgs = true;
     backupFileExtension = "backup";

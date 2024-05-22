@@ -3,12 +3,9 @@
   lib,
   pkgs,
   ...
-}:
-
-let
-  palette = config.scheme;
-in
-{
+}: let
+  palette = config.lib.stylix.colors;
+in {
   programs.wlogout = {
     enable = true;
     layout = [

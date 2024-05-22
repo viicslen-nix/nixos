@@ -72,7 +72,7 @@
       local_file=$2
 
       # Remove the first two arguments from the list
-      shift 2 
+      shift 2
 
       # Check if the URL is from GitHub
       if [[ "$online_file_url" == *"github.com"* ]]; then

@@ -1333,6 +1333,7 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
         "stylix": "stylix",
+        "tt-schemes": "tt-schemes",
         "walker": "walker"
       }
     },
@@ -1487,6 +1488,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tt-schemes": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1713388094,
+        "narHash": "sha256-wcotm0Ek2ISn8iJBzEujJQdcPLKWrPAOZ/dS/DLKafw=",
+        "owner": "tinted-theming",
+        "repo": "schemes",
+        "rev": "abcf2a055ae69f1bf047463332f83db3125aa8a5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tinted-theming",
+        "repo": "schemes",
         "type": "github"
       }
     },

@@ -35,11 +35,19 @@ in {
       default = defaultWallpaper;
       description = "The wallpaper to use";
     };
+
+    scheme = mkOption {
+      type = types.path;
+      default = "${inputs.tt-schemes}/base16/material-darker.yaml";
+      description = "The base16 scheme to use";
+    };
   };
 
   config = mkIf cfg.enable {
+    scheme = cfg.scheme;
+
     stylix = {
-      base16Scheme = config.scheme;
+      base16Scheme = cfg.scheme;
 
       image = cfg.wallpaper;
       polarity = cfg.polarity;

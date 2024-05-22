@@ -38,7 +38,7 @@
     };
   };
 
-    # This one contains whatever you want to overlay
+  # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: _prev: {
@@ -50,7 +50,7 @@
       postBuild = ''
         wrapProgram $out/bin/microsoft-edge \
         --add-flags "--ozone-platform=wayland" \
-        --add-flags "--enable-features=UseOzonePlatform" 
+        --add-flags "--enable-features=UseOzonePlatform"
       '';
     };
 
@@ -62,7 +62,7 @@
       postBuild = ''
         wrapProgram $out/bin/vivaldi \
         --add-flags "--ozone-platform=wayland" \
-        --add-flags "--enable-features=UseOzonePlatform" 
+        --add-flags "--enable-features=UseOzonePlatform"
       '';
     };
   };
