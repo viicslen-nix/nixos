@@ -93,7 +93,6 @@ in {
             wl-clipboard
             wl-screenrec
             wlr-randr
-            wofi
 
             inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
           ];

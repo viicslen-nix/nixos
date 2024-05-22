@@ -16,7 +16,7 @@ let
     10);
 in {
   wayland.windowManager.hyprland.settings = {
-    "$launcher" = "rofi --show drun";
+    "$launcher" = "rofi -show drun";
     "$fileManager" = "nautilus";
     "$terminal" = "kitty";
 
