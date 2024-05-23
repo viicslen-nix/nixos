@@ -1312,6 +1312,38 @@
         "type": "github"
       }
     },
+    "rofi-collections": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1664792203,
+        "narHash": "sha256-s1ENTByJuWlL1gYuWgcrNQ+2McLucDjGUwgXBYAwAW4=",
+        "owner": "Murzchnvok",
+        "repo": "rofi-collection",
+        "rev": "f1f063f00403a292581375aff51981b4d14850b2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Murzchnvok",
+        "repo": "rofi-collection",
+        "type": "github"
+      }
+    },
+    "rofi-themes": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1715870163,
+        "narHash": "sha256-uNgsOaHeuTMyKbG6A4T5oHGmoONH0Ae3CbKKHFjyrH4=",
+        "owner": "newmanls",
+        "repo": "rofi-themes-collection",
+        "rev": "22c9b43f9e54164b8a35702fffffaef4d7b16c7c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "newmanls",
+        "repo": "rofi-themes-collection",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "ags": "ags",
@@ -1332,6 +1364,8 @@
         "nixpkgs-stable": "nixpkgs-stable_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
+        "rofi-collections": "rofi-collections",
+        "rofi-themes": "rofi-themes",
         "stylix": "stylix",
         "tt-schemes": "tt-schemes",
         "walker": "walker"

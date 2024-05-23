@@ -46,8 +46,6 @@ in {
 
         hyprpaper
         wlroots
-
-        rofi-wayland
       ];
 
       nix.settings = {
@@ -77,9 +75,9 @@ in {
             ./hyprpaper.nix
             ./hyprlock.nix
             ./hypridle.nix
-            ./walker.nix
 
             ./swaync.nix
+            ./rofi.nix
             ./wlogout
             ./waybar
           ];

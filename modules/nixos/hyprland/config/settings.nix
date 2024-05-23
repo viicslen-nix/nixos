@@ -4,6 +4,11 @@
   colorScheme = config.lib.stylix.colors;
 in {
   wayland.windowManager.hyprland.settings = {
+    monitor = [
+      "eDP-1,2560x1600@60,0x0,1.6"
+      "HDMI-A-1,1920x1080@60,auto-up,0"
+    ];
+
     "$mod" = "SUPER";
     env = [
       "NIXOS_OZONE_WL, 1"
@@ -23,6 +28,8 @@ in {
     exec-once = [
       "dbus-update-activation-environment --systemd --all"
       "systemctl --user import-environment QT_QPA_PLATFORMTHEME WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+
+      "gnome-keyring-daemon --start --components=secrets"
       
       # set cursor for HL itself
       "hyprctl setcursor ${pointer.name} ${toString pointer.size}"

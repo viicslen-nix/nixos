@@ -8,6 +8,7 @@
   betterTransition = "all 0.3s cubic-bezier(.55,-0.68,.48,1.682)";
   colorScheme = config.lib.stylix.colors;
   pipewireStatus = (import ./pipewire.nix { inherit pkgs; });
+  mullvadStatus = (import ./mullvad.nix { inherit pkgs; });
 in
   with lib; {
     # Configure & Theme Waybar
@@ -24,15 +25,16 @@ in
             "cpu"
             "memory"
             "hyprland/window"
+            "idle_inhibitor"
           ];
           modules-right = [
-            "idle_inhibitor"
             "tray"
             "custom/pipewire"
+            "custom/vpn"
             "battery"
             "custom/notification"
-            "custom/exit"
             "clock"
+            "custom/exit"
           ];
 
           "hyprland/workspaces" = {
@@ -84,28 +86,6 @@ in
           "tray" = {
             spacing = 12;
           };
-          "pulseaudio" = {
-            format = "{icon} {volume}% {format_source}";
-            format-bluetooth = "{volume}% {icon} {format_source}";
-            format-bluetooth-muted = " {icon} {format_source}";
-            format-muted = " {format_source}";
-            format-source = " {volume}%";
-            format-source-muted = "";
-            format-icons = {
-              headphone = "";
-              hands-free = "";
-              headset = "";
-              phone = "";
-              portable = "";
-              car = "";
-              default = [
-                ""
-                ""
-                ""
-              ];
-            };
-            on-click = "sleep 0.1 && pavucontrol";
-          };
           "custom/exit" = {
             tooltip = false;
             format = " ";
@@ -116,22 +96,26 @@ in
             format = "";
             on-click = "sleep 0.1 && rofi -show drun";
           };
-          "custom/hyprbindings" = {
-            tooltip = false;
-            format = "󱕴";
-            on-click = "sleep 0.1 && list-hypr-bindings";
-          };
           "custom/pipewire" = {
               tooltip = false;
               max-length = 6;
               exec = pipewireStatus.outPath;
               on-click = "pavucontrol";
           };
+          "custom/vpn" = {
+            format = "VPN {}";
+            tooltip = true;
+            tooltip-exec = "mullvad status";
+            exec = mullvadStatus.outPath;
+            on-click = "mullvad connect";
+            on-click-right = "mullvad disconnect";
+            on-click-middle = "mullvad reconnect";
+          };
           "idle_inhibitor" = {
             format = "{icon}";
             format-icons = {
-              activated = "";
-              deactivated = "";
+              activated = "";
+              deactivated = "󰾫";
             };
             tooltip = "true";
           };
@@ -197,7 +181,7 @@ in
           color: #${colorScheme.base00};
           background: #${colorScheme.base01};
           margin: 4px 4px;
-          padding: 8px 5px;
+          padding: 5px;
           border-radius: 16px;
         }
         #workspaces button {
@@ -208,7 +192,6 @@ in
           color: #${colorScheme.base00};
           background: linear-gradient(45deg, #${colorScheme.base0E}, #${colorScheme.base0F}, #${colorScheme.base0D}, #${colorScheme.base09});
           background-size: 300% 300%;
-          animation: gradient_horizontal 15s ease infinite;
           opacity: 0.5;
           transition: ${betterTransition};
         }
@@ -227,17 +210,16 @@ in
           padding: 0px 30px 0px 15px;
           border-radius: 0px 0px 40px 0px;
         }
-        #clock {
+        #custom-exit {
           font-weight: bold;
           color: #${colorScheme.base00};
           background: linear-gradient(45deg, #${colorScheme.base0C}, #${colorScheme.base0F}, #${colorScheme.base0B}, #${colorScheme.base08});
           background-size: 300% 300%;
-          animation: gradient_horizontal 15s ease infinite;
           margin: 0px;
           padding: 0px 15px 0px 30px;
           border-radius: 0px 0px 0px 40px;
         }
-        #window, #cpu, #memory {
+        #window, #cpu, #memory, #idle_inhibitor {
           font-weight: bold;
           margin: 4px 0px;
           margin-left: 7px;
@@ -246,8 +228,8 @@ in
           background: #${colorScheme.base01};
           border-radius: 24px 10px 24px 10px;
         }
-        #custom-hyprbindings, #network, #battery, #pulseaudio, #idle_inhibitor,
-        #custom-notification, #tray, #custom-exit, #custom-pipewire {
+        #network, #battery, #pulseaudio, #tray, #clock,
+        #custom-notification, #custom-pipewire, #custom-vpn {
           font-weight: bold;
           background: #${colorScheme.base01};
           color: #${colorScheme.base05};

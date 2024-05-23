@@ -35,6 +35,7 @@
     windowrule = [
       "noborder,^(wofi)$"
       "center,^(wofi)$"
+
       "noborder,^(pavucontrol)$"
       "center,^(pavucontrol)$"
     ];
@@ -44,8 +45,10 @@
       # telegram media viewer
       "float, title:^(Media viewer)$"
 
-      # allow tearing in games
-      "immediate, class:^(osu\!|cs2)$"
+      # 1Password
+      "float, title:(1Password)"
+      "size 70% 70%, title:(1Password)"
+      "center, title:(1Password)"
 
       # make Firefox PiP window floating and sticky
       "float, title:^(Picture-in-Picture)$"

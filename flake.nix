@@ -62,6 +62,14 @@
       url = "github:tinted-theming/schemes";
       flake = false;
     };
+    rofi-themes = {
+      url = "github:newmanls/rofi-themes-collection";
+      flake = false;
+    };
+    rofi-collections = {
+      url = "github:Murzchnvok/rofi-collection";
+      flake = false;
+    };
 
     nix-alien.url = "github:thiagokokada/nix-alien";
     lan-mouse.url = "github:feschber/lan-mouse";
