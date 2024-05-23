@@ -6,7 +6,11 @@ in {
   wayland.windowManager.hyprland.settings = {
     monitor = [
       "eDP-1,2560x1600@60,0x0,1.6"
-      "HDMI-A-1,1920x1080@60,auto-up,0"
+      "HDMI-A-1,preferred,auto-up,1"
+    ];
+
+    workspace = [
+      "HDMI-A-1,1"
     ];
 
     "$mod" = "SUPER";
