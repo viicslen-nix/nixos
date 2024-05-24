@@ -82,6 +82,12 @@ in {
             ./waybar
           ];
 
+          wayland.windowManager.hyprland = {
+            plugins = [
+              split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
+            ];
+          };
+
           home.packages = with pkgs; [
             # screenshot
             grim

@@ -166,6 +166,12 @@ in {
         gesture_distance = 300;
         gesture_positive = false;
       };
+
+      split-monitor-workspaces {
+          count = 10;
+          keep_focused = 0;
+          enable_notifications = 0;
+      }
     };
   };
 }
