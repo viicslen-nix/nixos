@@ -101,6 +101,8 @@ in {
 
       # focus change on cursor move
       follow_mouse = 1;
+      mouse_refocus = false;
+
       accel_profile = "flat";
       touchpad.scroll_factor = 0.1;
     };
