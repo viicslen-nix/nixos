@@ -1,25 +1,5 @@
 {
   "nodes": {
-    "ags": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1714991158,
-        "narHash": "sha256-QRtQD3YqbambczxavUUkRv7iGxoJ1J6e6mD20mZv3a4=",
-        "owner": "Aylur",
-        "repo": "ags",
-        "rev": "05e0f23534fa30c1db2a142664ee8f71e38db260",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Aylur",
-        "repo": "ags",
-        "type": "github"
-      }
-    },
     "anyrun": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -1049,6 +1029,21 @@
         "type": "github"
       }
     },
+    "nix-filter_3": {
+      "locked": {
+        "lastModified": 1693833173,
+        "narHash": "sha256-hlMABKrGbEiJD5dwUSfnw1CQ3bG7KKwDV+Nx3bEZd7U=",
+        "owner": "numtide",
+        "repo": "nix-filter",
+        "rev": "ac030bd9ba98e318e1f4c4328d60766ade8ebe8b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "nix-filter",
+        "type": "github"
+      }
+    },
     "nix-github-actions": {
       "inputs": {
         "nixpkgs": [
@@ -1346,7 +1341,6 @@
     },
     "root": {
       "inputs": {
-        "ags": "ags",
         "anyrun": "anyrun",
         "base16": "base16",
         "chaotic": "chaotic",
@@ -1366,6 +1360,7 @@
         "nur": "nur",
         "rofi-collections": "rofi-collections",
         "rofi-themes": "rofi-themes",
+        "split-monitor-workspaces": "split-monitor-workspaces",
         "stylix": "stylix",
         "tt-schemes": "tt-schemes",
         "walker": "walker"
@@ -1434,6 +1429,27 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "split-monitor-workspaces": {
+      "inputs": {
+        "hyprland": [
+          "hyprland"
+        ],
+        "nix-filter": "nix-filter_3"
+      },
+      "locked": {
+        "lastModified": 1716403535,
+        "narHash": "sha256-4iG/+feETnV/8W6HNXt33q6LBfjHkhvlDutZ2m4fyDk=",
+        "owner": "Duckonaut",
+        "repo": "split-monitor-workspaces",
+        "rev": "5df9830acf7c710544c41e47172a6171f2859d15",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Duckonaut",
+        "repo": "split-monitor-workspaces",
         "type": "github"
       }
     },
