@@ -5,6 +5,7 @@
 }: {
   environment.systemPackages = with pkgs; [
     # CLI Tools
+    libsecret
     wget
     curl
     git

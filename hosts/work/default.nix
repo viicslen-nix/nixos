@@ -25,7 +25,6 @@
     libgcc
     gcc13
     insomnia
-    libsecret
     nix-alien
     nix-init
     gcc
