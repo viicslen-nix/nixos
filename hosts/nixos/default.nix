@@ -206,7 +206,7 @@
     FLAKE = "/home/${user}/.nix/";
   };
 
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
     evtest
     libinput
     wl-clipboard
