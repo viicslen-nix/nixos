@@ -62,8 +62,6 @@ in {
 
       # Install GNOME Tweaks
       environment.systemPackages = with pkgs; [
-        gtop
-        libgtop
         adw-gtk3
         gnome.gnome-tweaks
         gnome.adwaita-icon-theme
@@ -82,6 +80,12 @@ in {
         gnomeExtensions.arrange-windows
         gnomeExtensions.rounded-corners
         gnomeExtensions.tophat
+
+        # TopHat Dependencies
+        gtop
+        libgtop
+        clutter
+        clutter-gtk
       ];
 
       # Required for some GNOME extensions

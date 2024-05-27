@@ -26,8 +26,6 @@
     graphviz
     handbrake
     sesh
-    clutter
-    clutter-gtk
 
     # Devices
     solaar
@@ -41,6 +39,7 @@
     jetbrains.phpstorm
     jetbrains.datagrip
     jetbrains.webstorm
+    mysql-workbench
     drawio
     siege
   ];

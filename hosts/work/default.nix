@@ -14,31 +14,33 @@
   home-manager.users.${user} = import ./home.nix;
 
   environment.systemPackages = with pkgs; [
+    # Communication
+    slack
+
+    # Formatters
+    delta
+    jq
+
+    # Editors
     neovim
     vimPlugins.nvim-fzf
-    delta
-    slack
-    evtest
-    libinput
-    wl-clipboard
+    vscode
+
+    # Build
     libgcc
     gcc13
     gcc
     zig
-    jq
-  
-    mysql80
     bc
     gnumake
     cmake
     luakit
 
-    # Development
-    vscode
-    mysql-workbench
-    mkcert
+    # Tools
     nodejs_20
     corepack_20
+    mysql80
+    mkcert
   ];
 
   programs.zsh.shellAliases = {

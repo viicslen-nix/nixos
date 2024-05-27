@@ -206,6 +206,12 @@
     FLAKE = "/home/${user}/.nix/";
   };
 
+  environment.systemPackages = [
+    evtest
+    libinput
+    wl-clipboard
+  ];
+
   # Features
   features = {
     gnome = {
