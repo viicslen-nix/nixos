@@ -13,6 +13,9 @@
 
   home-manager.users.${user} = import ./home.nix;
 
+  # Lan Mouse
+  networking.firewall.allowedTCPPorts = [4242];
+
   environment.systemPackages = with pkgs; [
     # Communication
     slack

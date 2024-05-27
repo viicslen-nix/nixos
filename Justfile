@@ -37,14 +37,11 @@ clean:
 
 # Garbage collect all unused nix store entries
 gc:
-  # garbage collect all unused nix store entries
   sudo nix store gc --debug
   sudo nix-collect-garbage --delete-old
 
-# Remove all reflog entries and prune unreachable objects
-gitgc:
-  git reflog expire --expire-unreachable=now --all
-  git gc --prune=now
+link:
+  sudo ln -s ~/.nix /etc/nixos
 
 
 ############################################################################
