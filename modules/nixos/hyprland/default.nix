@@ -35,6 +35,7 @@ in {
         hyprland = {
           enable = true;
           xwayland.enable = true;
+          package = inputs.hyprland.packages.${pkgs.system}.hyprland;
         };
       };
 
@@ -80,6 +81,8 @@ in {
           ];
 
           wayland.windowManager.hyprland = {
+            systemd.variables = ["--all"];
+
             plugins = [
               inputs.split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
             ];
