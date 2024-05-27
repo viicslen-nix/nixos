@@ -36,12 +36,6 @@
       inputs.nixpkgs.follows = "hyprland/nixpkgs";
       inputs.systems.follows = "hyprland/systems";
     };
-    hyprlock = {
-      url = "github:hyprwm/hyprlock";
-      inputs.hyprlang.follows = "hyprland/hyprlang";
-      inputs.nixpkgs.follows = "hyprland/nixpkgs";
-      inputs.systems.follows = "hyprland/systems";
-    };
     hyprpaper = {
       url = "github:hyprwm/hyprpaper";
       inputs.hyprlang.follows = "hyprland/hyprlang";
@@ -52,8 +46,6 @@
       url = "github:Duckonaut/split-monitor-workspaces";
       inputs.hyprland.follows = "hyprland";
     };
-    walker.url = "github:abenz1267/walker";
-    anyrun.url = "github:fufexan/anyrun";
 
     # Theming
     stylix.url = "github:danth/stylix";

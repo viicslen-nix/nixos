@@ -66,7 +66,6 @@ in {
 
           imports = [
             inputs.hyprland.homeManagerModules.default
-            inputs.hyprlock.homeManagerModules.default
 
             ./config/settings.nix
             ./config/rules.nix
