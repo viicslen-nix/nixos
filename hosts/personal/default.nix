@@ -43,7 +43,7 @@
 
   features = {
     hyprland = {
-      enable = true;
+      enable = false;
       inherit user;
       palette = config.lib.stylix.colors;
     };
