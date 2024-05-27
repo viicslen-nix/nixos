@@ -7,9 +7,6 @@
   user,
   ...
 }: {
-  imports = [
-  ];
-
   home-manager.users.${user} = import ./home.nix;
 
   environment.systemPackages = with pkgs; [
