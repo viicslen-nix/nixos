@@ -140,6 +140,12 @@
         specialArgs = {inherit inputs outputs user;};
         modules = [./hosts/asus-zephyrus-gu603];
       };
+
+      acer-aspire-tc780 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {inherit inputs outputs user;};
+        modules = [./hosts/acer-aspire-tc780];
+      };
     };
   };
 }
