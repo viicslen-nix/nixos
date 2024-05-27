@@ -16,7 +16,9 @@ with lib; let
   '';
 in {
   imports = [
+    ../nixos
     ../work
+    ../personal
     ./hardware.nix
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
   ];

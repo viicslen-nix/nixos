@@ -214,13 +214,7 @@
       inherit user;
     };
 
-    onePassword = {
-      enable = true;
-      inherit user;
-    };
-
     theming.enable = true;
-    mullvad.enable = true;
     appImages.enable = true;
   };
 

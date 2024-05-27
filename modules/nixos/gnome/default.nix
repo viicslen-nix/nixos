@@ -62,6 +62,7 @@ in {
 
       # Install GNOME Tweaks
       environment.systemPackages = with pkgs; [
+        gtop
         libgtop
         adw-gtk3
         gnome.gnome-tweaks

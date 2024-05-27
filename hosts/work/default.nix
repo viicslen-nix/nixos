@@ -8,7 +8,6 @@
   ...
 }: {
   imports = [
-    ../nixos
     ./scripts.nix
   ];
 
@@ -24,47 +23,19 @@
     wl-clipboard
     libgcc
     gcc13
-    insomnia
-    nix-alien
-    nix-init
     gcc
     zig
     jq
-    qemu
-    quickemu
-    quickgui
-    openlens
+  
     mysql80
-    skypeforlinux
     bc
-    gtop
-    libgtop
     gnumake
     cmake
-    stable.redisinsight
-    kdePackages.kcachegrind
-    graphviz
     luakit
-    handbrake
-    sesh
-    clutter
-    clutter-gtk
-
-    # Devices
-    solaar
-    openrgb-with-all-plugins
 
     # Development
     vscode
-    obsidian
-    warp-terminal
-    jetbrains-toolbox
-    jetbrains.phpstorm
-    jetbrains.datagrip
-    jetbrains.webstorm
-    drawio
     mysql-workbench
-    siege
     mkcert
     nodejs_20
     corepack_20
@@ -80,12 +51,6 @@
   };
 
   features = {
-    hyprland = {
-      enable = true;
-      inherit user;
-      palette = config.lib.stylix.colors;
-    };
-
     network.hosts = {
       # Docker
       "kubernetes.docker.internal" = "127.0.0.1";
@@ -124,22 +89,6 @@
 
         # Ray
         23517
-      ];
-    };
-
-    mullvad = {
-      enableExludeIPs = true;
-      excludedIPs = [
-        # Nivoda
-        "172.66.43.155"
-        "172.66.40.101"
-        "104.26.4.176"
-        "172.67.68.183"
-        "104.26.5.176"
-        "108.139.10.82"
-        "108.139.10.70"
-        "108.139.10.74"
-        "108.139.10.67"
       ];
     };
   };
