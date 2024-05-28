@@ -11,5 +11,6 @@
     thorium
     floorp
     anydesk
+    tabby-terminal
   ];
 }
