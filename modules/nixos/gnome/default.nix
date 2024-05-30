@@ -71,7 +71,6 @@ in {
         gnomeExtensions.arcmenu
         gnomeExtensions.user-themes
         gnomeExtensions.autohide-battery
-        gnomeExtensions.mullvad-indicator
         gnomeExtensions.supergfxctl-gex
         gnomeExtensions.solaar-extension
         gnomeExtensions.caffeine
