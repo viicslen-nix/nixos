@@ -30,29 +30,29 @@
       echo "      keyFile: /etc/traefik/certs/''${domain}.key" | tee -a ''${directory}/conf/traefik/ssl.yml
     '')
     (pkgs.writeShellScriptBin "tmux-session" ''
-      if [[ $# -eq 1 ]]; then
-          selected=$1
-      else
-          selected=$(find ~/Development -mindepth 1 -maxdepth 1 -type d | ${pkgs.fzf}/bin/fzf)
+      SELECTED_PROJECTS=$(tmuxinator list -n |
+          tail -n +2 |
+          fzf --prompt="Project: " -m -1 -q "$1")
+
+      if [ -n "$SELECTED_PROJECTS" ]; then
+          # Set the IFS to \n to iterate over \n delimited projects
+          IFS=$'\n'
+
+          # Start each project without attaching
+          for PROJECT in $SELECTED_PROJECTS; do
+              tmuxinator start "$PROJECT" --no-attach # force disable attaching
+          done
+
+          # If inside tmux then select session to switch, otherwise just attach
+          if [ -n "$TMUX" ]; then
+              SESSION=$(tmux list-sessions -F "#S" | fzf --prompt="Session: ")
+              if [ -n "$SESSION" ]; then
+                  tmux switch-client -t "$SESSION"
+              fi
+          else
+              tmux attach-session
+          fi
       fi
-
-      if [[ -z $selected ]]; then
-          exit 0
-      fi
-
-      selected_name=$(basename "$selected" | tr . _)
-      tmux_running=$(pgrep tmux)
-
-      if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-          ${pkgs.tmux}/bin/tmux new-session -s $selected_name -c $selected
-          exit 0
-      fi
-
-      if ! ${pkgs.tmux}/bin/tmux has-session -t=$selected_name 2> /dev/null; then
-          ${pkgs.tmux}/bin/tmux new-session -ds $selected_name -c $selected
-      fi
-
-      ${pkgs.tmux}/bin/tmux switch-client -t $selected_name
     '')
     (pkgs.writeShellScriptBin "odiff" ''
       # Function to convert GitHub URL to raw content URL

@@ -79,6 +79,7 @@ in {
         gnomeExtensions.arrange-windows
         gnomeExtensions.rounded-corners
         gnomeExtensions.tophat
+        gnomeExtensions.simple-break-reminder
 
         # TopHat Dependencies
         gtop
