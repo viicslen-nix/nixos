@@ -9,43 +9,34 @@
 }: {
   imports = [] ++ lib.attrsets.mapAttrsToList (name: value: value) outputs.homeManagerModules;
 
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. If you don't want to manage your shell through Home
-  # Manager then you have to manually source 'hm-session-vars.sh' located at
-  # either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/<user>/etc/profile.d/hm-session-vars.sh
-  #
+  home.stateVersion = "23.11";
+  home.username = user;
+  home.homeDirectory = "/home/${user}";
+
+  programs.home-manager.enable = true;
+
+  systemd.user.startServices = "sd-switch";
+
   home.sessionVariables = {
     EDITOR = "nvim";
     NIXOS_OZONE_WL = "1";
   };
 
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+    tmux.enableShellIntegration = true;
+  };
 
-  # Nicely reload system units when changing configs
-  systemd.user.startServices = "sd-switch";
-
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
-  home.username = user;
-  home.homeDirectory = "/home/${user}";
-
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
-  home.stateVersion = "23.11"; # Please read the comment before changing.
+  programs.tmux = {
+    enable = true;
+    shortcut = "Space";
+    mouse = true;
+    baseIndex = 1;
+    keyMode = "vi";
+    historyLimit = 10000;
+    tmuxinator.enable = true;
+    shell = "${pkgs.zsh}/bin/zsh";
+    extraConfig = "source-file ~/.tmux.conf";
+  };
 }
