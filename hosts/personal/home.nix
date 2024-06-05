@@ -10,7 +10,5 @@
   home.packages = with pkgs; [
     thorium
     floorp
-    anydesk
-    tabby-terminal
   ];
 }

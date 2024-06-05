@@ -31,6 +31,7 @@
     # Development
     vscode
     obsidian
+    qownnotes
     warp-terminal
     jetbrains-toolbox
     jetbrains.phpstorm
