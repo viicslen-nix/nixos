@@ -44,6 +44,7 @@
     corepack_20
     mysql80
     mkcert
+    awscli
   ];
 
   programs.zsh.shellAliases = {
