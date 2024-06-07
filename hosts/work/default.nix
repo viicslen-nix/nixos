@@ -45,6 +45,7 @@
     mysql80
     mkcert
     awscli
+    meld
   ];
 
   programs.zsh.shellAliases = {
