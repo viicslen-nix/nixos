@@ -36,8 +36,8 @@
     jetbrains-toolbox
     jetbrains.phpstorm
     jetbrains.datagrip
-    jetbrains.goland
     jetbrains.webstorm
+    jetbrains.goland
     mysql-workbench
     drawio
     siege
