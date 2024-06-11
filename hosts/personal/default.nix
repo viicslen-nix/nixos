@@ -36,6 +36,7 @@
     jetbrains-toolbox
     jetbrains.phpstorm
     jetbrains.datagrip
+    jetbrains.goland
     jetbrains.webstorm
     mysql-workbench
     drawio
