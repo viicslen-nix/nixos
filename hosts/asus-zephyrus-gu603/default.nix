@@ -16,11 +16,11 @@ with lib; let
   '';
 in {
   imports = [
-    ../nixos
-    ../personal
-    ../work
-    ./hardware.nix
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
+    ./hardware.nix
+    ../base/nixos
+    ../base/personal
+    ../base/work
   ];
 
   boot = {

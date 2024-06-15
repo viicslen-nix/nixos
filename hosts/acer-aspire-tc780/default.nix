@@ -9,7 +9,7 @@
 }: {
   imports = [
     ./hardware.nix
-    ../nixos
-    ../work
+    ../base/nixos
+    ../base/work
   ];
 }
