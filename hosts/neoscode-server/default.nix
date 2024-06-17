@@ -8,6 +8,7 @@
 }: {
   imports = [
     ./hardware.nix
+    ../../base/nixos
     ../../base/server
   ];
   

@@ -4,6 +4,7 @@
   # List your module files here
   # my-module = import ./my-module.nix;
   kde = import ./kde;
+  oom = import ./oom;
   gnome = import ./gnome;
   sound = import ./sound;
   docker = import ./docker;

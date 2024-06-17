@@ -6,15 +6,7 @@
   lib,
   ...
 }:
-with lib; let
-  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
-    export __NV_PRIME_RENDER_OFFLOAD=1
-    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-    export __GLX_VENDOR_LIBRARY_NAME=nvidia
-    export __VK_LAYER_NV_OPTIMUS=NVIDIA_only
-    exec -a "$0" "$@"
-  '';
-in {
+with lib; {
   imports = [
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
     ./hardware.nix
@@ -28,6 +20,12 @@ in {
       "video=eDP-1-1:2560x1600@165" # Patch for 165hz display
       "intel_iommu=on" # Hardware virtualisation
     ];
+
+    loader.systemd-boot.enable = true;
+    loader.systemd-boot.configurationLimit = 10;
+    loader.efi.canTouchEfiVariables = false;
+
+    plymouth.enable = true;
   };
 
   hardware = {
@@ -58,6 +56,13 @@ in {
 
   services = {
     xserver = {
+      enable = true;
+
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+
       exportConfiguration = true;
       displayManager.sessionCommands = ''
         xrandr --newmode "2560x1600_165.00" 1047.00 2560 2800 3080 3600  1600 1603 1609 1763 -hsync +vsync
@@ -95,9 +100,23 @@ in {
       };
     };
 
+    printing.enable = true;
     power-profiles-daemon.enable = false;
   };
 
   powerManagement.cpuFreqGovernor = "powersave";
-  features.network.hostName = "asus-zephyrus-gu603";
+
+  features = {
+    network.hostName = "asus-zephyrus-gu603";
+
+    gnome = {
+      enable = true;
+      enableGdm = true;
+      inherit user;
+    };
+
+    oom.enable = true;
+    theming.enable = true;
+    appImages.enable = true;
+  };
 }
