@@ -12,7 +12,7 @@ with lib; {
         owner = "rafaelmardojai";
         repo = "firefox-gnome-theme";
         rev = "master";
-        sha256 = "sha256-EACja6V2lNh67Xvmhr0eEM/VeqM7OlTTm/81LhRbsBE=";
+        sha256 = "sha256-aaWVGLtBbPt8CkRpPQ2mIhzAQZw17WL0B8MkjwSUAN4=";
       };
     };
   };
