@@ -102,7 +102,7 @@
 
   services.openssh.enable = true;
 
-  features.theming.enable = false;
+  features.theming.enable = true;
   features.sound.enable = false;
 
   system.stateVersion = "24.05";
