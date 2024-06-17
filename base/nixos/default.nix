@@ -17,6 +17,7 @@
       inputs.chaotic.nixosModules.default
       inputs.nur.nixosModules.nur
       ./shell.nix
+      ./scripts.nix
       ./packages.nix
     ]
     ++ lib.attrsets.mapAttrsToList (name: value: value) outputs.nixosModules;

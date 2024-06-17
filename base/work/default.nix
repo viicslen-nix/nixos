@@ -7,10 +7,6 @@
   user,
   ...
 }: {
-  imports = [
-    ./scripts.nix
-  ];
-
   home-manager.users.${user} = import ./home.nix;
 
   # Lan Mouse
