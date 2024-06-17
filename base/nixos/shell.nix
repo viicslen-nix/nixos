@@ -6,6 +6,9 @@
       cat = "bat";
       vim = "nvim";
       ts = "tmux-session";
+      ds = "dev-shell";
+      dsl = "dev-shell laravel";
+      dsk = "dev-shell kubernetes";
     };
 
     shellInit = ''
