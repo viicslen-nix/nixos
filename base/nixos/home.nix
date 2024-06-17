@@ -9,7 +9,7 @@
 }: {
   imports = [] ++ lib.attrsets.mapAttrsToList (name: value: value) outputs.homeManagerModules;
 
-  home.stateVersion = "23.11";
+  home.stateVersion = "24.05";
   home.username = user;
   home.homeDirectory = "/home/${user}";
 

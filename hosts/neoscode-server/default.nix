@@ -13,4 +13,6 @@
   ];
   
   features.network.hostName = "neoscode-server";
+  features.theming.enable = true;
+  features.sound.enable = false;
 }

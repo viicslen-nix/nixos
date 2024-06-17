@@ -25,7 +25,6 @@
     jq
 
     # Editors
-    neovim
     vimPlugins.nvim-fzf
     vscode
 

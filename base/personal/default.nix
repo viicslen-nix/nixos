@@ -28,6 +28,13 @@
     solaar
     openrgb-with-all-plugins
 
+    # GUI Apps
+    libreoffice-fresh
+    tangram
+    endeavour
+    drawing
+    kooha
+
     # Development
     vscode
     obsidian
@@ -44,12 +51,6 @@
   ];
 
   features = {
-    hyprland = {
-      enable = false;
-      inherit user;
-      palette = config.lib.stylix.colors;
-    };
-
     onePassword = {
       enable = true;
       inherit user;

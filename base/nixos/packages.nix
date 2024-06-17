@@ -25,13 +25,7 @@
     glibc
     glib
     just
-
-    # GUI Apps
-    libreoffice-fresh
-    tangram
-    endeavour
-    drawing
-    kooha
+    neovim
 
     # Scripts
     (pkgs.writeScriptBin "nixos-upgrade" ''
