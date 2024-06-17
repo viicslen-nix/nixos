@@ -18,9 +18,9 @@ in {
   imports = [
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
     ./hardware.nix
-    ../base/nixos
-    ../base/personal
-    ../base/work
+    ../../base/nixos
+    ../../base/personal
+    ../../base/work
   ];
 
   boot = {

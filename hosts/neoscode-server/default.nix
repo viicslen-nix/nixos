@@ -4,10 +4,10 @@
   inputs,
   outputs,
   lib,
-  user,
   ...
 }: {
   imports = [
-    ../work
+    ./hardware.nix
+    ../../base/server
   ];
 }
