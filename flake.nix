@@ -117,16 +117,6 @@
 
     # Your nixos configurations
     nixosConfigurations = {
-      nixos = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs user;};
-        modules = [./hosts/nixos];
-      };
-
-      work = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs user;};
-        modules = [./hosts/work];
-      };
-
       asus-zephyrus-gu603 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {inherit inputs outputs user;};
@@ -137,6 +127,12 @@
         system = "x86_64-linux";
         specialArgs = {inherit inputs outputs user;};
         modules = [./hosts/acer-aspire-tc780];
+      };
+      
+      neoscode-server = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {inherit inputs outputs user;};
+        modules = [./hosts/nesocode-server];
       };
     };
   };

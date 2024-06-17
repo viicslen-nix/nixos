@@ -25,6 +25,7 @@
     glibc
     glib
     just
+    neovim
 
     # Scripts
     (pkgs.writeScriptBin "nixos-upgrade" ''
