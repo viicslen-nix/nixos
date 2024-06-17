@@ -22,6 +22,7 @@ in {
 
     hosts = mkOption {
       type = types.attrsOf types.str;
+      default = {};
       description = "Define host file entries.";
     };
   };
