@@ -37,8 +37,6 @@ with lib; {
         libGL
       ];
 
-      setLdLibraryPath = true;
-
       driSupport = true;
       driSupport32Bit = true;
     };
