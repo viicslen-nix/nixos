@@ -17,6 +17,13 @@ in {
 
   options.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
+    autostart = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        Automatically start the Lan Mouse program when the graphical session starts.
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
@@ -25,7 +32,7 @@ in {
       systemd = true;
     };
 
-    systemd.user.services.lan-mouse = {
+    systemd.user.services.lan-mouse = mkIf cfg.autostart {
       Unit = {
         After = "graphical-session.target";
         BindsTo = "graphical-session.target";
@@ -33,7 +40,7 @@ in {
       Install.WantedBy = ["graphical-session.target"];
     };
 
-    xdg = {
+    xdg = mkIf cfg.autostart {
       enable = lib.mkDefault true;
 
       desktopEntries.${name} = {
