@@ -30,7 +30,7 @@ with lib; {
   };
 
   hardware = {
-    graphic = {
+    graphics = {
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [
