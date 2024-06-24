@@ -121,4 +121,6 @@ with lib; {
     theming.enable = true;
     appImages.enable = true;
   };
+
+  programs.ssh.askPassword = mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
 }
