@@ -11,13 +11,14 @@ with lib; {
       source = pkgs.fetchFromGitHub {
         owner = "rafaelmardojai";
         repo = "firefox-gnome-theme";
-        rev = "master";
-        sha256 = "sha256-aaWVGLtBbPt8CkRpPQ2mIhzAQZw17WL0B8MkjwSUAN4=";
+        rev = "da947fb21506f26df5f2954df125b83b88666d54";
+        sha256 = "sha256-ihOVmsno400zgdgSdRRxKRzmKiydH0Vux7LtSDpCyUI=";
       };
     };
   };
 
   programs.firefox = {
+    enable = mkDefault true;
     profiles.default = {
       name = "Default";
       settings = {
@@ -41,6 +42,7 @@ with lib; {
         @import "firefox-gnome-theme/userContent.css";
       '';
     };
+
     nativeMessagingHosts = [
       pkgs.browserpass
     ];

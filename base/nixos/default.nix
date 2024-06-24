@@ -24,7 +24,6 @@
 
   system.stateVersion = "24.05";
 
-
   nixpkgs = {
     # You can add overlays here
     overlays = [
