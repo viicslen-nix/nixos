@@ -30,16 +30,14 @@ with lib; {
   };
 
   hardware = {
-    opengl = {
+    graphic = {
       enable = true;
+      enable32Bit = true;
       extraPackages = with pkgs; [
         vaapiVdpau
         libvdpau-va-gl
         libGL
       ];
-
-      driSupport = true;
-      driSupport32Bit = true;
     };
 
     nvidia.modesetting.enable = true;
