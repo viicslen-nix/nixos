@@ -4,6 +4,7 @@
   inputs,
   outputs,
   lib,
+  user,
   ...
 }:
 with lib; {
