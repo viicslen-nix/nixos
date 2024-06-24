@@ -112,6 +112,11 @@ with lib; {
       inherit user;
     };
 
+    kde = {
+      enable = true;
+      enableSddm = false;
+    };
+
     oom.enable = true;
     theming.enable = true;
     appImages.enable = true;

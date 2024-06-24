@@ -24,11 +24,18 @@ with lib; {
       settings = {
         "accessibility.typeaheadfind.manual" = false;
         "accessibility.typeaheadfind.autostart" = false;
+
+        "browser.uidensity" = 0;
         "browser.tabs.loadInBackground" = true;
         "browser.tabs.loadBookmarksInBackground" = true;
+        "browser.theme.dark-private-windows" = false;
+
         "toolkit.tabbox.switchByScrolling" = true;
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+        
         "svg.context-properties.content.enabled" = true;
+
+        "widget.gtk.rounded-bottom-corners.enabled" = true;
 
         "gnomeTheme.hideSingleTab" = true;
         "gnomeTheme.normalWidthTabs" = false;
