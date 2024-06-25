@@ -9,6 +9,8 @@
 }: {
   home.packages = with pkgs; [
     microsoft-edge-wayland
+    notion-app-enhanced
+    appflowy
   ];
 
   features.lan-mouse.enable = true;
