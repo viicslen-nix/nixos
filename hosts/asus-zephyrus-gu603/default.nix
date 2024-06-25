@@ -123,4 +123,6 @@ with lib; {
   };
 
   programs.ssh.askPassword = mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
+
+  home-manager.backupFileExtension = "backup";
 }
