@@ -24,7 +24,7 @@ in {
       settings = {
         # shell = "zsh -l -c 'tmux attach || tmux'";
         wayland_titlebar_color = "background";
-        background_opacity = lib.mkForce "0.5";
+        background_opacity = lib.mkForce "0.3";
         dynamic_background_opacity = true;
         remember_window_size = true;
         background_blur = 5;
