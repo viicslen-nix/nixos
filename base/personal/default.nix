@@ -41,6 +41,7 @@
     qownnotes
     warp-terminal
     jetbrains-toolbox
+    jetbrains.idea-ultimate
     jetbrains.phpstorm
     jetbrains.datagrip
     jetbrains.webstorm
