@@ -22,6 +22,12 @@
 
     # Editors
     vimPlugins.nvim-fzf
+    jetbrains-toolbox
+    jetbrains.idea-ultimate
+    jetbrains.phpstorm
+    jetbrains.datagrip
+    jetbrains.webstorm
+    jetbrains.goland
     vscode
 
     # Build
@@ -33,6 +39,7 @@
     gnumake
     cmake
     luakit
+    php
 
     # Tools
     nodejs_20
@@ -41,6 +48,8 @@
     mkcert
     awscli
     meld
+    kubectl
+    kubernetes-helm
   ];
 
   programs.zsh.shellAliases = {

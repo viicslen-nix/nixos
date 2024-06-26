@@ -40,12 +40,6 @@
     obsidian
     qownnotes
     warp-terminal
-    jetbrains-toolbox
-    jetbrains.idea-ultimate
-    jetbrains.phpstorm
-    jetbrains.datagrip
-    jetbrains.webstorm
-    jetbrains.goland
     mysql-workbench
     drawio
     siege
