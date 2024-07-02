@@ -15,7 +15,7 @@ with lib; let
     inherit name;
     src = pkgs.fetchurl {
       url = "https://download.tinkerwell.app/tinkerwell/Tinkerwell-${version}.AppImage";
-      hash = "";
+      hash = "sha256-xxPmZuA3tD20S+/u0nMHNekoogIzkGW0M0Bb8BKxFyQ=";
     };
   };
 in {
