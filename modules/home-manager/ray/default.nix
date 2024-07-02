@@ -8,13 +8,14 @@
 with lib; let
   name = "ray";
   namespace = "programs";
+  version = "2.8.1";
 
   cfg = config.${namespace}.${name};
   appImage = pkgs.appimageTools.wrapType2 {
     inherit name;
     src = pkgs.fetchurl {
-      url = "https://ray-app.s3.eu-west-1.amazonaws.com/Ray-2.7.5.AppImage";
-      hash = "sha256-DgAzfbFO9XpCjZkeGmBU6B9G8XiVwfTjoHioWL7seX8=";
+      url = "https://ray-app.s3.eu-west-1.amazonaws.com/Ray-${version}.AppImage";
+      hash = "";
     };
   };
 in {
