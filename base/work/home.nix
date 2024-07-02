@@ -10,6 +10,7 @@
   home.packages = with pkgs; [
     microsoft-edge-wayland
     termius
+    appflowy
   ];
 
   features.lan-mouse.enable = true;
