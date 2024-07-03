@@ -44,10 +44,6 @@
     drawio
     siege
   ];
-
-  services.udev.packages = with pkgs; [
-    qmk-udev-rules
-  ];
  
   features = {
     onePassword = {
