@@ -10,5 +10,11 @@
   home.packages = with pkgs; [
     thorium
     floorp
+
+    vial
+    keymapviz
+    qmk
+    qmk_hid
+    qmk-udev-rules
   ];
 }
