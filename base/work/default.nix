@@ -53,6 +53,7 @@
     meld
     kubectl
     kubernetes-helm
+    linode-cli
   ];
 
   programs.zsh.shellAliases = {
