@@ -15,6 +15,9 @@
   environment.systemPackages = with pkgs; [
     # Communication
     slack
+    slack-cli
+    slack-term
+    ripcord
 
     # Formatters
     delta
