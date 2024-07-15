@@ -63,7 +63,7 @@ in {
       environment.systemPackages = with pkgs; [
         adw-gtk3
         gnome.gnome-tweaks
-        gnome.adwaita-icon-theme
+        adwaita-icon-theme
         gnomeExtensions.appindicator
         gnomeExtensions.blur-my-shell
         gnomeExtensions.dash-to-panel
