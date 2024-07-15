@@ -108,14 +108,19 @@ with lib; {
 
     gnome = {
       enable = true;
-      enableGdm = true;
+      enableGdm = false;
       inherit user;
     };
 
     kde = {
       enable = true;
-      enableSddm = false;
+      enableSddm = true;
     };
+
+#    hyprland = {
+#      enable = true;
+#      inherit user;
+#    };
 
     oom.enable = true;
     theming.enable = true;

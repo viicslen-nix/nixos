@@ -28,6 +28,8 @@ in {
         dynamic_background_opacity = true;
         remember_window_size = true;
         background_blur = 5;
+        tab_bar_style = "powerline";
+        tab_bar_align = "center";
       };
 
       extraConfig = ''
