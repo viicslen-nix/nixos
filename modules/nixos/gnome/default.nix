@@ -96,7 +96,7 @@ in {
       home-manager.users.${cfg.user} = {
         gtk.enable = true;
         gtk.iconTheme.name = "Adwaita";
-        gtk.iconTheme.package = pkgs.gnome.adwaita-icon-theme;
+        gtk.iconTheme.package = pkgs.adwaita-icon-theme;
 
         dconf.settings = {
           "org/gnome/mutter".experimental-features = ["scale-monitor-framebuffer"];
