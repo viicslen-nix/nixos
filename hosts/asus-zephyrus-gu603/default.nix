@@ -117,10 +117,10 @@ with lib; {
       enableSddm = true;
     };
 
-#    hyprland = {
-#      enable = true;
-#      inherit user;
-#    };
+    hyprland = {
+      enable = true;
+      inherit user;
+    };
 
     oom.enable = true;
     theming.enable = true;
