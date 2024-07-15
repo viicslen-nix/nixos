@@ -62,7 +62,7 @@ in {
       # Install GNOME Tweaks
       environment.systemPackages = with pkgs; [
         adw-gtk3
-        gnome.gnome-tweaks
+        gnome-tweaks
         adwaita-icon-theme
         gnomeExtensions.appindicator
         gnomeExtensions.blur-my-shell
