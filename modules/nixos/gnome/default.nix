@@ -45,7 +45,6 @@ in {
         ])
         ++ (with pkgs.gnome; [
           gnome-music
-          cheese # webcam tool
           tali # poker game
           iagno # go game
           hitori # sudoku game
