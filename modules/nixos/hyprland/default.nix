@@ -23,6 +23,11 @@ in {
       type = types.attrsOf types.str;
       default = {};
     };
+
+    gnomeCompatibility = mkOption {
+      type = types.bool;
+      default = false;
+    };
   };
 
   imports = [
@@ -44,7 +49,7 @@ in {
         wlr.enable = true;
       };
 
-      security.pam.services.gdm.enableGnomeKeyring = true;
+      security.pam.services.gdm.enableGnomeKeyring = cfg.gnomeCompatibility;
       environment.variables.XDG_RUNTIME_DIR = "/run/user/$UID";
 
       environment.systemPackages = with pkgs; [

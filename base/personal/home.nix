@@ -11,7 +11,7 @@
     thorium
     floorp
 
-    vial
+    via
     keymapviz
     qmk
     qmk_hid
