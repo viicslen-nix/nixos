@@ -9,6 +9,7 @@
       ds = "dev-shell";
       dsl = "dev-shell laravel";
       dsk = "dev-shell kubernetes";
+      o = "xdg-open";
     };
 
     shellInit = ''
