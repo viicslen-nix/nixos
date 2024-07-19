@@ -54,6 +54,7 @@
     kubectl
     kubernetes-helm
     linode-cli
+    dbeaver-bin
   ];
 
   programs.zsh.shellAliases = {
