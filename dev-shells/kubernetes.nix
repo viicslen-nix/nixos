@@ -13,9 +13,12 @@ in
       python3
       kubectl
       kubernetes-helm
+      kubernetes-helmPlugins.helm-secrets
       k9s
       popeye
       stern
+      minikube
+      vals
     ];
 
     shellHook = ''

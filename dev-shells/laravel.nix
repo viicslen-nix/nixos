@@ -45,6 +45,7 @@ in
       python3
       python311Packages.cmake
       cypress
+      ddev
     ];
 
     shellHook = ''
