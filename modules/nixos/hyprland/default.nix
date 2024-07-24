@@ -13,6 +13,12 @@ in {
   options.features.hyprland = {
     enable = mkEnableOption (mdDoc "hyprland");
 
+    package = mkOption {
+      type = types.package;
+      default = pkgs.hyprland;
+      description = "The hyprland package to use";
+    };
+
     user = mkOption {
       type = types.str;
       default = "nixos";
@@ -30,17 +36,13 @@ in {
     };
   };
 
-  imports = [
-    inputs.hyprland.nixosModules.default
-  ];
-
   config = mkIf cfg.enable (mkMerge [
     {
       programs = {
         hyprland = {
           enable = true;
           xwayland.enable = true;
-          package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+          package = cfg.package;
         };
       };
 
@@ -77,8 +79,6 @@ in {
       home-manager = {
         users.${cfg.user} = {
           imports = [
-            inputs.hyprland.homeManagerModules.default
-
             ./config/settings.nix
             ./config/rules.nix
             ./config/binds.nix

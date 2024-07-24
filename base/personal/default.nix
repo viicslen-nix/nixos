@@ -44,7 +44,7 @@
     drawio
     siege
   ];
- 
+
   features = {
     onePassword = {
       enable = true;

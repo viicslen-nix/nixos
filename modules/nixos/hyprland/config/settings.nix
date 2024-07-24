@@ -33,7 +33,7 @@ in {
       "systemctl --user import-environment QT_QPA_PLATFORMTHEME WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
 
       "gnome-keyring-daemon --start --components=secrets"
-      
+
       # set cursor for HL itself
       "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
 
@@ -169,9 +169,9 @@ in {
       };
 
       split-monitor-workspaces = {
-          count = 10;
-          keep_focused = 0;
-          enable_notifications = 0;
+        count = 10;
+        keep_focused = 0;
+        enable_notifications = 0;
       };
     };
   };

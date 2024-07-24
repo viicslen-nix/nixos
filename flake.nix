@@ -128,7 +128,7 @@
         specialArgs = {inherit inputs outputs user;};
         modules = [./hosts/acer-aspire-tc780];
       };
-      
+
       neoscode-server = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {inherit inputs outputs user;};

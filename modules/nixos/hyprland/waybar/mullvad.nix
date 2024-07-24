@@ -1,4 +1,5 @@
-{ pkgs }: pkgs.writeShellScript "mullvad-status" ''
+{pkgs}:
+pkgs.writeShellScript "mullvad-status" ''
   set -e
 
   # https://blog.dhampir.no/content/sleeping-without-a-subprocess-in-bash-and-how-to-sleep-forever

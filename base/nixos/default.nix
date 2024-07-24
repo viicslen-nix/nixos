@@ -55,7 +55,7 @@
     settings = {
       # Enable flakes and new 'nix' command
       experimental-features = "nix-command flakes";
-      
+
       # Deduplicate and optimize nix store
       auto-optimise-store = true;
 
@@ -87,7 +87,7 @@
       value.source = value.flake;
     })
     config.nix.registry;
-  
+
   users.users.${user} = {
     isNormalUser = true;
     description = "Victor R";

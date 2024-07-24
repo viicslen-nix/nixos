@@ -28,7 +28,8 @@ in {
     ];
 
     # binds
-    bind = [
+    bind =
+      [
         # compositor commands
         "$mod, Q, killactive,"
         "$mod, F, fullscreen,"

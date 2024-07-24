@@ -1,4 +1,10 @@
-{ pkgs, inputs, lib, config, ... }: let
+{
+  pkgs,
+  inputs,
+  lib,
+  config,
+  ...
+}: let
   # Use `mkLiteral` for string-like values that should show without
   # quotes, e.g.:
   # {
@@ -24,7 +30,6 @@ in {
       "element-icon" = {
         size = mkLiteral "20px";
       };
-
     };
   };
 }

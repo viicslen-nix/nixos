@@ -1,4 +1,5 @@
-{ pkgs }: pkgs.writeShellScript "pipewire-status" ''
+{pkgs}:
+pkgs.writeShellScript "pipewire-status" ''
   set -e
 
   # https://blog.dhampir.no/content/sleeping-without-a-subprocess-in-bash-and-how-to-sleep-forever

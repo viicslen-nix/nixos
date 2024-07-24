@@ -7,8 +7,8 @@
 }: let
   betterTransition = "all 0.3s cubic-bezier(.55,-0.68,.48,1.682)";
   colorScheme = config.lib.stylix.colors;
-  pipewireStatus = (import ./pipewire.nix { inherit pkgs; });
-  mullvadStatus = (import ./mullvad.nix { inherit pkgs; });
+  pipewireStatus = import ./pipewire.nix {inherit pkgs;};
+  mullvadStatus = import ./mullvad.nix {inherit pkgs;};
 in
   with lib; {
     # Configure & Theme Waybar
@@ -97,10 +97,10 @@ in
             on-click = "sleep 0.1 && rofi -show drun";
           };
           "custom/pipewire" = {
-              tooltip = false;
-              max-length = 6;
-              exec = pipewireStatus.outPath;
-              on-click = "pavucontrol";
+            tooltip = false;
+            max-length = 6;
+            exec = pipewireStatus.outPath;
+            on-click = "pavucontrol";
           };
           "custom/vpn" = {
             format = "VPN {}";
@@ -174,9 +174,9 @@ in
         window#waybar {
           background-color: #${colorScheme.base00};
         }
-        window#waybar.empty #window {  
+        window#waybar.empty #window {
           background: none;
-        } 
+        }
         #workspaces {
           color: #${colorScheme.base00};
           background: #${colorScheme.base01};
