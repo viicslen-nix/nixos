@@ -22,16 +22,16 @@ with lib; {
       "intel_iommu=on" # Hardware virtualisation
     ];
 
-    loader.systemd-boot.enable = true;
+    loader.systemd-boot.enable = false;
     loader.systemd-boot.configurationLimit = 10;
 
     loader.efi.canTouchEfiVariables = false;
-    # loader.efi.efiSysMountPoint = "/boot/efi";
+    loader.efi.efiSysMountPoint = "/boot/efi";
 
-    # loader.grub.enable = true;
-    # loader.grub.efiSupport = true;
-    # loader.grub.efiInstallAsRemovable = true;
-    # loader.grub.device = "nodev";
+    loader.grub.enable = true;
+    loader.grub.efiSupport = true;
+    loader.grub.efiInstallAsRemovable = true;
+    loader.grub.device = "nodev";
 
     plymouth.enable = true;
   };
@@ -124,10 +124,10 @@ with lib; {
       enableSddm = true;
     };
 
-    hyprland = {
-      enable = true;
-      inherit user;
-    };
+    # hyprland = {
+    #   enable = true;
+    #   inherit user;
+    # };
 
     oom.enable = true;
     theming.enable = true;

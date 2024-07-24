@@ -8,10 +8,7 @@
   ...
 }: {
   home.packages = with pkgs; [
-    thorium
     floorp
-    vivaldi
-    vivaldi-ffmpeg-codecs
 
     via
     keymapviz

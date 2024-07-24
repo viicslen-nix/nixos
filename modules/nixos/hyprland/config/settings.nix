@@ -4,45 +4,45 @@
   colorScheme = config.lib.stylix.colors;
 in {
   wayland.windowManager.hyprland.settings = {
-    monitor = [
-      "eDP-1,2560x1600@60,0x0,1.6"
-      "HDMI-A-1,preferred,auto-up,1"
-    ];
+    # monitor = [
+    #   "eDP-1,2560x1600@60,0x0,1.6"
+    #   "HDMI-A-1,preferred,auto-up,1"
+    # ];
 
-    workspace = [
-      "HDMI-A-1,1"
-    ];
+    # workspace = [
+    #   "HDMI-A-1,1"
+    # ];
 
-    "$mod" = "SUPER";
-    env = [
-      "NIXOS_OZONE_WL, 1"
-      "NIXPKGS_ALLOW_UNFREE, 1"
-      "XDG_CURRENT_DESKTOP, Hyprland"
-      "XDG_SESSION_TYPE, wayland"
-      "XDG_SESSION_DESKTOP, Hyprland"
-      "GDK_BACKEND, wayland, x11"
-      "CLUTTER_BACKEND, wayland"
-      "QT_QPA_PLATFORM=wayland;xcb"
-      "QT_WAYLAND_DISABLE_WINDOWDECORATION, 1"
-      "QT_AUTO_SCREEN_SCALE_FACTOR, 1"
-      "SDL_VIDEODRIVER, wayland"
-      "MOZ_ENABLE_WAYLAND, 1"
-    ];
+    # "$mod" = "SUPER";
+    # env = [
+    #   "NIXOS_OZONE_WL, 1"
+    #   "NIXPKGS_ALLOW_UNFREE, 1"
+    #   "XDG_CURRENT_DESKTOP, Hyprland"
+    #   "XDG_SESSION_TYPE, wayland"
+    #   "XDG_SESSION_DESKTOP, Hyprland"
+    #   "GDK_BACKEND, wayland, x11"
+    #   "CLUTTER_BACKEND, wayland"
+    #   "QT_QPA_PLATFORM=wayland;xcb"
+    #   "QT_WAYLAND_DISABLE_WINDOWDECORATION, 1"
+    #   "QT_AUTO_SCREEN_SCALE_FACTOR, 1"
+    #   "SDL_VIDEODRIVER, wayland"
+    #   "MOZ_ENABLE_WAYLAND, 1"
+    # ];
 
-    exec-once = [
-      "systemctl --user import-environment QT_QPA_PLATFORMTHEME WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+    # exec-once = [
+    #   "systemctl --user import-environment QT_QPA_PLATFORMTHEME WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
 
-      "gnome-keyring-daemon --start --components=secrets"
+    #   "gnome-keyring-daemon --start --components=secrets"
 
-      # set cursor for HL itself
-      "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
+    #   # set cursor for HL itself
+    #   "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
 
-      "killall -q waybar;sleep .5 && waybar"
-      "killall -q swaync;sleep .5 && swaync"
-      "killall -q 1password;sleep .5 && 1password --silent"
-      "killall -q mullvad-gui;sleep .5 && mullvad-gui --silent"
-      "nm-applet --indicator"
-    ];
+    #   "killall -q waybar;sleep .5 && waybar"
+    #   "killall -q swaync;sleep .5 && swaync"
+    #   "killall -q 1password;sleep .5 && 1password --silent"
+    #   "killall -q mullvad-gui;sleep .5 && mullvad-gui --silent"
+    #   "nm-applet --indicator"
+    # ];
 
     general = {
       gaps_in = 5;

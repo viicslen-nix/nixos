@@ -21,8 +21,8 @@
     stable.redisinsight
     kdePackages.kcachegrind
     graphviz
-    handbrake
     sesh
+    asciinema
 
     # Devices
     solaar
