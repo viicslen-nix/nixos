@@ -22,6 +22,8 @@ in
     ];
 
     shellHook = ''
+      export HELM_SECRETS_BACKEND=vals
+      export HELM_SECRETS_VALS_PATH="${pkgs.vals}/bin/vals"
       exec zsh
     '';
   }

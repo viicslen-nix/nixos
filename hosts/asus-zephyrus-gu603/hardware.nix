@@ -22,7 +22,7 @@
     fsType = "ext4";
   };
 
-  fileSystems."/boot/efi" = {
+  fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/EC8B-B21B";
     fsType = "vfat";
   };
