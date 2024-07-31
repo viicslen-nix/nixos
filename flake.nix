@@ -19,6 +19,7 @@
     # Community packages
     nur.url = github:nix-community/NUR;
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
 
     # Hyprland
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";

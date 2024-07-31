@@ -27,5 +27,6 @@
     just
     neovim
     lazygit
+    busybox
   ];
 }
