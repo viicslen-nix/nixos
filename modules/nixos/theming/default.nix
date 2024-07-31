@@ -47,6 +47,7 @@ in {
     scheme = cfg.scheme;
 
     stylix = {
+      enable = true;
       base16Scheme = cfg.scheme;
 
       image = cfg.wallpaper;
