@@ -1,4 +1,4 @@
-let
+{pkgs, ...}: let
   screenshotarea = "hyprctl keyword animation 'fadeOut,0,0,default'; grimblast --notify copysave area; hyprctl keyword animation 'fadeOut,1,4,default'";
 
   # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
@@ -16,9 +16,13 @@ let
     10);
 in {
   wayland.windowManager.hyprland.settings = {
-    "$launcher" = "rofi -show drun";
+    # modifier key
+    "$mod" = "SUPER";
+
+    # applications
+    "$launcher" = "${pkgs.rofi-wayland}/bin/rofi -show drun";
+    "$terminal" = "${pkgs.kitty}/bin/kitty";
     "$fileManager" = "nautilus";
-    "$terminal" = "kitty";
 
     # mouse movements
     bindm = [
@@ -52,24 +56,20 @@ in {
         "$mod, bracketright, workspace, m+1"
 
         # move focus
-        "$mod, left, movefocus, l"
-        "$mod, right, movefocus, r"
-        "$mod, up, movefocus, u"
-        "$mod, down, movefocus, d"
+        "$mod, H, movefocus, l"
+        "$mod, L, movefocus, r"
+        "$mod, K, movefocus, u"
+        "$mod, J, movefocus, d"
 
         # system
         "$mod, Escape, exec, wlogout -p layer-shell"
         "$mod, L, exec, loginctl lock-session"
         "$mod SHIFT, N, exec, swaync-client -op"
+        "$mod SHIFT, W, exec, killall -q waybar;sleep .5 && waybar"
 
         # screenshot
-        ", Print, exec, ${screenshotarea}"
         "$mod SHIFT, R, exec, ${screenshotarea}"
-
-        "CTRL, Print, exec, grimblast --notify --cursor copysave output"
         "$mod SHIFT CTRL, R, exec, grimblast --notify --cursor copysave output"
-
-        "ALT, Print, exec, grimblast --notify --cursor copysave screen"
         "$mod SHIFT ALT, R, exec, grimblast --notify --cursor copysave screen"
 
         # utilities

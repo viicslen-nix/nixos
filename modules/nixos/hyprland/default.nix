@@ -47,18 +47,35 @@ in {
           enable = true;
           xwayland.enable = true;
           package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+          portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
         };
       };
 
       xdg.portal = {
         enable = true;
         wlr.enable = true;
+        config = {
+          common = {
+            default = [
+              "hyprland"
+              "xdph"
+              "gtk"
+            ];
+            "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+            # "org.freedesktop.portal.FileChooser" = [ "xdg-desktop-portal-gtk" ];
+          };
+        };
+        # extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
       };
 
-      security.pam.services.gdm.enableGnomeKeyring = cfg.gnomeCompatibility;
+      security.polkit.enable = true;
+      services.gnome.gnome-keyring.enable = true;
+      security.pam.services.gdm.enableGnomeKeyring = true;
+
       environment.variables.XDG_RUNTIME_DIR = "/run/user/$UID";
 
       environment.systemPackages = with pkgs; [
+        kdePackages.polkit-kde-agent-1
         swaynotificationcenter
         networkmanagerapplet
         pavucontrol
@@ -66,6 +83,17 @@ in {
 
         hyprpaper
         wlroots
+
+        # screenshot
+        grim
+        slurp
+
+        # utils
+        wl-clipboard
+        wl-screenrec
+        wlr-randr
+
+        inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
       ];
 
       nix.settings = {
@@ -89,7 +117,7 @@ in {
             ./config/rules.nix
             ./config/binds.nix
 
-            ./hyprpaper.nix
+            # ./hyprpaper.nix
             ./hyprlock.nix
             ./hypridle.nix
 
@@ -100,25 +128,14 @@ in {
           ];
 
           wayland.windowManager.hyprland = {
+            enable = true;
+
             systemd.variables = ["--all"];
 
             plugins = [
               inputs.split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
             ];
           };
-
-          home.packages = with pkgs; [
-            # screenshot
-            grim
-            slurp
-
-            # utils
-            wl-clipboard
-            wl-screenrec
-            wlr-randr
-
-            inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
-          ];
 
           # make stuff work on wayland
           home.sessionVariables = {
@@ -127,7 +144,7 @@ in {
             XDG_SESSION_TYPE = "wayland";
           };
 
-          wayland.windowManager.hyprland.enable = true;
+          dconf.settings."org/gnome/desktop/wm/preferences".button-layout = ":";
         };
       };
     })

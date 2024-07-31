@@ -7,8 +7,8 @@
 }: let
   betterTransition = "all 0.3s cubic-bezier(.55,-0.68,.48,1.682)";
   colorScheme = config.lib.stylix.colors;
-  pipewireStatus = import ./pipewire.nix {inherit pkgs;};
-  mullvadStatus = import ./mullvad.nix {inherit pkgs;};
+  pipewireStatus = import ./scripts/pipewire.nix {inherit pkgs;};
+  mullvadStatus = import ./scripts/mullvad.nix {inherit pkgs;};
 in
   with lib; {
     # Configure & Theme Waybar
@@ -123,13 +123,13 @@ in
             tooltip = false;
             format = "{icon} {}";
             format-icons = {
-              notification = " <span foreground='red'><sup></sup></span>";
+              notification = "<span foreground='red'><sup></sup></span>";
               none = "";
-              dnd-notification = " <span foreground='red'><sup></sup></span>";
+              dnd-notification = "<span foreground='red'><sup></sup></span>";
               dnd-none = " ";
-              inhibited-notification = " <span foreground='red'><sup></sup></span>";
+              inhibited-notification = "<span foreground='red'><sup></sup></span>";
               inhibited-none = " ";
-              dnd-inhibited-notification = " <span foreground='red'><sup></sup></span>";
+              dnd-inhibited-notification = "<span foreground='red'><sup></sup></span>";
               dnd-inhibited-none = " ";
             };
             return-type = "json";

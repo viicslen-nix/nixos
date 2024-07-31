@@ -1,48 +1,63 @@
-{config, ...}: let
+{config, pkgs, ...}: let
   variant = "dark";
-  pointer = config.home.pointerCursor;
+  pointer = config.stylix.cursor;
   colorScheme = config.lib.stylix.colors;
+  scripts = import ./scripts.nix {inherit pkgs;};
 in {
   wayland.windowManager.hyprland.settings = {
-    # monitor = [
-    #   "eDP-1,2560x1600@60,0x0,1.6"
-    #   "HDMI-A-1,preferred,auto-up,1"
-    # ];
+    monitor = [
+      "eDP-1,2560x1600@60,0x0,1.6"
+      "HDMI-A-1,preferred,auto-up,1"
+      ",preferred,auto,1"
+    ];
 
-    # workspace = [
-    #   "HDMI-A-1,1"
-    # ];
+    workspace = [
+      "1, monitor:HDMI-A-1, default:true"
+    ];
 
-    # "$mod" = "SUPER";
-    # env = [
-    #   "NIXOS_OZONE_WL, 1"
-    #   "NIXPKGS_ALLOW_UNFREE, 1"
-    #   "XDG_CURRENT_DESKTOP, Hyprland"
-    #   "XDG_SESSION_TYPE, wayland"
-    #   "XDG_SESSION_DESKTOP, Hyprland"
-    #   "GDK_BACKEND, wayland, x11"
-    #   "CLUTTER_BACKEND, wayland"
-    #   "QT_QPA_PLATFORM=wayland;xcb"
-    #   "QT_WAYLAND_DISABLE_WINDOWDECORATION, 1"
-    #   "QT_AUTO_SCREEN_SCALE_FACTOR, 1"
-    #   "SDL_VIDEODRIVER, wayland"
-    #   "MOZ_ENABLE_WAYLAND, 1"
-    # ];
+    env = [
+      "NIXOS_OZONE_WL,1"
+      "NIXPKGS_ALLOW_UNFREE,1"
 
-    # exec-once = [
-    #   "systemctl --user import-environment QT_QPA_PLATFORMTHEME WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+      "XDG_CURRENT_DESKTOP,Hyprland"
+      "XDG_SESSION_DESKTOP,Hyprland"
 
-    #   "gnome-keyring-daemon --start --components=secrets"
+      "XDG_SESSION_TYPE,wayland"
+      "CLUTTER_BACKEND,wayland"
+      "GDK_BACKEND,wayland,x11"
+      "SDL_VIDEODRIVER,wayland"
 
-    #   # set cursor for HL itself
-    #   "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
+      # "GBM_BACKEND,nvidia-drm"
+      # "LIBVA_DRIVER_NAME,nvidia"
+      # "__GLX_VENDOR_LIBRARY_NAME,nvidia"
 
-    #   "killall -q waybar;sleep .5 && waybar"
-    #   "killall -q swaync;sleep .5 && swaync"
-    #   "killall -q 1password;sleep .5 && 1password --silent"
-    #   "killall -q mullvad-gui;sleep .5 && mullvad-gui --silent"
-    #   "nm-applet --indicator"
-    # ];
+      "QT_QPA_PLATFORM,wayland"
+      "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
+      "QT_AUTO_SCREEN_SCALE_FACTOR,1"
+
+      "MOZ_ENABLE_WAYLAND,1"
+
+      "GDK_SCALE,1.6"
+      "XCURSOR_SIZE,${toString pointer.size}"
+    ];
+
+    exec-once = [
+      "dbus-update-activation-environment --systemd --all"
+      "systemctl --user import-environment QT_QPA_PLATFORMTHEME WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+
+      "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+      "gnome-keyring-daemon --start --components=secrets"
+
+      "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
+
+      "killall -q waybar;sleep .5 && waybar"
+      "killall -q swaync;sleep .5 && swaync"
+      "killall -q 1password;sleep .5 && 1password --silent"
+      "killall -q mullvad-gui;sleep .5 && mullvad-gui --silent"
+      "nm-applet --indicator"
+
+      scripts.handleMonitorConnect.outPath
+    ];
 
     general = {
       gaps_in = 5;
@@ -96,7 +111,7 @@ in {
     };
 
     input = {
-      kb_layout = "ro";
+      kb_layout = "us";
 
       # focus change on cursor move
       follow_mouse = 1;
