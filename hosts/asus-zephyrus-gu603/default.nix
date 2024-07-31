@@ -41,13 +41,19 @@ with lib; {
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [
+        libGL
         vaapiVdpau
         libvdpau-va-gl
-        libGL
+        nvidia-vaapi-driver 
+        intel-media-driver
       ];
     };
 
-    nvidia.modesetting.enable = true;
+    nvidia = {
+      modesetting.enable = true;
+      powerManagement.enable = true;
+    };
+
     logitech.wireless.enable = true;
   };
 
@@ -115,19 +121,9 @@ with lib; {
 
     gnome = {
       enable = true;
-      enableGdm = false;
+      enableGdm = true;
       inherit user;
     };
-
-    kde = {
-      enable = true;
-      enableSddm = true;
-    };
-
-    # hyprland = {
-    #   enable = true;
-    #   inherit user;
-    # };
 
     oom.enable = true;
     theming.enable = true;
