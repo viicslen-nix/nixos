@@ -100,8 +100,8 @@ in {
 
         dconf.settings = {
           "org/gnome/mutter".experimental-features = ["scale-monitor-framebuffer"];
-          "org/gnome/desktop/wm/preferences".button-layout = ":minimize,maximize,close";
           "org/gnome/desktop/interface".color-scheme = "prefer-dark";
+          "org/gnome/desktop/wm/preferences".button-layout = lib.mkDefault ":minimize,maximize,close";
         };
       };
     })
