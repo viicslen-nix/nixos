@@ -8,6 +8,7 @@
   outputs,
   lib,
   user,
+  name,
   ...
 }: {
   # Modules
@@ -23,6 +24,9 @@
     ++ lib.attrsets.mapAttrsToList (name: value: value) outputs.nixosModules;
 
   system.stateVersion = "24.05";
+  
+  # Enable Plymouth
+  boot.plymouth.enable = true;
 
   nixpkgs = {
     # You can add overlays here
@@ -89,21 +93,7 @@
     })
     config.nix.registry;
 
-  users.users.${user} = {
-    isNormalUser = true;
-    description = "Victor R";
-    extraGroups = ["networkmanager" "wheel" user];
-  };
-
-  # Home Manager
-  home-manager = {
-    extraSpecialArgs = {inherit inputs outputs user;};
-    useUserPackages = true;
-    useGlobalPkgs = true;
-    backupFileExtension = "backup";
-    users.${user} = import ./home.nix;
-  };
-
+  # Install fonts
   fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk
@@ -117,6 +107,31 @@
     })
   ];
 
+  # Configure keymap in X11
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
+
+  # Enable CUPS to print documents.
+  services.printing.enable = lib.mkDefault true;
+
+  # Set user name and groups
+  users.users.${user} = {
+    isNormalUser = true;
+    description = name;
+    extraGroups = ["networkmanager" "wheel" user];
+  };
+
+  # Home Manager
+  home-manager = {
+    extraSpecialArgs = {inherit inputs outputs user;};
+    useUserPackages = true;
+    useGlobalPkgs = true;
+    backupFileExtension = "backup";
+    users.${user} = import ./home.nix;
+  };
+
   # Enable NH for easier system rebuilds
   programs.nh = {
     enable = true;
@@ -125,13 +140,8 @@
     flake = "/home/${user}/.nix/";
   };
 
+  # Set flake path in environment
   environment.sessionVariables = {
     FLAKE = "/home/${user}/.nix/";
   };
-
-  environment.systemPackages = with pkgs; [
-    evtest
-    libinput
-    wl-clipboard
-  ];
 }

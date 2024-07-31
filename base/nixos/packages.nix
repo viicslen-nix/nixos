@@ -4,7 +4,6 @@
   ...
 }: {
   environment.systemPackages = with pkgs; [
-    # CLI Tools
     libsecret
     wget
     curl
@@ -28,5 +27,6 @@
     neovim
     lazygit
     busybox
+    libinput
   ];
 }

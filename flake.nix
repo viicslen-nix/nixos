@@ -87,9 +87,6 @@
     # This is a function that generates an attribute by calling a function you
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
-
-    # Set username here to avoid hardcoding it in your nix files
-    user = "neoscode";
   in {
     # Your custom packages
     # Accessible through 'nix build', 'nix shell', etc
@@ -120,20 +117,32 @@
     nixosConfigurations = {
       asus-zephyrus-gu603 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = {inherit inputs outputs user;};
         modules = [./hosts/asus-zephyrus-gu603];
+        specialArgs = {
+          inherit inputs outputs;
+          user = "neoscode";
+          name = "Victor R";
+        };
       };
 
       acer-aspire-tc780 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = {inherit inputs outputs user;};
         modules = [./hosts/acer-aspire-tc780];
+        specialArgs = {
+          inherit inputs outputs;
+          user = "dostov-02";
+          name = "Dostov";
+        };
       };
 
       neoscode-server = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = {inherit inputs outputs user;};
         modules = [./hosts/neoscode-server];
+        specialArgs = {
+          inherit inputs outputs;
+          user = "neoscode";
+          name = "Victor R";
+        };
       };
     };
   };

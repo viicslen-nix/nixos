@@ -13,29 +13,11 @@
     ../../base/work
   ];
 
-  boot = {
-    # Bootloader
-    loader.systemd-boot.enable = true;
-    loader.systemd-boot.configurationLimit = 10;
-    loader.efi.canTouchEfiVariables = false;
-
-    # Enable Plymouth
-    plymouth.enable = true;
+  boot.loader = {
+    systemd-boot.enable = true;
+    systemd-boot.configurationLimit = 10;
+    efi.canTouchEfiVariables = false;
   };
-
-  services.xserver = {
-    # Enable the X11 windowing system.
-    enable = true;
-
-    # Configure keymap in X11
-    xkb = {
-      layout = "us";
-      variant = "";
-    };
-  };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
 
   features = {
     network.hostName = "acer-aspire-tc780";

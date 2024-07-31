@@ -14,6 +14,7 @@
   ];
 
   features.lan-mouse.enable = true;
+  features.lan-mouse.autostart = true;
 
   programs.ray.enable = true;
   programs.tinkerwell.enable = true;

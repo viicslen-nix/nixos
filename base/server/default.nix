@@ -6,7 +6,11 @@
   lib,
   ...
 }: {
+  # Enable SSH server
   services.openssh.enable = true;
+
+  # Disable printing
+  services.printing.enable = false;
 
   # Linode Specific Configuration
   networking.useDHCP = false;

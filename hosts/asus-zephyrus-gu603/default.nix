@@ -22,18 +22,14 @@ with lib; {
       "intel_iommu=on" # Hardware virtualisation
     ];
 
-    loader.systemd-boot.enable = false;
-    loader.systemd-boot.configurationLimit = 10;
-
     loader.efi.canTouchEfiVariables = false;
     loader.efi.efiSysMountPoint = "/boot/efi";
 
     loader.grub.enable = true;
     loader.grub.efiSupport = true;
     loader.grub.efiInstallAsRemovable = true;
+    loader.grub.configurationLimit = 10;
     loader.grub.device = "nodev";
-
-    plymouth.enable = true;
   };
 
   hardware = {
@@ -57,6 +53,8 @@ with lib; {
     logitech.wireless.enable = true;
   };
 
+  powerManagement.cpuFreqGovernor = "powersave";
+
   environment.systemPackages = with pkgs; [
     asusctl
     supergfxctl
@@ -67,11 +65,6 @@ with lib; {
   services = {
     xserver = {
       enable = true;
-
-      xkb = {
-        layout = "us";
-        variant = "";
-      };
 
       exportConfiguration = true;
       displayManager.sessionCommands = ''
@@ -110,27 +103,19 @@ with lib; {
       };
     };
 
-    printing.enable = true;
     power-profiles-daemon.enable = false;
   };
-
-  powerManagement.cpuFreqGovernor = "powersave";
 
   features = {
     network.hostName = "asus-zephyrus-gu603";
 
-    gnome = {
-      enable = true;
-      enableGdm = true;
-      inherit user;
-    };
-
     oom.enable = true;
     theming.enable = true;
     appImages.enable = true;
+
+    gnome = {
+      enable = true;
+      inherit user;
+    };
   };
-
-  programs.ssh.askPassword = mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
-
-  home-manager.backupFileExtension = "backup";
 }
