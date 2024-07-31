@@ -55,13 +55,6 @@ with lib; {
 
   powerManagement.cpuFreqGovernor = "powersave";
 
-  environment.systemPackages = with pkgs; [
-    asusctl
-    supergfxctl
-    zenith-nvidia
-    nvtopPackages.nvidia
-  ];
-
   services = {
     xserver = {
       enable = true;
@@ -118,4 +111,12 @@ with lib; {
       inherit user;
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    asusctl
+    supergfxctl
+    zenith-nvidia
+    nvtopPackages.nvidia
+    gnomeExtensions.supergfxctl-gex
+  ];
 }

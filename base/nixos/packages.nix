@@ -28,5 +28,6 @@
     lazygit
     busybox
     libinput
+    wl-clipboard
   ];
 }
