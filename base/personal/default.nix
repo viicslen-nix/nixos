@@ -37,6 +37,7 @@
 
     # Development
     vscode
+    zed-editor
     obsidian
     qownnotes
     warp-terminal
