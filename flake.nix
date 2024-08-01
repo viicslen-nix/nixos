@@ -145,5 +145,35 @@
         };
       };
     };
+
+    colmena = {
+      meta = {
+        # Override to pin the Nixpkgs version (recommended). This option
+        # accepts one of the following:
+        # - A path to a Nixpkgs checkout
+        # - The Nixpkgs lambda (e.g., import <nixpkgs>)
+        # - An initialized Nixpkgs attribute set
+        nixpkgs = import nixpkgs {
+          system = "x86_64-linux";
+          overlays = [];
+        };
+      };
+
+      acer-aspire-tc780 = {
+        # Like NixOps and Morph, Colmena will attempt to connect to
+        # the remote host using the attribute name by default. You
+        # can override it like:
+        deployment.targetHost = "host-b.mydomain.tld";
+
+        # You can filter hosts by tags with --on @tag-a,@tag-b.
+        # In this example, you can deploy to hosts with the "web" tag using:
+        #    colmena apply --on @web
+        # You can use globs in tag matching as well:
+        #    colmena apply --on '@infra-*'
+        deployment.tags = [ "web" "infra-lax" ];
+
+        
+      };
+    };
   };
 }
