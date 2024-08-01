@@ -56,6 +56,7 @@ in {
         "systemd-udevd"
         "tmux: client"
         "tmux: server"
+        "nix-daemon"
       ];
       description = ''
         A list of process names that earlyoom should avoid killing.
