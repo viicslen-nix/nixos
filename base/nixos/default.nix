@@ -140,6 +140,11 @@
     flake = "/home/${user}/.nix/";
   };
 
+  direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
   # Set flake path in environment
   environment.sessionVariables = {
     FLAKE = "/home/${user}/.nix/";
