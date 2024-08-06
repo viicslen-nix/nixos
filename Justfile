@@ -1,4 +1,4 @@
-# use nushell for shell commands
+# use zshell for shell commands
 set shell := ["zsh", "-c"]
 
 ############################################################################
@@ -17,11 +17,31 @@ update:
 
 # Update specific input
 # Usage: just upgrade nixpkgs
-update-input input:
-  nix flake update {{input}}
+update-input INPUT:
+  nix flake update {{INPUT}}
 
-upgrade:
+# Upgrade the system using the default nix command
+nix-upgrade COMMAND='switch':
+  sudo nixos-rebuild {{COMMAND}}
+
+# Upgrade the system using the nix helper utility
+upgrade COMMAND='switch':
+  nh os {{COMMAND}}
+
+# Commit any pending file changes and upgrade the system
+commit-and-upgrade:
   nixos-upgrade
+
+# Commit any pending file changes
+commit MESSAGE:
+  git add .
+  git commit -m "{{MESSAGE}}"
+
+# Commit any pending file changes
+push MESSAGE:
+  git add .
+  git commit -m "{{MESSAGE}}"
+  git push
 
 # List all generations of the system profile
 history:
