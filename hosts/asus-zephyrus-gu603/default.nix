@@ -47,8 +47,10 @@ with lib; {
 
     nvidia = {
       modesetting.enable = true;
-      powerManagement.enable = true;
-      powerManagement.finegrained = true;
+
+      # Causes random freezes
+      powerManagement.enable = false;
+      powerManagement.finegrained = false;
     };
 
     logitech.wireless.enable = true;
