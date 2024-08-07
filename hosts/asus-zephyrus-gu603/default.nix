@@ -47,6 +47,8 @@ with lib; {
 
     nvidia = {
       modesetting.enable = true;
+      powerManagement.enable = true;
+      powerManagement.finegrained = true;
     };
 
     logitech.wireless.enable = true;
