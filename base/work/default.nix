@@ -55,6 +55,7 @@
     kubernetes-helm
     linode-cli
     dbeaver-bin
+    atlas
   ];
 
   programs.zsh.shellAliases = {
