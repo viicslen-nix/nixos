@@ -49,6 +49,7 @@ in {
           iagno # go game
           hitori # sudoku game
           atomix # puzzle game
+          gnome-remote-desktop
         ]);
 
       # Enable DConf to tweak desktop settings
