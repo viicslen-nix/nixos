@@ -18,7 +18,7 @@ update:
 # Update specific input
 # Usage: just upgrade nixpkgs
 update-input INPUT:
-  nix flake update {{INPUT}}
+  nix flake lock --update-input {{INPUT}}
 
 # Upgrade the system using the default nix command
 nix-upgrade COMMAND='switch':
