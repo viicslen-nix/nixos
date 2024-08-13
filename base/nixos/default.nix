@@ -39,7 +39,8 @@
       outputs.overlays.flake-inputs
 
       inputs.nix-alien.overlays.default
-      # inputs.nixpkgs-wayland.overlay
+      inputs.nixpkgs-wayland.overlay
+      inputs.nvchad.overlays.default
     ];
     # Configure your nixpkgs instance
     config = {

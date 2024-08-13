@@ -7,7 +7,9 @@
   user,
   ...
 }: {
-  imports = [] ++ lib.attrsets.mapAttrsToList (name: value: value) outputs.homeManagerModules;
+  imports = [
+    inputs.nvchad.homeManagerModule
+  ] ++ lib.attrsets.mapAttrsToList (name: value: value) outputs.homeManagerModules;
 
   systemd.user.startServices = "sd-switch";
 
@@ -52,6 +54,18 @@
       enable = true;
       enableZshIntegration = true;
       nix-direnv.enable = true;
+    };
+
+    nvchad = {
+      enable = true;
+      backup = false;
+      extraConfig = inputs.nvchad-config;
+      extraPackages = with pkgs; [
+        nixd
+        docker-compose-language-service
+        dockerfile-language-server-nodejs
+        nodePackages.bash-language-server
+      ];
     };
   };
 }

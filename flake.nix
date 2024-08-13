@@ -21,6 +21,16 @@
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
 
+    # NvChad
+    nvchad = {
+      url = "github:NvChad/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nvchad-config = {
+      url = "github:viicslen/neovim";
+      flake = false;
+    };
+
     # Hyprland
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     hyprland-contrib = {

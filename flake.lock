@@ -1248,6 +1248,42 @@
         "type": "github"
       }
     },
+    "nvchad": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1721964147,
+        "narHash": "sha256-VqT5Jkdg03lny5NCfJkd2gdTlaJ6R5vYctCcTnP8Y2Q=",
+        "owner": "NvChad",
+        "repo": "nix",
+        "rev": "3f162f053f019326bcc40b2dfb2f767e5f064099",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NvChad",
+        "repo": "nix",
+        "type": "github"
+      }
+    },
+    "nvchad-config": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723565479,
+        "narHash": "sha256-5Uur2n5wQH5akr4QfFB2VeJpGvPE09vRQ6ORkkyonqs=",
+        "owner": "viicslen",
+        "repo": "neovim",
+        "rev": "0b03997058e18366cec4ebe917740ed32b210dc3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "viicslen",
+        "repo": "neovim",
+        "type": "github"
+      }
+    },
     "rofi-collections": {
       "flake": false,
       "locked": {
@@ -1298,6 +1334,8 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixpkgs-wayland": "nixpkgs-wayland",
         "nur": "nur",
+        "nvchad": "nvchad",
+        "nvchad-config": "nvchad-config",
         "rofi-collections": "rofi-collections",
         "rofi-themes": "rofi-themes",
         "split-monitor-workspaces": "split-monitor-workspaces",
