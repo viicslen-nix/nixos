@@ -116,6 +116,7 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
+    zfs
     asusctl
     supergfxctl
     zenith-nvidia
