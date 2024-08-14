@@ -117,6 +117,7 @@ with lib; {
 
   environment.systemPackages = with pkgs; [
     zfs
+    linuxKernel.packages.linux_6_6.zfs
     asusctl
     supergfxctl
     zenith-nvidia
