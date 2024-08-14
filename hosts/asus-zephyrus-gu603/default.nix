@@ -22,6 +22,8 @@ with lib; {
       "intel_iommu=on" # Hardware virtualisation
     ];
 
+    supportedFilesystems = [ "zfs" ];
+
     loader.efi.canTouchEfiVariables = false;
     loader.efi.efiSysMountPoint = "/boot/efi";
 
@@ -116,8 +118,6 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
-    zfs
-    linuxKernel.packages.linux_6_6.zfs
     asusctl
     supergfxctl
     zenith-nvidia
