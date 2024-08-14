@@ -23,6 +23,7 @@ with lib; {
     ];
 
     supportedFilesystems = [ "zfs" ];
+    zfs.forceImportRoot = false;
 
     loader.efi.canTouchEfiVariables = false;
     loader.efi.efiSysMountPoint = "/boot/efi";
@@ -59,6 +60,8 @@ with lib; {
   };
 
   powerManagement.cpuFreqGovernor = "powersave";
+
+  networking.hostId = "86f2c355";
 
   services = {
     xserver = {
