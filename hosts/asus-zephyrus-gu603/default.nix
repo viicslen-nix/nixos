@@ -10,7 +10,9 @@
 with lib; {
   imports = [
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
+    inputs.disko.nixosModules.disko
     ./hardware.nix
+    ./disko.nix
     ../../base/nixos
     ../../base/personal
     ../../base/work
@@ -24,6 +26,9 @@ with lib; {
 
     supportedFilesystems = [ "zfs" ];
     zfs.forceImportRoot = false;
+    initrd.postDeviceCommands = lib.mkAfter ''
+      zfs rollback -r rpool/root@blank
+    '';
 
     loader.efi.canTouchEfiVariables = false;
     loader.efi.efiSysMountPoint = "/boot/efi";

@@ -3,12 +3,11 @@
     disk = {
       nix = {
         type = "disk";
-        device = "/dev/nvme1n1";
+        device = "/dev/nvme0n1";
         content = {
           type = "gpt";
           partitions = {
             boot = {
-              name = "Boot";
               size = "1G";
               type = "EF00";
               content = {
@@ -21,7 +20,6 @@
               };
             };
             os = {
-              name = "NixOS";
               size = "100%";
               content = {
                 type = "zfs";
@@ -39,22 +37,22 @@
           "root" = {
             type = "zfs_fs";
             options.mountpoint = "legacy";
-            mountpoint = "/mnt";
+            mountpoint = "/";
           };
           "nix" = {
             type = "zfs_fs";
             options.mountpoint = "legacy";
-            mountpoint = "/mnt/nix";
+            mountpoint = "/nix";
           };
           "home" = {
             type = "zfs_fs";
             options.mountpoint = "legacy";
-            mountpoint = "/mnt/home";
+            mountpoint = "/home";
           };
           "persist" = {
             type = "zfs_fs";
             options.mountpoint = "legacy";
-            mountpoint = "/mnt/persist";
+            mountpoint = "/persist";
           };
         };
       };

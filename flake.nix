@@ -10,6 +10,12 @@
     # Hardware
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
+    # Disko
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Home manager
     home-manager = {
       url = "github:nix-community/home-manager";
