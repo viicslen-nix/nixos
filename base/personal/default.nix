@@ -50,6 +50,8 @@
     onePassword = {
       enable = true;
       inherit user;
+      gitSignCommits = true;
+      gitSignKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJk8lwwP7GnxZMgpx+C30i/Lw912BBoFccz4gjek8lCX";
     };
 
     mullvad = {

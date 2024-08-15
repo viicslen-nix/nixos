@@ -11,6 +11,11 @@ with lib; let
 in {
   options.features.onePassword = {
     enable = mkEnableOption "1Password";
+    gitSignCommits = mkEnableOption "Git commit signing";
+    gitSignKey = mkOption {
+      type = types.str;
+      description = "The public key to use for signing git commits";
+    };
     socket = mkOption {
       type = types.str;
       default = "~/.1password/agent.sock";
@@ -77,10 +82,16 @@ in {
           enable = true;
           extraConfig = ''
             Host *
-              IdentityAgent ~/.1password/agent.sock
+              IdentityAgent ${cfg.socket}
 
             Include ~/.ssh/config.d/hosts
           '';
+        };
+
+        programs.git.signing = mkIf cfg.gitSignCommits {
+          signByDefault = true;
+          key = cfg.gitSignKey;
+          gpgPath = "${pkgs._1password-gui}/bin/op-ssh-sign";
         };
       };
     })

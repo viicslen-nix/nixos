@@ -11,8 +11,8 @@ with lib; {
   imports = [
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
     inputs.disko.nixosModules.disko
+    (import ./disko.nix { device = "/dev/nvme0n1"; })
     ./hardware.nix
-    ./disko.nix
     ../../base/nixos
     ../../base/personal
     ../../base/work
@@ -24,20 +24,15 @@ with lib; {
       "intel_iommu=on" # Hardware virtualisation
     ];
 
-    supportedFilesystems = [ "zfs" ];
-    zfs.forceImportRoot = false;
-    initrd.postDeviceCommands = lib.mkAfter ''
-      zfs rollback -r rpool/root@blank
-    '';
-
+    loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = false;
-    loader.efi.efiSysMountPoint = "/boot/efi";
+    # loader.efi.efiSysMountPoint = "/boot/efi";
 
-    loader.grub.enable = true;
-    loader.grub.efiSupport = true;
-    loader.grub.efiInstallAsRemovable = true;
-    loader.grub.configurationLimit = 10;
-    loader.grub.device = "nodev";
+    # loader.grub.enable = true;
+    # loader.grub.efiSupport = true;
+    # loader.grub.efiInstallAsRemovable = true;
+    # loader.grub.configurationLimit = 10;
+    # loader.grub.device = "nodev";
   };
 
   hardware = {

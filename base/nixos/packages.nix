@@ -24,6 +24,7 @@
     glibc
     glib
     just
+    gtop
     neovim
     lazygit
     busybox

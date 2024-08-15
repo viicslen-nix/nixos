@@ -17,9 +17,8 @@
       inputs.home-manager.nixosModules.default
       inputs.chaotic.nixosModules.default
       inputs.nur.nixosModules.nur
-      ./shell.nix
-      ./scripts.nix
       ./packages.nix
+      ./scripts.nix
     ]
     ++ lib.attrsets.mapAttrsToList (name: value: value) outputs.nixosModules;
 
@@ -124,6 +123,9 @@
     extraGroups = ["networkmanager" "wheel" user];
   };
 
+  # Set default shell
+  users.defaultUserShell = pkgs.zsh;
+
   # Home Manager
   home-manager = {
     extraSpecialArgs = {inherit inputs outputs user;};
@@ -146,6 +148,9 @@
     enable = true;
     nix-direnv.enable = true;
   };
+
+  # Enable Zsh
+  programs.zsh.enable = true;
 
   # Set flake path in environment
   environment.sessionVariables = {

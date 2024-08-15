@@ -23,6 +23,39 @@ in {
       default = true;
       description = "Whether to enable the GDM window manager";
     };
+
+    exclude = mkOption {
+      type = types.listOf types.package;
+      default = [
+        pkgs.gnome-tour
+        pkgs.gnome.gnome-music
+        pkgs.gnome.tali # poker game
+        pkgs.gnome.iagno # go game
+        pkgs.gnome.hitori # sudoku game
+        pkgs.gnome.atomix # puzzle game
+        pkgs.gnome.gnome-remote-desktop
+      ];
+      description = "List of packages to exclude from default gnome install";
+    };
+
+    extensions = mkOption {
+      type = types.listOf types.package;
+      default = [
+        pkgs.gnomeExtensions.appindicator
+        pkgs.gnomeExtensions.blur-my-shell
+        pkgs.gnomeExtensions.dash-to-panel
+        pkgs.gnomeExtensions.arcmenu
+        pkgs.gnomeExtensions.user-themes
+        pkgs.gnomeExtensions.autohide-battery
+        pkgs.gnomeExtensions.supergfxctl-gex
+        pkgs.gnomeExtensions.caffeine
+        pkgs.gnomeExtensions.gsconnect
+        pkgs.gnomeExtensions.arrange-windows
+        pkgs.gnomeExtensions.rounded-corners
+        pkgs.gnomeExtensions.astra-monitor
+      ];
+      description = "List of extensions to install and enable";
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -39,18 +72,7 @@ in {
       services.gnome.gnome-keyring.enable = true;
 
       # Exclude GNOME applications from the default install
-      environment.gnome.excludePackages =
-        (with pkgs; [
-          gnome-tour
-        ])
-        ++ (with pkgs.gnome; [
-          gnome-music
-          tali # poker game
-          iagno # go game
-          hitori # sudoku game
-          atomix # puzzle game
-          gnome-remote-desktop
-        ]);
+      environment.gnome.excludePackages = cfg.exclude;
 
       # Enable DConf to tweak desktop settings
       programs.dconf.enable = true;
@@ -65,28 +87,7 @@ in {
         adw-gtk3
         gnome-tweaks
         adwaita-icon-theme
-        gnomeExtensions.appindicator
-        gnomeExtensions.blur-my-shell
-        gnomeExtensions.dash-to-panel
-        gnomeExtensions.arcmenu
-        gnomeExtensions.user-themes
-        gnomeExtensions.autohide-battery
-        gnomeExtensions.supergfxctl-gex
-        gnomeExtensions.solaar-extension
-        gnomeExtensions.caffeine
-        gnomeExtensions.gsconnect
-        gnomeExtensions.forge
-        gnomeExtensions.arrange-windows
-        gnomeExtensions.rounded-corners
-        gnomeExtensions.tophat
-        gnomeExtensions.simple-break-reminder
-
-        # TopHat Dependencies
-        gtop
-        libgtop
-        clutter
-        clutter-gtk
-      ];
+      ] ++ cfg.extensions;
 
       # Required for some GNOME extensions
       environment.variables = {
@@ -103,6 +104,10 @@ in {
           "org/gnome/mutter".experimental-features = ["scale-monitor-framebuffer"];
           "org/gnome/desktop/interface".color-scheme = "prefer-dark";
           "org/gnome/desktop/wm/preferences".button-layout = lib.mkDefault ":minimize,maximize,close";
+          "org/gnome/shell" = {
+            disable-user-extensions = false;
+            enabled-extensions = lists.forEach cfg.extensions (x: x.extensionUuid);
+          };
         };
       };
     })
