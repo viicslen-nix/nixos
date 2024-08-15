@@ -1,4 +1,8 @@
-{config, pkgs, ...}: let
+{
+  config,
+  pkgs,
+  ...
+}: let
   variant = "dark";
   pointer = config.stylix.cursor;
   colorScheme = config.lib.stylix.colors;

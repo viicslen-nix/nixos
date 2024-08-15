@@ -83,11 +83,13 @@ in {
       services.udev.packages = with pkgs; [gnome.gnome-settings-daemon];
 
       # Install GNOME Tweaks
-      environment.systemPackages = with pkgs; [
-        adw-gtk3
-        gnome-tweaks
-        adwaita-icon-theme
-      ] ++ cfg.extensions;
+      environment.systemPackages = with pkgs;
+        [
+          adw-gtk3
+          gnome-tweaks
+          adwaita-icon-theme
+        ]
+        ++ cfg.extensions;
 
       # Required for some GNOME extensions
       environment.variables = {

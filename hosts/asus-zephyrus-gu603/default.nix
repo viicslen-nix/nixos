@@ -11,7 +11,7 @@ with lib; {
   imports = [
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
     inputs.disko.nixosModules.disko
-    (import ./disko.nix { device = "/dev/nvme0n1"; })
+    (import ./disko.nix {device = "/dev/nvme0n1";})
     ./hardware.nix
     ../../base/nixos
     ../../base/personal
@@ -43,7 +43,7 @@ with lib; {
         libGL
         vaapiVdpau
         libvdpau-va-gl
-        nvidia-vaapi-driver 
+        nvidia-vaapi-driver
         intel-media-driver
       ];
     };

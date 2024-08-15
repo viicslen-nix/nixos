@@ -23,7 +23,7 @@
     ++ lib.attrsets.mapAttrsToList (name: value: value) outputs.nixosModules;
 
   system.stateVersion = "24.05";
-  
+
   # Enable Plymouth
   boot.plymouth.enable = true;
 

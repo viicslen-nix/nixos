@@ -7,9 +7,11 @@
   user,
   ...
 }: {
-  imports = [
-    inputs.nvchad.homeManagerModule
-  ] ++ lib.attrsets.mapAttrsToList (name: value: value) outputs.homeManagerModules;
+  imports =
+    [
+      inputs.nvchad.homeManagerModule
+    ]
+    ++ lib.attrsets.mapAttrsToList (name: value: value) outputs.homeManagerModules;
 
   systemd.user.startServices = "sd-switch";
 
@@ -32,9 +34,9 @@
       delta.enable = true;
       aliases = {
         # nah = "!f(){ git reset --hard; git clean -df; if [ -d ".git/rebase-apply" ] || [ -d ".git/rebase-merge" ]; then git rebase --abort; fi; }; f";
-	      forget="!git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D";
-        forgetlist="!git fetch -p && git branch -vv | awk '/: gone]/{print $1}'";
-	      uncommit = "reset --soft HEAD~0";
+        forget = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D";
+        forgetlist = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}'";
+        uncommit = "reset --soft HEAD~0";
       };
     };
 

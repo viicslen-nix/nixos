@@ -88,11 +88,17 @@ in {
           '';
         };
 
-        programs.git.signing = mkIf cfg.gitSignCommits {
-          signByDefault = true;
-          key = cfg.gitSignKey;
-          gpgPath = "${pkgs._1password-gui}/bin/op-ssh-sign";
-        };
+        # Configure git to sign commits with the 1Password SSH key
+        programs.git.includes = mkIf cfg.gitSignCommits [
+          {
+            contents = {
+              user.signingkey = cfg.gitSignKey;
+              commit.gpgSign = true;
+              gpg.format = "ssh";
+              "gpg \"ssh\"".program = "${pkgs._1password-gui}/bin/op-ssh-sign";
+            };
+          }
+        ];
       };
     })
   ]);

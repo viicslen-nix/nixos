@@ -186,9 +186,7 @@
         #    colmena apply --on @web
         # You can use globs in tag matching as well:
         #    colmena apply --on '@infra-*'
-        deployment.tags = [ "web" "infra-lax" ];
-
-        
+        deployment.tags = ["web" "infra-lax"];
       };
     };
   };

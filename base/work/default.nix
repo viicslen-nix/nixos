@@ -7,17 +7,22 @@
   user,
   ...
 }: let
-  phpWithExtensions = (pkgs.php.buildEnv {
-    extensions = ({ enabled, all }: enabled ++ (with all; [
-      xdebug
-      imagick
-      redis
-    ]));
+  phpWithExtensions = pkgs.php.buildEnv {
+    extensions = {
+      enabled,
+      all,
+    }:
+      enabled
+      ++ (with all; [
+        xdebug
+        imagick
+        redis
+      ]);
     extraConfig = ''
       memory_limit=-1
       max_execution_time=0
     '';
-  });
+  };
 in {
   home-manager.users.${user} = import ./home.nix;
 
