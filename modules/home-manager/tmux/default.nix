@@ -15,7 +15,7 @@ in {
     enable = mkEnableOption (mdDoc "tmux");
   };
 
-  config = mkIf cfg.enable {
+  config.programs.tmux = mkIf cfg.enable {
     enable = true;
     shortcut = "Space";
     mouse = true;
@@ -46,7 +46,7 @@ in {
           version = "v1.5.5";
           src = inputs.tokyo-night-tmux;
         };
-        config = ''
+        extraConfig = ''
           set -g @tokyo-night-tmux_show_datetime 0
           set -g status-justify left
         '';

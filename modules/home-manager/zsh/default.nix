@@ -15,7 +15,7 @@ in {
     enable = mkEnableOption (mdDoc "zsh");
   };
 
-  config = mkIf cfg.enable {
+  config.programs.zsh = mkIf cfg.enable {
     enable = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
