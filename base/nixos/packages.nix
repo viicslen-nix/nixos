@@ -30,5 +30,6 @@
     busybox
     libinput
     wl-clipboard
+    percona-server
   ];
 }
