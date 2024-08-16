@@ -79,6 +79,10 @@
       url = "github:Murzchnvok/rofi-collection";
       flake = false;
     };
+    tokyo-night-tmux = {
+      url = "github:janoamaral/tokyo-night-tmux";
+      flake = false;
+    };
 
     nix-alien.url = "github:thiagokokada/nix-alien";
     lan-mouse.url = "github:feschber/lan-mouse";

@@ -10,4 +10,6 @@
   ray = import ./ray;
   firefox = import ./firefox;
   autostart = import ./autostart;
+  zsh = import ./zsh;
+  tmux = import ./tmux;
 }

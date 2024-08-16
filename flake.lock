@@ -1361,6 +1361,7 @@
         "rofi-themes": "rofi-themes",
         "split-monitor-workspaces": "split-monitor-workspaces",
         "stylix": "stylix",
+        "tokyo-night-tmux": "tokyo-night-tmux",
         "tt-schemes": "tt-schemes"
       }
     },
@@ -1524,6 +1525,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tokyo-night-tmux": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1719759351,
+        "narHash": "sha256-k4CbfWdyk7m/T97ytxLOEMUKrkU5iJSIu3lvyT1B1jU=",
+        "owner": "janoamaral",
+        "repo": "tokyo-night-tmux",
+        "rev": "b45b742eb3fdc01983c21b1763594b549124d065",
+        "type": "github"
+      },
+      "original": {
+        "owner": "janoamaral",
+        "repo": "tokyo-night-tmux",
         "type": "github"
       }
     },

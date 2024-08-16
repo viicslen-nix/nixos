@@ -26,6 +26,9 @@
     };
   };
 
+  features.zsh.enable = true;
+  features.tmux.enable = true;
+
   programs = {
     home-manager.enable = true;
 
@@ -40,69 +43,10 @@
       };
     };
 
-    zsh = {
-      enable = true;
-      autosuggestion.enable = true;
-      syntaxHighlighting.enable = true;
-
-      plugins = [
-        {
-          name = "powerlevel10k-config";
-          src = ./shell;
-          file = "p10k.zsh";
-        }
-        {
-          name = "zsh-powerlevel10k";
-          src = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/";
-          file = "powerlevel10k.zsh-theme";
-        }
-      ];
-
-      oh-my-zsh = {
-        enable = true;
-        plugins = [
-          "git"
-          "npm"
-          "history"
-          "node"
-          "rust"
-          "deno"
-        ];
-      };
-
-      shellAliases = {
-        ls = "lsd";
-        l = "ls -l";
-        la = "ls -a";
-        lla = "ls -la";
-        lt = "ls --tree";
-        pn = "pnpm";
-        cat = "bat";
-        vim = "nvim";
-        ts = "tmux-session";
-        ds = "dev-shell";
-        dsl = "dev-shell laravel";
-        dsk = "dev-shell kubernetes";
-        o = "xdg-open";
-      };
-    };
-
     fzf = {
       enable = true;
       enableZshIntegration = true;
       tmux.enableShellIntegration = true;
-    };
-
-    tmux = {
-      enable = true;
-      shortcut = "Space";
-      mouse = true;
-      baseIndex = 1;
-      keyMode = "vi";
-      historyLimit = 10000;
-      tmuxinator.enable = true;
-      shell = "${pkgs.zsh}/bin/zsh";
-      extraConfig = "source-file ~/.tmux.conf";
     };
 
     hstr = {
