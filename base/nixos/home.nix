@@ -43,6 +43,14 @@
       };
     };
 
+    gh = {
+      enable = true;
+      gitCredentialHelper.enable = true;
+      extensions = with pkgs; [
+        gh-copilot
+      ];
+    };
+
     fzf = {
       enable = true;
       enableZshIntegration = true;
