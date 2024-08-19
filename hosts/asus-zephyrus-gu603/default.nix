@@ -22,6 +22,7 @@ with lib; {
     kernelParams = [
       "video=eDP-1-1:2560x1600@165" # Patch for 165hz display
       "intel_iommu=on" # Hardware virtualisation
+      "nvidia_drm.fbdev=1" # Nvidia DRM
     ];
 
     loader.systemd-boot.enable = true;
@@ -49,11 +50,10 @@ with lib; {
     };
 
     nvidia = {
+      open = true;
       modesetting.enable = true;
-
-      # Causes random freezes
-      powerManagement.enable = false;
-      powerManagement.finegrained = false;
+      powerManagement.enable = true;
+      powerManagement.finegrained = true;
     };
 
     logitech.wireless.enable = true;
@@ -73,6 +73,8 @@ with lib; {
         xrandr --addmode eDP-1-1 "2560x1600_165.00"
         xrandr --output eDP-1-1 --mode 2560x1600 --rate 165
       '';
+
+      videoDrivers = [ "nvidia" ];
     };
 
     supergfxd = {
