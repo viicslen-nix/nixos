@@ -842,6 +842,21 @@
         "type": "github"
       }
     },
+    "impermanence": {
+      "locked": {
+        "lastModified": 1724146542,
+        "narHash": "sha256-MLxtqDtu+y/4UDhXX5pFypX9/qbH54TDP6Z90oFzd/A=",
+        "owner": "nix-community",
+        "repo": "impermanence",
+        "rev": "03fe473c731cda2900bae9894b8dfc68e3492db5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "impermanence",
+        "type": "github"
+      }
+    },
     "jovian": {
       "inputs": {
         "nix-github-actions": "nix-github-actions",
@@ -1347,6 +1362,7 @@
         "hyprland-contrib": "hyprland-contrib",
         "hyprland-plugins": "hyprland-plugins",
         "hyprpaper": "hyprpaper",
+        "impermanence": "impermanence",
         "lan-mouse": "lan-mouse",
         "nix-alien": "nix-alien",
         "nixos-hardware": "nixos-hardware",

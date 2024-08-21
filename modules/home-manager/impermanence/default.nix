@@ -40,23 +40,25 @@ in {
     };
   };
 
-  imports = mkIf cfg.enable [
+  imports = [
     inputs.impermanence.nixosModules.home-manager.impermanence
   ];
 
   config.home.persistence."/persist/home/${cfg.user}" = mkIf cfg.enable {
-    directories = [
-      "Development"
-      "Documents"
-      "Downloads"
-      "Pictures"
-      "Desktop"
-      "Videos"
-      "Music"
-    ] 
-    ++ lists.forEach cfg.config (dir: ".config/${dir}")
-    ++ lists.forEach cfg.share (dir: ".local/share/${dir}")
-    ++ cfg.directories;
+    directories = concatLists [
+      (lists.forEach cfg.config (dir: ".config/${dir}"))
+      (lists.forEach cfg.share (dir: ".local/share/${dir}"))
+      cfg.directories
+      [
+        "Development"
+        "Documents"
+        "Downloads"
+        "Pictures"
+        "Desktop"
+        "Videos"
+        "Music"
+      ]
+    ];
 
     files = [] ++ cfg.files;
 

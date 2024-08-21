@@ -7,7 +7,7 @@
   user,
   ...
 }: {
-  feature.persistence = {
+  features.impermanence = {
     enable = true;
     inherit user;
     share = [
