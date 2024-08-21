@@ -10,6 +10,7 @@
 with lib; {
   imports = [
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
+    inputs.impermanence.nixosModules.impermanence
     inputs.disko.nixosModules.disko
     (import ./disko.nix {device = "/dev/nvme0n1";})
     ./hardware.nix
@@ -17,6 +18,10 @@ with lib; {
     ../../base/personal
     ../../base/work
   ];
+
+  fileSystems."/persist".neededForBoot = true;
+  powerManagement.cpuFreqGovernor = "powersave";
+  networking.hostId = "86f2c355";
 
   boot = {
     kernelParams = [
@@ -27,13 +32,31 @@ with lib; {
 
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = false;
-    # loader.efi.efiSysMountPoint = "/boot/efi";
 
-    # loader.grub.enable = true;
-    # loader.grub.efiSupport = true;
-    # loader.grub.efiInstallAsRemovable = true;
-    # loader.grub.configurationLimit = 10;
-    # loader.grub.device = "nodev";
+    initrd.postDeviceCommands = lib.mkAfter ''
+      mkdir /btrfs_tmp
+      mount /dev/root_vg/root /btrfs_tmp
+      if [[ -e /btrfs_tmp/root ]]; then
+          mkdir -p /btrfs_tmp/old_roots
+          timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
+          mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
+      fi
+
+      delete_subvolume_recursively() {
+          IFS=$'\n'
+          for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+              delete_subvolume_recursively "/btrfs_tmp/$i"
+          done
+          btrfs subvolume delete "$1"
+      }
+
+      for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
+          delete_subvolume_recursively "$i"
+      done
+
+      btrfs subvolume create /btrfs_tmp/root
+      umount /btrfs_tmp
+    '';
   };
 
   hardware = {
@@ -58,10 +81,6 @@ with lib; {
 
     logitech.wireless.enable = true;
   };
-
-  powerManagement.cpuFreqGovernor = "powersave";
-
-  networking.hostId = "86f2c355";
 
   services = {
     xserver = {
@@ -109,6 +128,34 @@ with lib; {
     power-profiles-daemon.enable = false;
   };
 
+  environment = {
+    systemPackages = with pkgs; [
+      asusctl
+      supergfxctl
+      zenith-nvidia
+      nvtopPackages.nvidia
+      gnomeExtensions.supergfxctl-gex
+    ];
+
+    persistence."/persist/system" = {
+      hideMounts = true;
+      directories = [
+        "/var/log"
+        "/var/lib/docker"
+        "/var/lib/bluetooth"
+        "/var/lib/nixos"
+        "/var/lib/systemd/coredump"
+        "/etc/NetworkManager/system-connections"
+        "/etc/nixos"
+        { directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
+      ];
+      files = [
+        "/etc/machine-id"
+        { file = "/var/keys/secret_file"; parentDirectory = { mode = "u=rwx,g=,o="; }; }
+      ];
+    };
+  };
+
   features = {
     network.hostName = "asus-zephyrus-gu603";
 
@@ -122,11 +169,7 @@ with lib; {
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    asusctl
-    supergfxctl
-    zenith-nvidia
-    nvtopPackages.nvidia
-    gnomeExtensions.supergfxctl-gex
-  ];
+  home-manager.users.${user} = import ./home.nix;
+
+  programs.fuse.userAllowOther = true;
 }

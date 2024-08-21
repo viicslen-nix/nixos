@@ -27,6 +27,9 @@
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
 
+    # Impermanence
+    impermanence.url = "github:nix-community/impermanence";
+
     # NvChad
     nvchad = {
       url = "github:NvChad/nix";
