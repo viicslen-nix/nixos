@@ -145,6 +145,7 @@
           inherit inputs outputs;
           user = "neoscode";
           name = "Victor R";
+          password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
         };
       };
 
@@ -165,6 +166,7 @@
           inherit inputs outputs;
           user = "neoscode";
           name = "Victor R";
+          password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
         };
       };
     };
