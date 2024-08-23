@@ -122,7 +122,7 @@
     isNormalUser = true;
     description = name;
     initialPassword = user;
-    hashedPassword = lib.mkIf password password;
+    hashedPassword = lib.mkIf (password != "") password;
     extraGroups = ["networkmanager" "wheel" user];
   };
 
