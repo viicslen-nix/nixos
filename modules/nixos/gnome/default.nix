@@ -103,9 +103,14 @@ in {
         gtk.iconTheme.package = pkgs.adwaita-icon-theme;
 
         dconf.settings = {
-          "org/gnome/mutter".experimental-features = ["scale-monitor-framebuffer"];
+          "org/gtk/settings/file-chooser".clock-format = "12h";
+          "org/gnome/shell/app-switcher".current-workspace-only = true;
           "org/gnome/desktop/interface".color-scheme = "prefer-dark";
           "org/gnome/desktop/wm/preferences".button-layout = lib.mkDefault ":minimize,maximize,close";
+          "org/gnome/mutter" = {
+            dynamic-workspaces = true;
+            experimental-features = ["scale-monitor-framebuffer"];
+          };
           "org/gnome/shell" = {
             disable-user-extensions = false;
             enabled-extensions = lists.forEach cfg.extensions (x: x.extensionUuid);
