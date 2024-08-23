@@ -17,6 +17,7 @@
       "keyrings"
       "direnv"
       "mkcert"
+      "pnpm"
     ];
     config = [
       "Slack"

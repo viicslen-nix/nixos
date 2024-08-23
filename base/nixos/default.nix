@@ -9,7 +9,7 @@
   lib,
   user,
   name,
-  password,
+  password ? "",
   ...
 }: {
   # Modules
