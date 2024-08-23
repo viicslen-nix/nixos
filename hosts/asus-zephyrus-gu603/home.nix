@@ -7,40 +7,43 @@
   user,
   ...
 }: {
+  imports = [ ./dconf.nix ];
+
   features.impermanence = {
     enable = true;
     inherit user;
     share = [
+      "JetBrains"
       "keyrings"
       "direnv"
-      "JetBrains"
       "mkcert"
     ];
     config = [
-      "1Password"
-      "direnv"
-      "composer"
-      "JetBrains"
-      "Insomnia"
-      "microsoft-edge"
-      "Mullvad VPN"
-      "op"
       "Slack"
+      "Insomnia"
+      "JetBrains"
+      "1Password"
+      "Mullvad VPN"
+      "microsoft-edge"
+      "composer"
       "traefik"
+      "direnv"
+      "op"
     ];
     directories = [
-      ".gnupg"
       ".ssh"
-      ".nixops"
       ".nix"
+      ".kube"
+      ".gnupg"
+      ".nixops"
       ".docker"
       ".tmux/resurrect"
-      ".kube"
     ];
     files = [
       ".gitconfig"
       ".zsh_history"
       ".wakatime.cfg"
+      ".config/monitors.xml"
     ];
   };
 }

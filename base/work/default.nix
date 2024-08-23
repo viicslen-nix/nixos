@@ -76,6 +76,11 @@ in {
     atlas
   ];
 
+  services.mysql = {
+    enable = true;
+    package = pkgs.percona-server;
+  };
+
   programs.zsh.shellAliases = {
     dep = "composer exec -- dep";
     takeout = "composer global exec -- takeout";

@@ -120,6 +120,7 @@
   users.users.${user} = {
     isNormalUser = true;
     description = name;
+    initialPassword = user;
     extraGroups = ["networkmanager" "wheel" user];
   };
 
