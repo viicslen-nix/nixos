@@ -121,7 +121,7 @@
   users.users.${user} = {
     isNormalUser = true;
     description = name;
-    initialPassword = user;
+    initialPassword = lib.mkIf (password == "") user;
     hashedPassword = lib.mkIf (password != "") password;
     extraGroups = ["networkmanager" "wheel" user];
   };
