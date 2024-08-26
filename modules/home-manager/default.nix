@@ -12,5 +12,5 @@
   autostart = import ./autostart;
   zsh = import ./zsh;
   tmux = import ./tmux;
-  impermanence = import ./impermanence;
+  # impermanence = import ./impermanence;
 }

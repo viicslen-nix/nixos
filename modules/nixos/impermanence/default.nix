@@ -3,6 +3,7 @@
   pkgs,
   config,
   inputs,
+  options,
   ...
 }:
 with lib; let
@@ -64,7 +65,7 @@ in {
   };
 
   imports = [
-    inputs.impermanence.nixosModules.home-manager.impermanence
+    inputs.impermanence.nixosModules.impermanence
   ];
 
   config = mkIf cfg.enable {
@@ -93,49 +94,61 @@ in {
       umount /btrfs_tmp
     '');
 
+    programs.fuse.userAllowOther = true;
+
     fileSystems.${cfg.persistencePath}.neededForBoot = true;
 
     environment.persistence."${cfg.persistencePath}/system" = {
       hideMounts = true;
-      directories = [
-        "/var/log"
-        "/var/lib/docker"
-        "/var/lib/bluetooth"
-        "/var/lib/nixos"
-        "/var/lib/systemd/coredump"
-        "/etc/NetworkManager/system-connections"
-        "/etc/nixos"
-        {
-          directory = "/var/lib/colord";
-          user = "colord";
-          group = "colord";
-          mode = "u=rwx,g=rx,o=";
-        }
-      ] ++ cfg.directories;
-      files = [
-        "/etc/machine-id"
-      ] ++ cfg.files;
+      directories =
+        [
+          "/var/log"
+          "/var/lib/docker"
+          "/var/lib/bluetooth"
+          "/var/lib/nixos"
+          "/var/lib/systemd/coredump"
+          "/etc/NetworkManager/system-connections"
+          "/etc/nixos"
+          {
+            directory = "/var/lib/colord";
+            user = "colord";
+            group = "colord";
+            mode = "u=rwx,g=rx,o=";
+          }
+        ]
+        ++ cfg.directories;
+      files =
+        [
+          "/etc/machine-id"
+        ]
+        ++ cfg.files;
     };
 
-    home-manager.users.${cfg.user}.home.persistence."${cfg.persistencePath}/home/${cfg.user}" = mkIf homeManagerLoaded {
-      directories = concatLists [
-        (lists.forEach cfg.config (dir: ".config/${dir}"))
-        (lists.forEach cfg.share (dir: ".local/share/${dir}"))
-        cfg.home.directories
-        [
-          "Development"
-          "Documents"
-          "Downloads"
-          "Pictures"
-          "Desktop"
-          "Videos"
-          "Music"
-        ]
+    home-manager.users.${cfg.user} = mkIf homeManagerLoaded {
+      imports = [
+        inputs.impermanence.nixosModules.home-manager.impermanence
       ];
 
-      files = [] ++ cfg.home.files;
+      home.persistence."${cfg.persistencePath}/home/${cfg.user}" = {
+        directories = concatLists [
+          (lists.forEach cfg.home.config (dir: ".config/${dir}"))
+          (lists.forEach cfg.home.share (dir: ".local/share/${dir}"))
+          cfg.home.directories
+          [
+            "Development"
+            "Documents"
+            "Downloads"
+            "Pictures"
+            "Desktop"
+            "Videos"
+            "Music"
+          ]
+        ];
 
-      allowOther = true;
+        files = [] ++ cfg.home.files;
+
+        allowOther = true;
+      };
     };
   };
 }

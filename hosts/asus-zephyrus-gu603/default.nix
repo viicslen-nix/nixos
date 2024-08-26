@@ -10,11 +10,8 @@
 with lib; {
   imports = [
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
-    inputs.impermanence.nixosModules.impermanence
-    inputs.disko.nixosModules.disko
     (import ./disko.nix {device = "/dev/nvme0n1";})
     ./hardware.nix
-    # ./impermanence.nix
     ../../base/nixos
     ../../base/personal
     ../../base/work
@@ -109,15 +106,13 @@ with lib; {
     power-profiles-daemon.enable = false;
   };
 
-  environment = {
-    systemPackages = with pkgs; [
-      asusctl
-      supergfxctl
-      zenith-nvidia
-      nvtopPackages.nvidia
-      gnomeExtensions.supergfxctl-gex
-    ];
-  };
+  environment.systemPackages = with pkgs; [
+    asusctl
+    supergfxctl
+    zenith-nvidia
+    nvtopPackages.nvidia
+    gnomeExtensions.supergfxctl-gex
+  ];
 
   features = {
     oom.enable = true;
@@ -170,6 +165,4 @@ with lib; {
       };
     };
   };
-
-  programs.fuse.userAllowOther = true;
 }

@@ -33,7 +33,7 @@ in {
       networkmanager.enable = true;
 
       # Define your hostname.
-      hostName = cfg.hostName;
+      hostName = mkDefault cfg.hostName;
 
       # Define host file entries.
       extraHosts = concatStringsSep "\n" (mapAttrsToList (name: value: "${value} ${name}") cfg.hosts);
