@@ -102,7 +102,7 @@ in {
         gtk.iconTheme.name = "Adwaita";
         gtk.iconTheme.package = pkgs.adwaita-icon-theme;
 
-        dconf.settings = {
+        dconf.settings = with lib.hm.gvariant; {
           "org/gtk/settings/file-chooser".clock-format = "12h";
           "org/gnome/shell/app-switcher".current-workspace-only = true;
           "org/gnome/desktop/interface".color-scheme = "prefer-dark";
