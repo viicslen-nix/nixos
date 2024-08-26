@@ -31,17 +31,36 @@ in {
         src = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/";
         file = "powerlevel10k.zsh-theme";
       }
+      {
+        name = "fzf-tab";
+        src = inputs.fzf-tab;
+        file = "fzf-tab.plugin.zsh";
+      }
+      }
+      {
+        name = "laravel-sail";
+        src = inputs.laravel-sail;
+        file = "laravel-sail.plugin.zsh";
+      }
     ];
 
     oh-my-zsh = {
       enable = true;
       plugins = [
-        "git"
-        "npm"
         "history"
+        "git"
+        "gh"
+        "npm"
         "node"
-        "rust"
-        "deno"
+        "helm"
+        "kubectl"
+        "composer"
+        "1password"
+        "docker"
+        "docker-compose"
+        "laravel"
+        "zoxide"
+        "zsh-interactive-cd"
       ];
     };
 

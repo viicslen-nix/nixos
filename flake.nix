@@ -30,6 +30,16 @@
     # Impermanence
     impermanence.url = "github:nix-community/impermanence";
 
+    # Shell
+    laravel-sail = {
+      url = "github:ariaieboy/laravel-sail";
+      flake = false;
+    };
+    fzf-tab = {
+      url = "github:Aloxaf/fzf-tab";
+      flake = false;
+    };
+
     # NvChad
     nvchad = {
       url = "github:NvChad/nix";
