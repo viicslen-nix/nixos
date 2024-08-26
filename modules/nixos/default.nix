@@ -15,6 +15,7 @@
   hyprland = import ./hyprland;
   app-images = import ./app-images;
   localization = import ./localization;
+  impermanence = import ./impermanence;
   one-password = import ./one-password;
   virtual-machines = import ./virtual-machines;
 }

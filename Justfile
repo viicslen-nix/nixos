@@ -49,7 +49,7 @@ history:
 
 # Open a nix shell with the flake
 repl:
-  nix repl -f flake:nixpkgs
+  sudo nixos-rebuild repl --flake .
 
 # remove all generations older than 7 days
 clean:

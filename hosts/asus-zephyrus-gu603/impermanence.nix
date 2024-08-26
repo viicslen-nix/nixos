@@ -1,4 +1,8 @@
-{user, ...}: {
+{
+  user,
+  lib,
+  ...
+}: {
   fileSystems."/persist".neededForBoot = true;
 
   boot.initrd.postDeviceCommands = lib.mkAfter ''

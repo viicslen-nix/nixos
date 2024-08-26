@@ -14,7 +14,7 @@ with lib; {
     inputs.disko.nixosModules.disko
     (import ./disko.nix {device = "/dev/nvme0n1";})
     ./hardware.nix
-    ./impermanence.nix
+    # ./impermanence.nix
     ../../base/nixos
     ../../base/personal
     ../../base/work
@@ -127,6 +127,47 @@ with lib; {
     gnome = {
       enable = true;
       inherit user;
+    };
+
+    impermanence = {
+      inherit user;
+      enable = true;
+      home = {
+        share = [
+          "JetBrains"
+          "keyrings"
+          "direnv"
+          "mkcert"
+          "pnpm"
+        ];
+        config = [
+          "Slack"
+          "Insomnia"
+          "JetBrains"
+          "1Password"
+          "Mullvad VPN"
+          "microsoft-edge"
+          "composer"
+          "traefik"
+          "direnv"
+          "op"
+        ];
+        directories = [
+          ".ssh"
+          ".nix"
+          ".kube"
+          ".gnupg"
+          ".nixops"
+          ".docker"
+          ".tmux/resurrect"
+        ];
+        files = [
+          ".gitconfig"
+          ".zsh_history"
+          ".wakatime.cfg"
+          ".config/monitors.xml"
+        ];
+      };
     };
   };
 
