@@ -10,6 +10,7 @@
 with lib; {
   imports = [
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
+    inputs.disko.nixosModules.disko
     (import ./disko.nix {device = "/dev/nvme0n1";})
     ./hardware.nix
     ../../base/nixos
@@ -165,4 +166,19 @@ with lib; {
       };
     };
   };
+
+  virtualisation.oci-containers.containers = {
+     npm = {
+       image = "jc21/nginx-proxy-manager:latest";
+       ports = [
+        "127.0.0.1:80:80"
+        "127.0.0.1:443:443"
+        "127.0.0.1:81:81"
+        ];
+       volumes = [
+         "nginx-proxy-manager:/data"
+         "letsencrypt:/etc/letsencrypt"
+       ];
+     };
+   };
 }
