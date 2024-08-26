@@ -181,7 +181,7 @@ with lib; {
        ];
        extraOptions = ''
           --network=takeout
-       ''
+       '';
      };
    };
 }
