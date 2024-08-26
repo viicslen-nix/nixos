@@ -180,7 +180,7 @@ with lib; {
          "letsencrypt:/etc/letsencrypt"
        ];
        extraOptions = [
-        "--network=takeout"
+        "--network=npm"
        ];
      };
    };
