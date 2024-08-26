@@ -7,7 +7,7 @@
   user,
   ...
 }: {
-  imports = [ ./dconf.nix ];
+  imports = [./dconf.nix];
 
   features.impermanence = {
     enable = true;

@@ -1,24 +1,21 @@
 # Generated via dconf2nix: https://github.com/gvolpe/dconf2nix
-{ lib, ... }:
-
-with lib.hm.gvariant;
-
-{
+{lib, ...}:
+with lib.hm.gvariant; {
   dconf.settings = {
     # Apps and Keybindings
     "org/gnome/shell" = {
-      favorite-apps = [ "org.gnome.Nautilus.desktop" "microsoft-edge.desktop" "phpstorm.desktop" "kitty.desktop" "slack.desktop" ];
+      favorite-apps = ["org.gnome.Nautilus.desktop" "microsoft-edge.desktop" "phpstorm.desktop" "kitty.desktop" "slack.desktop"];
     };
 
     "org/gnome/shell/keybindings" = {
-      screenshot = [ "<Shift><Alt><Super>s" ];
-      screenshot-window = [ "<Control><Alt><Super>s" ];
-      show-screen-recording-ui = [ "<Shift><Super>r" ];
-      show-screenshot-ui = [ "<Shift><Super>s" ];
+      screenshot = ["<Shift><Alt><Super>s"];
+      screenshot-window = ["<Control><Alt><Super>s"];
+      show-screen-recording-ui = ["<Shift><Super>r"];
+      show-screenshot-ui = ["<Shift><Super>s"];
     };
 
     "org/gnome/settings-daemon/plugins/media-keys" = {
-      custom-keybindings = [ "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/" ];
+      custom-keybindings = ["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"];
       screenreader = [];
     };
 
@@ -41,7 +38,7 @@ with lib.hm.gvariant;
     "org/gnome/shell/extensions/blur-my-shell/applications" = {
       blur = true;
       dynamic-opacity = false;
-      whitelist = [ "kitty" ];
+      whitelist = ["kitty"];
     };
 
     "org/gnome/shell/extensions/dash-to-panel" = {
@@ -65,11 +62,11 @@ with lib.hm.gvariant;
       custom-menu-button-icon-size = 30.0;
       distro-icon = 22;
       menu-button-appearance = "Icon";
-      menu-button-border-color = mkTuple [ true "transparent" ];
-      menu-button-border-radius = mkTuple [ true 10 ];
+      menu-button-border-color = mkTuple [true "transparent"];
+      menu-button-border-radius = mkTuple [true 10];
       menu-button-icon = "Distro_Icon";
       multi-monitor = true;
-      runner-hotkey = [ "<Control>Super_L" ];
+      runner-hotkey = ["<Control>Super_L"];
     };
   };
 
