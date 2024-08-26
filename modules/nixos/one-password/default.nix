@@ -31,8 +31,6 @@ in {
       default = true;
       description = "Enable autostart for 1Password";
     };
-    zshIntegration = mkEnableOption "Zsh integration";
-    ghIntegration = mkEnableOption "GitHub integration";
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -49,11 +47,6 @@ in {
       # Configure the environment variable for the 1Password socket
       environment.sessionVariables = {
         SSH_AUTH_SOCK = cfg.socket;
-        OP_PLUGIN_ALIASES_SOURCED = mkIf cfg.ghIntegration "1";
-      };
-
-      programs.zsh.shellAliases = mkIf cfg.zshIntegration {
-        gh = mkIf cfg.ghIntegration "op plugin run -- gh";
       };
     }
     (mkIf homeManagerLoaded {
@@ -64,9 +57,6 @@ in {
 
           # Skip the SSH agent workaround
           GSM_SKIP_SSH_AGENT_WORKAROUND = "1";
-
-          # Enable the 1Password GitHub integration
-          OP_PLUGIN_ALIASES_SOURCED = mkIf cfg.ghIntegration "1";
         };
 
         xdg = {
@@ -109,11 +99,6 @@ in {
             };
           }
         ];
-
-        # Configure the Zsh shell to use the 1Password GitHub integration
-        programs.zsh.shellAliases = mkIf cfg.zshIntegration {
-          gh = mkIf cfg.ghIntegration "op plugin run -- gh";
-        };
       };
     })
   ]);
