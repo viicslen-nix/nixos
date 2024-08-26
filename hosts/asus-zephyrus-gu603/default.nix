@@ -179,6 +179,9 @@ with lib; {
          "nginx-proxy-manager:/data"
          "letsencrypt:/etc/letsencrypt"
        ];
+       extraOptions = ''
+          --network=takeout
+       ''
      };
    };
 }
