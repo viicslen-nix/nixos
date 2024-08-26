@@ -415,6 +415,22 @@
         "type": "github"
       }
     },
+    "fzf-tab": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1722560707,
+        "narHash": "sha256-By6Bgc8Fu79eNTSfCusT57RP7P3XHeekjp4YhsKZS1Y=",
+        "owner": "Aloxaf",
+        "repo": "fzf-tab",
+        "rev": "7fed01afba9392b6392408b9a0cf888522ed7a10",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Aloxaf",
+        "repo": "fzf-tab",
+        "type": "github"
+      }
+    },
     "gnome-shell": {
       "flake": false,
       "locked": {
@@ -898,6 +914,22 @@
         "type": "github"
       }
     },
+    "laravel-sail": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1709737301,
+        "narHash": "sha256-XSxGnG3ReQ24hXf3j/Rsbtgi19IBQYlNmasNniq8GN4=",
+        "owner": "ariaieboy",
+        "repo": "laravel-sail",
+        "rev": "ab29f33b5d8b5d074afe569d87f19d63af4a9cae",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ariaieboy",
+        "repo": "laravel-sail",
+        "type": "github"
+      }
+    },
     "lib-aggregate": {
       "inputs": {
         "flake-utils": "flake-utils_3",
@@ -1356,6 +1388,7 @@
         "base16": "base16",
         "chaotic": "chaotic",
         "disko": "disko",
+        "fzf-tab": "fzf-tab",
         "home-manager": "home-manager_2",
         "hypridle": "hypridle",
         "hyprland": "hyprland",
@@ -1364,6 +1397,7 @@
         "hyprpaper": "hyprpaper",
         "impermanence": "impermanence",
         "lan-mouse": "lan-mouse",
+        "laravel-sail": "laravel-sail",
         "nix-alien": "nix-alien",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_5",
