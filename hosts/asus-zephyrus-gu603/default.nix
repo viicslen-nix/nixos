@@ -18,9 +18,7 @@ with lib; {
     ../../base/work
   ];
 
-  home-manager.users.${user}.imports = [
-    ./dconf.nix
-  ];
+  home-manager.users.${user} = import ./home.nix;
 
   networking.hostId = "86f2c355";
   networking.hostName = "asus-zephyrus-gu603";

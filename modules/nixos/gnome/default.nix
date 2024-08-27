@@ -105,8 +105,12 @@ in {
         dconf.settings = {
           "org/gtk/settings/file-chooser".clock-format = "12h";
           "org/gnome/shell/app-switcher".current-workspace-only = true;
-          "org/gnome/desktop/interface".color-scheme = "prefer-dark";
+          "org/gnome/settings-daemon/plugins/media-keys".screenreader = [];
           "org/gnome/desktop/wm/preferences".button-layout = lib.mkDefault ":minimize,maximize,close";
+          "org/gnome/desktop/interface" = {
+            clock-format = "12h";
+            color-scheme = "prefer-dark";
+          };
           "org/gnome/mutter" = {
             dynamic-workspaces = true;
             experimental-features = ["scale-monitor-framebuffer"];
@@ -114,6 +118,150 @@ in {
           "org/gnome/shell" = {
             disable-user-extensions = false;
             enabled-extensions = lists.forEach cfg.extensions (x: x.extensionUuid);
+          };
+          "org/gnome/shell/keybindings" = {
+            screenshot = ["<Shift><Alt><Super>s"];
+            screenshot-window = ["<Control><Alt><Super>s"];
+            show-screen-recording-ui = ["<Shift><Super>r"];
+            show-screenshot-ui = ["<Shift><Super>s"];
+          };
+
+          # Extensions
+          "org/gnome/shell/extensions/lennart-k/rounded_corners" = {
+            corner-radius = 7;
+          };
+
+          "org/gnome/shell/extensions/astra-monitor" = {
+            network-header-show = false;
+            storage-header-show = false;
+          };
+
+          "org/gnome/shell/extensions/blur-my-shell/applications" = {
+            blur = true;
+            dynamic-opacity = false;
+          };
+
+          "org/gnome/shell/extensions/arcmenu" = {
+            arcmenu-hotkey = [];
+            button-padding = 10;
+            custom-menu-button-icon-size = 30.0;
+            distro-icon = 22;
+            menu-button-appearance = "Icon";
+            menu-button-border-color = lib.hm.gvariant.mkTuple [true "transparent"];
+            menu-button-border-radius = lib.hm.gvariant.mkTuple [true 10];
+            menu-button-icon = "Distro_Icon";
+            multi-monitor = true;
+            runner-hotkey = ["<Control>Super_L"];
+          };
+
+          "org/gnome/shell/extensions/dash-to-panel" = {
+            dot-color-dominant = true;
+            dot-color-override = false;
+            focus-highlight-dominant = true;
+            hide-overview-on-startup = true;
+            isolate-monitors = true;
+            isolate-workspaces = true;
+            overview-click-to-exit = true;
+            panel-element-positions = ''
+              {
+                "0": [
+                  {
+                    "element": "showAppsButton",
+                    "visible": false,
+                    "position": "stackedTL"
+                  },
+                  {
+                    "element": "activitiesButton",
+                    "visible": false,
+                    "position": "stackedTL"
+                  },
+                  {
+                    "element": "leftBox",
+                    "visible": true,
+                    "position": "stackedTL"
+                  },
+                  {
+                    "element": "taskbar",
+                    "visible": true,
+                    "position": "stackedTL"
+                  },
+                  {
+                    "element": "centerBox",
+                    "visible": true,
+                    "position": "stackedBR"
+                  },
+                  {
+                    "element": "rightBox",
+                    "visible": true,
+                    "position": "stackedBR"
+                  },
+                  {
+                    "element": "dateMenu",
+                    "visible": true,
+                    "position": "stackedBR"
+                  },
+                  {
+                    "element": "systemMenu",
+                    "visible": true,
+                    "position": "stackedBR"
+                  },
+                  {
+                    "element": "desktopButton",
+                    "visible": true,
+                    "position": "stackedBR"
+                  }
+                ],
+                "1": [
+                  {
+                    "element": "showAppsButton",
+                    "visible": false,
+                    "position": "stackedTL"
+                  },
+                  {
+                    "element": "activitiesButton",
+                    "visible": false,
+                    "position": "stackedTL"
+                  },
+                  {
+                    "element": "leftBox",
+                    "visible": true,
+                    "position": "stackedTL"
+                  },
+                  {
+                    "element": "taskbar",
+                    "visible": true,
+                    "position": "stackedTL"
+                  },
+                  {
+                    "element": "centerBox",
+                    "visible": true,
+                    "position": "stackedBR"
+                  },
+                  {
+                    "element": "rightBox",
+                    "visible": true,
+                    "position": "stackedBR"
+                  },
+                  {
+                    "element": "dateMenu",
+                    "visible": true,
+                    "position": "stackedBR"
+                  },
+                  {
+                    "element": "systemMenu",
+                    "visible": true,
+                    "position": "stackedBR"
+                  },
+                  {
+                    "element": "desktopButton",
+                    "visible": true,
+                    "position": "stackedBR"
+                  }
+                ]
+              }
+            '';
+            trans-use-custom-opacity = true;
+            trans-use-dynamic-opacity = true;
           };
         };
       };

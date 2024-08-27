@@ -37,5 +37,9 @@ in {
         modify_font strikethrough_position 150%
       '';
     };
+
+    programs.dconf.settings."org/gnome/shell/extensions/blur-my-shell/applications" = {
+      whitelist = ["kitty"];
+    };
   };
 }
