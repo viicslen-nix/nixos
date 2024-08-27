@@ -157,6 +157,7 @@ with lib; {
           ".ssh"
           ".nix"
           ".kube"
+          ".java"
           ".gnupg"
           ".nixops"
           ".docker"
