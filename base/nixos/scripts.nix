@@ -153,5 +153,36 @@
       # Cleaning up temporary file
       rm "$temp_file"
     '')
+    (pkgs.writeShellScriptBin "search-package-files" ''
+      # Check if a string argument is provided
+      if [ "$#" -ne 1 ]; then
+          echo "Usage: $0 <search-string>"
+          exit 1
+      fi
+
+      # Store the search string
+      search_string="$1"
+
+      # Define an array of paths to exclude
+      exclude_paths=(
+          "/nix"
+          "/persist"
+          "/sys"
+          "/proc"
+          "/run"
+      )
+
+      # Create the find command's prune arguments
+      prune_args=""
+      for path in "''${exclude_paths[@]}"; do
+          prune_args+=" -path $path -o"
+      done
+
+      # Remove the last ' -o' from the arguments
+      prune_args="''${prune_args% -o}"
+
+      # Perform the search with sudo
+      sudo find / \( $prune_args \) -prune -o -name "*$search_string*" -print 2>/dev/null
+    '')
   ];
 }

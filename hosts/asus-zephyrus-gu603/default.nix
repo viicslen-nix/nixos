@@ -128,6 +128,9 @@ with lib; {
     impermanence = {
       inherit user;
       enable = true;
+      directories = [
+        "/etc/mullvad-vpn"
+      ];
       home = {
         share = [
           "JetBrains"
@@ -135,8 +138,10 @@ with lib; {
           "direnv"
           "mkcert"
           "pnpm"
+          "nvim"
         ];
         config = [
+          "Code"
           "Slack"
           "Insomnia"
           "JetBrains"
