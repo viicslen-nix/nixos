@@ -57,6 +57,11 @@
       tmux.enableShellIntegration = true;
     };
 
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
     hstr = {
       enable = true;
       enableZshIntegration = true;

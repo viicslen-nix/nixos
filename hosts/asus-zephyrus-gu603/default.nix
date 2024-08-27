@@ -160,6 +160,7 @@ with lib; {
           ".java"
           ".gnupg"
           ".nixops"
+          ".vscode"
           ".docker"
           ".tmux/resurrect"
         ];
