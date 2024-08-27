@@ -101,7 +101,7 @@ in {
         ];
 
         # Configure the 1Password quick access keybinding for gnome
-        programs.dconf.settings = {
+        dconf.settings = {
           "org/gnome/settings-daemon/plugins/media-keys" = {
             custom-keybindings = ["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"];
           };
