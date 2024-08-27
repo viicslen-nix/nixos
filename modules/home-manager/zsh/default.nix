@@ -77,6 +77,7 @@ in {
       dsl = "dev-shell laravel";
       dsk = "dev-shell kubernetes";
       o = "xdg-open";
+      spf = "search-package-files";
     };
   };
 }
