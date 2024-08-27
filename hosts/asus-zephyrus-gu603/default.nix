@@ -175,20 +175,20 @@ with lib; {
   };
 
   virtualisation.oci-containers.containers = {
-     npm = {
-       image = "jc21/nginx-proxy-manager:latest";
-       ports = [
+    npm = {
+      image = "jc21/nginx-proxy-manager:latest";
+      ports = [
         "127.0.0.1:80:80"
         "127.0.0.1:443:443"
         "127.0.0.1:81:81"
-        ];
-       volumes = [
-         "nginx-proxy-manager:/data"
-         "letsencrypt:/etc/letsencrypt"
-       ];
-       extraOptions = [
+      ];
+      volumes = [
+        "nginx-proxy-manager:/data"
+        "letsencrypt:/etc/letsencrypt"
+      ];
+      extraOptions = [
         "--network=npm"
-       ];
-     };
-   };
+      ];
+    };
+  };
 }

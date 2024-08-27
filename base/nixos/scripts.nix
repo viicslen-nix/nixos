@@ -154,14 +154,23 @@
       rm "$temp_file"
     '')
     (pkgs.writeShellScriptBin "search-package-files" ''
-      # Check if a string argument is provided
-      if [ "$#" -ne 1 ]; then
-          echo "Usage: $0 <search-string>"
+      # Check if at least one argument (the search string) is provided
+      if [ "$#" -lt 1 ]; then
+          echo "Usage: $0 <search-string> [search-path]"
           exit 1
       fi
 
       # Store the search string
       search_string="$1"
+
+      # Store the search path; default to root if not provided
+      search_path="''${2:-/}"
+
+      # Check if the provided path is a valid directory
+      if [ ! -d "$search_path" ]; then
+          echo "Error: '$search_path' is not a valid directory."
+          exit 1
+      fi
 
       # Define an array of paths to exclude
       exclude_paths=(
@@ -182,7 +191,7 @@
       prune_args="''${prune_args% -o}"
 
       # Perform the search with sudo
-      sudo find / \( $prune_args \) -prune -o -name "*$search_string*" -exec sh -c '
+      sudo find "$search_path" \( $prune_args \) -prune -o -name "$search_string" -exec sh -c '
           for filepath; do
               if [ -d "$filepath" ]; then
                   echo "Directory: $filepath"
