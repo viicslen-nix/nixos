@@ -174,15 +174,25 @@
 
       # Create the find command's prune arguments
       prune_args=""
-      for path in "''${exclude_paths[@]}"; do
+      for path in "${exclude_paths[@]}"; do
           prune_args+=" -path $path -o"
       done
 
       # Remove the last ' -o' from the arguments
-      prune_args="''${prune_args% -o}"
+      prune_args="${prune_args% -o}"
 
       # Perform the search with sudo
-      sudo find / \( $prune_args \) -prune -o -name "*$search_string*" -print 2>/dev/null
+      sudo find / \( $prune_args \) -prune -o -name "*$search_string*" -exec sh -c '
+          for filepath; do
+              if [ -d "$filepath" ]; then
+                  echo "Directory: $filepath"
+              elif [ -f "$filepath" ]; then
+                  echo "File: $filepath"
+              else
+                  echo "Unknown: $filepath"
+              fi
+          done
+      ' sh {} + 2>/dev/null
     '')
   ];
 }
