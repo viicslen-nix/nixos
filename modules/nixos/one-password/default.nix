@@ -78,14 +78,8 @@ in {
         };
 
         # Configure the SSH client to use the 1Password socket
-        programs.ssh = {
-          enable = true;
-          extraConfig = ''
-            Host *
-              IdentityAgent ${cfg.socket}
-
-            Include ~/.ssh/config.d/hosts
-          '';
+        programs.ssh.matchBlocks."*".extraOptions = {
+          IdentityAgent = cfg.socket;
         };
 
         # Configure git to sign commits with the 1Password SSH key

@@ -32,6 +32,11 @@
   programs = {
     home-manager.enable = true;
 
+    ssh = {
+      enable = true;
+      controlPath = "/home/${user}/.ssh/controlmasters/%r@%h:%p";
+    };
+
     git = {
       enable = true;
       delta.enable = true;
