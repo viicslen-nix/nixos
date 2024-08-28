@@ -38,7 +38,7 @@ in {
       '';
     };
 
-    programs.dconf.settings."org/gnome/shell/extensions/blur-my-shell/applications" = {
+    dconf.settings."org/gnome/shell/extensions/blur-my-shell/applications" = {
       whitelist = ["kitty"];
     };
   };

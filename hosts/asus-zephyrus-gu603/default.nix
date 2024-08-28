@@ -151,6 +151,9 @@ with lib; {
           "direnv"
           "op"
         ];
+        cache = [
+          "JetBrains"
+        ];
         directories = [
           ".ssh"
           ".nix"

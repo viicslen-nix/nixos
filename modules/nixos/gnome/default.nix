@@ -147,8 +147,6 @@ in {
             custom-menu-button-icon-size = 30.0;
             distro-icon = 22;
             menu-button-appearance = "Icon";
-            menu-button-border-color = lib.hm.gvariant.mkTuple [true "transparent"];
-            menu-button-border-radius = lib.hm.gvariant.mkTuple [true 10];
             menu-button-icon = "Distro_Icon";
             multi-monitor = true;
             runner-hotkey = ["<Control>Super_L"];

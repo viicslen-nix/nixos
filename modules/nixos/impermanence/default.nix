@@ -33,33 +33,38 @@ in {
     directories = mkOption {
       type = types.listOf types.str;
       default = [];
-      description = "Directories to save after reboot";
+      description = "Directories to keep after reboot";
     };
     files = mkOption {
       type = types.listOf types.str;
       default = [];
-      description = "Files to save after reboot";
+      description = "Files to keep after reboot";
     };
     home = {
-      config = mkOption {
-        type = types.listOf types.str;
-        default = [];
-        description = "Config directories to save after reboot";
-      };
       share = mkOption {
         type = types.listOf types.str;
         default = [];
-        description = "Share directories to save after reboot";
+        description = "Share directories to keep after reboot";
+      };
+      config = mkOption {
+        type = types.listOf types.str;
+        default = [];
+        description = "Config directories to keep after reboot";
+      };
+      cache = mkOption {
+        type = types.listOf types.str;
+        default = [];
+        description = "Cache directories to keep after reboot";
       };
       directories = mkOption {
         type = types.listOf types.str;
         default = [];
-        description = "Directories to save after reboot";
+        description = "Directories to keep after reboot";
       };
       files = mkOption {
         type = types.listOf types.str;
         default = [];
-        description = "Files to save after reboot";
+        description = "Files to keep after reboot";
       };
     };
   };
@@ -131,8 +136,9 @@ in {
 
       home.persistence."${cfg.persistencePath}/home/${cfg.user}" = {
         directories = concatLists [
-          (lists.forEach cfg.home.config (dir: ".config/${dir}"))
           (lists.forEach cfg.home.share (dir: ".local/share/${dir}"))
+          (lists.forEach cfg.home.config (dir: ".config/${dir}"))
+          (lists.forEach cfg.home.cache (dir: ".cache/${dir}"))
           cfg.home.directories
           [
             "Development"
