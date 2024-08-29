@@ -26,6 +26,9 @@
     };
   };
 
+  nixpkgs.config = import ./nixpkgs.nix;
+  xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs.nix;
+
   features.zsh.enable = true;
   features.tmux.enable = true;
 
