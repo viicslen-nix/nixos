@@ -8,6 +8,21 @@
 with lib; let
   cfg = config.features.gnome;
   homeManagerLoaded = builtins.hasAttr "home-manager" options;
+  defaultExtensions = [
+    pkgs.gnomeExtensions.appindicator
+    pkgs.gnomeExtensions.blur-my-shell
+    pkgs.gnomeExtensions.dash-to-panel
+    pkgs.gnomeExtensions.arcmenu
+    pkgs.gnomeExtensions.user-themes
+    pkgs.gnomeExtensions.autohide-battery
+    pkgs.gnomeExtensions.supergfxctl-gex
+    pkgs.gnomeExtensions.caffeine
+    pkgs.gnomeExtensions.gsconnect
+    pkgs.gnomeExtensions.arrange-windows
+    pkgs.gnomeExtensions.rounded-corners
+    pkgs.gnomeExtensions.astra-monitor
+  ];
+  enabledExtensions = cfg.additionalExtensions ++ defaultExtensions;
 in {
   options.features.gnome = {
     enable = mkEnableOption (mdDoc "gnome");
@@ -38,22 +53,9 @@ in {
       description = "List of packages to exclude from default gnome install";
     };
 
-    extensions = mkOption {
+    additionalExtensions = mkOption {
       type = types.listOf types.package;
-      default = [
-        pkgs.gnomeExtensions.appindicator
-        pkgs.gnomeExtensions.blur-my-shell
-        pkgs.gnomeExtensions.dash-to-panel
-        pkgs.gnomeExtensions.arcmenu
-        pkgs.gnomeExtensions.user-themes
-        pkgs.gnomeExtensions.autohide-battery
-        pkgs.gnomeExtensions.supergfxctl-gex
-        pkgs.gnomeExtensions.caffeine
-        pkgs.gnomeExtensions.gsconnect
-        pkgs.gnomeExtensions.arrange-windows
-        pkgs.gnomeExtensions.rounded-corners
-        pkgs.gnomeExtensions.astra-monitor
-      ];
+      default = [];
       description = "List of extensions to install and enable";
     };
   };
@@ -83,13 +85,11 @@ in {
       services.udev.packages = with pkgs; [gnome.gnome-settings-daemon];
 
       # Install GNOME Tweaks
-      environment.systemPackages = with pkgs;
-        [
-          adw-gtk3
-          gnome-tweaks
-          adwaita-icon-theme
-        ]
-        ++ cfg.extensions;
+      environment.systemPackages = with pkgs; [
+        adw-gtk3
+        gnome-tweaks
+        adwaita-icon-theme
+      ] ++ enabledExtensions;
 
       # Required for some GNOME extensions
       environment.variables = {
@@ -117,7 +117,7 @@ in {
           };
           "org/gnome/shell" = {
             disable-user-extensions = false;
-            enabled-extensions = lists.forEach cfg.extensions (x: x.extensionUuid);
+            enabled-extensions = lists.forEach (enabledExtensions) (x: x.extensionUuid);
           };
           "org/gnome/shell/keybindings" = {
             screenshot = ["<Shift><Alt><Super>s"];
@@ -160,6 +160,8 @@ in {
             isolate-monitors = true;
             isolate-workspaces = true;
             overview-click-to-exit = true;
+            trans-use-custom-opacity = true;
+            trans-use-dynamic-opacity = true;
             panel-element-positions = ''
               {
                 "0": [
@@ -258,8 +260,6 @@ in {
                 ]
               }
             '';
-            trans-use-custom-opacity = true;
-            trans-use-dynamic-opacity = true;
           };
         };
       };

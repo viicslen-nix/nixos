@@ -121,6 +121,9 @@ with lib; {
     gnome = {
       enable = true;
       inherit user;
+      additionalExtensions = [
+        pkgs.draw-on-your-screen2
+      ];
     };
 
     impermanence = {

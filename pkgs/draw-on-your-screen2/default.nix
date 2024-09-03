@@ -2,17 +2,18 @@
 , stdenv
 , fetchFromGitHub
 , nixosTests
+, pkgs
 }: let
   uuid = "draw-on-your-screen2@zhrexl.github.com";
 in stdenv.mkDerivation rec {
   pname = "draw-on-your-screen2";
-  version = "12";
+  version = "9b5c6633a1c2b8c5b35bac45276ad1302542ab9b";
 
   src = fetchFromGitHub {
     owner = "zhrexl";
     repo = "DrawOnYourScreen2";
-    rev = "v${version}";
-    hash = "sha256-xmZ3IgezB1t8MeHtwtyiXqu0zEcQQyYpmzJ5TjcqI8E=";
+    rev = "${version}";
+    hash = "sha256-J4ljx3HBe+86PGOIIgabtj8AuUAf88/bpTfRXowUng4=";
   };
 
   nativeBuildInputs = with pkgs; [ buildPackages.glib ];
