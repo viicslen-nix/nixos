@@ -146,6 +146,7 @@ with lib; {
           "1Password"
           "Mullvad VPN"
           "microsoft-edge"
+          "tinkerwell"
           "composer"
           "traefik"
           "direnv"

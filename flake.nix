@@ -99,6 +99,7 @@
 
     nix-alien.url = "github:thiagokokada/nix-alien";
     lan-mouse.url = "github:feschber/lan-mouse";
+    one-password-shell-plugins.url = "github:1Password/shell-plugins";
   };
 
   outputs = {

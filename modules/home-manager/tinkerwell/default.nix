@@ -8,14 +8,14 @@
 with lib; let
   name = "tinkerwell";
   namespace = "programs";
-  version = "4.17.0";
+  version = "4.19.0";
 
   cfg = config.${namespace}.${name};
   appImage = pkgs.appimageTools.wrapType2 {
     inherit name;
     src = pkgs.fetchurl {
       url = "https://download.tinkerwell.app/tinkerwell/Tinkerwell-${version}.AppImage";
-      hash = "sha256-xxPmZuA3tD20S+/u0nMHNekoogIzkGW0M0Bb8BKxFyQ=";
+      hash = "sha256-+K8YOIyK8KklZwzK9kBXXOLSvBOpBxDbwpvV8+hdSH4=";
     };
   };
 in {

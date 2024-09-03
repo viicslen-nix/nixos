@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  inputs,
   options,
   ...
 }:
@@ -31,6 +32,11 @@ in {
       default = true;
       description = "Enable autostart for 1Password";
     };
+    plugins = mkOption {
+      type = types.listOf types.package;
+      default = [ pkgs.gh ];
+      description = "The list of shell plugins to install";
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -51,6 +57,10 @@ in {
     }
     (mkIf homeManagerLoaded {
       home-manager.users.${cfg.user} = {
+        imports = [
+          inputs.one-password-shell-plugins.hmModules.default 
+        ];
+
         # Configure the environment variable for the 1Password socket
         home.sessionVariables = {
           SSH_AUTH_SOCK = cfg.socket;
@@ -77,6 +87,14 @@ in {
           );
         };
 
+        programs._1password-shell-plugins = {
+          # enable 1Password shell plugins for bash, zsh, and fish shell
+          enable = true;
+          # the specified packages as well as 1Password CLI will be
+          # automatically installed and configured to use shell plugins
+          plugins = cfg.plugins;
+        };
+
         # Configure the SSH client to use the 1Password socket
         programs.ssh.matchBlocks."*".extraOptions = {
           IdentityAgent = cfg.socket;
@@ -89,7 +107,7 @@ in {
               user.signingkey = cfg.gitSignKey;
               commit.gpgSign = true;
               gpg.format = "ssh";
-              "gpg \"ssh\"".program = "${pkgs._1password-gui}/bin/op-ssh-sign";
+              "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
             };
           }
         ];
