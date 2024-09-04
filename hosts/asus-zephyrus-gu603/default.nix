@@ -137,6 +137,7 @@ with lib; {
           "JetBrains"
           "keyrings"
           "direnv"
+          "zoxide"
           "mkcert"
           "pnpm"
           "nvim"
@@ -159,6 +160,7 @@ with lib; {
           "JetBrains"
         ];
         directories = [
+          ".pki"
           ".ssh"
           ".nix"
           ".kube"
