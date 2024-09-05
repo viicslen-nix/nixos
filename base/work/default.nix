@@ -66,7 +66,6 @@ in {
     nodejs_20
     corepack_20
     mysql80
-    mkcert
     awscli
     meld
     kubectl
