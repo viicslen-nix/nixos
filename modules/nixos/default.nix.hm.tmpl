@@ -6,12 +6,14 @@
   ...
 }:
 with lib; let
-  feature = "firefox";
-  cfg = config.features.${feature};
+  name = "impermanence";
+  namespace = "features";
+
+  cfg = config.${namespace}.${name};
   homeManagerLoaded = builtins.hasAttr "home-manager" options;
 in {
-  options.features.${feature} = {
-    enable = mkEnableOption (mdDoc feature);
+  options.features.${name} = {
+    enable = mkEnableOption (mdDoc name);
   };
 
   config = mkIf cfg.enable (mkMerge [

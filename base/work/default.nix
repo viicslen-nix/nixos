@@ -128,5 +128,11 @@ in {
         23517
       ];
     };
+
+    mkcert = {
+      enable = true;
+      rootCA.enable = false;
+      rootCA.users = [user];
+    };
   };
 }

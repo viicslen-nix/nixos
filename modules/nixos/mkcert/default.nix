@@ -10,8 +10,8 @@ with lib; let
 
   cfg = config.${namespace}.${name};
 in {
-  options.${namespace}.${feature} = {
-    enable = mkEnableOption (mdDoc feature);
+  options.${namespace}.${name} = {
+    enable = mkEnableOption (mdDoc name);
     rootCA = {
       enable = mkEnableOption "Enable mkcert root CA certificate.";
       users = mkOption {

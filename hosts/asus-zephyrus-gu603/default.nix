@@ -126,12 +126,6 @@ with lib; {
       ];
     };
 
-    mkcert = {
-      enable = true;
-      rootCA.enable = true;
-      rootCA.users = [ user ];
-    };
-
     impermanence = {
       inherit user;
       enable = true;
