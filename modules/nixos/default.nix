@@ -8,6 +8,7 @@
   gnome = import ./gnome;
   sound = import ./sound;
   docker = import ./docker;
+  mkcert = import ./mkcert;
   podman = import ./podman;
   theming = import ./theming;
   network = import ./network;

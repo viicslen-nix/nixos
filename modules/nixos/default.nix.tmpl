@@ -5,10 +5,12 @@
   ...
 }:
 with lib; let
-  feature = "firefox";
-  cfg = config.features.${feature};
+  name = "impermanence";
+  namespace = "features";
+
+  cfg = config.${namespace}.${name};
 in {
-  options.features.${feature} = {
+  options.${namespace}.${feature} = {
     enable = mkEnableOption (mdDoc feature);
   };
 
