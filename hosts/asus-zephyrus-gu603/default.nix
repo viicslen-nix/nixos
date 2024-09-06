@@ -197,5 +197,21 @@ with lib; {
         "--network=npm"
       ];
     };
+
+    mysql = {
+      image = "percona/percona-server:latest";
+      ports = [
+        "127.0.0.1:3306:3306"
+      ];
+      volumes = [
+        "percona-mysql:/var/lib/mysql"
+      ];
+      environment = {
+        MYSQL_ROOT_PASSWORD = "secret";
+      };
+      extraOptions = [
+        "--network=npm"
+      ];
+    };
   };
 }
