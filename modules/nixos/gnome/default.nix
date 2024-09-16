@@ -41,14 +41,16 @@ in {
 
     exclude = mkOption {
       type = types.listOf types.package;
-      default = [
-        pkgs.gnome-tour
-        pkgs.gnome.gnome-music
-        pkgs.gnome.tali # poker game
-        pkgs.gnome.iagno # go game
-        pkgs.gnome.hitori # sudoku game
-        pkgs.gnome.atomix # puzzle game
-        pkgs.gnome.gnome-remote-desktop
+      default = with pkgs; [
+        gnome-tour
+        gnome-music
+        gnome-remote-desktop
+        cheese # webcam tool
+        epiphany # web browser
+        tali # poker game
+        iagno # go game
+        hitori # sudoku game
+        atomix # puzzle game
       ];
       description = "List of packages to exclude from default gnome install";
     };
@@ -82,7 +84,7 @@ in {
       # Enable Seahorse to manage keyring
       programs.seahorse.enable = true;
 
-      services.udev.packages = with pkgs; [gnome.gnome-settings-daemon];
+      services.udev.packages = with pkgs; [gnome-settings-daemon];
 
       # Install GNOME Tweaks
       environment.systemPackages = with pkgs; [
@@ -129,6 +131,12 @@ in {
           # Extensions
           "org/gnome/shell/extensions/lennart-k/rounded_corners" = {
             corner-radius = 7;
+          };
+
+          "org/gnome/shell/extensions/caffeine" = {
+            indicator-position-max = 3;
+            toggle-state = true;
+            user-enabled = true;
           };
 
           "org/gnome/shell/extensions/astra-monitor" = {

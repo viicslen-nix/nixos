@@ -13,10 +13,7 @@
     insomnia
     nix-alien
     nix-init
-    qemu
-    quickemu
-    quickgui
-    openlens
+    lens
     skypeforlinux
     # stable.redisinsight
     kdePackages.kcachegrind
