@@ -141,7 +141,10 @@ in {
           (lists.forEach cfg.home.cache (dir: ".cache/${dir}"))
           cfg.home.directories
           [
-            "Development"
+            {
+              directory = "Development";
+              method = "symlink";
+            }
             "Documents"
             "Downloads"
             "Pictures"
