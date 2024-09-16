@@ -130,4 +130,56 @@ in {
       rootCA.users = [user];
     };
   };
+
+  virtualisation.oci-containers.containers = {
+    npm = {
+      hostname = "npm";
+      image = "jc21/nginx-proxy-manager:latest";
+      ports = [
+        "127.0.0.1:80:80"
+        "127.0.0.1:443:443"
+        "127.0.0.1:81:81"
+      ];
+      volumes = [
+        "nginx-proxy-manager:/data"
+        "letsencrypt:/etc/letsencrypt"
+      ];
+      extraOptions = [
+        "--network=npm"
+      ];
+    };
+
+    mysql = {
+      hostname = "mysql";
+      image = "percona/percona-server:latest";
+      ports = [
+        "127.0.0.1:3306:3306"
+      ];
+      volumes = [
+        "percona-mysql:/var/lib/mysql"
+      ];
+      environment = {
+        MYSQL_ROOT_PASSWORD = "secret";
+      };
+      extraOptions = [
+        "--network=npm"
+      ];
+    };
+
+    portainer = {
+      hostname = "portainer";
+      image = "portainer/portainer-ee:latest";
+      ports = [
+        "127.0.0.1:8000:8000"
+        "127.0.0.1:9443:9443"
+      ];
+      volumes = [
+        "portainer:/data"
+        "/var/run/docker.sock:/var/run/docker.sock"
+      ];
+      extraOptions = [
+        "--network=npm"
+      ];
+    };
+  };
 }
