@@ -75,11 +75,6 @@ in {
     atlas
   ];
 
-  services.mysql = {
-    enable = true;
-    package = pkgs.percona-server;
-  };
-
   programs.zsh.shellAliases = {
     dep = "composer exec -- dep";
     takeout = "composer global exec -- takeout";
@@ -99,6 +94,7 @@ in {
       # Development
       "home.local" = "127.0.0.1";
       "buggregator.local" = "127.0.0.1";
+      "npm.local" = "127.0.0.1";
       "portainer.local" = "127.0.0.1";
       "phpmyadmin.local" = "127.0.0.1";
       "selldiam.test" = "127.0.0.1";

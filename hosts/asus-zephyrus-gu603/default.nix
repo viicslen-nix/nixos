@@ -32,8 +32,13 @@ with lib; {
       "nvidia_drm.fbdev=1" # Nvidia DRM
     ];
 
-    loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = false;
+    
+    loader.grub.enable = true;
+    loader.grub.device = "nodev";
+    loader.grub.efiSupport = true;
+
+    # loader.systemd-boot.enable = true;
   };
 
   hardware = {
@@ -152,7 +157,6 @@ with lib; {
           "microsoft-edge"
           "tinkerwell"
           "composer"
-          "traefik"
           "direnv"
           "op"
         ];
@@ -183,6 +187,7 @@ with lib; {
 
   virtualisation.oci-containers.containers = {
     npm = {
+      hostname = "npm";
       image = "jc21/nginx-proxy-manager:latest";
       ports = [
         "127.0.0.1:80:80"
@@ -199,6 +204,7 @@ with lib; {
     };
 
     mysql = {
+      hostname = "mysql";
       image = "percona/percona-server:latest";
       ports = [
         "127.0.0.1:3306:3306"
@@ -209,6 +215,22 @@ with lib; {
       environment = {
         MYSQL_ROOT_PASSWORD = "secret";
       };
+      extraOptions = [
+        "--network=npm"
+      ];
+    };
+
+    portainer = {
+      hostname = "portainer";
+      image = "portainer/portainer-ee:latest";
+      ports = [
+        "127.0.0.1:8000:8000"
+        "127.0.0.1:9443:9443"
+      ];
+      volumes = [
+        "portainer:/data"
+        "/var/run/docker.sock:/var/run/docker.sock"
+      ];
       extraOptions = [
         "--network=npm"
       ];

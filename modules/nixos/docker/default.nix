@@ -10,6 +10,12 @@ in {
   options.features.docker = {
     enable = mkEnableOption (mdDoc "docker");
 
+    nvidiaSupport = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable support for NVIDIA GPUs";
+    };
+
     user = mkOption {
       type = types.str;
       default = "nixos";
@@ -32,6 +38,7 @@ in {
   config = mkIf cfg.enable {
     virtualisation = {
       docker.enable = true;
+      docker.autoPrune.enable = true;
 
       podman.enable = false;
 
@@ -42,5 +49,7 @@ in {
 
     networking.firewall.trustedInterfaces = [cfg.networkInterface];
     networking.firewall.allowedTCPPorts = cfg.allowTcpPorts;
+
+    hardware.nvidia-container-toolkit.enable = cfg.nvidiaSupport;
   };
 }

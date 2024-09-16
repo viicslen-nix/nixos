@@ -18,7 +18,7 @@
     quickgui
     openlens
     skypeforlinux
-    stable.redisinsight
+    # stable.redisinsight
     kdePackages.kcachegrind
     graphviz
     sesh
