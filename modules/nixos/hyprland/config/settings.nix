@@ -15,10 +15,6 @@ in {
       ",preferred,auto,1"
     ];
 
-    workspace = [
-      "1, monitor:HDMI-A-1, default:true"
-    ];
-
     env = [
       "NIXOS_OZONE_WL,1"
       "NIXPKGS_ALLOW_UNFREE,1"
@@ -54,13 +50,17 @@ in {
 
       "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
 
+      "killall -q swww-daemon;sleep .5 && swww-daemon"
       "killall -q waybar;sleep .5 && waybar"
       "killall -q swaync;sleep .5 && swaync"
       "killall -q 1password;sleep .5 && 1password --silent"
       "killall -q mullvad-gui;sleep .5 && mullvad-gui --silent"
       "nm-applet --indicator"
 
-      scripts.handleMonitorConnect.outPath
+      "wl-paste --type text --watch cliphist store"
+      "wl-paste --type image --watch cliphist store"
+
+      # scripts.handleMonitorConnect.outPath
     ];
 
     general = {
@@ -133,18 +133,18 @@ in {
 
     misc = {
       # disable auto polling for config file changes
-      disable_autoreload = true;
-
-      force_default_wallpaper = 0;
+      # disable_autoreload = true;
 
       # disable dragging animation
       animate_mouse_windowdragging = false;
 
       # enable variable refresh rate (effective depending on hardware)
       vrr = 1;
+    };
 
+    render = {
       # we do, in fact, want direct scanout
-      no_direct_scanout = false;
+      direct_scanout = true;
     };
 
     # touchpad gestures
@@ -153,9 +153,9 @@ in {
       workspace_swipe_forever = true;
     };
 
-    xwayland.force_zero_scaling = true;
+    # xwayland.force_zero_scaling = true;
 
-    debug.disable_logs = false;
+    # debug.disable_logs = false;
 
     plugin = {
       csgo-vulkan-fix = {

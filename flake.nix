@@ -96,7 +96,13 @@
       url = "github:janoamaral/tokyo-night-tmux";
       flake = false;
     };
+    wallpapers = {
+      url = "github:JaKooLit/Wallpaper-Bank";
+      flake = false;
+    };
 
+    # Tools
+    agenix.url = "github:ryantm/agenix";
     nix-alien.url = "github:thiagokokada/nix-alien";
     lan-mouse.url = "github:feschber/lan-mouse";
     one-password-shell-plugins.url = "github:1Password/shell-plugins";

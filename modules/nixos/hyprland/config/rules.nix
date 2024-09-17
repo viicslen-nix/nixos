@@ -16,7 +16,6 @@
       highopacity = [
         "calendar"
         "system-menu"
-
         "anyrun"
         "logout_dialog"
       ];
@@ -26,6 +25,7 @@
         highopacity
       ];
     in [
+      "blur, waybar"
       "blur, ${toRegex blurred}"
       "xray 1, ${toRegex ["bar"]}"
       "ignorealpha 0.5, ${toRegex (highopacity ++ ["music"])}"
@@ -33,8 +33,8 @@
     ];
 
     windowrule = [
-      "noborder,^(wofi)$"
-      "center,^(wofi)$"
+      "noborder,^(rofi)$"
+      "center,^(rofi)$"
 
       "noborder,^(pavucontrol)$"
       "center,^(pavucontrol)$"
@@ -58,9 +58,6 @@
       "workspace special silent, title:^(Firefox — Sharing Indicator)$"
       "workspace special silent, title:^(.*is sharing (your screen|a window)\.)$"
 
-      # start spotify in ws9
-      "workspace 9 silent, title:^(Spotify( Premium)?)$"
-
       # idle inhibit while watching videos
       "idleinhibit focus, class:^(mpv|.+exe|celluloid)$"
       "idleinhibit focus, class:^(firefox)$, title:^(.*YouTube.*)$"
@@ -72,8 +69,14 @@
 
       # fix xwayland apps
       "rounding 0, xwayland:1"
+
+      # JetBrains IDEs
       "center, class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$"
       "size 640 400, class:^(.*jetbrains.*)$, title:^(splash)$"
+      "opacity 0.90 0.90, class:^(.*jetbrains.*)$"
+
+      # VS Code
+      "opacity 0.90 0.90, title:(.*)(Visual Studio Code)$"
 
       # don't render hyprbars on tiling windows
       "plugin:hyprbars:nobar, floating:0"

@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  screenshotarea = "hyprctl keyword animation 'fadeOut,0,0,default'; grimblast --notify copysave area; hyprctl keyword animation 'fadeOut,1,4,default'";
+  screenshot = flags: ''grim -g "$(slurp ${flags})" -t ppm - | satty --filename - --fullscreen --output-filename ~/Pictures/Screenshots/satty-$(date '+%Y%m%d-%H:%M:%S').png'';
 
   # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
   workspaces = builtins.concatLists (builtins.genList (
@@ -44,16 +44,16 @@ in {
         "$mod ALT, ,resizeactive,"
 
         # cycle monitors
-        "$mod SHIFT, bracketleft, focusmonitor, l"
-        "$mod SHIFT, bracketright, focusmonitor, r"
+        "$mod SHIFT, Left, focusmonitor, l"
+        "$mod SHIFT, Right, focusmonitor, r"
 
         # send focused workspace to left/right monitors
-        "$mod SHIFT ALT, bracketleft, movecurrentworkspacetomonitor, l"
-        "$mod SHIFT ALT, bracketright, movecurrentworkspacetomonitor, r"
+        "$mod SHIFT ALT, Left, movecurrentworkspacetomonitor, l"
+        "$mod SHIFT ALT, Right, movecurrentworkspacetomonitor, r"
 
         # cycle workspaces
-        "$mod, bracketleft, workspace, m-1"
-        "$mod, bracketright, workspace, m+1"
+        "$mod, Left, workspace, m-1"
+        "$mod, Right, workspace, m+1"
 
         # move focus
         "$mod, H, movefocus, l"
@@ -66,11 +66,12 @@ in {
         "$mod, L, exec, loginctl lock-session"
         "$mod SHIFT, N, exec, swaync-client -op"
         "$mod SHIFT, W, exec, killall -q waybar;sleep .5 && waybar"
+        "$mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
 
         # screenshot
-        "$mod SHIFT, R, exec, ${screenshotarea}"
-        "$mod SHIFT CTRL, R, exec, grimblast --notify --cursor copysave output"
-        "$mod SHIFT ALT, R, exec, grimblast --notify --cursor copysave screen"
+        "$mod SHIFT, S, exec, ${screenshot ""}"
+        "$mod SHIFT CTRL, S, exec, ${screenshot "-o -r"}"
+        "$mod SHIFT ALT, S, exec, grimblast --notify --cursor copysave screen"
 
         # utilities
         "$mod, Return, exec, $terminal"

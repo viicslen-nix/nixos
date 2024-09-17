@@ -17,6 +17,7 @@
     [
       inputs.home-manager.nixosModules.default
       inputs.chaotic.nixosModules.default
+      inputs.agenix.nixosModules.default
       inputs.nur.nixosModules.nur
       ./packages.nix
       ./scripts.nix

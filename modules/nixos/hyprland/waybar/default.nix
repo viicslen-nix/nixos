@@ -24,13 +24,14 @@ in
             "custom/startmenu"
             "cpu"
             "memory"
+            "custom/vpn"
             "hyprland/window"
             "idle_inhibitor"
           ];
           modules-right = [
             "tray"
             "custom/pipewire"
-            "custom/vpn"
+            "backlight"
             "battery"
             "custom/notification"
             "clock"
@@ -40,9 +41,8 @@ in
           "hyprland/workspaces" = {
             format = "{name}";
             format-icons = {
-              default = " ";
-              active = " ";
-              urgent = " ";
+		          "active" = "";
+		          "default" = "";
             };
             on-scroll-up = "hyprctl dispatch workspace e+1";
             on-scroll-down = "hyprctl dispatch workspace e-1";
@@ -100,7 +100,12 @@ in
             tooltip = false;
             max-length = 6;
             exec = pipewireStatus.outPath;
-            on-click = "pavucontrol";
+            on-click-right = "pavucontrol";
+          };
+          "wireplumber" = {
+            format = "{icon} {volume}%";
+            format-muted = "  ";
+            format-icons = ["" " " " "];
           };
           "custom/vpn" = {
             format = "VPN {}";
@@ -161,9 +166,17 @@ in
             on-click = "";
             tooltip = false;
           };
+          "backlight" = {
+            device = "intel_backlight";
+            format = "{icon} {percent}%";
+            format-icons = ["" ""];
+          };
         }
       ];
-      style = ''
+      style = let
+        workspaceRadius = "16px";
+        moduleBackground = "@base01";
+      in ''
         * {
           font-size: 14px;
           border-radius: 0px;
@@ -172,98 +185,104 @@ in
           min-height: 0px;
         }
         window#waybar {
-          background-color: #${colorScheme.base00};
+          background-color: transparent;
         }
         window#waybar.empty #window {
           background: none;
+          padding: 0px;
         }
+        tooltip {
+          background: ${moduleBackground};
+          border: 1px solid @base0E;
+          border-radius: 12px;
+        }
+        tooltip label {
+          color: @base07;
+        }
+
         #workspaces {
-          color: #${colorScheme.base00};
-          background: #${colorScheme.base01};
+          color: @base00;
+          background: ${moduleBackground};
           margin: 4px 4px;
           padding: 5px;
-          border-radius: 16px;
+          border-radius: ${workspaceRadius};
         }
         #workspaces button {
           font-weight: bold;
           padding: 0px 5px;
           margin: 0px 3px;
-          border-radius: 16px;
-          color: #${colorScheme.base00};
-          background: linear-gradient(45deg, #${colorScheme.base0E}, #${colorScheme.base0F}, #${colorScheme.base0D}, #${colorScheme.base09});
+          border-radius: ${workspaceRadius};
+          color: @base00;
+          background: linear-gradient(45deg, @base0E, @base0F, @base0D, @base09);
           background-size: 300% 300%;
           opacity: 0.5;
-          transition: ${betterTransition};
         }
         #workspaces button.active {
           opacity: 1.0;
           min-width: 40px;
+          border-bottom: none;
         }
         #workspaces button:hover {
           opacity: 0.8;
         }
+        .modules-left #workspaces button {
+            border-bottom: 0 solid transparent;
+        }
+        .modules-left #workspaces button.focused,
+        .modules-left #workspaces button.active {
+            border-bottom: 0 solid @base05;
+        }
+        .modules-center #workspaces button {
+            border-bottom: 0 solid transparent;
+        }
+        .modules-center #workspaces button.focused,
+        .modules-center #workspaces button.active {
+            border-bottom: 0 solid @base05;
+        }
+        .modules-right #workspaces button {
+            border-bottom: 0 solid transparent;
+        }
+        .modules-right #workspaces button.focused,
+        .modules-right #workspaces button.active {
+            border-bottom: 0 solid @base05;
+        }
+
         #custom-startmenu {
-          color: #${colorScheme.base0D};
-          background: #${colorScheme.base01};
-          font-size: 28px;
+          color: @base0D;
+          background: ${moduleBackground};
+          font-size: 24px;
           margin: 0px;
-          padding: 0px 30px 0px 15px;
+          padding: 0px 35px 0px 15px;
           border-radius: 0px 0px 40px 0px;
         }
         #custom-exit {
           font-weight: bold;
-          color: #${colorScheme.base00};
-          background: linear-gradient(45deg, #${colorScheme.base0C}, #${colorScheme.base0F}, #${colorScheme.base0B}, #${colorScheme.base08});
+          color: @base00;
+          background: linear-gradient(45deg, @base0C, @base0F, @base0B, @base08);
           background-size: 300% 300%;
           margin: 0px;
           padding: 0px 15px 0px 30px;
           border-radius: 0px 0px 0px 40px;
         }
-        #window, #cpu, #memory, #idle_inhibitor {
+        
+        #window, #cpu, #memory, #idle_inhibitor, #custom-vpn {
           font-weight: bold;
           margin: 4px 0px;
           margin-left: 7px;
           padding: 0px 18px;
-          color: #${colorScheme.base05};
-          background: #${colorScheme.base01};
+          color: @base05;
+          background: ${moduleBackground};
           border-radius: 24px 10px 24px 10px;
         }
         #network, #battery, #pulseaudio, #tray, #clock,
-        #custom-notification, #custom-pipewire, #custom-vpn {
+        #custom-notification, #custom-pipewire, #backlight {
           font-weight: bold;
-          background: #${colorScheme.base01};
-          color: #${colorScheme.base05};
+          background: ${moduleBackground};
+          color: @base05;
           margin: 4px 0px;
           margin-right: 7px;
           border-radius: 10px 24px 10px 24px;
           padding: 0px 18px;
-        }
-        tooltip {
-          background: #${colorScheme.base00};
-          border: 1px solid #${colorScheme.base0E};
-          border-radius: 12px;
-        }
-        tooltip label {
-          color: #${colorScheme.base07};
-        }
-        @keyframes gradient_horizontal {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-        @keyframes swiping {
-          0% {
-            background-position: 0% 200%;
-          }
-          100% {
-            background-position: 200% 200%;
-          }
         }
       '';
     };

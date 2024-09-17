@@ -25,6 +25,7 @@
     glib
     just
     gtop
+    wmctrl
     neovim
     lazygit
     busybox

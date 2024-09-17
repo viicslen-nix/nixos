@@ -36,5 +36,7 @@
       menu-button-border-color = lib.hm.gvariant.mkTuple [true "transparent"];
       menu-button-border-radius = lib.hm.gvariant.mkTuple [true 10];
     };
+
+    "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":minimize,maximize,close";
   };
 }

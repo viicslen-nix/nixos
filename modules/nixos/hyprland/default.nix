@@ -81,19 +81,24 @@ in {
         pavucontrol
         qpwgraph
 
-        hyprpaper
-        wlroots
+        # wallpaper
+        swww
+        waypaper
 
         # screenshot
         grim
         slurp
+        inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
+        satty
+
+        # clipboard
+        wl-clipboard
+        cliphist
 
         # utils
-        wl-clipboard
         wl-screenrec
         wlr-randr
-
-        inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
+        wlroots
       ];
 
       nix.settings = {
@@ -117,7 +122,6 @@ in {
             ./config/rules.nix
             ./config/binds.nix
 
-            # ./hyprpaper.nix
             ./hyprlock.nix
             ./hypridle.nix
 
