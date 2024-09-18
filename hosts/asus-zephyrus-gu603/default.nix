@@ -117,6 +117,8 @@ with lib; {
     nvtopPackages.nvidia
     gnomeExtensions.supergfxctl-gex
   ];
+  
+  age.identityPaths = [ "${config.users.users.${user}.home}/.ssh/agenix" ];
 
   features = {
     oom.enable = true;
@@ -124,23 +126,27 @@ with lib; {
     appImages.enable = true;
 
     gnome = {
-      enable = true;
       inherit user;
+      enable = true;
       additionalExtensions = [
         pkgs.draw-on-your-screen2
       ];
     };
 
     hyprland = {
-      enable = true;
       inherit user;
+      enable = true;
       gnomeCompatibility = true;
     };
 
     backups = {
       enable = true;
       repository = "b2:viicslen-asus-zephyrus-gu603";
-      privateKeyPath = "${config.users.users.${user}.home}/.ssh/agenix";
+
+      secrets = {
+        env = ../../secrets/restic/env.age;
+        password = ../../secrets/restic/password.age;
+      };
 
       home = {
         users = [user];

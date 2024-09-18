@@ -14,18 +14,29 @@ with lib; let
 in {
   options.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
-    privateKeyPath = mkOption {
-      type = types.str;
-      description = ''
-        The path to the private key to use for encryption.
-      '';
-    };
+    
     repository = mkOption {
       type = types.str;
       description = ''
         The path to the restic repository.
       '';
     };
+
+    secrets = {
+      env = mkOption {
+        type = types.path;
+        description = ''
+          The path to the age encrypted environment file.
+        '';
+      };
+      password = mkOption {
+        type = types.path;
+        description = ''
+          The path to the age encrypted password file.
+        '';
+      };
+    };
+
     paths = mkOption {
       type = types.listOf types.str;
       default = [];
@@ -53,12 +64,10 @@ in {
   };
 
   config = mkIf cfg.enable {
-    age.identityPaths = [ cfg.privateKeyPath ];
-
     # configure agenix secrets
     age.secrets = {
-      "restic/env".file = ./secrets/env.age;
-      "restic/password".file = ./secrets/password.age;
+      "restic/env".file = cfg.secrets.env;
+      "restic/password".file = cfg.secrets.password;
     };
 
     # configure restic backup services
