@@ -137,6 +137,22 @@ with lib; {
       gnomeCompatibility = true;
     };
 
+    backups = {
+      enable = true;
+      repository = "b2:viicslen-asus-zephyrus-gu603";
+      privateKeyPath = "${config.users.users.${user}.home}/.ssh/agenix";
+
+      home = {
+        users = [user];
+        paths = [
+          "Development"
+          "Documents"
+          "Pictures"
+          "Videos"
+        ];
+      };
+    };
+
     impermanence = {
       inherit user;
       enable = true;
@@ -159,6 +175,7 @@ with lib; {
           "Insomnia"
           "JetBrains"
           "1Password"
+          "Tinkerwell"
           "Mullvad VPN"
           "microsoft-edge"
           "tinkerwell"

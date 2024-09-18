@@ -13,6 +13,7 @@
   theming = import ./theming;
   network = import ./network;
   mullvad = import ./mullvad;
+  backups = import ./backups;
   hyprland = import ./hyprland;
   app-images = import ./app-images;
   localization = import ./localization;

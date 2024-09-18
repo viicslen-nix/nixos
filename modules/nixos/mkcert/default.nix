@@ -50,6 +50,6 @@ in {
     '')
     ];
 
-    security.pki.certificateFiles = mkIf cfg.rootCA.enable (lists.forEach cfg.rootCA.users (user: "/home/${user}/${cfg.rootCA.path}"));
+    security.pki.certificateFiles = mkIf cfg.rootCA.enable (lists.forEach cfg.rootCA.users (user: "${config.users.users.${user}.home}/${user}/${cfg.rootCA.path}"));
   };
 }

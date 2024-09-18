@@ -1,7 +1,11 @@
 {
   user,
+  lib,
+  config,
   ...
 }: {
+  age.identityPaths = [ "${config.users.users.${user}.home}/.ssh/agenix" ];
+
   # configure agenix secrets
   age.secrets = {
     "restic/env".file = ./secrets/restic/env.age;
@@ -18,7 +22,7 @@
       repositoryFile = config.age.secrets."restic/repo".path;
       passwordFile = config.age.secrets."restic/password".path;
 
-      paths = (lists.forEach [
+      paths = (lib.lists.forEach [
         "Development"
         "Documents"
       ] (dir: "${config.users.users.${user}.home}/${dir}"));
