@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# fs-diff.sh
+
 set -euo pipefail
 
 # Variables
