@@ -53,7 +53,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    age.identityPaths = [ privateKeyPath ];
+    age.identityPaths = [ cfg.privateKeyPath ];
 
     # configure agenix secrets
     age.secrets = {
