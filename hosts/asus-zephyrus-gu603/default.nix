@@ -148,13 +148,19 @@ with lib; {
         password = ../../secrets/restic/password.age;
       };
 
+      exclude = [
+        "vendor"
+        "node_modules"
+      ];
+
       home = {
-        users = [user];
+        users = [ user ];
         paths = [
           "Development"
           "Documents"
           "Pictures"
           "Videos"
+          ".kube"
         ];
       };
     };

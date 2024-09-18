@@ -44,6 +44,15 @@ in {
         List of paths to backup.
       '';
     };
+
+    exclude = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = ''
+        Patterns to exclude when backing up paths.
+      '';
+    };
+
     home = {
       users = mkOption {
         type = types.listOf types.str;
@@ -84,6 +93,8 @@ in {
           cfg.paths
           userDirs
         ];
+
+        exclude = cfg.exclude;
 
         pruneOpts = [
           "--keep-daily 7"
