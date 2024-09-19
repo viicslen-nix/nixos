@@ -18,12 +18,9 @@ with lib; {
     ../../base/work
   ];
 
-  home-manager.users.${user} = import ./home.nix;
-
-  networking.hostId = "86f2c355";
-  networking.hostName = "asus-zephyrus-gu603";
-
   powerManagement.cpuFreqGovernor = "powersave";
+  home-manager.users.${user} = import ./home.nix;
+  age.identityPaths = [ "${config.users.users.${user}.home}/.ssh/agenix" ];
 
   boot = {
     kernelParams = [
@@ -32,13 +29,17 @@ with lib; {
       "nvidia_drm.fbdev=1" # Nvidia DRM
     ];
 
-    loader.efi.canTouchEfiVariables = false;
-    
-    loader.grub.enable = true;
-    loader.grub.device = "nodev";
-    loader.grub.efiSupport = true;
+    loader = {
+      efi.canTouchEfiVariables = false;
 
-    # loader.systemd-boot.enable = true;
+      # systemd-boot.enable = true;
+    
+      grub = {
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
+      };
+    };
   };
 
   hardware = {
@@ -63,6 +64,20 @@ with lib; {
 
     logitech.wireless.enable = true;
   };
+
+  networking = {
+    hostId = "86f2c355";
+    hostName = "asus-zephyrus-gu603";
+    firewall.enable = mkForce false;
+  };
+
+  environment.systemPackages = with pkgs; [
+    asusctl
+    supergfxctl
+    zenith-nvidia
+    nvtopPackages.nvidia
+    gnomeExtensions.supergfxctl-gex
+  ];
 
   services = {
     xserver = {
@@ -109,16 +124,6 @@ with lib; {
 
     power-profiles-daemon.enable = false;
   };
-
-  environment.systemPackages = with pkgs; [
-    asusctl
-    supergfxctl
-    zenith-nvidia
-    nvtopPackages.nvidia
-    gnomeExtensions.supergfxctl-gex
-  ];
-  
-  age.identityPaths = [ "${config.users.users.${user}.home}/.ssh/agenix" ];
 
   features = {
     oom.enable = true;
