@@ -48,7 +48,10 @@ in {
           src = inputs.tokyo-night-tmux;
         };
         extraConfig = ''
+          set -g @tokyo-night-tmux_theme "night"
           set -g @tokyo-night-tmux_show_datetime 0
+          set -g @tokyo-night-tmux_show_git 1
+          set -g @tokyo-night-tmux_show_wbg 1
           set -g status-justify left
         '';
       }
