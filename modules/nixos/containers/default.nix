@@ -15,7 +15,7 @@ in {
     mysql = mkEnableOption (mdDoc "MySQL");
     redis = mkEnableOption (mdDoc "Redis");
     soketi = mkEnableOption (mdDoc "Soketi");
-    meiliseach = mkEnableOption (mdDoc "Meiliseach");
+    meilisearch = mkEnableOption (mdDoc "Meilisearch");
     buggregator = mkEnableOption (mdDoc "Buggregator");
     nginx-proxy-manager = mkEnableOption (mdDoc "Nginx Proxy Manager");
   };
@@ -69,7 +69,7 @@ in {
         ];
       };
 
-      meiliseach = mkIf cfg.meilisearch {
+      meilisearch = mkIf cfg.meilisearch {
         hostname = "meilisearch";
         image = "getmeili/meilisearch:latest";
         ports = [
