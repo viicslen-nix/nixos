@@ -69,8 +69,8 @@ in {
         ];
       };
 
-      meiliseach = mkIf cfg.meiliseach {
-        hostname = "meiliseach";
+      meiliseach = mkIf cfg.meilisearch {
+        hostname = "meilisearch";
         image = "getmeili/meilisearch:latest";
         ports = [
           "127.0.0.1:7700:7700"

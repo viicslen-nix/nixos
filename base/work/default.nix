@@ -132,12 +132,12 @@ in {
 
     containers = {
       portainer = true;
-      nginx-proxy-manager = true;
       mysql = true;
       redis = true;
-      meiliseach = true;
       soketi = true;
       buggregator = true;
+      meilisearch = true;
+      nginx-proxy-manager = true;
     };
   };
 }
