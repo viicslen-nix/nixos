@@ -15,6 +15,7 @@
   mullvad = import ./mullvad;
   backups = import ./backups;
   hyprland = import ./hyprland;
+  containers = import ./containers;
   app-images = import ./app-images;
   localization = import ./localization;
   impermanence = import ./impermanence;
