@@ -118,7 +118,7 @@ in {
     };
 
     environment.systemPackages = [ 
-      pkgs.writeShellScriptBin "notify-send" ''
+      (pkgs.writeShellScriptBin "notify-send" ''
         #Detect the name of the display in use
         local display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"
 
@@ -129,7 +129,7 @@ in {
         local uid=$(id -u $user)
 
         sudo -u $user DISPLAY=$display DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$uid/bus ${pkgs.libnotify}/bin/notify-send "$@"
-      ''
+      '')
     ];
 
     systemd.services = mkIf cfg.notifications {
