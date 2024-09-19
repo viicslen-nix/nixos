@@ -26,7 +26,7 @@ in {
         hostname = "portainer";
         image = "portainer/portainer-ee:latest";
         ports = [
-          "127.0.0.1:8000:8000"
+          # "127.0.0.1:8000:8000"
           "127.0.0.1:9443:9443"
         ];
         volumes = [
