@@ -117,7 +117,20 @@ in {
       };
     };
 
-    environment.systemPackages = [ pkgs.libnotify ];
+    environment.systemPackages = [ 
+      pkgs.writeShellScriptBin "notify-send" ''
+        #Detect the name of the display in use
+        local display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"
+
+        #Detect the user using such display
+        local user=$(who | grep '('$display')' | awk '{print $1}' | head -n 1)
+
+        #Detect the id of the user
+        local uid=$(id -u $user)
+
+        sudo -u $user DISPLAY=$display DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$uid/bus ${pkgs.libnotify}/bin/notify-send "$@"
+      ''
+    ];
 
     systemd.services = mkIf cfg.notifications {
       "restic-backups-${jobName}".unitConfig.OnFailure = "notify-backup-failed.service";
@@ -131,20 +144,7 @@ in {
         };
 
         script = ''
-          function notify-send() {
-            #Detect the name of the display in use
-            local display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"
-
-            #Detect the user using such display
-            local user=$(who | grep '('$display')' | awk '{print $1}' | head -n 1)
-
-            #Detect the id of the user
-            local uid=$(id -u $user)
-
-            sudo -u $user DISPLAY=$display DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$uid/bus notify-send "$@"
-          }
-
-          notify-send "Backup failed" "Backup failed for ${jobName} on $(hostname)" --urgency=critical
+          notify-send "Backup failed" "Backup failed for ${jobName}" --urgency=critical
         '';
       };
     };
