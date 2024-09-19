@@ -138,6 +138,6 @@ in {
       meiliseach = true;
       soketi = true;
       buggregator = true;
-    }
+    };
   };
 }
