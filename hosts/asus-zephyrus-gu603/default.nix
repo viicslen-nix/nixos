@@ -161,6 +161,7 @@ with lib; {
           "Pictures"
           "Videos"
           ".kube"
+          ".nix"
         ];
       };
     };
