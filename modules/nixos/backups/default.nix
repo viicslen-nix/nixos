@@ -97,7 +97,7 @@ in {
         environmentFile = config.age.secrets."restic/env".path;
         passwordFile = config.age.secrets."restic/password".path;
 
-        timeConfig = {
+        timerConfig = {
           OnCalendar = "16:00";
           Persistent = true;
         };
@@ -125,15 +125,15 @@ in {
       "notify-backup-failed" = {
         enable = true;
         description = "Notify on failed backup";
+
         serviceConfig = {
           Type = "oneshot";
-          User = config.users.users.arthur.name;
         };
 
-        # required for notify-send
-        environment.DBUS_SESSION_BUS_ADDRESS = "unix:path=/run/user/${toString config.users.users.arthur.uid}/bus";
+        wantedBy = ["multi-user.target"];
 
         script = ''
+          DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/''${UID}/bus \ 
           ${pkgs.libnotify}/bin/notify-send --urgency=critical \
             "Backup failed" \
             "$(journalctl -u restic-backups-daily -n 5 -o cat)"
