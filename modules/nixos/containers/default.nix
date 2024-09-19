@@ -12,12 +12,12 @@ with lib; let
 in {
   options.${namespace}.${name} = {
     portainer = mkEnableOption (mdDoc "Portainer");
-    nginx-proxy-manager = mkEnableOption (mdDoc "Nginx Proxy Manager");
     mysql = mkEnableOption (mdDoc "MySQL");
     redis = mkEnableOption (mdDoc "Redis");
-    meiliseach = mkEnableOption (mdDoc "Meiliseach");
     soketi = mkEnableOption (mdDoc "Soketi");
+    meiliseach = mkEnableOption (mdDoc "Meiliseach");
     buggregator = mkEnableOption (mdDoc "Buggregator");
+    nginx-proxy-manager = mkEnableOption (mdDoc "Nginx Proxy Manager");
   };
 
   config = {
@@ -32,23 +32,6 @@ in {
         volumes = [
           "portainer:/data"
           "/var/run/docker.sock:/var/run/docker.sock"
-        ];
-        extraOptions = [
-          "--network=local"
-        ];
-      };
-
-      nginx-proxy-manager =  mkIf cfg.nginx-proxy-manager {
-        hostname = "npm";
-        image = "jc21/nginx-proxy-manager:latest";
-        ports = [
-          "127.0.0.1:80:80"
-          "127.0.0.1:443:443"
-          "127.0.0.1:81:81"
-        ];
-        volumes = [
-          "nginx-proxy-manager:/data"
-          "letsencrypt:/etc/letsencrypt"
         ];
         extraOptions = [
           "--network=local"
@@ -105,7 +88,7 @@ in {
 
       soketi = mkIf cfg.soketi {
         hostname = "soketi";
-        image = "getmeili/meilisearch:latest";
+        image = "quay.io/soketi/soketi:latest-16-alpine";
         ports = [
           "127.0.0.1:6001:6001"
           "127.0.0.1:9601:9601"
@@ -130,6 +113,23 @@ in {
           "127.0.0.1:1025:1025"
           "127.0.0.1:9912:9912"
           "127.0.0.1:9913:9913"
+        ];
+        extraOptions = [
+          "--network=local"
+        ];
+      };
+
+      nginx-proxy-manager = mkIf cfg.nginx-proxy-manager {
+        hostname = "npm";
+        image = "jc21/nginx-proxy-manager:latest";
+        ports = [
+          "127.0.0.1:80:80"
+          "127.0.0.1:443:443"
+          "127.0.0.1:81:81"
+        ];
+        volumes = [
+          "nginx-proxy-manager:/data"
+          "letsencrypt:/etc/letsencrypt"
         ];
         extraOptions = [
           "--network=local"
