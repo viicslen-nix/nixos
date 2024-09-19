@@ -133,7 +133,7 @@ in {
         wantedBy = ["multi-user.target"];
 
         script = ''
-          DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/''${UID}/bus \ 
+          DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/''${UID}/bus" \ 
           ${pkgs.libnotify}/bin/notify-send --urgency=critical \
             "Backup failed" \
             "$(journalctl -u restic-backups-daily -n 5 -o cat)"
