@@ -158,6 +158,10 @@ with lib; {
         "node_modules"
       ];
 
+      paths = [
+        "/persist/home/${user}/Development"
+      ];
+
       home = {
         users = [ user ];
         paths = [
