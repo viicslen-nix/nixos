@@ -73,6 +73,7 @@ in {
     linode-cli
     dbeaver-bin
     atlas
+    sublime-merge
   ];
 
   programs.zsh.shellAliases = {
