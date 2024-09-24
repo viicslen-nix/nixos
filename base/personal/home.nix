@@ -17,6 +17,10 @@
     qmk-udev-rules
   ];
 
+  home.autostart = [
+    pkgs.mullvad-vpn
+  ];
+
   programs.git = {
     enable = true;
     userName = "Victor R";
