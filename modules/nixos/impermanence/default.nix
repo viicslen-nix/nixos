@@ -106,7 +106,7 @@ in {
     environment.systemPackages = with pkgs; [
       (pkgs.writeShellScriptBin "persist" ''
         if [[ -e "$1" ]]; then
-            cp -a "$1" "${cfg.persistencePath}/$(realpath --relative-to="$1" "$1")"
+            cp -a "$1" "${cfg.persistencePath}/$(realpath --relative-to="/" "$1")"
         else
             echo "Error: $1 does not exist"
             exit 1
