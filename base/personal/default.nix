@@ -41,6 +41,7 @@
     mysql-workbench
     drawio
     siege
+    aider-chat
   ];
 
   features = {
