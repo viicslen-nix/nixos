@@ -224,7 +224,7 @@ with lib; {
           ".gitconfig"
           ".zsh_history"
           ".wakatime.cfg"
-          ".config/monitors.xml"
+          # ".config/monitors.xml"
         ];
       };
     };
