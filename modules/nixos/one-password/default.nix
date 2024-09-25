@@ -37,6 +37,11 @@ in {
       default = [ pkgs.gh ];
       description = "The list of shell plugins to install";
     };
+    allowedCustomBrowsers = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = "The list of browsers to allow 1Password to open";
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -53,6 +58,18 @@ in {
       # Configure the environment variable for the 1Password socket
       environment.sessionVariables = {
         SSH_AUTH_SOCK = cfg.socket;
+      };
+
+
+
+      environment.etc = {
+        "1password/custom_allowed_browsers" = {
+          # get the list from the cfg and join it with new lines
+          text = ''
+            ${concatStringsSep "\n" cfg.allowedCustomBrowsers}
+          '';
+          mode = "0755";
+        };
       };
     }
     (mkIf homeManagerLoaded {

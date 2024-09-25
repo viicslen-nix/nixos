@@ -211,7 +211,6 @@ with lib; {
         directories = [
           ".pki"
           ".ssh"
-          ".nix"
           ".kube"
           ".java"
           ".gnupg"
@@ -219,6 +218,7 @@ with lib; {
           ".vscode"
           ".docker"
           ".tmux/resurrect"
+          { directory = ".nix"; method = "symlink"; }
         ];
         files = [
           ".gitconfig"

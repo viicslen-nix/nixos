@@ -9,7 +9,6 @@
 }: {
   home.packages = with pkgs; [
     floorp
-    pkgs.inputs.zen-browser.default
 
     via
     keymapviz
