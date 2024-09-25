@@ -20,7 +20,6 @@ in {
     "$mod" = "SUPER";
 
     # applications
-    "$launcher" = "${pkgs.rofi-wayland}/bin/rofi -show drun";
     "$terminal" = "${pkgs.kitty}/bin/kitty";
     "$fileManager" = "nautilus";
 

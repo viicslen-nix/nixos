@@ -6,8 +6,12 @@
   variant = "dark";
   pointer = config.stylix.cursor;
   colorScheme = config.lib.stylix.colors;
-  scripts = import ./scripts.nix {inherit pkgs;};
 in {
+  imports = [
+    ./ags.nix
+    # ./waybar.nix
+  ];
+
   wayland.windowManager.hyprland.settings = {
     monitor = [
       "eDP-1,2560x1600@60,0x0,1.6"
@@ -51,7 +55,6 @@ in {
       "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
 
       "killall -q swww-daemon;sleep .5 && swww-daemon"
-      "killall -q waybar;sleep .5 && waybar"
       "killall -q swaync;sleep .5 && swaync"
       "killall -q pypr;sleep .5 && pypr"
       "killall -q 1password;sleep .5 && 1password --silent"
@@ -60,8 +63,6 @@ in {
 
       "wl-paste --type text --watch cliphist store"
       "wl-paste --type image --watch cliphist store"
-
-      # scripts.handleMonitorConnect.outPath
     ];
 
     general = {
@@ -163,6 +164,17 @@ in {
         res_w = 1280;
         res_h = 800;
         class = "cs2";
+      };
+
+      overview = {
+        centerAligned = true;
+        hideTopLayers = true;
+        hideOverlayLayers = true;
+        showNewWorkspace = true;
+        exitOnClick = true;
+        exitOnSwitch = true;
+        drawActiveWorkspace = true;
+        reverseSwipe = true;
       };
 
       hyprbars = {
