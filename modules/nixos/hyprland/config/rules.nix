@@ -1,8 +1,5 @@
 {lib, ...}: {
   wayland.windowManager.hyprland.settings = {
-    "$dropterm" = "^(kitty_dropdown)$";
-    "$volume_sidemenu" = "^(pavucontrol)$";
-
     # layer rules
     layerrule = let
       toRegex = list: let
@@ -38,9 +35,6 @@
     windowrule = [
       "noborder,^(rofi)$"
       "center,^(rofi)$"
-
-      "float, $dropterm"
-      "float, $volume_sidemenu"
     ];
 
     # window rules

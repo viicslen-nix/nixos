@@ -127,6 +127,7 @@ in {
             ./hypridle.nix
             ./pyprland.nix
 
+            ./ags.nix
             ./swaync.nix
             ./rofi.nix
             ./wlogout

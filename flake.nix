@@ -78,6 +78,11 @@
       inputs.hyprland.follows = "hyprland";
     };
 
+    # Ags
+    matugen.url = "github:InioX/matugen?ref=v2.2.0";
+    astal.url = "github:Aylur/astal";
+    ags.url = "github:Aylur/ags";
+
     # Theming
     stylix.url = "github:danth/stylix";
     base16.url = "github:SenchoPens/base16.nix";
