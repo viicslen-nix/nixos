@@ -9,6 +9,7 @@
 }: {
   home.packages = with pkgs; [
     floorp
+    zen-browser
 
     via
     keymapviz

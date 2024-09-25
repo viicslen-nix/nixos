@@ -105,6 +105,7 @@
     agenix.url = "github:ryantm/agenix";
     nix-alien.url = "github:thiagokokada/nix-alien";
     lan-mouse.url = "github:feschber/lan-mouse";
+    zen-browser.url = "github:MarceColl/zen-browser-flake";
     one-password-shell-plugins.url = "github:1Password/shell-plugins";
   };
 

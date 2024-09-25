@@ -42,6 +42,9 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: _prev: {
+    # Zen Browser
+    zen-browser = inputs.zen-browser.packages."${system}".default;
+
     # Make Microsoft-Edge not be shit on Wayland
     microsoft-edge-wayland = _prev.symlinkJoin {
       name = "microsoft-edge-wayland";
