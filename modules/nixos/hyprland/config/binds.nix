@@ -61,6 +61,10 @@ in {
         "$mod, K, movefocus, u"
         "$mod, J, movefocus, d"
 
+        # minimize
+        "$mod CTRL, M, togglespecialworkspace, minimized"
+        "$mod, M, exec, pypr toggle_special minimized"
+
         # system
         "$mod, Escape, exec, wlogout -p layer-shell"
         "$mod, L, exec, loginctl lock-session"
@@ -76,6 +80,10 @@ in {
         # utilities
         "$mod, Return, exec, $terminal"
         "Control_L&Shift_L, Space, exec, 1password --quick-access"
+        
+        # Scrachpads
+        "$mod CTRL, T, exec, pypr toggle term"
+        "$mod CTRL, V, exec, pypr toggle volume" 
       ]
       ++ workspaces;
 

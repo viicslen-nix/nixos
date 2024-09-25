@@ -65,6 +65,21 @@ with lib; {
     logitech.wireless.enable = true;
   };
 
+  specialisation = {
+    nvidia-sync.configuration = {
+      system.nixos.tags = [ "nvidia-sync" ];
+      hardware.nvidia = {
+        powerManagement.finegrained = lib.mkForce false;
+
+        prime.offload.enable = lib.mkForce false;
+        prime.offload.enableOffloadCmd = lib.mkForce false;
+
+        prime.sync.enable = lib.mkForce true;
+        dynamicBoost.enable = lib.mkForce true;
+      };
+    };
+  };
+
   networking = {
     hostId = "86f2c355";
     hostName = "asus-zephyrus-gu603";
@@ -125,6 +140,9 @@ with lib; {
     power-profiles-daemon.enable = false;
   };
 
+  programs.nh.flake = "/persist/home/${user}/.nix/";
+  environment.sessionVariables.FLAKE = "/persist/home/${user}/.nix/";
+
   features = {
     oom.enable = true;
     theming.enable = true;
@@ -180,6 +198,7 @@ with lib; {
       enable = true;
       directories = [
         "/etc/mullvad-vpn"
+        "/etc/gdm"
       ];
       home = {
         share = [
@@ -218,7 +237,6 @@ with lib; {
           ".vscode"
           ".docker"
           ".tmux/resurrect"
-          { directory = ".nix"; method = "symlink"; }
         ];
         files = [
           ".gitconfig"

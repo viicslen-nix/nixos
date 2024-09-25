@@ -96,6 +96,7 @@ in {
         cliphist
 
         # utils
+        pkgs.inputs.pyprland.pyprland
         wl-screenrec
         wlr-randr
         wlroots
@@ -124,6 +125,7 @@ in {
 
             ./hyprlock.nix
             ./hypridle.nix
+            ./pyprland.nix
 
             ./swaync.nix
             ./rofi.nix

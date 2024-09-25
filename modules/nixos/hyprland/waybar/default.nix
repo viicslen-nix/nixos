@@ -30,7 +30,7 @@ in
           ];
           modules-right = [
             "tray"
-            "custom/pipewire"
+            "wireplumber"
             "backlight"
             "battery"
             "custom/notification"
@@ -106,6 +106,7 @@ in
             format = "{icon} {volume}%";
             format-muted = "  ";
             format-icons = ["" " " " "];
+            on-click = "pypr toggle volume";
           };
           "custom/vpn" = {
             format = "VPN {}";
@@ -170,6 +171,15 @@ in
             device = "intel_backlight";
             format = "{icon} {percent}%";
             format-icons = ["" ""];
+          };
+          "privacy" = {
+              icon-spacing = 1;
+              icon-size = 12;
+              transition-duration = 250;
+              modules = [
+                  { type = "audio-in"; }
+                  { type = "screenshare"; }
+              ];
           };
         }
       ];
@@ -275,7 +285,7 @@ in
           border-radius: 24px 10px 24px 10px;
         }
         #network, #battery, #pulseaudio, #tray, #clock,
-        #custom-notification, #custom-pipewire, #backlight {
+        #custom-notification, #custom-pipewire, #wireplumber, #backlight {
           font-weight: bold;
           background: ${moduleBackground};
           color: @base05;

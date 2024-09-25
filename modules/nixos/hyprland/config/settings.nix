@@ -53,6 +53,7 @@ in {
       "killall -q swww-daemon;sleep .5 && swww-daemon"
       "killall -q waybar;sleep .5 && waybar"
       "killall -q swaync;sleep .5 && swaync"
+      "killall -q pypr;sleep .5 && pypr"
       "killall -q 1password;sleep .5 && 1password --silent"
       "killall -q mullvad-gui;sleep .5 && mullvad-gui --silent"
       "nm-applet --indicator"

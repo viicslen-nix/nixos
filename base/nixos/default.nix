@@ -144,7 +144,7 @@
     enable = true;
     clean.enable = true;
     clean.extraArgs = "--keep-since 4d --keep 3";
-    flake = "/home/${user}/.nix/";
+    flake = lib.mkDefault "/home/${user}/.nix/";
   };
 
   # Enable direnv
@@ -158,6 +158,6 @@
 
   # Set flake path in environment
   environment.sessionVariables = {
-    FLAKE = "/home/${user}/.nix/";
+    FLAKE = lib.mkDefault "/home/${user}/.nix/";
   };
 }
