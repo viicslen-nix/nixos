@@ -62,7 +62,7 @@ in {
               "gtk"
             ];
             "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
-            # "org.freedesktop.portal.FileChooser" = [ "xdg-desktop-portal-gtk" ];
+            "org.freedesktop.portal.FileChooser" = [ "xdg-desktop-portal-gtk" ];
           };
         };
         # extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
@@ -148,7 +148,9 @@ in {
             systemd.variables = ["--all"];
 
             plugins = [
-              inputs.split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
+              # pkgs.inputs.split-monitor-workspaces.split-monitor-workspaces
+              pkgs.inputs.hyprspace.Hyprspace
+              pkgs.inputs.hyprsplit.hyprsplit
             ];
           };
 
