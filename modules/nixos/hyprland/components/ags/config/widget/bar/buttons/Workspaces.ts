@@ -14,7 +14,7 @@ const Workspaces = (ws: number) => Widget.Box({
         attribute: i,
         vpack: "center",
         label: `${i}`,
-        on_clicked: () => dispatch(i),
+        // on_clicked: () => dispatch(i),
         setup: self => self.hook(hyprland, () => {
             self.toggleClassName("active", hyprland.active.workspace.id === i)
             self.toggleClassName("occupied", (hyprland.getWorkspace(i)?.windows || 0) > 0)
@@ -34,6 +34,6 @@ export default () => PanelButton({
     class_name: "workspaces",
     on_scroll_up: () => dispatch("m+1"),
     on_scroll_down: () => dispatch("m-1"),
-    // on_clicked: () => App.toggleWindow("overview"),
+    on_clicked: () => App.toggleWindow("overview"),
     child: workspaces.bind().as(Workspaces),
 })

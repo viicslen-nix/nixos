@@ -235,6 +235,10 @@ const options = mkOptions(OPTIONS, {
         inactiveBorder: opt("#282828"),
         gapsWhenOnly: opt(false),
     },
+
+    system: {
+        fetchInterval: opt(10),
+    },
 })
 
 globalThis["options"] = options
