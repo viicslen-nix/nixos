@@ -22,7 +22,11 @@ update-input INPUT:
 
 # Upgrade the system using the default nix command
 nix-upgrade COMMAND='switch':
-  sudo nixos-rebuild {{COMMAND}}
+  sudo nixos-rebuild {{COMMAND}} --flake .
+
+# Upgrade the system using the default nix command and the flake path
+nix-upgrade-path COMMAND='switch':
+  sudo nixos-rebuild {{COMMAND}} --flake path:.
 
 # Upgrade the system using the nix helper utility
 upgrade COMMAND='switch':
