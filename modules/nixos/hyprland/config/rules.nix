@@ -55,7 +55,6 @@
 
       # 1Password
       "float, title:(1Password)"
-      "size 70% 70%, title:(1Password)"
       "center, title:(1Password)"
 
       # make Firefox PiP window floating and sticky
