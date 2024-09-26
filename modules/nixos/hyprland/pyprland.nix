@@ -2,6 +2,7 @@
   home.file.".config/hypr/pyprland.toml".text = ''
     [pyprland]
     plugins = [
+      "monitors",
       "scratchpads",
       "toggle_special",
     ]
@@ -19,5 +20,8 @@
     lazy = true
     size = "40% 90%"
     unfocus = "hide"
+
+    [monitors.placement."G276HL"]
+    topOf = "eDP-1"
   '';
 }

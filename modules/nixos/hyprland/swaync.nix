@@ -5,7 +5,6 @@
 }: let
   colorScheme = config.lib.stylix.colors;
 in {
-
   services.swaync = {
     enable = true;
 
@@ -386,5 +385,15 @@ in {
             color: #${colorScheme.base05}
         }
     '';
+  };
+
+  wayland.windowManager.hyprland.settings = {
+    exec-once = [
+      "killall -q swaync;sleep .5 && swaync"
+    ];
+
+    bind = [
+      "$mod SHIFT, N, exec, swaync-client -op"
+    ];
   };
 }

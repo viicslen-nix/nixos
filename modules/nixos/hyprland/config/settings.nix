@@ -1,21 +1,16 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }: let
   variant = "dark";
   pointer = config.stylix.cursor;
   colorScheme = config.lib.stylix.colors;
 in {
-  imports = [
-    ./ags.nix
-    # ./waybar.nix
-  ];
-
   wayland.windowManager.hyprland.settings = {
     monitor = [
       "eDP-1,2560x1600@60,0x0,1.6"
-      "HDMI-A-1,preferred,auto-up,1"
       ",preferred,auto,1"
     ];
 
@@ -54,15 +49,15 @@ in {
 
       "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
 
-      "killall -q swww-daemon;sleep .5 && swww-daemon"
-      "killall -q swaync;sleep .5 && swaync"
       "killall -q pypr;sleep .5 && pypr"
+      "killall -q swww-daemon;sleep .5 && swww-daemon"
       "killall -q 1password;sleep .5 && 1password --silent"
       "killall -q mullvad-gui;sleep .5 && mullvad-gui --silent"
-      "nm-applet --indicator"
 
       "wl-paste --type text --watch cliphist store"
       "wl-paste --type image --watch cliphist store"
+
+      "swww img ${inputs.wallpapers}/wallpapers/Lofi-Urban-Nightscape.png"
     ];
 
     general = {

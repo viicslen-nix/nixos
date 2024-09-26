@@ -67,8 +67,6 @@ in {
         # system
         "$mod, Escape, exec, wlogout -p layer-shell"
         "$mod, L, exec, loginctl lock-session"
-        "$mod SHIFT, N, exec, swaync-client -op"
-        "$mod SHIFT, W, exec, killall -q waybar;sleep .5 && waybar"
         "$mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
 
         # screenshot

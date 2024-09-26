@@ -41,9 +41,9 @@ const options = mkOptions(OPTIONS, {
             border: opt("#080808"),
         },
 
-        blur: opt(0),
+        blur: opt(20),
         scheme: opt<"dark" | "light">("dark"),
-        widget: { opacity: opt(94) },
+        widget: { opacity: opt(90) },
         border: {
             width: opt(1),
             opacity: opt(96),
@@ -52,7 +52,7 @@ const options = mkOptions(OPTIONS, {
         shadows: opt(true),
         padding: opt(7),
         spacing: opt(12),
-        radius: opt(11),
+        radius: opt(15),
     },
 
     transition: opt(200),
@@ -82,7 +82,6 @@ const options = mkOptions(OPTIONS, {
                 "media",
                 "expander",
                 "systray",
-                "colorpicker",
                 "screenrecord",
                 "system",
                 "battery",
@@ -96,29 +95,29 @@ const options = mkOptions(OPTIONS, {
             },
             label: {
                 colored: opt(false),
-                label: opt(" Applications"),
+                label: opt(" Apps"),
             },
             action: opt(() => App.toggleWindow("launcher")),
         },
         date: {
-            format: opt("%H:%M - %A %e."),
+            format: opt("%I:%M %p - %A %e"),
             action: opt(() => App.toggleWindow("datemenu")),
         },
         battery: {
-            bar: opt<"hidden" | "regular" | "whole">("regular"),
+            bar: opt<"hidden" | "regular" | "whole">("hidden"),
             charging: opt("#00D787"),
             percentage: opt(true),
-            blocks: opt(7),
+            blocks: opt(10),
             width: opt(50),
             low: opt(30),
         },
         workspaces: {
-            workspaces: opt(7),
+            workspaces: opt(10),
         },
         taskbar: {
             iconSize: opt(0),
-            monochrome: opt(true),
-            exclusive: opt(false),
+            monochrome: opt(false),
+            exclusive: opt(true),
         },
         messages: {
             action: opt(() => App.toggleWindow("datemenu")),
@@ -154,23 +153,22 @@ const options = mkOptions(OPTIONS, {
         },
         apps: {
             iconSize: opt(62),
-            max: opt(6),
+            max: opt(10),
             favorites: opt([
                 [
                     "firefox",
-                    "wezterm",
+                    "kitty",
                     "org.gnome.Nautilus",
                     "org.gnome.Calendar",
-                    "spotify",
                 ],
             ]),
         },
     },
 
     overview: {
-        scale: opt(9),
+        scale: opt(5),
         workspaces: opt(7),
-        monochromeIcon: opt(true),
+        monochromeIcon: opt(false),
     },
 
     powermenu: {

@@ -19,22 +19,22 @@ export const distro = {
     logo: GLib.get_os_info("LOGO"),
 }
 
-// const divide = ([total, free]: string[]) => Number.parseInt(free) / Number.parseInt(total)
-//
-// export const cpu = Variable(0, {
-//     poll: [intval, "top -b -n 1", out => divide(["100", out.split("\n")
-//         .find(line => line.includes("Cpu(s)"))
-//         ?.split(/\s+/)[1]
-//         .replace(",", ".") || "0"])],
-// })
-//
-// export const ram = Variable(0, {
-//     poll: [intval, "free", out => divide(out.split("\n")
-//         .find(line => line.includes("Mem:"))
-//         ?.split(/\s+/)
-//         .splice(1, 2) || ["1", "1"])],
-// })
-//
+const divide = ([total, free]: string[]) => Number.parseInt(free) / Number.parseInt(total)
+
+export const cpu = Variable(0, {
+    poll: [intval, "top -b -n 1", out => divide(["100", out.split("\n")
+        .find(line => line.includes("Cpu(s)"))
+        ?.split(/\s+/)[1]
+        .replace(",", ".") || "0"])],
+})
+
+export const ram = Variable(0, {
+    poll: [intval, "free", out => divide(out.split("\n")
+        .find(line => line.includes("Mem:"))
+        ?.split(/\s+/)
+        .splice(1, 2) || ["1", "1"])],
+})
+
 // export const temperature = Variable(0, {
 //     poll: [intval, `cat ${tempPath}`, n => {
 //         return Number.parseInt(n) / 100_000

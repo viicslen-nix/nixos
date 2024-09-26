@@ -76,8 +76,6 @@ in {
 
       environment.systemPackages = with pkgs; [
         kdePackages.polkit-kde-agent-1
-        swaynotificationcenter
-        networkmanagerapplet
         pavucontrol
         qpwgraph
 
@@ -127,11 +125,12 @@ in {
             ./hypridle.nix
             ./pyprland.nix
 
-            ./ags.nix
-            ./swaync.nix
-            ./rofi.nix
             ./wlogout
-            ./waybar
+
+            # ./swaync.nix
+            # ./rofi.nix
+            # ./waybar
+            ./ags
           ];
 
           xdg.desktopEntries."org.gnome.Settings" = {

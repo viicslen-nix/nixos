@@ -197,6 +197,7 @@ with lib; {
       inherit user;
       enable = true;
       directories = [
+        "/tmp/asztal"
         "/etc/mullvad-vpn"
         "/etc/gdm"
       ];
@@ -242,6 +243,7 @@ with lib; {
           ".gitconfig"
           ".zsh_history"
           ".wakatime.cfg"
+          ".config/background"
           ".config/monitors.xml"
         ];
       };

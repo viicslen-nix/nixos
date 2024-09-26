@@ -296,4 +296,21 @@ in
         }
       '';
     };
+
+    # Enable Network Manager Applet
+    services.network-manager-applet.enable = true;
+
+    # Configure Hyprland
+    wayland.windowManager.hyprland.settings = {
+      "$launcher" = "${pkgs.rofi-wayland}/bin/rofi -show drun";
+
+      exec-once = [
+        "killall -q waybar;sleep .5 && waybar"
+        "nm-applet --indicator"
+      ];
+
+      bind = [
+        "$mod SHIFT, W, exec, killall -q waybar;sleep .5 && waybar"
+      ];
+    };
   }

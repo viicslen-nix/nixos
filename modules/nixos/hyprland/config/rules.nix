@@ -38,8 +38,6 @@
       "noborder,^(rofi)$"
       "center,^(rofi)$"
       (f "org.gnome.Calculator")
-      (f "org.gnome.Nautilus")
-      (f "org.gnome.Settings")
       (f "org.gnome.design.Palette")
       (f "pavucontrol")
       (f "nm-connection-editor")
@@ -48,7 +46,7 @@
       (f "xdg-desktop-portal-gnome")
       (f "de.haeckerfelix.Fragments")
       (f "com.github.Aylur.ags")
-  ];
+    ];
 
     # window rules
     windowrulev2 = [

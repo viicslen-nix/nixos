@@ -7,10 +7,7 @@
 }:
 with lib; let
   cfg = config.features.theming;
-  defaultWallpaper = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/c68a508b95baa0fcd99117f2da2a0f66eb208bbf/wallpapers/nix-wallpaper-nineish-dark-gray.svg";
-    sha256 = "sha256-r+2MyWWfr7f3kzmsPI24hReScVaJtdmGO0drISs1NGM=";
-  };
+  defaultWallpaper = "${inputs.wallpapers}/wallpapers/Lofi-Urban-Nightscape.png";
   plymouthLogo = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/f84c13adae08e860a7c3f76ab3a9bef916d276cc/logo/nix-snowflake-colours.svg";
     sha256 = "pHYa+d5f6MAaY8xWd3lDjhagS+nvwDL3w7zSsQyqH7A=";

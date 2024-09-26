@@ -118,18 +118,18 @@ in {
     };
 
     environment.systemPackages = [ 
-      (pkgs.writeShellScriptBin "notify-send" ''
-        #Detect the name of the display in use
-        display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"
+      # (pkgs.writeShellScriptBin "notify-send" ''
+      #   #Detect the name of the display in use
+      #   display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"
 
-        #Detect the user using such display
-        user=$(who | grep '('$display')' | awk '{print $1}' | head -n 1)
+      #   #Detect the user using such display
+      #   user=$(who | grep '('$display')' | awk '{print $1}' | head -n 1)
 
-        #Detect the id of the user
-        uid=$(id -u $user)
+      #   #Detect the id of the user
+      #   uid=$(id -u $user)
 
-        sudo -u $user DISPLAY=$display DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$uid/bus ${pkgs.libnotify}/bin/notify-send "$@"
-      '')
+      #   sudo -u $user DISPLAY=$display DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$uid/bus ${pkgs.libnotify}/bin/notify-send "$@"
+      # '')
     ];
 
     systemd.services = mkIf cfg.notifications {
@@ -143,8 +143,12 @@ in {
           Type = "oneshot";
         };
 
+        environment = {
+          DBUS_SESSION_BUS_ADDRESS = "unix:path=/run/user/%U/bus";
+        };
+
         script = ''
-          notify-send "Backup failed" "Backup failed for ${jobName}" --urgency=critical
+          ${pkgs.libnotify}/bin/notify-send --urgency=critical "Backup failed" "Backup failed for ${jobName}"
         '';
       };
     };

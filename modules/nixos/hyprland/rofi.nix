@@ -32,4 +32,12 @@ in {
       };
     };
   };
+
+  wayland.windowManager.hyprland.settings = {
+    "$launcher" = "${pkgs.rofi-wayland}/bin/rofi -show drun";
+
+    bind = [
+      "$mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
+    ];
+  };
 }
