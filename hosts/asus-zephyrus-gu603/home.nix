@@ -40,5 +40,8 @@
     "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":minimize,maximize,close";
   };
 
-  programs.aider.enable = true;
+  programs.aider = {
+    enable = true;
+    envPath = "/home/${user}/.env.aider";
+  };
 }

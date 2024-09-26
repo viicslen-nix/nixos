@@ -239,6 +239,7 @@ with lib; {
           ".tmux/resurrect"
         ];
         files = [
+          ".env.aider"
           ".gitconfig"
           ".zsh_history"
           ".wakatime.cfg"

@@ -12,6 +12,11 @@ with lib; let
 in {
   options.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
+    envPath = mkOption {
+      type = types.str;
+      default = ".env.${name}";
+      description = "The path to the environment file";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -21,7 +26,7 @@ in {
 
     home.file.".aider.conf.yml".text = ''
     model: gemini/gemini-1.5-pro-exp-0827
-    env-file: .env.aider
+    env-file: ${cfg.envPath}
     check-update: false
     dark-mode: true
     vim: true
