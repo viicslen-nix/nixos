@@ -121,16 +121,16 @@ in {
             ./config/rules.nix
             ./config/binds.nix
 
-            ./hyprlock.nix
-            ./hypridle.nix
-            ./pyprland.nix
+            ./components/hyprlock.nix
+            ./components/hypridle.nix
+            ./components/pyprland.nix
 
-            ./wlogout
+            # ./components/swaync.nix
+            # ./components/rofi.nix
+            # ./components/waybar
+            # ./components/wlogout
 
-            # ./swaync.nix
-            # ./rofi.nix
-            # ./waybar
-            ./ags
+            ./components/ags
           ];
 
           xdg.desktopEntries."org.gnome.Settings" = {

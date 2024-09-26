@@ -105,4 +105,10 @@ in {
       }
     '';
   };
+
+  wayland.windowManager.hyprland.settings = {
+    bind = [
+      "$mod, Escape, exec, wlogout -p layer-shell"
+    ];
+  };
 }

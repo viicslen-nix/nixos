@@ -65,7 +65,6 @@ in {
         "$mod, M, exec, pypr toggle_special minimized"
 
         # system
-        "$mod, Escape, exec, wlogout -p layer-shell"
         "$mod, L, exec, loginctl lock-session"
         "$mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
 
