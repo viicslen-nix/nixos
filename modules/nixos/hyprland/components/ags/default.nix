@@ -43,7 +43,6 @@
     ];
 
     bind = [
-      "$mod, Tab, exec, ${ags} -t overview"
       "$mod CTRL SHIFT, R, exec, ${ags} quit; ${ags}"
       "$mod, V, exec, cliphist list | ${ags} -t launcher | cliphist decode | wl-copy" # TODO: use ags to show list
       ",XF86PowerOff, exec, ${ags} -r 'powermenu.shutdown()'"
