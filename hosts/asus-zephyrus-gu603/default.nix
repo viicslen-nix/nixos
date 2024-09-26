@@ -197,7 +197,6 @@ with lib; {
       inherit user;
       enable = true;
       directories = [
-        "/tmp/asztal"
         "/etc/mullvad-vpn"
         "/etc/gdm"
       ];
