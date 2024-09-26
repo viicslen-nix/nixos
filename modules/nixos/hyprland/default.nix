@@ -15,7 +15,7 @@ in {
 
     package = mkOption {
       type = types.package;
-      default = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      default = pkgs.inputs.hyprland.hyprland;
       description = "The hyprland package to use";
     };
 
@@ -46,8 +46,8 @@ in {
         hyprland = {
           enable = true;
           xwayland.enable = true;
-          package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-          portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+          package = pkgs.inputs.hyprland.hyprland;
+          portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
         };
       };
 
@@ -86,7 +86,7 @@ in {
         # screenshot
         grim
         slurp
-        inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
+        pkgs.inputs.hyprland-contrib.grimblast
         satty
 
         # clipboard
@@ -148,7 +148,6 @@ in {
             systemd.variables = ["--all"];
 
             plugins = [
-              # pkgs.inputs.split-monitor-workspaces.split-monitor-workspaces
               pkgs.inputs.hyprspace.Hyprspace
               pkgs.inputs.hyprsplit.hyprsplit
             ];
