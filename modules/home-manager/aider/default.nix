@@ -27,6 +27,7 @@ in {
     home.file.".aider.conf.yml".text = ''
     model: gemini/gemini-1.5-pro-exp-0827
     env-file: ${cfg.envPath}
+    mode: ask
     check-update: false
     dark-mode: true
     vim: true
