@@ -81,15 +81,10 @@
       url = "github:shezdy/hyprsplit";
       inputs.hyprland.follows = "hyprland";
     };
-    split-monitor-workspaces = {
-      url = "github:Duckonaut/split-monitor-workspaces";
-      inputs.hyprland.follows = "hyprland";
-    };
 
     # Ags
-    matugen.url = "github:InioX/matugen?ref=v2.2.0";
-    astal.url = "github:Aylur/astal";
     ags.url = "github:Aylur/ags";
+    matugen.url = "github:InioX/matugen?ref=v2.2.0";
 
     # Theming
     stylix.url = "github:danth/stylix";
