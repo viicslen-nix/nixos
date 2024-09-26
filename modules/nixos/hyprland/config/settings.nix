@@ -18,8 +18,8 @@ in {
       "NIXOS_OZONE_WL,1"
       "NIXPKGS_ALLOW_UNFREE,1"
 
-      "XDG_CURRENT_DESKTOP,Hyprland"
-      "XDG_SESSION_DESKTOP,Hyprland"
+      "XDG_CURRENT_DESKTOP,GNOME"
+      "XDG_SESSION_DESKTOP,gnome"
 
       "XDG_SESSION_TYPE,wayland"
       "CLUTTER_BACKEND,wayland"
