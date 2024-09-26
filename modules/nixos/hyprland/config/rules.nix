@@ -85,9 +85,6 @@
 
       # VS Code
       "opacity 0.90 0.90, title:(.*)(Visual Studio Code)$"
-
-      # don't render hyprbars on tiling windows
-      "plugin:hyprbars:nobar, floating:0"
     ];
   };
 }
