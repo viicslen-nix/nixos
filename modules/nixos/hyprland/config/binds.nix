@@ -9,8 +9,8 @@
         in
           builtins.toString (x + 1 - (c * 10));
       in [
-        "$mod, ${ws}, split-workspace, ${toString (x + 1)}"
-        "$mod SHIFT, ${ws}, split-movetoworkspacesilent, ${toString (x + 1)}"
+        "$mod, ${ws}, split:workspace, ${toString (x + 1)}"
+        "$mod SHIFT, ${ws}, split:movetoworkspacesilent, ${toString (x + 1)}"
       ]
     )
     10);
@@ -63,8 +63,14 @@ in {
         # minimize
         "$mod CTRL, M, togglespecialworkspace, minimized"
         "$mod, M, exec, pypr toggle_special minimized"
+        
+        # Scrachpads
+        "$mod CTRL, T, exec, pypr toggle term"
+        "$mod CTRL, V, exec, pypr toggle volume" 
 
         # system
+        "$mod, Tab, overview:toggle"
+        "$mod, G, split:grabroguewindows"
         "$mod, L, exec, loginctl lock-session"
         "$mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
 
@@ -73,13 +79,9 @@ in {
         "$mod SHIFT CTRL, S, exec, ${screenshot "-o -r"}"
         "$mod SHIFT ALT, S, exec, grimblast --notify --cursor copysave screen"
 
-        # utilities
+        # applications
         "$mod, Return, exec, $terminal"
-        "Control_L&Shift_L, Space, exec, 1password --quick-access"
-        
-        # Scrachpads
-        "$mod CTRL, T, exec, pypr toggle term"
-        "$mod CTRL, V, exec, pypr toggle volume" 
+        "CTRL SHIFT, Space, exec, 1password --quick-access"
       ]
       ++ workspaces;
 

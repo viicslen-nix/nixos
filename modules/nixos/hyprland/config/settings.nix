@@ -172,6 +172,11 @@ in {
         reverseSwipe = true;
       };
 
+      hyprsplit = {
+        num_workspaces = 10;
+        persistent_workspaces = false;
+      };
+
       hyprbars = {
         bar_height = 20;
         bar_precedence_over_border = true;
