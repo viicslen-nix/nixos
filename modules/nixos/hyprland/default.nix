@@ -75,7 +75,7 @@ in {
       environment.variables.XDG_RUNTIME_DIR = "/run/user/$UID";
 
       environment.systemPackages = with pkgs; [
-        kdePackages.polkit-kde-agent-1
+        polkit_gnome
         pavucontrol
         qpwgraph
 
@@ -147,9 +147,9 @@ in {
 
             systemd.variables = ["--all"];
 
-            plugins = [
-              pkgs.inputs.hyprspace.Hyprspace
-              pkgs.inputs.hyprsplit.hyprsplit
+            plugins = with pkgs.inputs; [
+              hyprspace.Hyprspace
+              hyprsplit.hyprsplit
             ];
           };
 
