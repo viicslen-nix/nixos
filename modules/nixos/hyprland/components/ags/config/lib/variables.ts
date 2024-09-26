@@ -1,7 +1,7 @@
 import GLib from "gi://GLib"
-// import options from "options"
-//
-// const intval = options.system.fetchInterval.value
+import options from "options"
+
+const intval = options.system.fetchInterval.value
 // const tempPath = options.system.temperature.value
 
 export const clock = Variable(GLib.DateTime.new_now_local(), {

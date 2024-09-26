@@ -10,6 +10,8 @@ const { position } = options.bar
 
 const focus = (address: string) => hyprland.messageAsync(
     `dispatch focuswindow address:${address}`)
+const killactive = (address: string) => hyprland.messageAsync(
+    `dispatch killactive address:${address}`)
 
 const DummyItem = (address: string) => Widget.Box({
     attribute: { address },
@@ -18,8 +20,9 @@ const DummyItem = (address: string) => Widget.Box({
 
 const AppItem = (address: string) => {
     const client = hyprland.getClient(address)
-    if (!client || client.class === "")
-        return DummyItem(address)
+    if (!client || client.class === "" || client.title === "" || client.title === "menu") {
+      return DummyItem(address)
+    }
 
     const app = apps.list.find(app => app.match(client.class))
 
@@ -30,11 +33,12 @@ const AppItem = (address: string) => {
         ),
         on_primary_click: () => focus(address),
         on_middle_click: () => app && launchApp(app),
+        on_secondary_click: () => killactive(address),
         child: Widget.Icon({
             size: iconSize.bind(),
             icon: monochrome.bind().as(m => icon(
-                (app?.icon_name || client.class) + (m ? "-symbolic" : ""),
-                icons.fallback.executable + (m ? "-symbolic" : ""),
+                (app?.icon_name || client.class) + (m ? "" : ""),
+                icons.fallback.executable,
             )),
         }),
     })
@@ -76,15 +80,18 @@ export default () => Widget.Box({
     children: sortItems(hyprland.clients.map(c => AppItem(c.address))),
     setup: w => w
         .hook(hyprland, (w, address?: string) => {
-            if (typeof address === "string")
-                w.children = w.children.filter(ch => ch.attribute.address !== address)
+            if (typeof address === "string") {
+              w.children = w.children.filter(ch => ch.attribute.address !== address)
+            }
         }, "client-removed")
         .hook(hyprland, (w, address?: string) => {
-            if (typeof address === "string")
-                w.children = sortItems([...w.children, AppItem(address)])
+            if (typeof address === "string") {
+              w.children = sortItems([...w.children, AppItem(address)])
+            }
         }, "client-added")
         .hook(hyprland, (w, event?: string) => {
-            if (event === "movewindow")
-                w.children = sortItems(w.children)
+            if (event === "movewindow") {
+              w.children = sortItems(w.children)
+            }
         }, "event"),
 })
