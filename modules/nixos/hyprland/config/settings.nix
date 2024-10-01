@@ -152,19 +152,19 @@ in {
 
     # xwayland.force_zero_scaling = true;
 
-    # debug.disable_logs = false;
+    debug.disable_logs = false;
 
     plugin = {
-      overview = {
-        centerAligned = true;
-        hideTopLayers = true;
-        hideOverlayLayers = true;
-        showNewWorkspace = true;
-        exitOnClick = true;
-        exitOnSwitch = true;
-        drawActiveWorkspace = true;
-        reverseSwipe = true;
-      };
+      # overview = {
+      #   centerAligned = true;
+      #   hideTopLayers = true;
+      #   hideOverlayLayers = true;
+      #   showNewWorkspace = true;
+      #   exitOnClick = true;
+      #   exitOnSwitch = true;
+      #   drawActiveWorkspace = true;
+      #   reverseSwipe = true;
+      # };
 
       hyprsplit = {
         num_workspaces = 10;

@@ -148,7 +148,7 @@ in {
             systemd.variables = ["--all"];
 
             plugins = with pkgs.inputs; [
-              hyprspace.Hyprspace
+              # hyprspace.Hyprspace
               hyprsplit.hyprsplit
             ];
           };
