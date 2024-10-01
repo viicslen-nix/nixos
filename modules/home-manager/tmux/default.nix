@@ -41,11 +41,11 @@ in {
         '';
       }
       {
-        plugin = pkgs.tmuxPlugins.mkTmuxPlugin {
+        plugin = tmuxPlugins.mkTmuxPlugin {
           pluginName = "tokyo-night";
           rtpFilePath = "tokyo-night.tmux";
           version = "v1.5.5";
-          src = inputs.tokyo-night-tmux;
+          src = inputs.tmux-tokyo-night;
         };
         extraConfig = ''
           set -g @tokyo-night-tmux_theme "storm" # options: night, storm, day
@@ -55,6 +55,14 @@ in {
           set -g @tokyo-night-tmux_show_wbg 1
           set -g status-justify left
         '';
+      }
+      {
+        plugin = tmuxPlugins.mkTmuxPlugin {
+          pluginName = "tmux-1password";
+          rtpFilePath = "plugin.tmux";
+          version = "master";
+          src = inputs.tmux-1password;
+        };
       }
     ];
 
