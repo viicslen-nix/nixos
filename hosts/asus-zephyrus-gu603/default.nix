@@ -241,6 +241,7 @@ with lib; {
         files = [
           ".env.aider"
           ".gitconfig"
+          ".ideavimrc"
           ".zsh_history"
           ".wakatime.cfg"
           ".config/background"
