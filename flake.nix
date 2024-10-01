@@ -40,6 +40,16 @@
       flake = false;
     };
 
+    # Tmux
+    tmux-1password = {
+      url = "github:yardnsm/tmux-1password";
+      flake = false;
+    };
+    tmux-tokyo-night = {
+      url = "github:janoamaral/tokyo-night-tmux";
+      flake = false;
+    };
+
     # NvChad
     nvchad = {
       url = "github:NvChad/nix";
@@ -99,10 +109,6 @@
     };
     rofi-collections = {
       url = "github:Murzchnvok/rofi-collection";
-      flake = false;
-    };
-    tokyo-night-tmux = {
-      url = "github:janoamaral/tokyo-night-tmux";
       flake = false;
     };
     wallpapers = {

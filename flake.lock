@@ -1783,7 +1783,8 @@
         "rofi-collections": "rofi-collections",
         "rofi-themes": "rofi-themes",
         "stylix": "stylix",
-        "tokyo-night-tmux": "tokyo-night-tmux",
+        "tmux-1password": "tmux-1password",
+        "tmux-tokyo-night": "tmux-tokyo-night",
         "tt-schemes": "tt-schemes",
         "wallpapers": "wallpapers",
         "zen-browser": "zen-browser"
@@ -2022,7 +2023,23 @@
         "type": "indirect"
       }
     },
-    "tokyo-night-tmux": {
+    "tmux-1password": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1654937490,
+        "narHash": "sha256-k+4mHE7oEjp85aPv0oOcjgecfvM/s0rG8x332bvn+4Y=",
+        "owner": "yardnsm",
+        "repo": "tmux-1password",
+        "rev": "bb1bbd2acfe1b4d5dcf917f6ddf3b0f634a13362",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yardnsm",
+        "repo": "tmux-1password",
+        "type": "github"
+      }
+    },
+    "tmux-tokyo-night": {
       "flake": false,
       "locked": {
         "lastModified": 1719759351,
