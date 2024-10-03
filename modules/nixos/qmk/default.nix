@@ -5,7 +5,7 @@
   ...
 }:
 with lib; let
-  name = "via";
+  name = "qmk";
   namespace = "features";
 
   cfg = config.${namespace}.${name};

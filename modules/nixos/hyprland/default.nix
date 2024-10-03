@@ -51,22 +51,22 @@ in {
         };
       };
 
-      xdg.portal = {
-        enable = true;
-        wlr.enable = true;
-        config = {
-          common = {
-            default = [
-              "hyprland"
-              "xdph"
-              "gtk"
-            ];
-            "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
-            "org.freedesktop.portal.FileChooser" = [ "xdg-desktop-portal-gtk" ];
-          };
-        };
-        # extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
-      };
+      # xdg.portal = {
+      #   enable = true;
+      #   wlr.enable = true;
+      #   config = {
+      #     common = {
+      #       default = [
+      #         "hyprland"
+      #         "xdph"
+      #         "gtk"
+      #       ];
+      #       "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
+      #       "org.freedesktop.portal.FileChooser" = [ "xdg-desktop-portal-gtk" ];
+      #     };
+      #   };
+      #   # extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+      # };
 
       security.polkit.enable = true;
       services.gnome.gnome-keyring.enable = true;
