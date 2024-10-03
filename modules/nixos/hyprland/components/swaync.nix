@@ -66,324 +66,324 @@ in {
     };
 
     style = ''
-        * {
-            font-family: Ubuntu;
-            font-weight: bolder;
-        }
+      * {
+          font-family: Ubuntu;
+          font-weight: bolder;
+      }
 
-        .control-center .notification-row:focus,
-        .control-center .notification-row:hover {
-            opacity: 0.9;
-            background: alpha(#${colorScheme.base00}, 0.8)
-        }
+      .control-center .notification-row:focus,
+      .control-center .notification-row:hover {
+          opacity: 0.9;
+          background: alpha(#${colorScheme.base00}, 0.8)
+      }
 
-        .notification-row {
-            outline: none;
-            margin: 10px;
-            padding: 0;
-        }
+      .notification-row {
+          outline: none;
+          margin: 10px;
+          padding: 0;
+      }
 
-        .notification {
-            background: transparent;
-            padding: 0;
-            margin: 0px;
-        }
+      .notification {
+          background: transparent;
+          padding: 0;
+          margin: 0px;
+      }
 
-        .notification-content {
-            background: #${colorScheme.base00};
-            padding: 10px;
-            border-radius: 5px;
-            border: 2px solid #${colorScheme.base0D};
-            margin: 0;
-        }
+      .notification-content {
+          background: #${colorScheme.base00};
+          padding: 10px;
+          border-radius: 5px;
+          border: 2px solid #${colorScheme.base0D};
+          margin: 0;
+      }
 
-        .notification-default-action {
-            margin: 0;
-            padding: 0;
-            border-radius: 5px;
-        }
+      .notification-default-action {
+          margin: 0;
+          padding: 0;
+          border-radius: 5px;
+      }
 
-        .close-button {
-            background: #${colorScheme.base08};
-            color: #${colorScheme.base00};
-            text-shadow: none;
-            padding: 0;
-            border-radius: 5px;
-            margin-top: 5px;
-            margin-right: 5px;
-        }
+      .close-button {
+          background: #${colorScheme.base08};
+          color: #${colorScheme.base00};
+          text-shadow: none;
+          padding: 0;
+          border-radius: 5px;
+          margin-top: 5px;
+          margin-right: 5px;
+      }
 
-        .close-button:hover {
-            box-shadow: none;
-            background: #${colorScheme.base0D};
-            transition: all .15s ease-in-out;
-            border: none
-        }
-
-
-        .notification-action {
-            border: 2px solid #${colorScheme.base0D};
-            border-top: none;
-            border-radius: 5px;
-        }
+      .close-button:hover {
+          box-shadow: none;
+          background: #${colorScheme.base0D};
+          transition: all .15s ease-in-out;
+          border: none
+      }
 
 
-        .notification-default-action:hover,
-        .notification-action:hover {
-            color: #${colorScheme.base0B};
-            background: #${colorScheme.base0B}
-        }
+      .notification-action {
+          border: 2px solid #${colorScheme.base0D};
+          border-top: none;
+          border-radius: 5px;
+      }
 
-        .notification-default-action {
-            border-radius: 5px;
-            margin: 0px;
-        }
 
-        .notification-default-action:not(:only-child) {
-            border-bottom-left-radius: 7px;
-            border-bottom-right-radius: 7px
-        }
+      .notification-default-action:hover,
+      .notification-action:hover {
+          color: #${colorScheme.base0B};
+          background: #${colorScheme.base0B}
+      }
 
-        .notification-action:first-child {
-            border-bottom-left-radius: 10px;
-            background: #${colorScheme.base00}
-        }
+      .notification-default-action {
+          border-radius: 5px;
+          margin: 0px;
+      }
 
-        .notification-action:last-child {
-            border-bottom-right-radius: 10px;
-            background: #${colorScheme.base00}
-        }
+      .notification-default-action:not(:only-child) {
+          border-bottom-left-radius: 7px;
+          border-bottom-right-radius: 7px
+      }
 
-        .inline-reply {
-            margin-top: 8px
-        }
+      .notification-action:first-child {
+          border-bottom-left-radius: 10px;
+          background: #${colorScheme.base00}
+      }
 
-        .inline-reply-entry {
-            background: #${colorScheme.base00};
-            color: #${colorScheme.base05};
-            caret-color: #${colorScheme.base05};
-            border: 1px solid #${colorScheme.base09};
-            border-radius: 5px
-        }
+      .notification-action:last-child {
+          border-bottom-right-radius: 10px;
+          background: #${colorScheme.base00}
+      }
 
-        .inline-reply-button {
-            margin-left: 4px;
-            background: #${colorScheme.base00};
-            border: 1px solid #${colorScheme.base09};
-            border-radius: 5px;
-            color: #${colorScheme.base05}
-        }
+      .inline-reply {
+          margin-top: 8px
+      }
 
-        .inline-reply-button:disabled {
-            background: initial;
-            color: #${colorScheme.base03};
-            border: 1px solid transparent
-        }
+      .inline-reply-entry {
+          background: #${colorScheme.base00};
+          color: #${colorScheme.base05};
+          caret-color: #${colorScheme.base05};
+          border: 1px solid #${colorScheme.base09};
+          border-radius: 5px
+      }
 
-        .inline-reply-button:hover {
-            background: #${colorScheme.base00}
-        }
+      .inline-reply-button {
+          margin-left: 4px;
+          background: #${colorScheme.base00};
+          border: 1px solid #${colorScheme.base09};
+          border-radius: 5px;
+          color: #${colorScheme.base05}
+      }
 
-        .body-image {
-            margin-top: 6px;
-            background-color: #${colorScheme.base05};
-            border-radius: 5px
-        }
+      .inline-reply-button:disabled {
+          background: initial;
+          color: #${colorScheme.base03};
+          border: 1px solid transparent
+      }
 
-        .summary {
-            font-size: 16px;
-            font-weight: 700;
-            background: transparent;
-            color: rgba(158, 206, 106, 1);
-            text-shadow: none
-        }
+      .inline-reply-button:hover {
+          background: #${colorScheme.base00}
+      }
 
-        .time {
-            font-size: 16px;
-            font-weight: 700;
-            background: transparent;
-            color: #${colorScheme.base05};
-            text-shadow: none;
-            margin-right: 18px
-        }
+      .body-image {
+          margin-top: 6px;
+          background-color: #${colorScheme.base05};
+          border-radius: 5px
+      }
 
-        .body {
-            font-size: 15px;
-            font-weight: 400;
-            background: transparent;
-            color: #${colorScheme.base05};
-            text-shadow: none
-        }
+      .summary {
+          font-size: 16px;
+          font-weight: 700;
+          background: transparent;
+          color: rgba(158, 206, 106, 1);
+          text-shadow: none
+      }
 
-        .control-center {
-            background: #${colorScheme.base00};
-            border: 2px solid #${colorScheme.base0C};
-            border-radius: 5px;
-        }
+      .time {
+          font-size: 16px;
+          font-weight: 700;
+          background: transparent;
+          color: #${colorScheme.base05};
+          text-shadow: none;
+          margin-right: 18px
+      }
 
-        .control-center-list {
-            background: transparent
-        }
+      .body {
+          font-size: 15px;
+          font-weight: 400;
+          background: transparent;
+          color: #${colorScheme.base05};
+          text-shadow: none
+      }
 
-        .control-center-list-placeholder {
-            opacity: .5
-        }
+      .control-center {
+          background: #${colorScheme.base00};
+          border: 2px solid #${colorScheme.base0C};
+          border-radius: 5px;
+      }
 
-        .floating-notifications {
-            background: transparent
-        }
+      .control-center-list {
+          background: transparent
+      }
 
-        .blank-window {
-            background: alpha(black, 0)
-        }
+      .control-center-list-placeholder {
+          opacity: .5
+      }
 
-        .widget-title {
-            color: #${colorScheme.base0B};
-            background: #${colorScheme.base00};
-            padding: 5px 10px;
-            margin: 10px 10px 5px 10px;
-            font-size: 1.5rem;
-            border-radius: 5px;
-        }
+      .floating-notifications {
+          background: transparent
+      }
 
-        .widget-title>button {
-            font-size: 1rem;
-            color: #${colorScheme.base05};
-            text-shadow: none;
-            background: #${colorScheme.base00};
-            box-shadow: none;
-            border-radius: 5px;
-        }
+      .blank-window {
+          background: alpha(black, 0)
+      }
 
-        .widget-title>button:hover {
-            background: #${colorScheme.base08};
-            color: #${colorScheme.base00};
-        }
+      .widget-title {
+          color: #${colorScheme.base0B};
+          background: #${colorScheme.base00};
+          padding: 5px 10px;
+          margin: 10px 10px 5px 10px;
+          font-size: 1.5rem;
+          border-radius: 5px;
+      }
 
-        .widget-dnd {
-            background: #${colorScheme.base00};
-            padding: 5px 10px;
-            margin: 10px 10px 5px 10px;
-            border-radius: 5px;
-            font-size: large;
-            color: #${colorScheme.base0B};
-        }
+      .widget-title>button {
+          font-size: 1rem;
+          color: #${colorScheme.base05};
+          text-shadow: none;
+          background: #${colorScheme.base00};
+          box-shadow: none;
+          border-radius: 5px;
+      }
 
-        .widget-dnd>switch {
-            border-radius: 5px;
-            /* border: 1px solid #${colorScheme.base0B}; */
-            background: #${colorScheme.base0B};
-        }
+      .widget-title>button:hover {
+          background: #${colorScheme.base08};
+          color: #${colorScheme.base00};
+      }
 
-        .widget-dnd>switch:checked {
-            background: #${colorScheme.base08};
-            border: 1px solid #${colorScheme.base08};
-        }
+      .widget-dnd {
+          background: #${colorScheme.base00};
+          padding: 5px 10px;
+          margin: 10px 10px 5px 10px;
+          border-radius: 5px;
+          font-size: large;
+          color: #${colorScheme.base0B};
+      }
 
-        .widget-dnd>switch slider {
-            background: #${colorScheme.base00};
-            border-radius: 5px
-        }
+      .widget-dnd>switch {
+          border-radius: 5px;
+          /* border: 1px solid #${colorScheme.base0B}; */
+          background: #${colorScheme.base0B};
+      }
 
-        .widget-dnd>switch:checked slider {
-            background: #${colorScheme.base00};
-            border-radius: 5px
-        }
+      .widget-dnd>switch:checked {
+          background: #${colorScheme.base08};
+          border: 1px solid #${colorScheme.base08};
+      }
 
-        .widget-label {
-            margin: 10px 10px 5px 10px;
-        }
+      .widget-dnd>switch slider {
+          background: #${colorScheme.base00};
+          border-radius: 5px
+      }
 
-        .widget-label>label {
-            font-size: 1rem;
-            color: #${colorScheme.base05};
-        }
+      .widget-dnd>switch:checked slider {
+          background: #${colorScheme.base00};
+          border-radius: 5px
+      }
 
-        .widget-mpris {
-            color: #${colorScheme.base05};
-            background: #${colorScheme.base00};
-            padding: 5px 10px;
-            margin: 10px 10px 5px 10px;
-            border-radius: 5px;
-        }
+      .widget-label {
+          margin: 10px 10px 5px 10px;
+      }
 
-        .widget-mpris > box > button {
-            border-radius: 5px;
-        }
+      .widget-label>label {
+          font-size: 1rem;
+          color: #${colorScheme.base05};
+      }
 
-        .widget-mpris-player {
-            padding: 5px 10px;
-            margin: 10px
-        }
+      .widget-mpris {
+          color: #${colorScheme.base05};
+          background: #${colorScheme.base00};
+          padding: 5px 10px;
+          margin: 10px 10px 5px 10px;
+          border-radius: 5px;
+      }
 
-        .widget-mpris-title {
-            font-weight: 700;
-            font-size: 1.25rem
-        }
+      .widget-mpris > box > button {
+          border-radius: 5px;
+      }
 
-        .widget-mpris-subtitle {
-            font-size: 1.1rem
-        }
+      .widget-mpris-player {
+          padding: 5px 10px;
+          margin: 10px
+      }
 
-        .widget-buttons-grid {
-            font-size: x-large;
-            padding: 5px;
-            margin: 10px 10px 5px 10px;
-            border-radius: 5px;
-            background: #${colorScheme.base01};
-        }
+      .widget-mpris-title {
+          font-weight: 700;
+          font-size: 1.25rem
+      }
 
-        .widget-buttons-grid>flowbox>flowboxchild>button {
-            margin: 3px;
-            background: #${colorScheme.base00};
-            border-radius: 5px;
-            color: #${colorScheme.base05};
-        }
+      .widget-mpris-subtitle {
+          font-size: 1.1rem
+      }
 
-        .widget-buttons-grid>flowbox>flowboxchild>button:hover {
-            background: rgba(122, 162, 247, 1);
-            color: #${colorScheme.base00};
-        }
+      .widget-buttons-grid {
+          font-size: x-large;
+          padding: 5px;
+          margin: 10px 10px 5px 10px;
+          border-radius: 5px;
+          background: #${colorScheme.base01};
+      }
 
-        .widget-menubar>box>.menu-button-bar>button {
-            border: none;
-            background: transparent
-        }
+      .widget-buttons-grid>flowbox>flowboxchild>button {
+          margin: 3px;
+          background: #${colorScheme.base00};
+          border-radius: 5px;
+          color: #${colorScheme.base05};
+      }
 
-        .topbar-buttons>button {
-            border: none;
-            background: transparent
-        }
+      .widget-buttons-grid>flowbox>flowboxchild>button:hover {
+          background: rgba(122, 162, 247, 1);
+          color: #${colorScheme.base00};
+      }
 
-        .widget-volume {
-            background: #${colorScheme.base01};
-            padding: 5px;
-            margin: 10px 10px 5px 10px;
-            border-radius: 5px;
-            font-size: x-large;
-            color: #${colorScheme.base05};
-        }
+      .widget-menubar>box>.menu-button-bar>button {
+          border: none;
+          background: transparent
+      }
 
-        .widget-volume>box>button {
-            background: #${colorScheme.base0B};
-            border: none
-        }
+      .topbar-buttons>button {
+          border: none;
+          background: transparent
+      }
 
-        .per-app-volume {
-            background-color: #${colorScheme.base00};
-            padding: 4px 8px 8px;
-            margin: 0 8px 8px;
-            border-radius: 5px;
-        }
+      .widget-volume {
+          background: #${colorScheme.base01};
+          padding: 5px;
+          margin: 10px 10px 5px 10px;
+          border-radius: 5px;
+          font-size: x-large;
+          color: #${colorScheme.base05};
+      }
 
-        .widget-backlight {
-            background: #${colorScheme.base01};
-            padding: 5px;
-            margin: 10px 10px 5px 10px;
-            border-radius: 5px;
-            font-size: x-large;
-            color: #${colorScheme.base05}
-        }
+      .widget-volume>box>button {
+          background: #${colorScheme.base0B};
+          border: none
+      }
+
+      .per-app-volume {
+          background-color: #${colorScheme.base00};
+          padding: 4px 8px 8px;
+          margin: 0 8px 8px;
+          border-radius: 5px;
+      }
+
+      .widget-backlight {
+          background: #${colorScheme.base01};
+          padding: 5px;
+          margin: 10px 10px 5px 10px;
+          border-radius: 5px;
+          font-size: x-large;
+          color: #${colorScheme.base05}
+      }
     '';
   };
 

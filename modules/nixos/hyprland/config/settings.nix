@@ -151,41 +151,6 @@ in {
     };
 
     # xwayland.force_zero_scaling = true;
-
-    debug.disable_logs = false;
-
-    plugin = {
-      # overview = {
-      #   centerAligned = true;
-      #   hideTopLayers = true;
-      #   hideOverlayLayers = true;
-      #   showNewWorkspace = true;
-      #   exitOnClick = true;
-      #   exitOnSwitch = true;
-      #   drawActiveWorkspace = true;
-      #   reverseSwipe = true;
-      # };
-
-      hyprsplit = {
-        num_workspaces = 10;
-        persistent_workspaces = false;
-      };
-
-      hyprexpo = {
-        columns = 3;
-        gap_size = 4;
-        bg_col = "rgb(000000)";
-
-        enable_gesture = true;
-        gesture_distance = 300;
-        gesture_positive = false;
-      };
-
-      csgo-vulkan-fix = {
-        res_w = 1280;
-        res_h = 800;
-        class = "cs2";
-      };
-    };
+    # debug.disable_logs = false;
   };
 }

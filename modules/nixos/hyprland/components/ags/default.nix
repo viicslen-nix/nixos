@@ -33,8 +33,8 @@
     ];
   };
 
-  wayland.windowManager.hyprland.settings = let 
-    ags = "ags -b hypr"; 
+  wayland.windowManager.hyprland.settings = let
+    ags = "ags -b hypr";
   in {
     "$launcher" = "${ags} -t launcher";
 

@@ -51,22 +51,22 @@ in {
         };
       };
 
-      # xdg.portal = {
-      #   enable = true;
-      #   wlr.enable = true;
-      #   config = {
-      #     common = {
-      #       default = [
-      #         "hyprland"
-      #         "xdph"
-      #         "gtk"
-      #       ];
-      #       "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
-      #       "org.freedesktop.portal.FileChooser" = [ "xdg-desktop-portal-gtk" ];
-      #     };
-      #   };
-      #   # extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
-      # };
+      xdg.portal = {
+        enable = true;
+        wlr.enable = true;
+        config = {
+          common = {
+            default = [
+              "hyprland"
+              "xdph"
+              "gtk"
+            ];
+            "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
+            "org.freedesktop.portal.FileChooser" = ["xdg-desktop-portal-gtk"];
+          };
+        };
+        # extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+      };
 
       security.polkit.enable = true;
       services.gnome.gnome-keyring.enable = true;
@@ -116,21 +116,8 @@ in {
         users.${cfg.user} = {
           imports = [
             inputs.hyprland.homeManagerModules.default
-
-            ./config/settings.nix
-            ./config/rules.nix
-            ./config/binds.nix
-
-            ./components/hyprlock.nix
-            ./components/hypridle.nix
-            ./components/pyprland.nix
-
-            # ./components/swaync.nix
-            # ./components/rofi.nix
-            # ./components/waybar
-            # ./components/wlogout
-
-            ./components/ags
+            ./config
+            ./components
           ];
 
           xdg.desktopEntries."org.gnome.Settings" = {
@@ -146,11 +133,6 @@ in {
             enable = true;
 
             systemd.variables = ["--all"];
-
-            plugins = with pkgs.inputs; [
-              # hyprspace.Hyprspace
-              hyprsplit.hyprsplit
-            ];
           };
 
           # make stuff work on wayland

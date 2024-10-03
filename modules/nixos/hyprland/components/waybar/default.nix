@@ -41,8 +41,8 @@ in
           "hyprland/workspaces" = {
             format = "{name}";
             format-icons = {
-		          "active" = "";
-		          "default" = "";
+              "active" = "";
+              "default" = "";
             };
             on-scroll-up = "hyprctl dispatch workspace e+1";
             on-scroll-down = "hyprctl dispatch workspace e-1";
@@ -173,13 +173,13 @@ in
             format-icons = ["" ""];
           };
           "privacy" = {
-              icon-spacing = 1;
-              icon-size = 12;
-              transition-duration = 250;
-              modules = [
-                  { type = "audio-in"; }
-                  { type = "screenshare"; }
-              ];
+            icon-spacing = 1;
+            icon-size = 12;
+            transition-duration = 250;
+            modules = [
+              {type = "audio-in";}
+              {type = "screenshare";}
+            ];
           };
         }
       ];
@@ -274,7 +274,7 @@ in
           padding: 0px 15px 0px 30px;
           border-radius: 0px 0px 0px 40px;
         }
-        
+
         #window, #cpu, #memory, #idle_inhibitor, #custom-vpn {
           font-weight: bold;
           margin: 4px 0px;

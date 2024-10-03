@@ -63,10 +63,10 @@ in {
         # minimize
         "$mod CTRL, M, togglespecialworkspace, minimized"
         "$mod, M, exec, pypr toggle_special minimized"
-        
+
         # Scrachpads
         "$mod CTRL, T, exec, pypr toggle term"
-        "$mod CTRL, V, exec, pypr toggle volume" 
+        "$mod CTRL, V, exec, pypr toggle volume"
 
         # system
         "$mod, Tab, overview:toggle"
