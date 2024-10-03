@@ -87,11 +87,13 @@ in {
       services.udev.packages = with pkgs; [gnome-settings-daemon];
 
       # Install GNOME Tweaks
-      environment.systemPackages = with pkgs; [
-        adw-gtk3
-        gnome-tweaks
-        adwaita-icon-theme
-      ] ++ enabledExtensions;
+      environment.systemPackages = with pkgs;
+        [
+          adw-gtk3
+          gnome-tweaks
+          adwaita-icon-theme
+        ]
+        ++ enabledExtensions;
 
       # Required for some GNOME extensions
       environment.variables = {
@@ -119,7 +121,7 @@ in {
           };
           "org/gnome/shell" = {
             disable-user-extensions = false;
-            enabled-extensions = lists.forEach (enabledExtensions) (x: x.extensionUuid);
+            enabled-extensions = lists.forEach enabledExtensions (x: x.extensionUuid);
           };
           "org/gnome/shell/keybindings" = {
             screenshot = ["<Shift><Alt><Super>s"];

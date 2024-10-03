@@ -35,19 +35,19 @@ in {
     environment.systemPackages = [
       pkgs.mkcert
       (pkgs.writeShellScriptBin "mkcert-dev" ''
-      domain=$1
+        domain=$1
 
-      if [ -z "$2" ]; then
-        # If the second argument is empty, set it to the current working directory
-        directory=$(pwd)
-      else
-        # Use the provided second argument
-        directory="$2"
-      fi
+        if [ -z "$2" ]; then
+          # If the second argument is empty, set it to the current working directory
+          directory=$(pwd)
+        else
+          # Use the provided second argument
+          directory="$2"
+        fi
 
-      # Generate certificate
-      ${pkgs.mkcert}/bin/mkcert -key-file "''${directory}/''${domain}.key" -cert-file "''${directory}/''${domain}.crt" "localhost" "''${domain}" "*.''${domain}"
-    '')
+        # Generate certificate
+        ${pkgs.mkcert}/bin/mkcert -key-file "''${directory}/''${domain}.key" -cert-file "''${directory}/''${domain}.crt" "localhost" "''${domain}" "*.''${domain}"
+      '')
     ];
 
     security.pki.certificateFiles = mkIf cfg.rootCA.enable (lists.forEach cfg.rootCA.users (user: "${config.users.users.${user}.home}/${user}/${cfg.rootCA.path}"));

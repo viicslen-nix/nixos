@@ -15,7 +15,7 @@ with lib; let
 in {
   options.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
-    
+
     repository = mkOption {
       type = types.str;
       description = ''
@@ -117,7 +117,7 @@ in {
       };
     };
 
-    environment.systemPackages = [ 
+    environment.systemPackages = [
       # (pkgs.writeShellScriptBin "notify-send" ''
       #   #Detect the name of the display in use
       #   display=":$(ls /tmp/.X11-unix/* | sed 's#/tmp/.X11-unix/X##' | head -n 1)"

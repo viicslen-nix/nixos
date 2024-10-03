@@ -34,7 +34,7 @@ in {
     };
     plugins = mkOption {
       type = types.listOf types.package;
-      default = [ pkgs.gh ];
+      default = [pkgs.gh];
       description = "The list of shell plugins to install";
     };
     allowedCustomBrowsers = mkOption {
@@ -60,8 +60,6 @@ in {
         SSH_AUTH_SOCK = cfg.socket;
       };
 
-
-
       environment.etc = {
         "1password/custom_allowed_browsers" = {
           # get the list from the cfg and join it with new lines
@@ -75,7 +73,7 @@ in {
     (mkIf homeManagerLoaded {
       home-manager.users.${cfg.user} = {
         imports = [
-          inputs.one-password-shell-plugins.hmModules.default 
+          inputs.one-password-shell-plugins.hmModules.default
         ];
 
         # Configure the environment variable for the 1Password socket

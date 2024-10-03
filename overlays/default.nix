@@ -42,7 +42,6 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: _prev: {
-
     # Make Microsoft-Edge not be shit on Wayland
     microsoft-edge-wayland = _prev.symlinkJoin {
       name = "microsoft-edge-wayland";

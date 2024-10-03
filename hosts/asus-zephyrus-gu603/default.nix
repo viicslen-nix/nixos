@@ -20,7 +20,7 @@ with lib; {
 
   powerManagement.cpuFreqGovernor = "powersave";
   home-manager.users.${user} = import ./home.nix;
-  age.identityPaths = [ "${config.users.users.${user}.home}/.ssh/agenix" ];
+  age.identityPaths = ["${config.users.users.${user}.home}/.ssh/agenix"];
 
   boot = {
     kernelParams = [
@@ -33,7 +33,7 @@ with lib; {
       efi.canTouchEfiVariables = false;
 
       # systemd-boot.enable = true;
-    
+
       grub = {
         enable = true;
         device = "nodev";
@@ -67,7 +67,7 @@ with lib; {
 
   specialisation = {
     nvidia-sync.configuration = {
-      system.nixos.tags = [ "nvidia-sync" ];
+      system.nixos.tags = ["nvidia-sync"];
       hardware.nvidia = {
         powerManagement.finegrained = lib.mkForce false;
 
@@ -181,7 +181,7 @@ with lib; {
       ];
 
       home = {
-        users = [ user ];
+        users = [user];
         paths = [
           "Development"
           "Documents"
