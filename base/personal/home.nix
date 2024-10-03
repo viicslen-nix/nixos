@@ -7,10 +7,6 @@
   user,
   ...
 }: {
-  home.packages = with pkgs; [
-    floorp
-  ];
-
   home.autostart = [
     pkgs.mullvad-vpn
   ];
