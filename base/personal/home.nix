@@ -9,12 +9,6 @@
 }: {
   home.packages = with pkgs; [
     floorp
-
-    via
-    keymapviz
-    qmk
-    qmk_hid
-    qmk-udev-rules
   ];
 
   home.autostart = [

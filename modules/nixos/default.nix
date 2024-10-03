@@ -5,6 +5,7 @@
   # my-module = import ./my-module.nix;
   kde = import ./kde;
   oom = import ./oom;
+  qmk = import ./qmk;
   gnome = import ./gnome;
   sound = import ./sound;
   docker = import ./docker;

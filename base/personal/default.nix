@@ -48,6 +48,8 @@
   ];
 
   features = {
+    qmk.enable = true;
+
     onePassword = {
       enable = true;
       inherit user;
