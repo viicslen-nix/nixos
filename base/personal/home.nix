@@ -7,8 +7,12 @@
   user,
   ...
 }: {
-  home.autostart = [
-    pkgs.mullvad-vpn
+  home.packages = with pkgs; [
+    orca-slicer
+  ];
+
+  home.autostart = with pkgs; [
+    mullvad-vpn
   ];
 
   programs.git = {
