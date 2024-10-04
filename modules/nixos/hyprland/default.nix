@@ -68,8 +68,12 @@ in {
         # extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
       };
 
+      # Enable the GNOME Services
+      programs.dconf.enable = true;
       security.polkit.enable = true;
+      programs.seahorse.enable = true;
       services.gnome.gnome-keyring.enable = true;
+      services.gnome.gnome-settings-daemon.enable = true;
       security.pam.services.gdm.enableGnomeKeyring = true;
 
       environment.variables.XDG_RUNTIME_DIR = "/run/user/$UID";
