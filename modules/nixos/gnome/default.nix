@@ -65,26 +65,21 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       # Enable the GNOME Desktop Environment.
-      services.xserver.enable = lib.mkDefault true;
+      services.xserver.enable = mkDefault true;
       services.xserver.desktopManager.gnome.enable = true;
 
+      # Enable the GNOME Display Manager
       services.xserver.displayManager.gdm = mkIf cfg.enableGdm {
         enable = true;
       };
 
-      # Enable GNOME Keyring
-      services.gnome.gnome-keyring.enable = true;
-
       # Exclude GNOME applications from the default install
       environment.gnome.excludePackages = cfg.exclude;
 
-      # Enable DConf to tweak desktop settings
-      programs.dconf.enable = true;
-
-      # Enable Seahorse to manage keyring
-      programs.seahorse.enable = true;
-
-      services.udev.packages = with pkgs; [gnome-settings-daemon];
+      # Enable GNOME services
+      services.gnome.core-shell.enable = true;
+      services.gnome.core-utilities.enable = true;
+      services.gnome.core-os-services.enable = true;
 
       # Install GNOME Tweaks
       environment.systemPackages = with pkgs;
