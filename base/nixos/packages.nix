@@ -26,7 +26,6 @@
     just
     gtop
     wmctrl
-    neovim
     lazygit
     busybox
     libinput

@@ -85,7 +85,6 @@
     nvchad = {
       enable = true;
       backup = false;
-      extraConfig = inputs.nvchad-config;
       extraPackages = with pkgs; [
         nixd
         python3

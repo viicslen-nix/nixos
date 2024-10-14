@@ -4,9 +4,15 @@
       pkgs.inputs.hyprsplit.hyprsplit
     ];
 
-    settings.plugin.hyprsplit = {
-      num_workspaces = 10;
-      persistent_workspaces = false;
+    settings = {
+      plugin.hyprsplit = {
+        num_workspaces = 10;
+        persistent_workspaces = false;
+      };
+
+      bind = [
+        "$mod, G, split:grabroguewindows"
+      ];
     };
   };
 }

@@ -50,6 +50,9 @@
 
     # window rules
     windowrulev2 = [
+      # fix xwayland apps
+      "rounding 0, xwayland:1"
+
       # telegram media viewer
       "float, title:^(Media viewer)$"
 
@@ -74,9 +77,6 @@
       "dimaround, class:^(gcr-prompter)$"
       "dimaround, class:^(xdg-desktop-portal-gtk)$"
       "dimaround, class:^(polkit-gnome-authentication-agent-1)$"
-
-      # fix xwayland apps
-      "rounding 0, xwayland:1"
 
       # JetBrains IDEs
       "center, class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$"

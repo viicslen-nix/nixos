@@ -70,7 +70,14 @@ in {
     };
 
     decoration = {
+      drop_shadow = true;
+      shadow_ignore_window = true;
+      shadow_offset = "0 2";
+      shadow_range = 20;
+      shadow_render_power = 3;
+
       rounding = 16;
+
       blur = {
         enabled = true;
         brightness = 1.0;
@@ -86,12 +93,6 @@ in {
         popups = true;
         popups_ignorealpha = 0.2;
       };
-
-      drop_shadow = true;
-      shadow_ignore_window = true;
-      shadow_offset = "0 2";
-      shadow_range = 20;
-      shadow_render_power = 3;
     };
 
     animations = {
@@ -104,17 +105,14 @@ in {
       ];
     };
 
-    group = {
-      groupbar = {
-        font_size = 16;
-        gradients = false;
-      };
+    group.groupbar = {
+      font_size = 16;
+      gradients = false;
     };
 
     input = {
       kb_layout = "us";
 
-      # focus change on cursor move
       follow_mouse = 1;
       mouse_refocus = false;
 
@@ -123,34 +121,21 @@ in {
     };
 
     dwindle = {
-      # keep floating dimentions while tiling
       pseudotile = true;
       preserve_split = true;
     };
 
     misc = {
-      # disable auto polling for config file changes
-      # disable_autoreload = true;
-
-      # disable dragging animation
       animate_mouse_windowdragging = false;
-
-      # enable variable refresh rate (effective depending on hardware)
       vrr = 1;
     };
 
-    render = {
-      # we do, in fact, want direct scanout
-      direct_scanout = true;
-    };
-
-    # touchpad gestures
     gestures = {
       workspace_swipe = true;
       workspace_swipe_forever = true;
     };
 
-    # xwayland.force_zero_scaling = true;
-    # debug.disable_logs = false;
+    render.direct_scanout = true;
+    debug.disable_logs = false;
   };
 }

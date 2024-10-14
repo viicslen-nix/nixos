@@ -76,5 +76,8 @@
         };
       });
     });
+
+    # NvChad
+    nvchad = inputs.nvchad.packages."${_prev.system}".nvchad;
   };
 }

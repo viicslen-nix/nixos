@@ -100,6 +100,8 @@ in {
       "phpmyadmin.local" = "127.0.0.1";
       "selldiam.test" = "127.0.0.1";
       "mylisterhub.test" = "127.0.0.1";
+      "admin.mylisterhub.test" = "127.0.0.1";
+      "*.mylisterhub.test" = "127.0.0.1";
     };
 
     docker = {

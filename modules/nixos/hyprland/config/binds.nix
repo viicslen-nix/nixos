@@ -11,6 +11,8 @@
       in [
         "$mod, ${ws}, split:workspace, ${toString (x + 1)}"
         "$mod SHIFT, ${ws}, split:movetoworkspacesilent, ${toString (x + 1)}"
+        # "$mod, ${ws}, workspace, ${toString (x + 1)}"
+        # "$mod SHIFT, ${ws}, movetoworkspacesilent, ${toString (x + 1)}"
       ]
     )
     10);
@@ -69,8 +71,6 @@ in {
         "$mod CTRL, V, exec, pypr toggle volume"
 
         # system
-        "$mod, Tab, overview:toggle"
-        "$mod, G, split:grabroguewindows"
         "$mod, L, exec, loginctl lock-session"
         "$mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
 

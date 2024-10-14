@@ -1,8 +1,8 @@
 {
   imports = [
-    # ./hyprspace.nix
-    ./hyprsplit.nix
     ./hyprexpo.nix
-    ./csgo-vulkan-fix.nix
+    ./hyprspace.nix
+    ./hyprsplit.nix
+    # ./csgo-vulkan-fix.nix
   ];
 }

@@ -52,8 +52,9 @@
 
     # NvChad
     nvchad = {
-      url = "github:NvChad/nix";
+      url = "github:nix-community/nix4nvchad";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nvchad-starter.follows = "nvchad-config";
     };
     nvchad-config = {
       url = "github:viicslen/neovim";
