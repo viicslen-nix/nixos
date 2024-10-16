@@ -230,12 +230,14 @@ with lib; {
         directories = [
           ".pki"
           ".ssh"
+          ".zen"
           ".kube"
           ".java"
           ".gnupg"
           ".nixops"
           ".vscode"
           ".docker"
+          ".mozilla"
           ".tmux/resurrect"
         ];
         files = [
