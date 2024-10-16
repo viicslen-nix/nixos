@@ -63,10 +63,11 @@ in {
     general = {
       gaps_in = 5;
       gaps_out = 5;
-      border_size = 1;
+      border_size = 2;
 
       allow_tearing = true;
       resize_on_border = true;
+      extend_border_grab_area = 20;
     };
 
     decoration = {
@@ -75,6 +76,9 @@ in {
       shadow_offset = "0 2";
       shadow_range = 20;
       shadow_render_power = 3;
+
+      dim_inactive = true;
+      dim_strength = 0.1;
 
       rounding = 16;
 
