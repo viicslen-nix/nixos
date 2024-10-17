@@ -1,12 +1,16 @@
 import { sh } from "lib/utils"
 
-type Status = "disconnecting" | "disconnected" | "connecting" | "connected";
+type Status = "Disconnecting" | "Disconnected" | "Connecting" | "Connected";
 
 class Mullvad extends Service {
-    #status: Status = "disconnected"
+    #status: Status = "Disconnected"
 
     get status() { 
         return this.#status
+    }
+
+    get statuses(): Status[] {
+        return ["Disconnecting", "Disconnected", "Connecting", "Connected"]
     }
 
     get available() {
@@ -29,13 +33,12 @@ class Mullvad extends Service {
             
                 // callback when the program outputs something to stdout
                 (output) => {
-                    const statuses = ['Disconnecting', 'Disconnected', 'Connecting', 'Connected'];
                     const status = output.split(' ');
                     
                     if (status.length > 0 
                         && typeof status[0] === 'string' 
-                        && statuses.includes(status[0])) {
-                        this.#status = status[0].toLowerCase() as Status
+                        && this.statuses.includes(status[0] as Status)) {
+                        this.#status = status[0] as Status
                         this.changed("status")
                     }
                 },
@@ -56,7 +59,7 @@ class Mullvad extends Service {
     }
 
     async toggle() {
-        if (this.status === "connected") {
+        if (this.status === "Connected") {
             await this.disconnect()
         } else {
             await this.connect()

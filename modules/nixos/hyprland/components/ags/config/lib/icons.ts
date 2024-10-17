@@ -143,9 +143,9 @@ export default {
         light: "light-mode-symbolic",
     },
     mullvad: {
-        connected: "network-vpn-symbolic",
-        disconnected: "network-vpn-disabled-symbolic",
-        disconnecting: "network-vpn-acquiring-symbolic",
-        connecting: "network-vpn-acquiring-symbolic",
+        Connected: "network-vpn-symbolic",
+        Disconnected: "network-vpn-disabled-symbolic",
+        Disconnecting: "network-vpn-acquiring-symbolic",
+        Connecting: "network-vpn-acquiring-symbolic",
     },
 }
