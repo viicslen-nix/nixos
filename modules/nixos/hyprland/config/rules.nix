@@ -53,6 +53,9 @@
       # fix xwayland apps
       "rounding 0, xwayland:1"
 
+      # disable shadows when only one window is present
+      "noshadow, onworkspace:w[t1]"
+
       # telegram media viewer
       "float, title:^(Media viewer)$"
 
