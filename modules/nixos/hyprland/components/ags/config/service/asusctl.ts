@@ -21,7 +21,7 @@ class Asusctl extends Service {
     async nextProfile() {
         await sh("asusctl profile -n")
         const profile = await sh("asusctl profile -p")
-        const p = profile.split(" ")[3] as Profile
+        const p = profile.split(" ")[5] as Profile
         this.#profile = p
         this.changed("profile")
     }
@@ -42,7 +42,7 @@ class Asusctl extends Service {
         super()
 
         if (this.available) {
-            sh("asusctl profile -p").then(p => this.#profile = p.split(" ")[3] as Profile)
+            sh("asusctl profile -p").then(p => this.#profile = p.split(" ")[5] as Profile)
             sh("supergfxctl -g").then(m => this.#mode = m as Mode)
         }
     }
