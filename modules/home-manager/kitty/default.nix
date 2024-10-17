@@ -30,6 +30,7 @@ in {
         background_blur = 5;
         tab_bar_style = "powerline";
         tab_bar_align = "center";
+        font_size = "11.0";
       };
 
       extraConfig = ''
