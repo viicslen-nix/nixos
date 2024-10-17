@@ -11,6 +11,7 @@ import { MicMute } from "./widgets/MicMute"
 import { Media } from "./widgets/Media"
 import PopupWindow from "widget/PopupWindow"
 import options from "options"
+import { Mullvad } from "./widgets/Mullvad"
 
 const { bar, quicksettings } = options
 const media = (await Service.import("mpris")).bind("players")
@@ -60,6 +61,7 @@ const Settings = () => Widget.Box({
             [ProfileSelector],
         ),
         Row([MicMute, DND]),
+        Row([Mullvad]),
         Widget.Box({
             visible: media.as(l => l.length > 0),
             child: Media(),
