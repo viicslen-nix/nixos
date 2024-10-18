@@ -31,6 +31,7 @@
 
   features.zsh.enable = true;
   features.tmux.enable = true;
+  features.zellij.enable = true;
 
   programs = {
     home-manager.enable = true;
