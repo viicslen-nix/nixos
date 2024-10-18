@@ -13,4 +13,5 @@
   zsh = import ./zsh;
   tmux = import ./tmux;
   aider = import ./aider;
+  zellij = import ./zellij;
 }
