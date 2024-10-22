@@ -50,6 +50,9 @@
       flake = false;
     };
 
+    # Zellij
+    zjstatus.url = "github:dj95/zjstatus";
+
     # NvChad
     nvchad = {
       url = "github:nix-community/nix4nvchad";
