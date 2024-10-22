@@ -162,6 +162,12 @@ with lib; {
       gnomeCompatibility = true;
     };
 
+    github-runner = {
+      enable = true;
+      secrets.token = ../../secrets/github/runner.age;
+      url = "https://github.com/FmTod/mylisterhub-main-app";
+    };
+
     backups = {
       enable = true;
       repository = "b2:viicslen-asus-zephyrus-gu603";
@@ -219,6 +225,7 @@ with lib; {
           "Tinkerwell"
           "Mullvad VPN"
           "microsoft-edge"
+          "github-copilot"
           "tinkerwell"
           "composer"
           "direnv"
