@@ -3,4 +3,5 @@ let
 in {
   "secrets/restic/env.age".publicKeys = [sshKey];
   "secrets/restic/password.age".publicKeys = [sshKey];
+  "secrets/github/runner.age".publicKeys = [sshKey];
 }
