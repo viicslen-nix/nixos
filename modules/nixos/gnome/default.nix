@@ -44,7 +44,6 @@ in {
       default = with pkgs; [
         gnome-tour
         gnome-music
-        gnome-remote-desktop
         cheese # webcam tool
         epiphany # web browser
         tali # poker game

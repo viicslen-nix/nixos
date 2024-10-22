@@ -73,6 +73,7 @@ in {
       security.polkit.enable = true;
       programs.seahorse.enable = true;
       services.gnome.gnome-keyring.enable = true;
+      services.gnome.gnome-remote-desktop.enable = true;
       services.gnome.gnome-settings-daemon.enable = true;
       security.pam.services.gdm.enableGnomeKeyring = true;
 
@@ -80,6 +81,8 @@ in {
 
       environment.systemPackages = with pkgs; [
         polkit_gnome
+        gnome-remote-desktop
+        gnome-network-displays
         pavucontrol
         qpwgraph
 
