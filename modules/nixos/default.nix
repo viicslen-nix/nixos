@@ -21,5 +21,6 @@
   localization = import ./localization;
   impermanence = import ./impermanence;
   one-password = import ./one-password;
+  github-runner = import ./github-runner;
   virtual-machines = import ./virtual-machines;
 }
