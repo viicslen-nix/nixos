@@ -34,7 +34,7 @@ in {
     };
     plugins = mkOption {
       type = types.listOf types.package;
-      default = [pkgs.gh];
+      default = [];
       description = "The list of shell plugins to install";
     };
     allowedCustomBrowsers = mkOption {
