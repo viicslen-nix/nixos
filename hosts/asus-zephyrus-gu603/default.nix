@@ -163,9 +163,9 @@ with lib; {
     };
 
     github-runner = {
-      enable = true;
+      enable = false;
+      url = "https://github.com/FmTod";
       secrets.token = ../../secrets/github/runner.age;
-      url = "https://github.com/FmTod/mylisterhub-main-app";
     };
 
     backups = {
