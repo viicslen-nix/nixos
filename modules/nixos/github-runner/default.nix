@@ -35,9 +35,19 @@ in {
 
     services.github-runners.${config.networking.hostName} = {
       enable = true;
+      replace = true;
       ephemeral = true;
+      user = "root";
       url = cfg.url;
       tokenFile = config.age.secrets."github-runners/nixos.token".path;
+      extraPackages = with pkgs; [
+        sudo
+        bash
+        git
+        gh
+        docker
+        qemu
+      ];
     };
   };
 }
