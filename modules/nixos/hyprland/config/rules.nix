@@ -88,6 +88,10 @@
 
       # VS Code
       "opacity 0.90 0.90, title:(.*)(Visual Studio Code)$"
+
+      # Screenshot Editor
+      "float, class:^(satty)$"
+      "size 90% 90%, class:^(satty)$"
     ];
   };
 }

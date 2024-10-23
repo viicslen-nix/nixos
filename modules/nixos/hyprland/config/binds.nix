@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  screenshot = flags: ''grim -g "$(slurp ${flags})" -t ppm - | satty --filename - --fullscreen --output-filename ~/Pictures/Screenshots/satty-$(date '+%Y%m%d-%H:%M:%S').png'';
+  screenshot = flags: ''grim -g "$(slurp ${flags})" -t ppm - | satty --filename - --output-filename ~/Pictures/Screenshots/satty-$(date '+%Y%m%d-%H:%M:%S').png'';
 
   # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
   workspaces = builtins.concatLists (builtins.genList (
@@ -22,8 +22,10 @@ in {
     "$mod" = "SUPER";
 
     # applications
-    "$terminal" = "${pkgs.kitty}/bin/kitty";
+    "$terminal" = "kitty";
+    "$browser" = "microsoft-edge";
     "$fileManager" = "nautilus";
+    "$passwordManager" = "1password --quick-access";
 
     # mouse movements
     bindm = [
@@ -81,7 +83,9 @@ in {
 
         # applications
         "$mod, Return, exec, $terminal"
-        "CTRL SHIFT, Space, exec, 1password --quick-access"
+        "$mod, B, exec, $browser"
+        "$mod, E, exec, $fileManager"
+        "CTRL SHIFT, Space, exec, $passwordManager"
       ]
       ++ workspaces;
 
