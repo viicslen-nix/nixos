@@ -11,6 +11,7 @@
 in {
   home.packages = with pkgs; [
     orca-slicer
+    betterbird
   ];
 
   home.autostart = with pkgs; [

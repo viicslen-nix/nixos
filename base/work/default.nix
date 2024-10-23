@@ -74,6 +74,7 @@ in {
     dbeaver-bin
     atlas
     sublime-merge
+    devbox
   ];
 
   programs.zsh.shellAliases = {
