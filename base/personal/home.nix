@@ -22,6 +22,11 @@ in {
     enable = true;
     userName = "Victor R";
     userEmail = "39545521+viicslen@users.noreply.github.com";
+    extraConfig = {
+      pull.rebase = true;
+      init.defaultBranch = "main";
+      web.browser = "microsoft-edge";
+    };
   };
 
   xdg.configFile."gh/hosts.yml".source = (nix2yaml.generate "hosts.yml" {
