@@ -89,9 +89,13 @@
       # VS Code
       "opacity 0.90 0.90, title:(.*)(Visual Studio Code)$"
 
-      # Screenshot Editor
-      "float, class:^(satty)$"
-      "size 90% 90%, class:^(satty)$"
+      # satty
+      "float, class:^(com.gabm.satty)$"
+      "size 90% 90%, class:^(com.gabm.satty)$"
+
+      # nautilus
+      "float, class:^(org.gnome.Nautilus)$"
+      "size 90% 90%, class:^(com.gabm.satty)$"
     ];
   };
 }
