@@ -245,6 +245,7 @@ with lib; {
           ".vscode"
           ".docker"
           ".mozilla"
+          ".thunderbird"
           ".tmux/resurrect"
         ];
         files = [
