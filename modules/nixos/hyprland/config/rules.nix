@@ -78,8 +78,15 @@
 
       # make some windows floating
       "dimaround, class:^(gcr-prompter)$"
-      "dimaround, class:^(xdg-desktop-portal-gtk)$"
+
+      # Polkit
+      "float, class:^(polkit-gnome-authentication-agent-1)$"
       "dimaround, class:^(polkit-gnome-authentication-agent-1)$"
+      "size 640 400, class:^(polkit-gnome-authentication-agent-1)$"
+
+      # GTK File Chooser
+      "float, class:^(xdg-desktop-portal-gtk)$"
+      "dimaround, class:^(xdg-desktop-portal-gtk)$"
 
       # JetBrains IDEs
       "center, class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$"

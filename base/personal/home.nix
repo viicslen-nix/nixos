@@ -1,10 +1,5 @@
 {
-  config,
   pkgs,
-  lib,
-  inputs,
-  outputs,
-  user,
   ...
 }: let
   nix2yaml = pkgs.formats.yaml { };

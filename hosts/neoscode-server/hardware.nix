@@ -2,9 +2,7 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
-  config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }: {
@@ -17,9 +15,10 @@
   boot.kernelModules = [];
   boot.extraModulePackages = [];
   boot.kernelParams = ["console=ttyS0,19200n8"];
+
+  boot.loader.timeout = 10;
   boot.loader.grub.forceInstall = true;
   boot.loader.grub.device = "nodev";
-  boot.loader.timeout = 10;
   boot.loader.grub.extraConfig = ''
     serial --speed=19200 --unit=0 --word=8 --parity=no --stop=1
     terminal_input serial;
@@ -27,11 +26,11 @@
   '';
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/50e7a637-8aa9-447d-9cd1-ea3b65ae73c9";
+    device = "/dev/sda";
     fsType = "ext4";
   };
 
-  swapDevices = [];
+  swapDevices = [ { device = "/dev/sdb"; } ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

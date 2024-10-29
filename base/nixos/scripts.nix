@@ -3,7 +3,7 @@
   user,
   ...
 }: {
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = [
     (pkgs.writeScriptBin "nixos-upgrade" ''
       #!/usr/bin/env bash
 

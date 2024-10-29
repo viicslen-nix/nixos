@@ -1,10 +1,5 @@
 {
-  config,
   pkgs,
-  lib,
-  inputs,
-  outputs,
-  user,
   ...
 }: {
   home.packages = with pkgs; [

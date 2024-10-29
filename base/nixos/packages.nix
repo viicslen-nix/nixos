@@ -1,10 +1,11 @@
 {
   pkgs,
-  inputs,
   ...
 }: {
   environment.systemPackages = with pkgs; [
     libsecret
+    nil
+    nixd
     wget
     curl
     git
