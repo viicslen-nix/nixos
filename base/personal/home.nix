@@ -1,8 +1,5 @@
-{
-  pkgs,
-  ...
-}: let
-  nix2yaml = pkgs.formats.yaml { };
+{pkgs, ...}: let
+  nix2yaml = pkgs.formats.yaml {};
 in {
   home.packages = with pkgs; [
     orca-slicer
@@ -24,7 +21,7 @@ in {
     };
   };
 
-  xdg.configFile."gh/hosts.yml".source = (nix2yaml.generate "hosts.yml" {
+  xdg.configFile."gh/hosts.yml".source = nix2yaml.generate "hosts.yml" {
     "github.com" = {
       user = "viicslen";
       git_protocol = "https";
@@ -32,5 +29,5 @@ in {
         viicslen = "";
       };
     };
-  });
+  };
 }

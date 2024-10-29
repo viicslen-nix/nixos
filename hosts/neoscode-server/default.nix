@@ -1,7 +1,4 @@
-{
-  user,
-  ...
-}: {
+{user, ...}: {
   imports = [
     ./hardware.nix
     ../../base/nixos
