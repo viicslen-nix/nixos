@@ -39,5 +39,14 @@ in {
     bind = [
       "$mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
     ];
+
+    windowrule = [
+      "noborder,^(rofi)$"
+      "center,^(rofi)$"
+    ];
+
+    layerrule = [
+      "blur,^(rofi)$"
+    ];
   };
 }
