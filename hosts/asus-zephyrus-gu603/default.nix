@@ -31,8 +31,6 @@ with lib; {
     loader = {
       efi.canTouchEfiVariables = false;
 
-      # systemd-boot.enable = true;
-
       grub = {
         enable = true;
         device = "nodev";
