@@ -96,6 +96,9 @@ in {
       "float, class:^(com.gabm.satty)$"
       "pseudo, class:^(com.gabm.satty)$"
       "size 90% 90%, class:^(com.gabm.satty)$"
+
+      # LibreOffice
+      "float, class:^(soffice)$, title:^(Import:)(.*)$"
     ];
   };
 }
