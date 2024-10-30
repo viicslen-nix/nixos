@@ -4,9 +4,7 @@
   inputs,
   ...
 }: let
-  variant = "dark";
   pointer = config.stylix.cursor;
-  colorScheme = config.lib.stylix.colors;
 in {
   wayland.windowManager.hyprland.settings = {
     monitor = [
