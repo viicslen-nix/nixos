@@ -83,13 +83,17 @@ with lib; {
     firewall.enable = mkForce false;
   };
 
-  environment.systemPackages = with pkgs; [
-    asusctl
-    supergfxctl
-    zenith-nvidia
-    nvtopPackages.nvidia
-    gnomeExtensions.supergfxctl-gex
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      asusctl
+      supergfxctl
+      zenith-nvidia
+      nvtopPackages.nvidia
+      gnomeExtensions.supergfxctl-gex
+    ];
+
+    sessionVariables.FLAKE = "/persist/home/${user}/.nix/";
+  };
 
   services = {
     xserver = {
@@ -135,10 +139,10 @@ with lib; {
     };
 
     power-profiles-daemon.enable = false;
+    displayManager.defaultSession = "hyprland";
   };
 
   programs.nh.flake = "/persist/home/${user}/.nix/";
-  environment.sessionVariables.FLAKE = "/persist/home/${user}/.nix/";
 
   features = {
     oom.enable = true;
@@ -221,6 +225,7 @@ with lib; {
           "1Password"
           "Tinkerwell"
           "Mullvad VPN"
+          "GitHub Desktop"
           "microsoft-edge"
           "github-copilot"
           "tinkerwell"

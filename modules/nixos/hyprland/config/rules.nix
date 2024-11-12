@@ -78,7 +78,7 @@ in {
       "float, class:^(xdg-desktop-portal-gtk)$"
       "center, class:^(xdg-desktop-portal-gtk)$"
       "dimaround, class:^(xdg-desktop-portal-gtk)$"
-      "size <90% <90%, class:^(xdg-desktop-portal-gtk)$"
+      "size <80% <80%, class:^(xdg-desktop-portal-gtk)$"
 
       # 1Password
       "float, title:(1Password)"
@@ -88,6 +88,7 @@ in {
       "center, class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$"
       "size 640 400, class:^(.*jetbrains.*)$, title:^(splash)$"
       "opacity 0.90 0.90, class:^(.*jetbrains.*)$"
+      "size <90% <80%, title:^(win136)$"
 
       # VS Code
       "opacity 0.90 0.90, title:(.*)(Visual Studio Code)$"
@@ -98,7 +99,7 @@ in {
       "size 90% 90%, class:^(com.gabm.satty)$"
 
       # LibreOffice
-      "float, class:^(soffice)$, title:^(Import:)(.*)$"
+      "float, class:^(soffice)$, title:^(Text Import -)(.*)$"
     ];
   };
 }

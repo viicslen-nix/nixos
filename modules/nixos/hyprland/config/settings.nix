@@ -129,6 +129,7 @@ in {
 
     misc = {
       animate_mouse_windowdragging = false;
+      initial_workspace_tracking = 2;
       vrr = 1;
     };
 
@@ -138,6 +139,6 @@ in {
     };
 
     render.direct_scanout = true;
-    debug.disable_logs = false;
+    debug.disable_logs = true;
   };
 }

@@ -4,6 +4,7 @@ in {
   home.packages = with pkgs; [
     orca-slicer
     betterbird
+    github-desktop
   ];
 
   home.autostart = with pkgs; [
