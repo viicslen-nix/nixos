@@ -60,7 +60,6 @@ in {
 
     # Tools
     nodejs_20
-    corepack_20
     mysql80
     awscli
     meld
@@ -97,6 +96,7 @@ in {
       "phpmyadmin.local" = "127.0.0.1";
       "selldiam.test" = "127.0.0.1";
       "mylisterhub.test" = "127.0.0.1";
+      "app.mylisterhub.test" = "127.0.0.1";
       "admin.mylisterhub.test" = "127.0.0.1";
       "*.mylisterhub.test" = "127.0.0.1";
     };
@@ -140,4 +140,6 @@ in {
       nginx-proxy-manager = true;
     };
   };
+
+  modules.corepack.enable = true;
 }
