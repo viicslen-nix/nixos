@@ -16,7 +16,7 @@ in {
     autoPin = mkEnableOption (mdDoc "Enable auto pin");
     projectSpec = mkEnableOption (mdDoc "Enable project spec");
     package = mkOption {
-      type = types.pkgs;
+      type = types.package;
       default = pkgs.corepack;
       description = "The corepack package to use";
     };
