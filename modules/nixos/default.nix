@@ -17,6 +17,7 @@
   backups = import ./backups;
   hyprland = import ./hyprland;
   containers = import ./containers;
+  corepack = import ./corepack;
   app-images = import ./app-images;
   localization = import ./localization;
   impermanence = import ./impermanence;
