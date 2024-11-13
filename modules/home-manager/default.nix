@@ -14,4 +14,5 @@
   tmux = import ./tmux;
   aider = import ./aider;
   zellij = import ./zellij;
+  corepack = import ./corepack;
 }
