@@ -33,8 +33,10 @@ upgrade COMMAND='switch':
   nh os {{COMMAND}}
 
 # Commit any pending file changes and upgrade the system
-commit-and-upgrade:
-  nixos-upgrade
+commit-and-upgrade MESSAGE COMMAND='switch':
+  git add .
+  git commit -m "{{MESSAGE}}"
+  nh os {{COMMAND}}
 
 # Commit any pending file changes
 commit MESSAGE:
