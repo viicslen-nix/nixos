@@ -23,7 +23,7 @@
     };
 
     # Community packages
-    nur.url = github:nix-community/NUR;
+    nur.url = "github:nix-community/NUR";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
 
@@ -97,7 +97,7 @@
     };
 
     # Ags
-    ags.url = "github:Aylur/ags";
+    ags.url = "github:Aylur/ags/v1";
     matugen.url = "github:InioX/matugen?ref=v2.2.0";
 
     # Theming
