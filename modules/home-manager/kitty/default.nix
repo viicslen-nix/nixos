@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   config,
   ...
 }:
@@ -28,9 +27,10 @@ in {
         dynamic_background_opacity = true;
         remember_window_size = true;
         background_blur = 5;
-        tab_bar_style = "powerline";
-        tab_bar_align = "center";
         font_size = "11.0";
+        tab_bar_align = "center";
+        tab_bar_style = "powerline";
+        tab_powerline_style = "slanted";
       };
 
       extraConfig = ''
