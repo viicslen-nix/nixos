@@ -3,7 +3,6 @@
 in {
   home.autostart = with pkgs; [
     mullvad-vpn
-    discord
   ];
 
   programs.git = {
