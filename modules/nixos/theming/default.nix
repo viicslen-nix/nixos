@@ -41,7 +41,10 @@ in {
   };
 
   config = mkIf cfg.enable {
-    scheme = cfg.scheme;
+    scheme = {
+      yaml = cfg.scheme;
+      use-ifd = "always";
+    };
 
     stylix = {
       enable = true;
