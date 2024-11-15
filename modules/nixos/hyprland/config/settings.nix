@@ -1,10 +1,10 @@
 {
   config,
   pkgs,
-  inputs,
   ...
 }: let
   pointer = config.stylix.cursor;
+  wallpaper = config.stylix.image;
 in {
   wayland.windowManager.hyprland.settings = {
     monitor = [
@@ -24,9 +24,13 @@ in {
       "GDK_BACKEND,wayland,x11"
       "SDL_VIDEODRIVER,wayland"
 
+      # NVIDIA
       # "GBM_BACKEND,nvidia-drm"
       # "LIBVA_DRIVER_NAME,nvidia"
       # "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+      # "__GL_VRR_ALLOWED,1"
+      # "WLR_DRM_NO_ATOMIC,1"
+      # "GSK_RENDERER,gl"
 
       "QT_QPA_PLATFORM,wayland"
       "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
@@ -55,7 +59,7 @@ in {
       "wl-paste --type text --watch cliphist store"
       "wl-paste --type image --watch cliphist store"
 
-      "swww img ${inputs.wallpapers}/wallpapers/Lofi-Urban-Nightscape.png"
+      "swww img ${wallpaper}"
     ];
 
     general = {
@@ -69,11 +73,11 @@ in {
     };
 
     decoration = {
-      drop_shadow = true;
-      shadow_ignore_window = true;
-      shadow_offset = "0 2";
-      shadow_range = 20;
-      shadow_render_power = 3;
+      # drop_shadow = true;
+      # shadow_ignore_window = true;
+      # shadow_offset = "0 2";
+      # shadow_range = 20;
+      # shadow_render_power = 3;
 
       dim_inactive = true;
       dim_strength = 0.1;
@@ -139,6 +143,6 @@ in {
     };
 
     render.direct_scanout = true;
-    debug.disable_logs = true;
+    debug.disable_logs = false;
   };
 }

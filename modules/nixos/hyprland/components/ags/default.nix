@@ -29,6 +29,9 @@
     enable = true;
     configDir = ./config;
     extraPackages = with pkgs; [
+      # pkgs.inputs.ags.battery
+      # pkgs.inputs.ags.notifd
+      # pkgs.inputs.ags.io
       accountsservice
     ];
   };

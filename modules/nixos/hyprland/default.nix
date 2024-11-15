@@ -138,8 +138,8 @@ in {
 
           wayland.windowManager.hyprland = {
             enable = true;
-
             systemd.variables = ["--all"];
+            package = pkgs.inputs.hyprland.hyprland;
           };
 
           # make stuff work on wayland

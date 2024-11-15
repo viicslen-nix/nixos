@@ -61,7 +61,7 @@ async function setupHyprland() {
         `general:col.inactive_border ${rgba(hyprland.inactiveBorder.value)}`,
         `decoration:rounding ${radius}`,
         `decoration:drop_shadow ${shadows.value ? "yes" : "no"}`,
-        `dwindle:no_gaps_when_only ${hyprland.gapsWhenOnly.value ? 0 : 1}`,
+        // `dwindle:no_gaps_when_only ${hyprland.gapsWhenOnly.value ? 0 : 1}`,
         `master:no_gaps_when_only ${hyprland.gapsWhenOnly.value ? 0 : 1}`,
     ])
 

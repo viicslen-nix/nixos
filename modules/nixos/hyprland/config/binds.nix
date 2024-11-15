@@ -1,22 +1,19 @@
 {...}: let
   screenshot = flags: ''grim -g "$(slurp ${flags})" -t ppm - | satty --filename - --output-filename ~/Pictures/Screenshots/satty-$(date '+%Y%m%d-%H:%M:%S').png'';
-
-  # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
-  workspaces = builtins.concatLists (builtins.genList (
-      x: let
-        ws = let
-          c = (x + 1) / 10;
-        in
-          builtins.toString (x + 1 - (c * 10));
-      in [
-        "$mod, ${ws}, split:workspace, ${toString (x + 1)}"
-        "$mod SHIFT, ${ws}, split:movetoworkspacesilent, ${toString (x + 1)}"
-        # "$mod, ${ws}, workspace, ${toString (x + 1)}"
-        # "$mod SHIFT, ${ws}, movetoworkspacesilent, ${toString (x + 1)}"
-      ]
-    )
-    10);
 in {
+  # wayland.windowManager.hyprland.bind = builtins.concatLists (builtins.genList (
+  #   x: let
+  #     ws = let
+  #       c = (x + 1) / 10;
+  #     in
+  #       builtins.toString (x + 1 - (c * 10));
+  #   in [
+  #     "$mod, ${ws}, workspace, ${toString (x + 1)}"
+  #     "$mod SHIFT, ${ws}, movetoworkspacesilent, ${toString (x + 1)}"
+  #   ]
+  # )
+  # 10);
+
   wayland.windowManager.hyprland = {
     settings = {
       # modifier key
@@ -36,62 +33,60 @@ in {
       ];
 
       # binds
-      bind =
-        [
-          # compositor commands
-          "$mod, Q, killactive,"
-          "$mod, F, fullscreen,"
-          "$mod, G, togglegroup,"
-          "$mod, R, togglesplit,"
-          "$mod, T, togglefloating,"
-          "$mod, P, pseudo,"
-          "$mod ALT, ,resizeactive,"
+      bind = [
+        # compositor commands
+        "$mod, Q, killactive,"
+        "$mod, F, fullscreen,"
+        "$mod, G, togglegroup,"
+        "$mod, R, togglesplit,"
+        "$mod, T, togglefloating,"
+        "$mod, P, pseudo,"
+        "$mod ALT, ,resizeactive,"
 
-          # cycle monitors
-          "$mod SHIFT, Left, focusmonitor, l"
-          "$mod SHIFT, Right, focusmonitor, r"
+        # cycle monitors
+        "$mod SHIFT, Left, focusmonitor, l"
+        "$mod SHIFT, Right, focusmonitor, r"
 
-          # send focused workspace to left/right monitors
-          "$mod SHIFT ALT, Left, movecurrentworkspacetomonitor, l"
-          "$mod SHIFT ALT, Right, movecurrentworkspacetomonitor, r"
+        # send focused workspace to left/right monitors
+        "$mod SHIFT ALT, Left, movecurrentworkspacetomonitor, l"
+        "$mod SHIFT ALT, Right, movecurrentworkspacetomonitor, r"
 
-          # cycle workspaces
-          "$mod, Left, workspace, m-1"
-          "$mod, Right, workspace, m+1"
+        # cycle workspaces
+        "$mod, Left, workspace, m-1"
+        "$mod, Right, workspace, m+1"
 
-          # move focus
-          "$mod, H, movefocus, l"
-          "$mod, L, movefocus, r"
-          "$mod, K, movefocus, u"
-          "$mod, J, movefocus, d"
+        # move focus
+        "$mod, H, movefocus, l"
+        "$mod, L, movefocus, r"
+        "$mod, K, movefocus, u"
+        "$mod, J, movefocus, d"
 
-          # minimize
-          "$mod CTRL, M, togglespecialworkspace, minimized"
-          "$mod, M, exec, pypr toggle_special minimized"
+        # minimize
+        "$mod CTRL, M, togglespecialworkspace, minimized"
+        "$mod, M, exec, pypr toggle_special minimized"
 
-          # Scrachpads
-          "$mod CTRL, T, exec, pypr toggle term"
-          "$mod CTRL, V, exec, pypr toggle volume"
+        # Scrachpads
+        "$mod CTRL, T, exec, pypr toggle term"
+        "$mod CTRL, V, exec, pypr toggle volume"
 
-          # system
-          "$mod, L, exec, loginctl lock-session"
-          "$mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
+        # system
+        "$mod, L, exec, loginctl lock-session"
+        "$mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
 
-          # screenshot
-          "$mod SHIFT, S, exec, ${screenshot ""}"
-          "$mod SHIFT CTRL, S, exec, ${screenshot "-o -r"}"
-          "$mod SHIFT ALT, S, exec, grimblast --notify --cursor copysave screen"
+        # screenshot
+        "$mod SHIFT, S, exec, ${screenshot ""}"
+        "$mod SHIFT CTRL, S, exec, ${screenshot "-o -r"}"
+        "$mod SHIFT ALT, S, exec, grimblast --notify --cursor copysave screen"
 
-          # applications
-          "$mod, Return, exec, $terminal"
-          "$mod, B, exec, $browser"
-          "$mod, E, exec, $fileManager"
-          "CTRL SHIFT, Space, exec, $passwordManager"
+        # applications
+        "$mod, Return, exec, $terminal"
+        "$mod, B, exec, $browser"
+        "$mod, E, exec, $fileManager"
+        "CTRL SHIFT, Space, exec, $passwordManager"
 
-          # submaps
-          "$mod, Space, submap, apps"
-        ]
-        ++ workspaces;
+        # submaps
+        "$mod, Space, submap, apps"
+      ];
 
       bindr = [
         # launcher

@@ -4,7 +4,6 @@
   ...
 }: let
   colorScheme = config.lib.stylix.colors;
-  wallpaper = config.lib.stylix.wallpaper;
 
   font_family = "Inter";
 in {
