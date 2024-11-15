@@ -35,6 +35,7 @@ with lib; {
         enable = true;
         device = "nodev";
         efiSupport = true;
+        configurationLimit = 10;
       };
     };
   };

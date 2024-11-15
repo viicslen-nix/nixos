@@ -36,6 +36,8 @@
     "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":minimize,maximize,close";
   };
 
+  stylix.targets.hyprland.enable = false;
+
   programs.aider = {
     enable = true;
     envPath = "/home/${user}/.env.aider";
