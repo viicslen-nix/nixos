@@ -149,6 +149,7 @@ with lib; {
     oom.enable = true;
     theming.enable = true;
     appImages.enable = true;
+    docker.nvidiaSupport = true;
 
     gnome = {
       inherit user;
