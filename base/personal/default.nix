@@ -11,11 +11,11 @@
     nix-init
     lens
     skypeforlinux
-    # stable.redisinsight
     kdePackages.kcachegrind
     graphviz
     sesh
     asciinema
+    waveterm
 
     # Devices
     solaar
@@ -30,14 +30,10 @@
 
     # Development
     vscode
-    zed-editor
     obsidian
     qownnotes
-    warp-terminal
     mysql-workbench
     drawio
-    siege
-    aider-chat
 
     # Browsers
     pkgs.inputs.zen-browser.default
