@@ -89,6 +89,7 @@ in {
       "storesites" = "REDACTED";
 
       # Development
+      "ai.local" = "127.0.0.1";
       "home.local" = "127.0.0.1";
       "buggregator.local" = "127.0.0.1";
       "npm.local" = "127.0.0.1";
@@ -102,8 +103,8 @@ in {
     };
 
     docker = {
-      enable = true;
       inherit user;
+      enable = true;
       allowTcpPorts = [
         # Traefik
         80
@@ -138,6 +139,7 @@ in {
       buggregator = true;
       meilisearch = true;
       nginx-proxy-manager = true;
+      local-ai = true;
     };
   };
 

@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   config,
   ...
 }:
@@ -18,6 +17,7 @@ in {
     meilisearch = mkEnableOption (mdDoc "Meilisearch");
     buggregator = mkEnableOption (mdDoc "Buggregator");
     nginx-proxy-manager = mkEnableOption (mdDoc "Nginx Proxy Manager");
+    local-ai = mkEnableOption (mdDoc "Local AI");
   };
 
   config = {
@@ -133,6 +133,21 @@ in {
         ];
         extraOptions = [
           "--network=local"
+        ];
+      };
+
+      local-ai = mkIf cfg.local-ai {
+        hostname = "local-ai";
+        image = "localai/localai:latest-aio-gpu-nvidia-cuda-12";
+        volumes = [
+          "localai-models:/build/models"
+        ];
+        environment = {
+          DEBUG = "true";
+        };
+        extraOptions = [
+          "--network=local"
+          "--gpus=all"
         ];
       };
     };
