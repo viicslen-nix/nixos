@@ -104,7 +104,7 @@
     stylix.url = "github:danth/stylix";
     base16.url = "github:SenchoPens/base16.nix";
     tt-schemes = {
-      url = "github:tinted-theming/schemes";
+      url = "github:tinted-theming/schemes/b3273211d5d1510aee669083fc5a1e0e4b5e310c";
       flake = false;
     };
     rofi-themes = {
@@ -177,62 +177,15 @@
     nixosConfigurations = {
       asus-zephyrus-gu603 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        modules = [./hosts/asus-zephyrus-gu603];
-        specialArgs = {
-          inherit inputs outputs;
-          user = "neoscode";
-          name = "Victor R";
-          password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
-        };
-      };
-
-      acer-aspire-tc780 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [./hosts/acer-aspire-tc780];
-        specialArgs = {
-          inherit inputs outputs;
-          user = "dostov-02";
-          name = "Dostov";
-        };
-      };
-
-      neoscode-server = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [./hosts/neoscode-server];
-        specialArgs = {
-          inherit inputs outputs;
-          user = "neoscode";
-          name = "Victor R";
-          password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
-        };
-      };
-    };
-
-    colmena = {
-      meta = {
-        # Override to pin the Nixpkgs version (recommended). This option
-        # accepts one of the following:
-        # - A path to a Nixpkgs checkout
-        # - The Nixpkgs lambda (e.g., import <nixpkgs>)
-        # - An initialized Nixpkgs attribute set
-        nixpkgs = import nixpkgs {
-          system = "x86_64-linux";
-          overlays = [];
-        };
-      };
-
-      acer-aspire-tc780 = {
-        # Like NixOps and Morph, Colmena will attempt to connect to
-        # the remote host using the attribute name by default. You
-        # can override it like:
-        deployment.targetHost = "host-b.mydomain.tld";
-
-        # You can filter hosts by tags with --on @tag-a,@tag-b.
-        # In this example, you can deploy to hosts with the "web" tag using:
-        #    colmena apply --on @web
-        # You can use globs in tag matching as well:
-        #    colmena apply --on '@infra-*'
-        deployment.tags = ["web" "infra-lax"];
+        specialArgs = {inherit inputs outputs;};
+        modules = [
+          inputs.home-manager.nixosModules.default
+          inputs.chaotic.nixosModules.default
+          inputs.agenix.nixosModules.default
+          inputs.nur.nixosModules.nur
+          outputs.nixosModules.imports
+          ./hosts/asus-zephyrus-gu603
+        ];
       };
     };
   };
