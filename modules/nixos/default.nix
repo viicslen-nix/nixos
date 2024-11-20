@@ -3,25 +3,47 @@
 {
   # List your module files here
   # my-module = import ./my-module.nix;
-  kde = import ./kde;
-  oom = import ./oom;
-  qmk = import ./qmk;
-  gnome = import ./gnome;
-  sound = import ./sound;
-  docker = import ./docker;
-  mkcert = import ./mkcert;
-  podman = import ./podman;
-  theming = import ./theming;
-  network = import ./network;
-  mullvad = import ./mullvad;
-  backups = import ./backups;
-  hyprland = import ./hyprland;
+  imports = ./imports.nix;
+
+  # Presets
+  base = import ./presets/base;
+  work = import ./presets/work;
+  linode = import ./presets/linode;
+  personal = import ./presets/personal;
+
+  # Hardware
+  asus = import ./hardware/asus;
+  intel = import ./hardware/intel;
+  nvidia = import ./hardware/nvidia;
+  display = import ./hardware/display;
+
+  # Desktop
+  kde = import ./desktop/kde;
+  gnome = import ./desktop/gnome;
+  hyprland = import ./desktop/hyprland;
+
+  # Functionality
+  oom = import ./functionality/oom;
+  sound = import ./functionality/sound;
+  theming = import ./functionality/theming;
+  network = import ./functionality/network;
+  backups = import ./functionality/backups;
+  app-images = import ./functionality/app-images;
+  localization = import ./functionality/localization;
+  impermanence = import ./functionality/impermanence;
+  power-management = import ./functionality/power-management;
+  virtual-machines = import ./functionality/virtual-machines;
+
+  # Programs
+  qmk = import ./programs/qmk;
+  docker = import ./programs/docker;
+  mkcert = import ./programs/mkcert;
+  podman = import ./programs/podman;
+  mullvad = import ./programs/mullvad;
+  corepack = import ./programs/corepack;
+  one-password = import ./programs/one-password;
+  github-runner = import ./programs/github-runner;
+
+  # Containers
   containers = import ./containers;
-  corepack = import ./corepack;
-  app-images = import ./app-images;
-  localization = import ./localization;
-  impermanence = import ./impermanence;
-  one-password = import ./one-password;
-  github-runner = import ./github-runner;
-  virtual-machines = import ./virtual-machines;
 }

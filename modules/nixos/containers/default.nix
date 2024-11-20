@@ -5,7 +5,7 @@
 }:
 with lib; let
   name = "containers";
-  namespace = "features";
+  namespace = "modules";
 
   cfg = config.${namespace}.${name};
 in {
