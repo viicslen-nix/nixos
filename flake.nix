@@ -179,11 +179,11 @@
         system = "x86_64-linux";
         specialArgs = {inherit inputs outputs;};
         modules = [
-          inputs.home-manager.nixosModules.default
-          inputs.chaotic.nixosModules.default
-          inputs.agenix.nixosModules.default
           inputs.nur.nixosModules.nur
-          outputs.nixosModules.imports
+          inputs.agenix.nixosModules.default
+          inputs.chaotic.nixosModules.default
+          inputs.home-manager.nixosModules.default
+          outputs.nixosModules.default
           ./hosts/asus-zephyrus-gu603
         ];
       };
