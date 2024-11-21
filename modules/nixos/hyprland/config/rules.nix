@@ -96,6 +96,10 @@ in {
       "float, title:(1Password)"
       "center, title:(1Password)"
 
+      # Microsoft Edge
+      "tile, class:^(microsoft-edge)$"
+      "maximize, class:^(microsoft-edge)$"
+
       # JetBrains IDEs
       "center, class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$"
       "size 640 400, class:^(.*jetbrains.*)$, title:^(splash)$"
