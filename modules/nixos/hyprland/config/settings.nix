@@ -73,16 +73,10 @@ in {
     };
 
     decoration = {
-      # drop_shadow = true;
-      # shadow_ignore_window = true;
-      # shadow_offset = "0 2";
-      # shadow_range = 20;
-      # shadow_render_power = 3;
+      rounding = 16;
 
       dim_inactive = true;
       dim_strength = 0.1;
-
-      rounding = 16;
 
       blur = {
         enabled = true;
@@ -98,6 +92,14 @@ in {
 
         popups = true;
         popups_ignorealpha = 0.2;
+      };
+
+      shadow = {
+        enabled = true;
+        range = 20;
+        offset = "0 2";
+        render_power = 3;
+        ignore_window = true;
       };
     };
 
@@ -133,7 +135,7 @@ in {
 
     misc = {
       animate_mouse_windowdragging = false;
-      initial_workspace_tracking = 2;
+      initial_workspace_tracking = 1;
       vrr = 1;
     };
 
