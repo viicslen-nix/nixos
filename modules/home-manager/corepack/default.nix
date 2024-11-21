@@ -25,12 +25,21 @@ in {
   config = mkIf cfg.enable {
     home = {
       sessionVariables = {
-        COREPACK_ENABLE_STRICT = if cfg.strict then "1" else "0";
-        COREPACK_ENABLE_AUTO_PIN = if cfg.autoPin then "1" else "0";
-        COREPACK_ENABLE_PROJECT_SPEC = if cfg.projectSpec then "1" else "0";
+        COREPACK_ENABLE_STRICT =
+          if cfg.strict
+          then "1"
+          else "0";
+        COREPACK_ENABLE_AUTO_PIN =
+          if cfg.autoPin
+          then "1"
+          else "0";
+        COREPACK_ENABLE_PROJECT_SPEC =
+          if cfg.projectSpec
+          then "1"
+          else "0";
       };
 
-      packages = [ cfg.package ];
+      packages = [cfg.package];
     };
   };
 }

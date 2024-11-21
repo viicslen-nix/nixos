@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}: let
+{config, ...}: let
   colorScheme = config.lib.stylix.colors;
 in {
   services.swaync = {

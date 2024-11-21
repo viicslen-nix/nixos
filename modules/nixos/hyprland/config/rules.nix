@@ -37,7 +37,7 @@ in {
     ];
 
     # window rules
-    windowrule = [ 
+    windowrule = [
       "float,${regexList [
         "org.gnome.Calculator"
         "org.gnome.design.Palette"

@@ -1,5 +1,5 @@
 {pkgs, ...}: let
- # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
+  # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
   workspaces = builtins.concatLists (builtins.genList (
       x: let
         ws = let
@@ -24,9 +24,11 @@ in {
         persistent_workspaces = false;
       };
 
-      bind = [
-        "$mod, G, split:grabroguewindows"
-      ] ++ workspaces;
+      bind =
+        [
+          "$mod, G, split:grabroguewindows"
+        ]
+        ++ workspaces;
     };
   };
 }

@@ -118,7 +118,7 @@ in {
     extraConfig = ''
       # apps
       submap = apps
-      
+
       binde = , p, exec, phpstorm
       binde = , d, exec, datagrip
       binde = , w, exec, webstorm
