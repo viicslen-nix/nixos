@@ -147,7 +147,7 @@ in {
         };
         extraOptions = [
           "--network=local"
-          "--gpus=all"
+          "--device=nvidia.com/gpu=all"
         ];
       };
     };
