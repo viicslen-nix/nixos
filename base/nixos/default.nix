@@ -158,5 +158,6 @@
   # Set flake path in environment
   environment.sessionVariables = {
     FLAKE = lib.mkDefault "/home/${user}/.nix/";
+    GSK_RENDERER = "ngl";
   };
 }
