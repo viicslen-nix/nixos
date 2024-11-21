@@ -232,6 +232,7 @@ with lib; {
           "github-copilot"
           "tinkerwell"
           "composer"
+          "discord"
           "direnv"
           "op"
         ];
