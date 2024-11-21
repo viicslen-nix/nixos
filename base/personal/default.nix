@@ -16,13 +16,13 @@
     sesh
     asciinema
     waveterm
+    discord
 
     # Devices
     solaar
     openrgb-with-all-plugins
 
     # GUI Apps
-    libreoffice-fresh
     tangram
     endeavour
     drawing
