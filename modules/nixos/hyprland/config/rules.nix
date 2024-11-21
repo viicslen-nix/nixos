@@ -30,9 +30,15 @@ in {
       "ignorealpha 0.2, ${regexList lowopacity}"
     ];
 
+    workspace = [
+      # smart gaps
+      "w[tv1], gapsout:0, gapsin:0"
+      "f[1], gapsout:0, gapsin:0"
+    ];
+
     # window rules
-    windowrule = let
-      float = [
+    windowrule = [ 
+      "float,${regexList [
         "org.gnome.Calculator"
         "org.gnome.design.Palette"
         "pavucontrol"
@@ -42,11 +48,17 @@ in {
         "xdg-desktop-portal-gnome"
         "de.haeckerfelix.Fragments"
         "com.github.Aylur.ags"
-      ];
-    in [ "float,${regexList float}$" ];
+      ]}$"
+    ];
 
     # window rules v2
     windowrulev2 = [
+      # smart gaps
+      "bordersize 0, floating:0, onworkspace:w[tv1]"
+      "rounding 0, floating:0, onworkspace:w[tv1]"
+      "bordersize 0, floating:0, onworkspace:f[1]"
+      "rounding 0, floating:0, onworkspace:f[1]"
+
       # fix xwayland apps
       "rounding 0, xwayland:1"
 
