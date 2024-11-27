@@ -87,6 +87,8 @@ in {
       # Remote
       "webapps" = "REDACTED";
       "storesites" = "REDACTED";
+      "REDACTED.com" = "172.235.134.211";
+      "*.REDACTED.com" = "172.235.134.211";
 
       # Development
       "ai.local" = "127.0.0.1";
