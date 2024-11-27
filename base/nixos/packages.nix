@@ -29,5 +29,9 @@
     libinput
     wl-clipboard
     percona-server
+    gnumeric
+    libreoffice
+    hunspell
+    hunspellDicts.en_US
   ];
 }
