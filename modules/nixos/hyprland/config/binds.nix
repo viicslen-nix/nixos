@@ -1,5 +1,5 @@
 {...}: let
-  screenshot = flags: ''grim -g "$(slurp ${flags})" -t ppm - | satty --filename - --output-filename ~/Pictures/Screenshots/satty-$(date '+%Y%m%d-%H:%M:%S').png'';
+  screenshot = flags: ''grim -g "$(slurp ${flags})" -t ppm - | satty --filename - --output-filename ~/Pictures/Screenshots/screenshot-$(date '+%Y%m%d-%H:%M:%S').png'';
 in {
   # wayland.windowManager.hyprland.bind = builtins.concatLists (builtins.genList (
   #   x: let
