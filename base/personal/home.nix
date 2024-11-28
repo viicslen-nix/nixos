@@ -1,10 +1,17 @@
 {pkgs, ...}: let
   nix2yaml = pkgs.formats.yaml {};
 in {
-  home.autostart = with pkgs; [
-    mullvad-vpn
-    discord
-  ];
+  home = {
+    packages = with pkgs; [
+      remmina
+      moonlight-qt
+    ];
+
+    autostart = with pkgs; [
+      mullvad-vpn
+      discord
+    ];
+  };
 
   programs.git = {
     enable = true;
