@@ -33,5 +33,10 @@
     libreoffice
     hunspell
     hunspellDicts.en_US
+
+    bluez
+    bluez-tools
+
+    blueman
   ];
 }
