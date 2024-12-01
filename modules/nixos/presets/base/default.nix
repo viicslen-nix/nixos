@@ -91,8 +91,6 @@ in {
         inherit inputs outputs;
         stateVersion = config.system.stateVersion;
       };
-
-      sharedModules = [outputs.homeManagerModules.default];
     };
 
     environment = {

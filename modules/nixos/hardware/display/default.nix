@@ -12,17 +12,17 @@ in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
     resolution = mkOption {
-      type = types.string;
+      type = types.str;
       default = "1920x1080";
       description = "The resolution to use";
     };
     refreshRate = mkOption {
-      type = types.int;
-      default = 60;
+      type = types.str;
+      default = "60";
       description = "The refresh rate to use";
     };
     port = mkOption {
-      type = types.string;
+      type = types.str;
       default = "HDMI";
       description = "The port to use";
     };

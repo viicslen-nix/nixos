@@ -90,7 +90,24 @@ in {
       nix-dev = "nix develop path:.";
     };
 
-    environment.systemPackages = with pkgs; [
+    environment.systemPackages = with pkgs; let
+      phpWithExtensions = php.buildEnv {
+        extensions = {
+          enabled,
+          all,
+        }:
+          enabled
+          ++ (with all; [
+            xdebug
+            imagick
+            redis
+          ]);
+        extraConfig = ''
+          memory_limit=-1
+          max_execution_time=0
+        '';
+      };
+    in [
       # Communication
       slack
 

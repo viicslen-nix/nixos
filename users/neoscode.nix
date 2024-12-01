@@ -9,7 +9,10 @@
   password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
 in {
   imports = [
-    (import ./defaults.nix {inherit lib user description password;})
+    (import ./defaults.nix {
+      inherit lib user description password;
+      stateVersion = config.system.stateVersion;
+    })
   ];
 
   users.users.${user}.extraGroups = ["wheel"];
@@ -44,7 +47,7 @@ in {
     };
   };
 
-  home-manager.users.${user} = {
+  home-manager.users.${user} = { lib, ... }: {
     home = {
       sessionVariables = {
         EDITOR = "nvim";

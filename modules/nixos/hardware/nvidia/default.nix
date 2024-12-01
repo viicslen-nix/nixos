@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }:
@@ -33,6 +34,7 @@ in {
       nvidia = {
         open = true;
         modesetting.enable = true;
+        dynamicBoost.enable = mkIf cfg.modern true;
         powerManagement.enable = mkIf cfg.modern true;
         powerManagement.finegrained = mkIf cfg.modern true;
       };

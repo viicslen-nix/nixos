@@ -6,6 +6,7 @@
 }: with lib; {
   imports = builtins.concatLists [
     [
+
       inputs.nur.nixosModules.nur
       inputs.agenix.nixosModules.default
       inputs.chaotic.nixosModules.default

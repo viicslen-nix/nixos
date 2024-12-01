@@ -42,7 +42,7 @@ with lib; {
       display = {
         enable = true;
         resolution = "2560x1600";
-        refreshRate = 165;
+        refreshRate = "165";
         port = "eDP-1-1";
       };
     };

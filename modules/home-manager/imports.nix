@@ -10,7 +10,7 @@
 
   home-manager.sharedModules = builtins.concatLists [
     [
-      inputs.home-manager.nixosModules.default
+      inputs.nvchad.homeManagerModule
       outputs.homeManagerModules.autostart
     ]
     (attrsets.mapAttrsToList (name: value: value) outputs.homeManagerModules.programs)

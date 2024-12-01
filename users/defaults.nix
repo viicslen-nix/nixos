@@ -3,6 +3,7 @@
   user,
   description,
   password,
+  stateVersion,
   ...
 }: {
   users.users.${user} = {
@@ -17,6 +18,7 @@
     home = {
       username = user;
       homeDirectory = "/home/${user}";
+      inherit stateVersion;
     };
 
     features.zsh.enable = true;
