@@ -114,6 +114,7 @@
 
   modules = {
     programs.nushell.enable = true;
+    programs.starship.enable = true;
 
     functionality.impermanence = {
       enable = true;

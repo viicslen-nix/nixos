@@ -19,13 +19,7 @@ in {
         enable = true;
 
         shellAliases = {
-          ls = "lsd";
-          l = "ls -l";
-          la = "ls -a";
-          lla = "ls -la";
-          lt = "ls --tree";
           pn = "pnpm";
-          cat = "bat";
           vim = "nvim";
           ts = "tmux-session";
           ds = "dev-shell";

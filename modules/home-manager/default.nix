@@ -12,6 +12,7 @@
 
   programs = {
     nushell = import ./programs/nushell;
+    starship = import ./programs/starship;
     alacritty = import ./programs/alacritty;
     lan-mouse = import ./programs/lan-mouse;
     chromium = import ./programs/chromium;

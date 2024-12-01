@@ -1,0 +1,129 @@
+format = """
+[](fg:#ffffff)\
+$os\
+[](fg:#ffffff bg:c2)\
+$directory\
+[](fg:c2 bg:#303030)\
+$git_branch\
+$fill\
+$nodejs\
+$dotnet\
+$python\
+$java\
+$c\
+$cmd_duration\
+$shell\
+[](fg:c4 bg:c2)\
+$time\
+[](fg:c2 bg:c1)\
+$username\
+[](fg:#004480)\
+[─╮](fg:c4)\
+$line_break\
+$character\
+"""
+
+palette = 'main'
+add_newline = true
+
+[palettes.main]
+c1 = '#004480' # blue light
+c2 = '#002240' # blue dark
+c3 = '#c6e7ff' # blue extra light
+c4 = '#303030' # gray
+c5 = '#808080' # gray light
+
+[os]
+format = '[$symbol ](fg:#000000 bg:#ffffff)'
+disabled = false
+
+[os.symbols]
+Alpine = ''
+Amazon = ''
+Android = ''
+Arch = ''
+CentOS = ''
+Debian = ''
+EndeavourOS = ''
+Fedora = ''
+FreeBSD = ''
+Garuda = ''
+Gentoo = ''
+Linux = ''
+Macos = ''
+Manjaro = ''
+Mariner = ''
+Mint = ''
+NetBSD = ''
+NixOS = ''
+OpenBSD = '' # ''
+OpenCloudOS = '☁️'
+openEuler = ''
+openSUSE = ''
+OracleLinux = '⊂⊃'
+Pop = '' # ''
+Raspbian = ''
+Redhat = ''
+RedHatEnterprise = ''
+Solus = '' # ' '
+SUSE = ''
+Ubuntu = ''
+Unknown = ''
+Windows = ''
+
+[directory]
+format = '[ 󰷏 $path ](fg:c3 bg:c2 italic)'
+truncation_length = 2
+
+[git_branch]
+format = '[ 󰘬 $branch ](fg:#808080 bg:c4)'
+
+[nodejs]
+format = '[ $symbol$version ](fg:#ffffff bg:c4)'
+
+[dotnet]
+format = '[ $symbol$tfm ](fg:#ffffff bg:c4)'
+symbol = ' .NET '
+
+[python]
+format = '[ $symbol$version ](fg:#ffffff bg:c4)'
+symbol = ' '
+
+[java]
+format = '[ $symbol$version ](fg:#ffffff bg:c4)'
+symbol = ' '
+
+[c]
+format = '[ $symbol$version ](fg:#ffffff bg:c4)'
+symbol = ' '
+
+[fill]
+style = 'fg:c5 bg:c4'
+symbol = '.'
+
+[cmd_duration]
+min_time = 500
+format = '[ $duration ](fg:yellow bg:c4 bold)'
+
+[shell]
+format = '[  $indicator ](c5 bg:c4)'
+unknown_indicator = 'shell'
+powershell_indicator = 'powershell'
+fish_indicator = 'fish'
+disabled = false
+
+[time]
+disabled = false
+format = '[ $time ](fg:c3 bg:c2)'
+time_format = '󰦖 %H:%M'
+
+[username]
+format = '[  $user ](fg:#ffffff bg:c1)'
+show_always = true
+
+[character]
+format = """
+[┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯](fg:c4)
+[╰──$symbol](fg:c4) """
+success_symbol = '[≫](fg:#ffffff)'
+error_symbol = '[×](bold red)'
