@@ -9,6 +9,8 @@
     password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
   };
 in {
+  age.identityPaths = ["${config.users.users.${user.name}.home}/.ssh/agenix"];
+
   users.users.${user.name} = {
     isNormalUser = true;
     description = user.description;
@@ -22,10 +24,21 @@ in {
     name = user.description;
   })];
 
-  modules.functionality.backups = {
-    home.users = [user.name];
-    paths = ["/persist/home/${user.name}/Development"];
-  };
+  modules = {
+    functionality.backups = {
+      home.users = [user.name];
+      paths = ["/persist/home/${user.name}/Development"];
+    };
 
-  age.identityPaths = ["${config.users.users.${user.name}.home}/.ssh/agenix"];
+    desktop = {
+      gnome.users = [user.name];
+      hyprland.users = [user.name];
+    };
+
+    programs = {
+      docker.users = [user.name];
+      mkcert.rootCA.users = [user.name];
+      onePassword.users = [user.name];
+    };
+  };
 }

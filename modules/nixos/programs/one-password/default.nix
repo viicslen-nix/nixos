@@ -123,7 +123,6 @@ in {
         programs.git.includes = mkIf cfg.gitSignCommits [
           {
             contents = {
-              user.signingkey = cfg.gitSignKey;
               commit.gpgSign = true;
               gpg.format = "ssh";
               "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";

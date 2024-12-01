@@ -109,60 +109,67 @@
     };
   };
 
-  modules.functionality.impermanence = {
-    enable = true;
-    share = [
-      "JetBrains"
-      "keyrings"
-      "direnv"
-      "zoxide"
-      "mkcert"
-      "pnpm"
-      "nvim"
-    ];
-    config = [
-      "Code"
-      "Slack"
-      "Insomnia"
-      "JetBrains"
-      "1Password"
-      "Tinkerwell"
-      "Mullvad VPN"
-      "GitHub Desktop"
-      "microsoft-edge"
-      "github-copilot"
-      "tinkerwell"
-      "composer"
-      "discord"
-      "direnv"
-      "op"
-    ];
-    cache = [
-      "JetBrains"
-    ];
-    directories = [
-      ".pki"
-      ".ssh"
-      ".zen"
-      ".kube"
-      ".java"
-      ".gnupg"
-      ".nixops"
-      ".vscode"
-      ".docker"
-      ".mozilla"
-      ".thunderbird"
-      ".tmux/resurrect"
-    ];
-    files = [
-      ".env.aider"
-      ".gitconfig"
-      ".ideavimrc"
-      ".zsh_history"
-      ".wakatime.cfg"
-      ".config/background"
-      ".config/monitors.xml"
-    ];
+  features.tmux.enable = true;
+  features.zsh.enable = true;
+
+  modules = {
+    programs.nushell.enable = true;
+
+    functionality.impermanence = {
+      enable = true;
+      share = [
+        "JetBrains"
+        "keyrings"
+        "direnv"
+        "zoxide"
+        "mkcert"
+        "pnpm"
+        "nvim"
+      ];
+      config = [
+        "Code"
+        "Slack"
+        "Insomnia"
+        "JetBrains"
+        "1Password"
+        "Tinkerwell"
+        "Mullvad VPN"
+        "GitHub Desktop"
+        "microsoft-edge"
+        "github-copilot"
+        "tinkerwell"
+        "composer"
+        "discord"
+        "direnv"
+        "op"
+      ];
+      cache = [
+        "JetBrains"
+      ];
+      directories = [
+        ".pki"
+        ".ssh"
+        ".zen"
+        ".kube"
+        ".java"
+        ".gnupg"
+        ".nixops"
+        ".vscode"
+        ".docker"
+        ".mozilla"
+        ".thunderbird"
+        ".tmux/resurrect"
+      ];
+      files = [
+        ".env.aider"
+        ".gitconfig"
+        ".ideavimrc"
+        ".zsh_history"
+        ".wakatime.cfg"
+        ".config/background"
+        ".config/monitors.xml"
+      ];
+    };
   };
 
   xdg = {
