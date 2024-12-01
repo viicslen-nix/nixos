@@ -12,8 +12,8 @@ with lib; let
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
-    specialisation = mkEnableOption (mdDoc "Enable specialisation for NVIDIA sync");
     modern = mkEnableOption (mdDoc "Enable modern NVIDIA driver");
+    specialisation = mkEnableOption (mdDoc "Enable specialisation for NVIDIA sync");
   };
 
   config = mkIf cfg.enable {
