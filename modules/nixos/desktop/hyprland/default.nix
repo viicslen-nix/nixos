@@ -23,10 +23,10 @@ in {
       description = "The hyprland package to use";
     };
 
-    user = mkOption {
-      type = types.str;
-      default = "nixos";
-      description = "The user to configure hyprland for";
+    users = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = "The users to configure hyprland for";
     };
 
     palette = mkOption {
@@ -123,39 +123,37 @@ in {
       };
     }
     (mkIf homeManagerLoaded {
-      home-manager = {
-        users.${cfg.user} = {
-          imports = [
-            inputs.hyprland.homeManagerModules.default
-            ./config
-            ./components
-          ];
+      home-manager.users = lib.genAttrs cfg.users (user: {
+        imports = [
+          inputs.hyprland.homeManagerModules.default
+          ./config
+          ./components
+        ];
 
-          xdg.desktopEntries."org.gnome.Settings" = {
-            name = "Settings";
-            comment = "Gnome Control Center";
-            icon = "org.gnome.Settings";
-            exec = "env XDG_CURRENT_DESKTOP=gnome ${pkgs.gnome-control-center}/bin/gnome-control-center";
-            categories = ["X-Preferences"];
-            terminal = false;
-          };
-
-          wayland.windowManager.hyprland = {
-            enable = true;
-            systemd.variables = ["--all"];
-            package = pkgs.inputs.hyprland.hyprland;
-          };
-
-          # make stuff work on wayland
-          home.sessionVariables = {
-            QT_QPA_PLATFORM = "wayland";
-            SDL_VIDEODRIVER = "wayland";
-            XDG_SESSION_TYPE = "wayland";
-          };
-
-          dconf.settings."org/gnome/desktop/wm/preferences".button-layout = ":";
+        xdg.desktopEntries."org.gnome.Settings" = {
+          name = "Settings";
+          comment = "Gnome Control Center";
+          icon = "org.gnome.Settings";
+          exec = "env XDG_CURRENT_DESKTOP=gnome ${pkgs.gnome-control-center}/bin/gnome-control-center";
+          categories = ["X-Preferences"];
+          terminal = false;
         };
-      };
+
+        wayland.windowManager.hyprland = {
+          enable = true;
+          systemd.variables = ["--all"];
+          package = pkgs.inputs.hyprland.hyprland;
+        };
+
+        # make stuff work on wayland
+        home.sessionVariables = {
+          QT_QPA_PLATFORM = "wayland";
+          SDL_VIDEODRIVER = "wayland";
+          XDG_SESSION_TYPE = "wayland";
+        };
+
+        dconf.settings."org/gnome/desktop/wm/preferences".button-layout = ":";
+      });
     })
   ]);
 }

@@ -13,15 +13,17 @@ in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc feature);
 
-    user = mkOption {
+    users = mkOption {
       type = types.str;
-      default = "nixos";
-      description = "The user to add to the podman group";
+      default = [];
+      description = "The users to add to the podman group";
     };
   };
 
   config = mkIf cfg.enable {
-    users.users.${cfg.user}.extraGroups = ["podman"];
+    users.users = lib.genAttrs cfg.users (user: {
+      extraGroups = ["podman"];
+    });
 
     virtualisation = {
       containers.enable = lib.mkDefault true;

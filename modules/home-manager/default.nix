@@ -3,21 +3,25 @@
 {
   # List your module files here
   default = ./imports.nix;
+  defaults = ./defaults;
 
-  autostart = import ./autostart;
+  functionality = {
+    autostart = import ./functionality/autostart;
+    impermanence = import ./functionality/impermanence;
+  };
 
   programs = {
-    alacritty = import ./alacritty;
-    lan-mouse = import ./lan-mouse;
-    chromium = import ./chromium;
-    kitty = import ./kitty;
-    tinkerwell = import ./tinkerwell;
-    ray = import ./ray;
-    firefox = import ./firefox;
-    zsh = import ./zsh;
-    tmux = import ./tmux;
-    aider = import ./aider;
-    zellij = import ./zellij;
-    corepack = import ./corepack;
+    alacritty = import ./programs/alacritty;
+    lan-mouse = import ./programs/lan-mouse;
+    chromium = import ./programs/chromium;
+    kitty = import ./programs/kitty;
+    tinkerwell = import ./programs/tinkerwell;
+    ray = import ./programs/ray;
+    firefox = import ./programs/firefox;
+    zsh = import ./programs/zsh;
+    tmux = import ./programs/tmux;
+    aider = import ./programs/aider;
+    zellij = import ./programs/zellij;
+    corepack = import ./programs/corepack;
   };
 }

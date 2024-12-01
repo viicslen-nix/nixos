@@ -31,10 +31,10 @@ in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc "gnome");
 
-    user = mkOption {
-      type = types.str;
-      default = "nixos";
-      description = "The user update the settings for";
+    users = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = "The users update the settings for";
     };
 
     enableGdm = mkOption {
@@ -99,7 +99,7 @@ in {
       };
     }
     (mkIf homeManagerLoaded {
-      home-manager.users.${cfg.user} = {
+      home-manager.users = lib.genAttrs cfg.users (user: {
         gtk.enable = true;
         gtk.iconTheme.name = "Adwaita";
         gtk.iconTheme.package = pkgs.adwaita-icon-theme;
@@ -270,7 +270,7 @@ in {
             '';
           };
         };
-      };
+      });
     })
   ]);
 }

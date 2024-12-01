@@ -18,10 +18,10 @@ in {
       description = "Enable support for NVIDIA GPUs";
     };
 
-    user = mkOption {
-      type = types.str;
-      default = "nixos";
-      description = "The user to add to the docker group";
+    users = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = "The users to add to the docker group";
     };
 
     networkInterface = mkOption {
@@ -47,7 +47,9 @@ in {
       oci-containers.backend = "docker";
     };
 
-    users.users.${cfg.user}.extraGroups = ["docker"];
+    users.users = lib.genAttrs cfg.users (user: {
+      extraGroups = ["docker"];
+    });
 
     networking.firewall.trustedInterfaces = [cfg.networkInterface];
     networking.firewall.allowedTCPPorts = cfg.allowTcpPorts;

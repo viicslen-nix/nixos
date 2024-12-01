@@ -25,11 +25,6 @@ in {
       default = true;
       description = "Reset root filesystem";
     };
-    user = mkOption {
-      type = types.str;
-      default = "nixos";
-      description = "The user to use in the impermanence home path";
-    };
     directories = mkOption {
       type = types.listOf types.str;
       default = [];
@@ -39,33 +34,6 @@ in {
       type = types.listOf types.str;
       default = [];
       description = "Files to keep after reboot";
-    };
-    home = {
-      share = mkOption {
-        type = types.listOf types.str;
-        default = [];
-        description = "Share directories to keep after reboot";
-      };
-      config = mkOption {
-        type = types.listOf types.str;
-        default = [];
-        description = "Config directories to keep after reboot";
-      };
-      cache = mkOption {
-        type = types.listOf types.str;
-        default = [];
-        description = "Cache directories to keep after reboot";
-      };
-      directories = mkOption {
-        type = types.listOf types.str;
-        default = [];
-        description = "Directories to keep after reboot";
-      };
-      files = mkOption {
-        type = types.listOf types.str;
-        default = [];
-        description = "Files to keep after reboot";
-      };
     };
   };
 
@@ -138,41 +106,6 @@ in {
           "/etc/machine-id"
         ]
         ++ cfg.files;
-    };
-
-    home-manager.users.${cfg.user} = mkIf homeManagerLoaded {
-      imports = [
-        inputs.impermanence.nixosModules.home-manager.impermanence
-      ];
-
-      home.persistence."${cfg.persistencePath}/home/${cfg.user}" = {
-        directories = concatLists [
-          (lists.forEach cfg.home.share (dir: ".local/share/${dir}"))
-          (lists.forEach cfg.home.config (dir: ".config/${dir}"))
-          (lists.forEach cfg.home.cache (dir: ".cache/${dir}"))
-          cfg.home.directories
-          [
-            {
-              directory = "Development";
-              method = "symlink";
-            }
-            {
-              directory = ".nix";
-              method = "symlink";
-            }
-            "Documents"
-            "Downloads"
-            "Pictures"
-            "Desktop"
-            "Videos"
-            "Music"
-          ]
-        ];
-
-        files = [] ++ cfg.home.files;
-
-        allowOther = true;
-      };
     };
   };
 }

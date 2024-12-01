@@ -7,9 +7,12 @@
 with lib; {
   imports = [
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
-    (import ./disko.nix {inherit inputs; device = "/dev/nvme0n1";})
+    (import ./disko.nix {
+      inherit inputs;
+      device = "/dev/nvme0n1";
+    })
     ./hardware.nix
-    ../../users/neoscode.nix
+    ../../users/neoscode
   ];
 
   boot.loader = {
@@ -99,60 +102,6 @@ with lib; {
           "/etc/mullvad-vpn"
           "/etc/gdm"
         ];
-        home = {
-          share = [
-            "JetBrains"
-            "keyrings"
-            "direnv"
-            "zoxide"
-            "mkcert"
-            "pnpm"
-            "nvim"
-          ];
-          config = [
-            "Code"
-            "Slack"
-            "Insomnia"
-            "JetBrains"
-            "1Password"
-            "Tinkerwell"
-            "Mullvad VPN"
-            "GitHub Desktop"
-            "microsoft-edge"
-            "github-copilot"
-            "tinkerwell"
-            "composer"
-            "discord"
-            "direnv"
-            "op"
-          ];
-          cache = [
-            "JetBrains"
-          ];
-          directories = [
-            ".pki"
-            ".ssh"
-            ".zen"
-            ".kube"
-            ".java"
-            ".gnupg"
-            ".nixops"
-            ".vscode"
-            ".docker"
-            ".mozilla"
-            ".thunderbird"
-            ".tmux/resurrect"
-          ];
-          files = [
-            ".env.aider"
-            ".gitconfig"
-            ".ideavimrc"
-            ".zsh_history"
-            ".wakatime.cfg"
-            ".config/background"
-            ".config/monitors.xml"
-          ];
-        };
       };
     };
 

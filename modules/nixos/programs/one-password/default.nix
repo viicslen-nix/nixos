@@ -26,10 +26,10 @@ in {
       default = "~/.1password/agent.sock";
       description = "The path to the 1Password socket";
     };
-    user = mkOption {
-      type = types.str;
-      default = "nixos";
-      description = "The user to run 1Password as";
+    users = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = "The users to run 1Password as";
     };
     autostart = mkOption {
       type = types.bool;
@@ -56,7 +56,7 @@ in {
       # Enable the 1Password GUI and configure the polkit policy
       programs._1password-gui = {
         enable = true;
-        polkitPolicyOwners = [cfg.user];
+        polkitPolicyOwners = cfg.users;
       };
 
       # Configure the environment variable for the 1Password socket
@@ -75,7 +75,7 @@ in {
       };
     }
     (mkIf homeManagerLoaded {
-      home-manager.users.${cfg.user} = {
+      home-manager.users = lib.genAttrs cfg.users (user: {
         imports = [
           inputs.one-password-shell-plugins.hmModules.default
         ];
@@ -143,7 +143,7 @@ in {
             name = "1Password";
           };
         };
-      };
+      });
     })
   ]);
 }
