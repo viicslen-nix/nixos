@@ -1,11 +1,11 @@
-user: {
+{user, name}: {
   lib,
   pkgs,
   ...
 }: {
   home = {
-    username = user.name;
-    homeDirectory = "/home/${user.name}";
+    username = user;
+    homeDirectory = "/home/${user}";
 
     sessionVariables = {
       EDITOR = "nvim";
@@ -60,7 +60,7 @@ user: {
 
     ssh = {
       enable = true;
-      controlPath = "/home/${user.name}/.ssh/controlmasters/%r@%h:%p";
+      controlPath = "/home/${user}/.ssh/controlmasters/%r@%h:%p";
       matchBlocks = {
         "FmTod" = {
           hostname = "webapps";
@@ -77,7 +77,7 @@ user: {
     git = {
       enable = true;
       delta.enable = true;
-      userName = user.description;
+      userName = name;
       userEmail = "39545521+viicslen@users.noreply.github.com";
       aliases = {
         nah = ''!f(){ git reset --hard; git clean -df; if [ -d ".git/rebase-apply" ] || [ -d ".git/rebase-merge" ]; then git rebase --abort; fi; }; f'';

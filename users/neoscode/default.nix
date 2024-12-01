@@ -17,11 +17,15 @@ in {
     extraGroups = ["networkmanager" "wheel" user.name];
   };
 
-  home-manager.users.${user.name}.imports = [(import ./home.nix { inherit user; })];
-  age.identityPaths = ["${config.users.users.${user.name}.home}/.ssh/agenix"];
+  home-manager.users.${user.name}.imports = [(import ./home.nix { 
+    user = user.name; 
+    name = user.description;
+  })];
 
   modules.functionality.backups = {
     home.users = [user.name];
     paths = ["/persist/home/${user.name}/Development"];
   };
+
+  age.identityPaths = ["${config.users.users.${user.name}.home}/.ssh/agenix"];
 }
