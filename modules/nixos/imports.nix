@@ -1,10 +1,14 @@
 {
   lib,
+  inputs,
   outputs,
   ...
 }: with lib; {
   imports = builtins.concatLists [
     [
+      inputs.nur.nixosModules.nur
+      inputs.agenix.nixosModules.default
+      inputs.chaotic.nixosModules.default
       outputs.nixosModules.containers
     ]
     (attrsets.mapAttrsToList (name: value: value) outputs.nixosModules.presets)

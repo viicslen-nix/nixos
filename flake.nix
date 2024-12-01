@@ -131,8 +131,6 @@
   outputs = {
     self,
     nixpkgs,
-    home-manager,
-    nixos-hardware,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -179,11 +177,8 @@
         system = "x86_64-linux";
         specialArgs = {inherit inputs outputs;};
         modules = [
-          inputs.nur.nixosModules.nur
-          inputs.agenix.nixosModules.default
-          inputs.chaotic.nixosModules.default
-          inputs.home-manager.nixosModules.default
           outputs.nixosModules.default
+          outputs.homeManagerModules.default
           ./hosts/asus-zephyrus-gu603
         ];
       };

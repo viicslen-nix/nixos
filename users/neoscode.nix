@@ -7,8 +7,6 @@
   user = "neoscode";
   description = "Victor R";
   password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
-
-  nix2yaml = pkgs.formats.yaml {};
 in {
   imports = [
     (import ./defaults.nix {inherit lib user description password;})
@@ -55,6 +53,14 @@ in {
 
       packages = with pkgs; [
         microsoft-edge-wayland
+        discord
+        remmina
+        moonlight-qt
+      ];
+
+      autostart = with pkgs; [
+        mullvad-vpn
+        discord
       ];
     };
 
@@ -118,7 +124,7 @@ in {
     };
 
     xdg = {
-      configFile."gh/hosts.yml".source = nix2yaml.generate "hosts.yml" {
+      configFile."gh/hosts.yml".source = (pkgs.formats.yaml {}).generate "hosts.yml" {
         "github.com" = {
           user = "viicslen";
           git_protocol = "https";
@@ -167,7 +173,5 @@ in {
 
       "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":minimize,maximize,close";
     };
-
-    stylix.targets.hyprland.enable = false;
   };
 }

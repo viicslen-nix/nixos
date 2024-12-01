@@ -7,7 +7,7 @@
   ...
 }:
 with lib; let
-  name = "gnome";
+  name = "hyprland";
   namespace = "desktop";
 
   cfg = config.modules.${namespace}.${name};

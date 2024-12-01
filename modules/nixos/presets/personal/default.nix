@@ -1,6 +1,7 @@
 {
-  pkgs,
   lib,
+  pkgs,
+  config,
   ...
 }:
 with lib; let
@@ -9,7 +10,7 @@ with lib; let
 
   cfg = config.modules.${namespace}.${name};
 in {
-  options.${namespace}.${name} = {
+  options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
   };
 
@@ -34,7 +35,6 @@ in {
       openrgb-with-all-plugins
 
       # GUI Apps
-      libreoffice-fresh
       tangram
       endeavour
       drawing

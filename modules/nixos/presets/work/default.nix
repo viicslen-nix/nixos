@@ -1,6 +1,7 @@
 {
-  pkgs,
   lib,
+  pkgs,
+  config,
   ...
 }:
 with lib; let
@@ -9,7 +10,7 @@ with lib; let
 
   cfg = config.modules.${namespace}.${name};
 in {
-  options.${namespace}.${name} = {
+  options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
   };
 
@@ -23,6 +24,8 @@ in {
         # Remote
         "webapps" = "REDACTED";
         "storesites" = "REDACTED";
+        # "REDACTED.com" = "172.235.134.211";
+        # "*.REDACTED.com" = "172.235.134.211";
 
         # Development
         "ai.local" = "127.0.0.1";
@@ -67,17 +70,17 @@ in {
           enable = true;
           rootCA.enable = false;
         };
+      };
 
-        containers = {
-          portainer = true;
-          mysql = true;
-          redis = true;
-          soketi = true;
-          buggregator = true;
-          meilisearch = true;
-          nginx-proxy-manager = true;
-          local-ai = true;
-        };
+      containers = {
+        portainer = true;
+        mysql = true;
+        redis = true;
+        soketi = true;
+        buggregator = true;
+        meilisearch = true;
+        nginx-proxy-manager = true;
+        local-ai = true;
       };
     };
 
@@ -90,9 +93,6 @@ in {
     environment.systemPackages = with pkgs; [
       # Communication
       slack
-      slack-cli
-      slack-term
-      ripcord
 
       # Formatters
       delta

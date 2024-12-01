@@ -5,7 +5,7 @@
   ...
 }:
 with lib; let
-  name = "gnome";
+  name = "kde";
   namespace = "desktop";
 
   cfg = config.modules.${namespace}.${name};

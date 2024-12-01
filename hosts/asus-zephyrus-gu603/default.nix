@@ -175,6 +175,7 @@ with lib; {
 
   hardware.logitech.wireless.enable = true;
   services.displayManager.defaultSession = "hyprland";
+  environment.sessionVariables.GSK_RENDERER = "ngl";
 
   system.stateVersion = "24.05";
 }

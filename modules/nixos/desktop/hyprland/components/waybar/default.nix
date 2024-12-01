@@ -2,7 +2,6 @@
   pkgs,
   config,
   lib,
-  host,
   ...
 }: let
   betterTransition = "all 0.3s cubic-bezier(.55,-0.68,.48,1.682)";
@@ -297,8 +296,9 @@ in
       '';
     };
 
-    # Enable Network Manager Applet
+    # Enable Network and Bluetooth Applet
     services.network-manager-applet.enable = true;
+    services.blueman.enable = true;
 
     # Configure Hyprland
     wayland.windowManager.hyprland.settings = {
@@ -306,11 +306,10 @@ in
 
       exec-once = [
         "killall -q waybar;sleep .5 && waybar"
-        "nm-applet --indicator"
       ];
 
       bind = [
-        "$mod SHIFT, W, exec, killall -q waybar;sleep .5 && waybar"
+        "$mod CTRL SHIFT, R, exec, killall -q waybar;sleep .5 && waybar"
       ];
     };
   }

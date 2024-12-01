@@ -1,6 +1,9 @@
 {
-  pkgs,
   lib,
+  pkgs,
+  config,
+  inputs,
+  outputs,
   ...
 }:
 with lib; let
@@ -9,7 +12,7 @@ with lib; let
 
   cfg = config.modules.${namespace}.${name};
 in {
-  options.${namespace}.${name} = {
+  options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
 
     defaultShell = mkPackageOption pkgs "zsh" {};
@@ -88,6 +91,8 @@ in {
         inherit inputs outputs;
         stateVersion = config.system.stateVersion;
       };
+
+      sharedModules = [outputs.homeManagerModules.default];
     };
 
     environment = {
@@ -120,6 +125,11 @@ in {
           busybox
           libinput
           wl-clipboard
+          libreoffice
+          hunspell
+          hunspellDicts.en_US
+          bluez
+          bluez-tools
         ]
         ++ import ./scripts.nix {
           inherit pkgs;

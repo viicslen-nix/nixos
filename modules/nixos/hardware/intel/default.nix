@@ -4,7 +4,7 @@
   ...
 }:
 with lib; let
-  name = "nvidia";
+  name = "intel";
   namespace = "hardware";
 
   cfg = config.modules.${namespace}.${name};
