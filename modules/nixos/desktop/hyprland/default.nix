@@ -29,11 +29,6 @@ in {
       description = "The users to configure hyprland for";
     };
 
-    palette = mkOption {
-      type = types.attrsOf types.str;
-      default = {};
-    };
-
     gnomeCompatibility = mkOption {
       type = types.bool;
       default = false;
@@ -53,6 +48,9 @@ in {
           package = pkgs.inputs.hyprland.hyprland;
           portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
         };
+
+        dconf.enable = true;
+        seahorse.enable = true;
       };
 
       xdg.portal = {
@@ -72,53 +70,61 @@ in {
         # extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
       };
 
-      # Enable the GNOME Services
-      programs.dconf.enable = true;
-      security.polkit.enable = true;
-      programs.seahorse.enable = true;
-      services.gnome.gnome-keyring.enable = true;
-      services.gnome.gnome-remote-desktop.enable = true;
-      services.gnome.gnome-settings-daemon.enable = true;
-      security.pam.services.gdm.enableGnomeKeyring = true;
+      # Enable configure security
+      security = {
+        polkit.enable = true;
+        pam.services.gdm.enableGnomeKeyring = true;
+      };
+      
+      # Enable reequired services
+      services = {
+        blueman.enable = true;
 
-      environment.variables.XDG_RUNTIME_DIR = "/run/user/$UID";
+        gnome = {
+          gnome-keyring.enable = true;
+          gnome-remote-desktop.enable = true;
+          gnome-settings-daemon.enable = true;
+        };
+      };
 
-      environment.systemPackages = with pkgs; [
-        polkit_gnome
-        gnome-remote-desktop
-        gnome-network-displays
-        pavucontrol
-        qpwgraph
+      environment = {
+        variables.XDG_RUNTIME_DIR = "/run/user/$UID";
 
-        # wallpaper
-        swww
-        waypaper
+        systemPackages = with pkgs; [
+          polkit_gnome
+          gnome-remote-desktop
+          gnome-network-displays
+          pavucontrol
+          qpwgraph
 
-        # screenshot
-        grim
-        slurp
-        pkgs.inputs.hyprland-contrib.grimblast
-        satty
+          # wallpaper
+          swww
+          waypaper
 
-        # clipboard
-        wl-clipboard
-        cliphist
+          # screenshot
+          grim
+          slurp
+          pkgs.inputs.hyprland-contrib.grimblast
+          satty
 
-        # utils
-        pkgs.inputs.pyprland.pyprland
-        wl-screenrec
-        wlr-randr
-        wlroots
-      ];
+          # clipboard
+          wl-clipboard
+          cliphist
+
+          # utils
+          pkgs.inputs.pyprland.pyprland
+          wl-screenrec
+          wlr-randr
+          wlroots
+        ];
+      };
 
       nix.settings = {
         substituters = [
           "https://hyprland.cachix.org"
-          "https://anyrun.cachix.org"
         ];
         trusted-public-keys = [
           "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-          "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
         ];
       };
     }
