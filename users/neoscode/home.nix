@@ -152,6 +152,10 @@
       ];
       cache = [
         "JetBrains"
+        "starship"
+        "carapace"
+        "zoxide"
+        "atuin"
       ];
       directories = [
         ".pki"
