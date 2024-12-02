@@ -119,8 +119,6 @@ format = '[ $symbol$version ](fg:#ffffff bg:c4)'
 
 [dotnet]
 format = '[ $symbol$tfm ](fg:#ffffff bg:c4)'
-fkubernetesrmat = '[ $symbol$tfm ](fg:#ffffff bg:c4)'
-helmrmat = '[ $symbol$tfm ](fg:#ffffff bg:c4)'
 symbol = ' .NET '
 
 [python]

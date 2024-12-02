@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }: let
@@ -17,6 +18,7 @@ in {
     initialPassword = lib.mkIf (user.password == "") user.name;
     hashedPassword = lib.mkIf (user.password != "") user.password;
     extraGroups = ["networkmanager" "wheel" user.name];
+    shell = pkgs.nushell;
   };
 
   home-manager.users.${user.name}.imports = [(import ./home.nix { 

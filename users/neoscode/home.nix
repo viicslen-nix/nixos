@@ -28,6 +28,8 @@
   programs = {
     ray.enable = true;
     tinkerwell.enable = true;
+    carapace.enable = true;
+    thefuck.enable = true;
 
     gh = {
       enable = true;
@@ -113,8 +115,11 @@
   features.zsh.enable = true;
 
   modules = {
-    programs.nushell.enable = true;
-    programs.starship.enable = true;
+    programs = {
+      nushell.enable = true;
+      starship.enable = true;
+      atuin.enable = true;
+    };
 
     functionality.impermanence = {
       enable = true;
@@ -126,6 +131,7 @@
         "mkcert"
         "pnpm"
         "nvim"
+        "atuin"
       ];
       config = [
         "Code"

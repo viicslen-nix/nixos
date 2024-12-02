@@ -25,7 +25,6 @@ in {
     historyLimit = 10000;
     aggressiveResize = true;
     tmuxinator.enable = true;
-    shell = "${pkgs.zsh}/bin/zsh";
     # extraConfig = "source-file ~/.tmux.conf";
 
     plugins = with pkgs; [
