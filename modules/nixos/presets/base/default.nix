@@ -31,13 +31,9 @@ in {
         noto-fonts
         noto-fonts-cjk-sans
         noto-fonts-emoji
-        (nerdfonts.override {
-          fonts = [
-            "FiraCode"
-            "JetBrainsMono"
-            "DroidSansMono"
-          ];
-        })
+        nerd-fonts.fira-code
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.droid-sans-mono
       ];
       description = ''
         The list of fonts to install.
@@ -110,6 +106,7 @@ in {
           ripgrep
           unzip
           jq
+          jc
           tmux
           zoxide
           htop

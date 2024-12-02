@@ -63,7 +63,7 @@ in {
 
         fonts = {
           monospace = {
-            package = pkgs.nerdfonts.override {fonts = ["FiraCode"];};
+            package = pkgs.nerd-fonts.fira-mono;
             name = "Fira Code Nerd Font";
           };
         };
