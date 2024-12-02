@@ -52,6 +52,7 @@ let external_completer = {|spans|
 }
 
 $env.config = {
+    show_banner: false,
     completions: {
         external: {
             enable: true

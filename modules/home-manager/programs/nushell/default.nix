@@ -1,6 +1,8 @@
 {
   lib,
+  pkgs,
   config,
+  inputs,
   ...
 }:
 with lib; let
@@ -8,9 +10,41 @@ with lib; let
   namespace = "programs";
 
   cfg = config.modules.${namespace}.${name};
+
+  activateNushellPluginsNuScript = pluginNames: pkgs.writeTextFile {
+    name = "activateNushellPlugins";
+    destination = "/bin/activateNushellPlugins.nu";
+    text = ''
+      #!/usr/bin/env nu
+      ${
+        concatStringsSep "\n" (map (x: "plugin add ${pkgs.nushellPlugins.${x}}/bin/nu_plugin_${x}") pluginNames)
+      }
+    '';
+  };
+
+  msgPackz = pluginNames: pkgs.runCommand "nushellMsgPackz" {} ''
+    mkdir -p "$out"
+    # After some experimentation, I determined that this only works if --plugin-config is FIRST
+    ${pkgs.nushell}/bin/nu --plugin-config "$out/plugin.msgpackz" ${activateNushellPluginsNuScript pluginNames}/bin/activateNushellPlugins.nu
+  '';
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc "nushell");
+
+    plugins = mkOption {
+      type = types.listOf types.str;
+      default = [
+        # "highlight"
+        # "formats"
+        # "units"
+        # "query"
+        # "gstat"
+        # "net"
+      ];
+      description = ''
+        A list of plugins to install for nushell.
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
@@ -21,6 +55,7 @@ in {
         shellAliases = {
           pn = "pnpm";
           vim = "nvim";
+          cat = "bat";
           ts = "tmux-session";
           ds = "dev-shell";
           dsl = "dev-shell laravel";
@@ -35,7 +70,7 @@ in {
           kcuc = "kubectl config use-context";
           krr = "kubectl rollout restart";
 
-          sail = "sh $([ -f sail ] && echo sail || echo vendor/bin/sail)";
+          sail = "vendor/bin/sail";
           s = "sail";
           sud = "sail up -d";
           sdown = "sail down";
@@ -48,7 +83,11 @@ in {
           sda = "sail debug artisan";
         };
 
-        extraConfig = (builtins.unsafeDiscardStringContext (builtins.readFile ./config.nu));
+        extraConfig = ''
+          ${(builtins.unsafeDiscardStringContext (builtins.readFile ./config.nu))}
+
+          source ${inputs.nu-scripts}/custom-completions/nix/nix-completions.nu
+        '';
       };
 
       # Needed for completions
@@ -63,5 +102,7 @@ in {
       zoxide.enableNushellIntegration = true;
       yazi.enableNushellIntegration = true;
     };
+
+    xdg.configFile."nushell/plugin.msgpackz".source = "${msgPackz cfg.plugins}/plugin.msgpackz";
   };
 }
