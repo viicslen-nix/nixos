@@ -10,7 +10,7 @@ with lib; let
   cfg = config.modules.${namespace}.${name};
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "zsh");
+    enable = mkEnableOption (mdDoc "nushell");
   };
 
   config = mkIf cfg.enable {

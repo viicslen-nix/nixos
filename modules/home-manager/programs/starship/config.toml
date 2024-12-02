@@ -5,12 +5,17 @@ $os\
 $directory\
 [](fg:c2 bg:#303030)\
 $git_branch\
+$git_status\
+$git_metrics\
 $fill\
 $nodejs\
+$php\
+$go\
 $dotnet\
 $python\
 $java\
 $c\
+$kubernetes\
 $cmd_duration\
 $shell\
 [](fg:c4 bg:c2)\
@@ -18,7 +23,6 @@ $time\
 [](fg:c2 bg:c1)\
 $username\
 [](fg:#004480)\
-[─╮](fg:c4)\
 $line_break\
 $character\
 """
@@ -73,16 +77,50 @@ Windows = ''
 
 [directory]
 format = '[ 󰷏 $path ](fg:c3 bg:c2 italic)'
-truncation_length = 2
+truncation_length = 3
+fish_style_pwd_dir_length = 1
+
+[directory.substitutions]
+'Development' = 'dev'
 
 [git_branch]
 format = '[ 󰘬 $branch ](fg:#808080 bg:c4)'
 
+[git_metrics]
+format = '([+$added ]($added_style))([-$deleted ]($deleted_style))'
+added_style = 'fg:#808080 bg:c4'
+deleted_style = 'fg:#808080 bg:c4'
+disabled = false
+
+[git_status]
+format = '([$all_status$ahead_behind ](fg:#808080 bg:c4))'
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+behind = '⇣${count}'
+ahead = '⇡${count}'
+
+[direnv]
+disabled = false
+
 [nodejs]
+format = '[ $symbol$version ](fg:#ffffff bg:c4)'
+
+[php]
+format = '[ $symbol$version ](fg:#ffffff bg:c4)'
+
+[kubernetes]
+format = '([ $symbol($version )](fg:#ffffff bg:c4))'
+disabled = false
+
+[helm]
+format = '([ $symbol($version )](fg:#ffffff bg:c4))'
+
+[golang]
 format = '[ $symbol$version ](fg:#ffffff bg:c4)'
 
 [dotnet]
 format = '[ $symbol$tfm ](fg:#ffffff bg:c4)'
+fkubernetesrmat = '[ $symbol$tfm ](fg:#ffffff bg:c4)'
+helmrmat = '[ $symbol$tfm ](fg:#ffffff bg:c4)'
 symbol = ' .NET '
 
 [python]
@@ -123,7 +161,6 @@ show_always = true
 
 [character]
 format = """
-[┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯](fg:c4)
-[╰──$symbol](fg:c4) """
-success_symbol = '[≫](fg:#ffffff)'
-error_symbol = '[×](bold red)'
+[╰─$symbol](fg:c4) """
+success_symbol = '[≫](fg:bold white)'
+error_symbol = '[×](fg:bold red)'
