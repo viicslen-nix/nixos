@@ -40,6 +40,12 @@
       flake = false;
     };
 
+    # NuShell
+    nu-scripts = {
+      url = "github:nushell/nu_scripts";
+      flake = false;
+    };
+
     # Tmux
     tmux-1password = {
       url = "github:yardnsm/tmux-1password";
