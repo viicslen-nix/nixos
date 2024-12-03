@@ -17,15 +17,13 @@
       discord
       remmina
       moonlight-qt
-      (discord.override {
-        withVencord = true;
-      })
+      discord
       legcord
     ];
 
     autostart = with pkgs; [
       mullvad-vpn
-      discord
+      legcord
     ];
   };
 
@@ -34,6 +32,7 @@
     tinkerwell.enable = true;
     carapace.enable = true;
     thefuck.enable = true;
+    zoxide.enable = true;
 
     gh = {
       enable = true;
@@ -51,12 +50,6 @@
       enable = true;
       enableZshIntegration = true;
       tmux.enableShellIntegration = true;
-    };
-
-    zoxide = {
-      enable = true;
-      enableZshIntegration = true;
-      options = ["--cmd cd"];
     };
 
     hstr = {
