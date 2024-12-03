@@ -70,6 +70,7 @@ in {
           kcuc = "kubectl config use-context";
           krr = "kubectl rollout restart";
 
+          dep = "vendor/bin/dep";
           sail = "vendor/bin/sail";
           s = "sail";
           sud = "sail up -d";
