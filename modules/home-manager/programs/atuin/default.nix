@@ -17,7 +17,9 @@ in {
     enable = true;
 
     settings = {
-      keymap_mode = "vim-insert";
+      workspaces = true;
+      keymap_mode = "vim-normal";
+      filter_mode_shell_up_key_binding = "session";
     };
   };
 }
