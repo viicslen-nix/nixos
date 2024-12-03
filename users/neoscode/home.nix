@@ -17,6 +17,10 @@
       discord
       remmina
       moonlight-qt
+      (discord.override {
+        withVencord = true;
+      })
+      legcord
     ];
 
     autostart = with pkgs; [
