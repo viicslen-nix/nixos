@@ -5,21 +5,22 @@
     font-family: JetBrainsMono Nerd Font;
     min-height: 0px;
   }
+  
   window#waybar {
-    background-color: transparent;
+    background-color: alpha(@base01, 0.3);
+    border-bottom: 1px solid alpha(@base02, 0.5);
   }
+
   window#waybar.empty #window {
     background: none;
     padding: 0px;
   }
-  tooltip {
-    background: @base01;
-    border: 1px solid @base0E;
-    border-radius: 12px;
-  }
 
-  tooltip label {
-    color: @base07;
+  tooltip {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 12px;
+    background-color: alpha(@base01, 0.5);
   }
 
   #workspaces {

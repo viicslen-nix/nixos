@@ -1,7 +1,8 @@
 {
+  lib,
   pkgs,
   ...
-}: let
+}: with lib; let
   pipewireStatus = import ./scripts/pipewire.nix {inherit pkgs;};
   mullvadStatus = import ./scripts/mullvad.nix {inherit pkgs;};
 in {
@@ -16,7 +17,13 @@ in {
       ];
 
       bind = [
-        # "$mod CTRL SHIFT, R, exec, killall -q waybar;sleep .5 && waybar"
+        "$mod CTRL SHIFT, R, exec, killall -q waybar;sleep .5 && waybar"
+      ];
+
+      layerrule = [
+        "blur, ^(waybar)$"
+        "blurpopups, ^(waybar)$"
+        "ignorealpha 0.2, ^(waybar)$"
       ];
     };
 
@@ -192,6 +199,6 @@ in {
           };
         }
       ];
-      style = (builtins.unsafeDiscardStringContext (builtins.readFile ./style.css));
+      style = mkAfter (builtins.unsafeDiscardStringContext (builtins.readFile ./style.css));
     };
   }
