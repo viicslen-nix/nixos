@@ -112,6 +112,7 @@ in {
           cliphist
 
           # utils
+          networkmanagerapplet # needed for nm-applet icons
           pkgs.inputs.pyprland.pyprland
           wl-screenrec
           wlr-randr
