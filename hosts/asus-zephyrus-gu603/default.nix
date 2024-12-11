@@ -126,5 +126,5 @@ with lib; {
   services.displayManager.defaultSession = "hyprland";
   environment.sessionVariables.GSK_RENDERER = "ngl";
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "25.05";
 }
