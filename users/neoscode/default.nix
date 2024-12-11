@@ -19,6 +19,7 @@ in {
     hashedPassword = lib.mkIf (user.password != "") user.password;
     extraGroups = ["networkmanager" "wheel" user.name];
     shell = pkgs.nushell;
+    useDefaultShell = false;
   };
 
   home-manager.users.${user.name}.imports = [(import ./home.nix { 
