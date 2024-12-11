@@ -17,7 +17,6 @@
       discord
       remmina
       moonlight-qt
-      discord
       legcord
     ];
 
@@ -144,6 +143,7 @@
         "tinkerwell"
         "composer"
         "discord"
+        "legcord"
         "direnv"
         "op"
       ];
