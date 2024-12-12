@@ -94,8 +94,12 @@ in {
           polkit_gnome
           gnome-remote-desktop
           gnome-network-displays
-          pavucontrol
           qpwgraph
+
+          # Audio
+          pavucontrol
+          pwvucontrol
+          wireplumber
 
           # wallpaper
           swww
