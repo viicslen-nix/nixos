@@ -75,6 +75,7 @@ in {
           s = "sail";
           sud = "sail up -d";
           sdown = "sail down";
+          art = "sail artisan";
           sa = "sail artisan";
           sc = "sail composer";
           sp = "sail php";
