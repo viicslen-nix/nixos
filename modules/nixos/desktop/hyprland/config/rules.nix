@@ -42,6 +42,7 @@ in {
         "org.gnome.Calculator"
         "org.gnome.design.Palette"
         "pavucontrol"
+        "pwvucontrol"
         "nm-connection-editor"
         "Color Picker"
         "xdg-desktop-portal"
@@ -101,12 +102,16 @@ in {
 
       # JetBrains IDEs
       "center, class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$"
+      "size <90% <80%, class:^(.*jetbrains.*)$, title:^(win.*)$"
       "size 640 400, class:^(.*jetbrains.*)$, title:^(splash)$"
       "opacity 0.90 0.90, class:^(.*jetbrains.*)$"
-      "size <90% <80%, title:^(win136)$"
 
       # VS Code
       "opacity 0.90 0.90, title:(.*)(Visual Studio Code)$"
+
+      # Discord
+      "opacity 0.90 0.90, class:^(discord)$"
+      "opacity 0.90 0.90, class:^(legcord)$"
 
       # Satty
       "float, class:^(com.gabm.satty)$"
