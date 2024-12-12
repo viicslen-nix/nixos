@@ -136,6 +136,7 @@ in {
     misc = {
       animate_mouse_windowdragging = false;
       initial_workspace_tracking = 1;
+      disable_autoreload = true;
       vrr = 1;
     };
 
