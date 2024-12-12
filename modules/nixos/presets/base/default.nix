@@ -144,6 +144,14 @@ in {
       sessionVariables = {
         FLAKE = lib.mkDefault cfg.flakeLocation;
       };
+
+      # Install available shells
+      shells = with pkgs; [ 
+        zsh
+        bashInteractive
+        fish
+        nushell
+      ];
     };
 
     nixpkgs = {
