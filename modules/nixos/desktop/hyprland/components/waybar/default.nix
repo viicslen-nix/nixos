@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  config,
   ...
 }: with lib; let
   pipewireStatus = import ./scripts/pipewire.nix {inherit pkgs;};
@@ -27,6 +28,9 @@ in {
       ];
     };
 
+    # Disable Stylix Theme
+    stylix.targets.waybar.enable = false;
+
     # Configure & Theme Waybar
     programs.waybar = {
       enable = true;
@@ -35,24 +39,41 @@ in {
         {
           layer = "top";
           position = "top";
-          modules-center = ["hyprland/workspaces"];
+          modules-center = [
+            "clock"
+          ];
           modules-left = [
             "custom/startmenu"
-            "cpu"
-            "memory"
-            "custom/vpn"
+            "hyprland/workspaces"
             "hyprland/window"
             "idle_inhibitor"
           ];
           modules-right = [
+            "privacy"
             "tray"
-            "wireplumber"
-            "backlight"
-            "battery"
+            "group/resources"
+            "group/system"
             "custom/notification"
-            "clock"
             "custom/exit"
           ];
+
+          "group/resources" = {
+            orientation = "horizontal";
+            modules = [
+              "cpu"
+              "memory"
+            ];
+          };
+
+          "group/system" = {
+            orientation = "horizontal";
+            modules = [
+              "custom/vpn"
+              "wireplumber"
+              "backlight"
+              "battery"
+            ];
+          };
 
           "hyprland/workspaces" = {
             format = "{name}";
@@ -60,11 +81,11 @@ in {
               "active" = "";
               "default" = "";
             };
-            on-scroll-up = "hyprctl dispatch workspace e+1";
-            on-scroll-down = "hyprctl dispatch workspace e-1";
+            on-scroll-up = "hyprctl dispatch split:workspace e-1";
+            on-scroll-down = "hyprctl dispatch split:workspace e+1";
           };
           "clock" = {
-            format = ''  {:L%I:%M %p}'';
+            format = ''{:L%I:%M %p}'';
             tooltip = true;
             tooltip-format = "<big>{:%A, %d.%B %Y }</big>\n<tt><small>{calendar}</small></tt>";
           };
@@ -116,22 +137,23 @@ in {
             tooltip = false;
             max-length = 6;
             exec = pipewireStatus.outPath;
-            on-click-right = "pavucontrol";
+            on-click-right = "${pkgs.pwvucontrol}/bin/pwvucontrol";
           };
           "wireplumber" = {
-            format = "{icon} {volume}%";
-            format-muted = "  ";
+            format = "{icon}";
+            format-muted = " ";
             format-icons = ["" " " " "];
-            on-click = "pypr toggle volume";
+            on-click = "${pkgs.pw-volume}/bin/pw-volume mute toggle";
+            on-click-right = "pypr toggle volume";
           };
           "custom/vpn" = {
-            format = "VPN {}";
+            format = "{}";
             tooltip = true;
-            tooltip-exec = "mullvad status";
+            tooltip-exec = "${pkgs.mullvad}/bin/mullvad status";
             exec = mullvadStatus.outPath;
-            on-click = "mullvad connect";
-            on-click-right = "mullvad disconnect";
-            on-click-middle = "mullvad reconnect";
+            on-click = "${pkgs.mullvad}/bin/mullvad connect";
+            on-click-right = "${pkgs.mullvad}/bin/mullvad disconnect";
+            on-click-middle = "${pkgs.mullvad}/bin/mullvad reconnect";
           };
           "idle_inhibitor" = {
             format = "{icon}";
@@ -165,9 +187,9 @@ in {
               warning = 30;
               critical = 15;
             };
-            format = "{icon} {capacity}%";
-            format-charging = "󰂄 {capacity}%";
-            format-plugged = "󱘖 {capacity}%";
+            format = "{icon}";
+            format-charging = "󰂄";
+            format-plugged = "󱘖";
             format-icons = [
               "󰁺"
               "󰁻"
@@ -181,12 +203,14 @@ in {
               "󰁹"
             ];
             on-click = "";
-            tooltip = false;
+            tooltip = true;
+            tooltip-format = "{timeTo} ({capacity}%)";
           };
           "backlight" = {
             device = "intel_backlight";
-            format = "{icon} {percent}%";
-            format-icons = ["" ""];
+            format = "{icon}";
+            tooltip = false;
+            format-icons = ["󰖙 " " " " " "󰖨 " " " " "];
           };
           "privacy" = {
             icon-spacing = 1;
@@ -198,7 +222,68 @@ in {
             ];
           };
         }
+        # {
+        #   layer = "top";
+        #   position = "left";
+        #   modules-left = [
+        #     "wlr/taskbar"
+        #   ];
+        # }
       ];
-      style = mkAfter (builtins.unsafeDiscardStringContext (builtins.readFile ./style.css));
+      style = with config.lib.stylix.colors;''
+        @define-color base00 #${base01};
+        @define-color base01 #${base02}; 
+        @define-color base02 #${base03}; 
+        @define-color base03 #${base04};
+        @define-color base04 #${base05}; 
+        @define-color base05 #${base05}; 
+        @define-color base06 #${base06}; 
+        @define-color base07 #${base07};
+        @define-color base08 #${base08}; 
+        @define-color base09 #${base09}; 
+        @define-color base0A #${base0A}; 
+        @define-color base0B #${base0B};
+        @define-color base0C #${base0C}; 
+        @define-color base0D #${base0D}; 
+        @define-color base0E #${base0E}; 
+        @define-color base0F #${base0F};
+
+        window#waybar {
+          background-color: alpha(@base01, 0.3);
+          border-bottom: 1px solid alpha(@base02, 0.5);
+        }
+
+        tooltip {
+          background-color: alpha(@base01, 0.5);
+        }
+
+        box.horizontal box.modules-left > widget > *,
+        box.horizontal box.modules-right > widget > * {
+          color: @base05;
+          background: @base01;
+        }
+
+        #workspaces {
+          color: @base00;
+          background: @base01;
+        }
+
+        #workspaces button {
+          color: @base00;
+          background: linear-gradient(45deg, @base0E, @base0F, @base0D, @base09);
+        }
+
+        #custom-startmenu {
+          color: @base0D;
+          background: @base01;
+        }
+
+        #custom-exit {
+          color: @base00;
+          background: linear-gradient(45deg, @base0C, @base0F, @base0B, @base08);
+        }
+
+        ${(builtins.unsafeDiscardStringContext (builtins.readFile ./style.css))}
+      '';
     };
   }
