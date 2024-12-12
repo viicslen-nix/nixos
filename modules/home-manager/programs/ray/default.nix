@@ -2,7 +2,6 @@
   lib,
   pkgs,
   config,
-  options,
   ...
 }:
 with lib; let
@@ -12,7 +11,8 @@ with lib; let
 
   cfg = config.${namespace}.${name};
   appImage = pkgs.appimageTools.wrapType2 {
-    inherit name;
+    inherit version;
+    pname = name;
     src = pkgs.fetchurl {
       url = "https://ray-app.s3.eu-west-1.amazonaws.com/Ray-${version}.AppImage";
       hash = "sha256-anRuLgD9mlCYOUcFC07hfbu6j/gsT1+a2eibYykieOI=";
