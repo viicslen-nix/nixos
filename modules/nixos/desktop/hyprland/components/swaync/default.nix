@@ -1,6 +1,4 @@
-{lib, config, ...}: with lib; let
-  colorScheme = config.lib.stylix.colors;
-in {
+{lib, config, ...}: with lib; {
   wayland.windowManager.hyprland.settings = {
     exec-once = [
       "killall -q swaync;sleep .5 && swaync"
@@ -16,6 +14,8 @@ in {
       "ignorealpha 0.2, ^(swaync-control-center)$"
     ];
   };
+
+  stylix.targets.swaync.enable = false;
 
   services.swaync = {
     enable = true;
@@ -76,6 +76,25 @@ in {
       };
     };
 
-    style = mkAfter (builtins.unsafeDiscardStringContext (builtins.readFile ./style.css));
+    style = with config.lib.stylix.colors;''
+      @define-color base00 #${base01};
+      @define-color base01 #${base02}; 
+      @define-color base02 #${base03}; 
+      @define-color base03 #${base04};
+      @define-color base04 #${base05}; 
+      @define-color base05 #${base05}; 
+      @define-color base06 #${base06}; 
+      @define-color base07 #${base07};
+      @define-color base08 #${base08}; 
+      @define-color base09 #${base09}; 
+      @define-color base0A #${base0A}; 
+      @define-color base0B #${base0B};
+      @define-color base0C #${base0C}; 
+      @define-color base0D #${base0D}; 
+      @define-color base0E #${base0E}; 
+      @define-color base0F #${base0F};
+
+      ${(builtins.unsafeDiscardStringContext (builtins.readFile ./style.css))}
+    '';
   };
 }
