@@ -123,6 +123,7 @@ in {
       binde = , d, exec, datagrip
       binde = , w, exec, webstorm
       binde = , s, exec, slack
+      binde = , l, exec, legcord
       binde = , f, exec, firefox
       binde = , c, exec, code
       binde = , e, exec, nautilus
