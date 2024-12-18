@@ -65,10 +65,25 @@ in {
       # Enable CUPS to print documents.
       printing.enable = lib.mkDefault true;
 
+      # Enable GVFS for file system access
+      gvfs.enable = true;
+
+      # Enable libinput for input devices
+      libinput.enable = true;
+
+      # Enable Avahi for network discovery
+      avahi.enable = true;
+
       # Configure keymap in X11
       xserver.xkb = {
         layout = "us";
         variant = "";
+      };
+
+      # Enable Smartd for disk monitoring
+      smartd = {
+        enable = false;
+        autodetect = true;
       };
     };
 
@@ -105,8 +120,10 @@ in {
           bat
           ripgrep
           unzip
+          pigz
           jq
           jc
+          pv
           tmux
           zoxide
           htop
@@ -146,7 +163,7 @@ in {
       };
 
       # Install available shells
-      shells = with pkgs; [ 
+      shells = with pkgs; [
         zsh
         bashInteractive
         fish
