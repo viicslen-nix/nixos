@@ -71,7 +71,6 @@ in {
 
         # system
         "$mod, L, exec, loginctl lock-session"
-        "$mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
 
         # screenshot
         "$mod SHIFT, S, exec, ${screenshot ""}"
@@ -86,11 +85,6 @@ in {
 
         # submaps
         "$mod, Space, submap, apps"
-      ];
-
-      bindr = [
-        # launcher
-        "$mod, SUPER_L, exec, $launcher"
       ];
 
       bindl = [
