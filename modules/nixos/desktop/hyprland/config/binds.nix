@@ -1,6 +1,4 @@
-{...}: let
-  screenshot = flags: ''grim -g "$(slurp ${flags})" -t ppm - | satty --filename - --output-filename ~/Pictures/Screenshots/screenshot-$(date '+%Y%m%d-%H:%M:%S').png'';
-in {
+{
   # wayland.windowManager.hyprland.bind = builtins.concatLists (builtins.genList (
   #   x: let
   #     ws = let
@@ -73,8 +71,6 @@ in {
         "$mod, L, exec, loginctl lock-session"
 
         # screenshot
-        "$mod SHIFT, S, exec, ${screenshot ""}"
-        "$mod SHIFT CTRL, S, exec, ${screenshot "-o -r"}"
         "$mod SHIFT ALT, S, exec, grimblast --notify --cursor copysave screen"
 
         # applications
