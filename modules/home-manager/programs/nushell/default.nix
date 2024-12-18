@@ -53,15 +53,15 @@ in {
           sda = "vendor/bin/sail debug artisan";
         };
 
-        plugins = with pkgs.nushellPlugins; [
-          net
-          dbus
-          units
-          query
-          qstat
-          formats
-          highlight
-        ];
+        # plugins = with pkgs.nushellPlugins; [
+        #   net
+        #   dbus
+        #   units
+        #   query
+        #   qstat
+        #   formats
+        #   highlight
+        # ];
 
         extraConfig = ''
           ${(builtins.unsafeDiscardStringContext (builtins.readFile ./config.nu))}
