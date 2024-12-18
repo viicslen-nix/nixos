@@ -1,9 +1,13 @@
-{pkgs, lib, ...}: let
-  work = import ./work.nix { inherit pkgs; };
+{
+  pkgs,
+  lib,
+  ...
+}: let
+  work = import ./work.nix {inherit pkgs;};
 in {
   wayland.windowManager.hyprland = {
     settings.bind = [
-        "$mod, d, submap, hyprflows"
+      "$mod, d, submap, hyprflows"
     ];
 
     extraConfig = lib.mkAfter ''
