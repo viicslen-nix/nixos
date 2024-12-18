@@ -22,10 +22,12 @@ in {
     useDefaultShell = false;
   };
 
-  home-manager.users.${user.name}.imports = [(import ./home.nix { 
-    user = user.name; 
-    name = user.description;
-  })];
+  home-manager.users.${user.name}.imports = [
+    (import ./home.nix {
+      user = user.name;
+      name = user.description;
+    })
+  ];
 
   modules = {
     functionality.backups = {

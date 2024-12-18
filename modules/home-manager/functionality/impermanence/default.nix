@@ -18,7 +18,7 @@ in {
       default = "/persist";
       description = "Root path where to store persistent files and directories";
     };
-    
+
     share = mkOption {
       type = types.listOf types.str;
       default = [];

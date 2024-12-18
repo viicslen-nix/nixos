@@ -66,9 +66,9 @@
       '';
     };
 
-    discord = (_prev.discord.override {
+    discord = _prev.discord.override {
       withVencord = true;
-    });
+    };
 
     # GNOME 46: triple-buffering-v4-46
     gnome = _prev.gnome.overrideScope (gnomeFinal: gnomePrev: {

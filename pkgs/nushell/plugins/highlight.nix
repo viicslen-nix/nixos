@@ -6,7 +6,6 @@
   nix-update-script,
   fetchFromGitHub,
 }:
-
 rustPlatform.buildRustPackage rec {
   pname = "nushell_plugin_highlight";
   version = "1.4.1+0.100.0";
@@ -19,21 +18,21 @@ rustPlatform.buildRustPackage rec {
   };
   cargoHash = "sha256-+Dl0KoFhpwExhM45cziriCJOiUU8wNpMAM7H+ayjfeI=";
 
-  nativeBuildInputs = [ pkg-config ] ++ lib.optionals stdenv.cc.isClang [ rustPlatform.bindgenHook ];
-  cargoBuildFlags = [ "--package nu_plugin_highlight" ];
+  nativeBuildInputs = [pkg-config] ++ lib.optionals stdenv.cc.isClang [rustPlatform.bindgenHook];
+  cargoBuildFlags = ["--package nu_plugin_highlight"];
 
   checkPhase = ''
     cargo test
   '';
 
-  passthru.updateScript = nix-update-script { };
+  passthru.updateScript = nix-update-script {};
 
   meta = with lib; {
     description = "A nushell plugin that will inspect a file and return information based on it's magic number.";
     mainProgram = "nu_plugin_highlight";
     homepage = "https://github.com/cptpiepmatz/nu-plugin-highlight";
     license = licenses.mit;
-    maintainers = with maintainers; [ mgttlinger ];
+    maintainers = with maintainers; [mgttlinger];
     platforms = with platforms; all;
   };
 }
