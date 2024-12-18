@@ -56,6 +56,15 @@ in {
       xdg.portal = {
         enable = true;
         wlr.enable = true;
+        extraPortals = with pkgs; [
+          xdg-desktop-portal-gtk
+          xdg-desktop-portal
+        ];
+        configPackages = with pkgs; [
+          xdg-desktop-portal-gtk
+          xdg-desktop-portal-hyprland
+          xdg-desktop-portal
+        ];
         config = {
           common = {
             default = [
@@ -67,7 +76,6 @@ in {
             "org.freedesktop.portal.FileChooser" = ["xdg-desktop-portal-gtk"];
           };
         };
-        # extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
       };
 
       # Enable configure security
@@ -75,7 +83,7 @@ in {
         polkit.enable = true;
         pam.services.gdm.enableGnomeKeyring = true;
       };
-      
+
       # Enable reequired services
       services = {
         blueman.enable = true;
