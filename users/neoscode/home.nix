@@ -1,4 +1,7 @@
-{user, name}: {
+{
+  user,
+  name,
+}: {
   lib,
   pkgs,
   ...
@@ -145,6 +148,7 @@
         "discord"
         "legcord"
         "direnv"
+        "gcloud"
         "op"
       ];
       cache = [
