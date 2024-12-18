@@ -6,6 +6,7 @@
 
     ./workspaces
     ./wlogout
+    ./swappy
     ./swaync
     ./waybar
     ./rofi
