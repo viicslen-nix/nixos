@@ -7,7 +7,7 @@
 with lib; {
   imports = builtins.concatLists [
     [
-      inputs.nur.nixosModules.nur
+      inputs.nur.modules.nixos.default
       inputs.agenix.nixosModules.default
       inputs.chaotic.nixosModules.default
       outputs.nixosModules.containers
