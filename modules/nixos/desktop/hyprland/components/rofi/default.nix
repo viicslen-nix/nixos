@@ -166,17 +166,17 @@
       ${pkgs.rofi-wayland}/bin/rofi -show drun
     '';
     launcher = "${rofi}/bin/launcher";
-    emojiPicker = import ./emoji-picker.nix {inherit pkgs;};
-    webSearch = import ./web-search.nix {inherit pkgs;};
+    emojiPicker = import ./scripts/emoji-picker.nix {inherit pkgs;};
+    webSearch = import ./scripts/web-search.nix {inherit pkgs;};
   in {
     bindr = [
       "$mod, SUPER_L, exec, ${launcher} -show drun"
     ];
 
     bind = [
-      "$mod, V, exec, cliphist list | ${launcher} -dmenu | cliphist decode | wl-copy"
+      "$mod, v, exec, cliphist list | ${launcher} -dmenu -config ~/.config/rofi/long.rasi | cliphist decode | wl-copy"
       "$mod, o, exec, ${emojiPicker}/bin/emoji-picker"
-      "$mod, w, exec, ${webSearch}/bin/web-search"
+      "$mod, w, exec, ${webSearch}/bin/web-search -config ~/.config/rofi/long.rasi"
     ];
 
     windowrule = [
