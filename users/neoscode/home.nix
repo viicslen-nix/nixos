@@ -149,6 +149,7 @@
         "legcord"
         "direnv"
         "gcloud"
+        "helm"
         "op"
       ];
       cache = [
@@ -157,6 +158,7 @@
         "carapace"
         "zoxide"
         "atuin"
+        "helm"
       ];
       directories = [
         ".pki"
