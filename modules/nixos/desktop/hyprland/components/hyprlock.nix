@@ -25,25 +25,23 @@ in {
         outline_thickness = 5;
         placeholder_text = "Password...";
         shadow_passes = 2;
-
-        outer_color = "rgb(${colors.base00})";
-        inner_color = "rgb(${colors.base01})";
-        font_color = "rgb(${colors.base05})";
       };
-      labels = {
-        monitor = "";
-        text = "$TIME";
-        font_size = 50;
-        color = "rgb(${colors.base00})";
+      labels = [
+        {
+          monitor = "";
+          text = "$TIME";
+          font_size = 50;
+          color = "rgb(${colors.base00})";
 
-        position = {
-          x = 0;
-          y = 80;
-        };
+          position = {
+            x = 0;
+            y = 80;
+          };
 
-        valign = "center";
-        halign = "center";
-      };
+          valign = "center";
+          halign = "center";
+        }
+      ];
     };
   };
 }
