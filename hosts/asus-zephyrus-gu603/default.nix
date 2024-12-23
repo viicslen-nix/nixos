@@ -123,7 +123,7 @@ with lib; {
   };
 
   hardware.logitech.wireless.enable = true;
-  services.displayManager.defaultSession = "hyprland";
+  services.displayManager.defaultSession = "hyprland-uwsm";
   environment.sessionVariables.GSK_RENDERER = "ngl";
 
   system.stateVersion = "25.05";
