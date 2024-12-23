@@ -71,7 +71,7 @@
     };
 
     # Hyprland
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprland.url = "github:hyprwm/Hyprland";
     pyprland.url = "github:hyprland-community/pyprland";
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
@@ -99,6 +99,10 @@
     };
     hyprsplit = {
       url = "github:shezdy/hyprsplit";
+      inputs.hyprland.follows = "hyprland";
+    };
+    hyprchroma = {
+      url = "github:alexhulbert/Hyprchroma";
       inputs.hyprland.follows = "hyprland";
     };
 
