@@ -44,6 +44,7 @@ in {
       programs = {
         hyprland = {
           enable = true;
+          withUWSM = true;
           xwayland.enable = true;
           package = pkgs.inputs.hyprland.hyprland;
           portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
@@ -160,7 +161,10 @@ in {
 
         wayland.windowManager.hyprland = {
           enable = true;
-          systemd.variables = ["--all"];
+          systemd = {
+            enable = false;
+            variables = ["--all"];
+          };
           package = pkgs.inputs.hyprland.hyprland;
         };
 
