@@ -46,20 +46,20 @@ in {
       "dbus-update-activation-environment --systemd --all"
       "systemctl --user import-environment QT_QPA_PLATFORMTHEME WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
 
-      "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
-      "gnome-keyring-daemon --start --components=secrets"
+      "uwsm app -- ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+      "uwsm app -- gnome-keyring-daemon --start --components=secrets"
 
-      "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
+      "uwsm app -- hyprctl setcursor ${pointer.name} ${toString pointer.size}"
 
-      "killall -q pypr;sleep .5 && pypr"
-      "killall -q swww-daemon;sleep .5 && swww-daemon"
-      "killall -q 1password;sleep .5 && 1password --silent"
-      "killall -q mullvad-gui;sleep .5 && mullvad-gui --silent"
+      "uwsm app -- pypr"
+      "uwsm app -- swww-daemon"
+      "uwsm app -- 1password --silent"
+      "uwsm app -- mullvad-gui --silent"
 
-      "wl-paste --type text --watch cliphist store"
-      "wl-paste --type image --watch cliphist store"
+      "uwsm app -- wl-paste --type text --watch cliphist store"
+      "uwsm app -- wl-paste --type image --watch cliphist store"
 
-      "swww img ${wallpaper}"
+      "uwsm app --swww img ${wallpaper}"
     ];
 
     general = {
