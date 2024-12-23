@@ -1,69 +1,49 @@
-{
-  config,
-  lib,
-  ...
-}: let
-  colorScheme = config.lib.stylix.colors;
-
-  font_family = "Inter";
+{config, ...}: let
+  wallpaper = config.stylix.image;
+  colors = config.lib.stylix.colors;
 in {
   programs.hyprlock = {
-    enable = lib.mkForce true;
-
+    enable = true;
     settings = {
       general = {
         disable_loading_bar = true;
-        hide_cursor = false;
-        no_fade_in = true;
+        grace = 10;
+        hide_cursor = true;
+        no_fade_in = false;
       };
+      background = {
+        blur_passes = 3;
+        blur_size = 8;
+        path = wallpaper;
+      };
+      input-field = {
+        monitor = "";
+        size = "200, 50";
+        position = "0, -80";
+        dots_center = true;
+        fade_on_empty = false;
+        outline_thickness = 5;
+        placeholder_text = "Password...";
+        shadow_passes = 2;
 
-      # backgrounds = [
-      #   {
-      #     monitor = "";
-      #     path = wallpaper;
-      #   }
-      # ];
+        outer_color = "rgb(${colors.base00})";
+        inner_color = "rgb(${colors.base01})";
+        font_color = "rgb(${colors.base05})";
+      };
+      labels = {
+        monitor = "";
+        text = "$TIME";
+        font_size = 50;
+        color = "rgb(${colors.base00})";
 
-      input-fields = [
-        {
-          monitor = "eDP-1";
+        position = {
+          x = 0;
+          y = 80;
+        };
 
-          size = {
-            width = 300;
-            height = 50;
-          };
-
-          outline_thickness = 2;
-
-          outer_color = "rgb(${colorScheme.base00})";
-          inner_color = "rgb(${colorScheme.base01})";
-          font_color = "rgb(${colorScheme.base05})";
-
-          fade_on_empty = false;
-          # placeholder_text = ''<span font_family="${font_family}" foreground="##${c.primary_container}">Password...</span>'';
-
-          dots_spacing = 0.3;
-          dots_center = true;
-        }
-      ];
-
-      labels = [
-        {
-          monitor = "";
-          text = "$TIME";
-          inherit font_family;
-          font_size = 50;
-          color = "rgb(${colorScheme.base00})";
-
-          position = {
-            x = 0;
-            y = 80;
-          };
-
-          valign = "center";
-          halign = "center";
-        }
-      ];
+        valign = "center";
+        halign = "center";
+      };
     };
   };
 }

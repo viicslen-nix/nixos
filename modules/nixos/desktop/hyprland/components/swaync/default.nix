@@ -155,7 +155,7 @@ with lib; {
         color: #${base05};
       }
       .control-center {
-        background: #${base00};
+        background: alpha(#${base00}, 0.7);
         border: 2px solid #${base0C};
       }
       .widget-title {
