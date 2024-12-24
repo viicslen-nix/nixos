@@ -55,7 +55,14 @@ history:
 
 # Open a nix shell with the flake
 repl:
-  sudo nixos-rebuild repl --flake .
+  nixos-rebuild repl --flake .
+
+# Check the syntax of a nix file
+check FILE:
+  nix-instantiate --parse-only {{FILE}}
+
+lint FILE='.':
+  nix run github:astro/deadnix -- -eq {{FILE}}
 
 # remove all generations older than 7 days
 clean:

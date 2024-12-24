@@ -22,11 +22,6 @@
       moonlight-qt
       legcord
     ];
-
-    autostart = with pkgs; [
-      mullvad-vpn
-      legcord
-    ];
   };
 
   programs = {
