@@ -10,7 +10,7 @@ with lib; let
   cfg = config.modules.${namespace}.${name};
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "atuin");
+    enable = mkEnableOption (mdDoc name);
   };
 
   config.programs.atuin = mkIf cfg.enable {

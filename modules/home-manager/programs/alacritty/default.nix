@@ -4,14 +4,13 @@
   ...
 }:
 with lib; let
-  cfg = config.features.alacritty;
+  name = "alacritty";
+  namespace = "features";
+
+  cfg = config.modules.${namespace}.${name};
 in {
-  options.features.alacritty = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable alacritty";
-    };
+  options.modules.${namespace}.${name} = {
+    enable = mkEnableOption (mdDoc name);
 
     tmuxIntegration = mkOption {
       type = types.bool;

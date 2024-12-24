@@ -8,9 +8,9 @@ with lib; let
   name = "zellij";
   namespace = "features";
 
-  cfg = config.${namespace}.${name};
+  cfg = config.modules.${namespace}.${name};
 in {
-  options.${namespace}.${name}.enable = mkEnableOption (mdDoc "zellij");
+  options.modules.${namespace}.${name}.enable = mkEnableOption (mdDoc "zellij");
 
   config = mkIf cfg.enable {
     programs.zellij = {

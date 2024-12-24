@@ -9,10 +9,10 @@ with lib; let
   name = "zsh";
   namespace = "features";
 
-  cfg = config.${namespace}.${name};
+  cfg = config.modules.${namespace}.${name};
 in {
-  options.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "zsh");
+  options.modules.${namespace}.${name} = {
+    enable = mkEnableOption (mdDoc name);
   };
 
   config = mkIf cfg.enable {

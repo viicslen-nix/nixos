@@ -4,14 +4,13 @@
   ...
 }:
 with lib; let
-  cfg = config.features.kitty;
+  name = "kitty";
+  namespace = "programs";
+
+  cfg = config.modules.${namespace}.${name};
 in {
-  options.features.kitty = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable kitty terminal emulator";
-    };
+  options.modules.${namespace}.${name} = {
+    enable = mkEnableOption (mdDoc name);
   };
 
   config = mkIf cfg.enable {

@@ -6,11 +6,11 @@
 }:
 with lib; let
   name = "corepack";
-  namespace = "modules";
+  namespace = "programs";
 
-  cfg = config.${namespace}.${name};
+  cfg = config.modules.${namespace}.${name};
 in {
-  options.${namespace}.${name} = {
+  options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
     strict = mkEnableOption (mdDoc "Enable strict mode");
     autoPin = mkEnableOption (mdDoc "Enable auto pin");

@@ -98,14 +98,14 @@
     };
   };
 
-  features.tmux.enable = true;
-  features.zsh.enable = true;
-
   modules = {
     programs = {
+      zsh.enable = true;
+      tmux.enable = true;
+      kitty.enable = true;
+      atuin.enable = true;
       nushell.enable = true;
       starship.enable = true;
-      atuin.enable = true;
     };
 
     functionality.impermanence = {
@@ -222,6 +222,6 @@
       menu-button-border-radius = lib.hm.gvariant.mkTuple [true 10];
     };
 
-    "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":minimize,maximize,close";
+    "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":";
   };
 }

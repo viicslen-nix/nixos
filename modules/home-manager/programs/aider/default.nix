@@ -8,9 +8,9 @@ with lib; let
   name = "aider";
   namespace = "programs";
 
-  cfg = config.${namespace}.${name};
+  cfg = config.modules.${namespace}.${name};
 in {
-  options.${namespace}.${name} = {
+  options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
     envPath = mkOption {
       type = types.str;

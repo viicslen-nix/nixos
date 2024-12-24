@@ -9,7 +9,7 @@ with lib; let
   namespace = "programs";
   version = "2.8.1";
 
-  cfg = config.${namespace}.${name};
+  cfg = config.modules.${namespace}.${name};
   appImage = pkgs.appimageTools.wrapType2 {
     inherit version;
     pname = name;
@@ -19,7 +19,7 @@ with lib; let
     };
   };
 in {
-  options.${namespace}.${name} = {
+  options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
   };
 

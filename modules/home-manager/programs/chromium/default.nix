@@ -4,14 +4,13 @@
   ...
 }:
 with lib; let
-  cfg = config.features.chromium;
+  name = "chromium";
+  namespace = "programs";
+
+  cfg = config.modules.${namespace}.${name};
 in {
-  options.features.chromium = {
-    enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Enable chromium";
-    };
+  options.modules.${namespace}.${name} = {
+    enable = mkEnableOption (mdDoc name);
   };
 
   config = mkIf cfg.enable {

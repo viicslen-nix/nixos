@@ -7,9 +7,9 @@ with lib; let
   name = "mullvad";
   namespace = "programs";
 
-  cfg = config.${namespace}.${name};
+  cfg = config.modules.${namespace}.${name};
 in {
-  options.${namespace}.${name}.splitTunneling = mkOption {
+  options.modules.${namespace}.${name}.splitTunneling = mkOption {
     type = types.listOf types.package;
     default = [];
     description = ''

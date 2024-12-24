@@ -9,13 +9,13 @@ with lib; let
   name = "lan-mouse";
   namespace = "features";
 
-  cfg = config.${namespace}.${name};
+  cfg = config.modules.${namespace}.${name};
 in {
   imports = [
     inputs.lan-mouse.homeManagerModules.default
   ];
 
-  options.${namespace}.${name} = {
+  options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
     autostart = mkOption {
       type = types.bool;

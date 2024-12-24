@@ -7,11 +7,11 @@
 }:
 with lib; let
   name = "tmux";
-  namespace = "features";
+  namespace = "programs";
 
-  cfg = config.${namespace}.${name};
+  cfg = config.modules.${namespace}.${name};
 in {
-  options.${namespace}.${name} = {
+  options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc "tmux");
   };
 
