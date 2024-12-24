@@ -18,7 +18,7 @@
   };
 
   buildEntries = attrs:
-    builtins.mapAttrs (name: value:
+    builtins.mapAttrs (name: _value:
       mkOption {
         type = bool;
         default = true;

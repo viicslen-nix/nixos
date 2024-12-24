@@ -75,7 +75,7 @@ in {
       };
     }
     (mkIf homeManagerLoaded {
-      home-manager.users = lib.genAttrs cfg.users (user: {
+      home-manager.users = lib.genAttrs cfg.users (_user: {
         imports = [
           inputs.one-password-shell-plugins.hmModules.default
         ];

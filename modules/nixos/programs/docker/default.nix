@@ -47,7 +47,7 @@ in {
       oci-containers.backend = "docker";
     };
 
-    users.users = lib.genAttrs cfg.users (user: {
+    users.users = lib.genAttrs cfg.users (_user: {
       extraGroups = ["docker"];
     });
 

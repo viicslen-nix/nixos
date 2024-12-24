@@ -1,6 +1,5 @@
 {
   systemConfig,
-  lib,
 }: let
   inherit (systemConfig) services;
   dataDirGen = svc: {"${svc}".directories = [services."${svc}".dataDir];};

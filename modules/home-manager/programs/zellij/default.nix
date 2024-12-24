@@ -2,7 +2,6 @@
   lib,
   pkgs,
   config,
-  inputs,
   ...
 }:
 with lib; let
@@ -13,7 +12,7 @@ with lib; let
 in {
   options.${namespace}.${name}.enable = mkEnableOption (mdDoc "zellij");
 
-  config = {
+  config = mkIf cfg.enable {
     programs.zellij = {
       enable = true;
 

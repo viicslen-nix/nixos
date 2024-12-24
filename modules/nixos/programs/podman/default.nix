@@ -21,7 +21,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    users.users = lib.genAttrs cfg.users (user: {
+    users.users = lib.genAttrs cfg.users (_user: {
       extraGroups = ["podman"];
     });
 

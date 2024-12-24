@@ -12,10 +12,10 @@ with lib; {
       inputs.chaotic.nixosModules.default
       outputs.nixosModules.containers
     ]
-    (attrsets.mapAttrsToList (name: value: value) outputs.nixosModules.presets)
-    (attrsets.mapAttrsToList (name: value: value) outputs.nixosModules.desktop)
-    (attrsets.mapAttrsToList (name: value: value) outputs.nixosModules.hardware)
-    (attrsets.mapAttrsToList (name: value: value) outputs.nixosModules.programs)
-    (attrsets.mapAttrsToList (name: value: value) outputs.nixosModules.functionality)
+    (attrsets.mapAttrsToList (_name: value: value) outputs.nixosModules.presets)
+    (attrsets.mapAttrsToList (_name: value: value) outputs.nixosModules.desktop)
+    (attrsets.mapAttrsToList (_name: value: value) outputs.nixosModules.hardware)
+    (attrsets.mapAttrsToList (_name: value: value) outputs.nixosModules.programs)
+    (attrsets.mapAttrsToList (_name: value: value) outputs.nixosModules.functionality)
   ];
 }

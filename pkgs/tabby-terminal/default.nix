@@ -1,10 +1,8 @@
 {
   lib,
   pkgs,
-  stdenv,
   fetchFromGitHub,
   mkYarnPackage,
-  fetchYarnDeps,
 }: let
   executableName = "tabby";
   version = "1.0.207";

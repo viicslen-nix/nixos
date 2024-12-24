@@ -2,7 +2,6 @@
   pkgs,
   inputs,
   lib,
-  config,
   ...
 }: {
   # xdg.configFile."hypr/hyprpaper.conf".text = ''

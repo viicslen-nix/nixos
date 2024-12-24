@@ -14,7 +14,7 @@ with lib; {
       inputs.nvchad.homeManagerModule
       outputs.homeManagerModules.defaults
     ]
-    (attrsets.mapAttrsToList (name: value: value) outputs.homeManagerModules.functionality)
-    (attrsets.mapAttrsToList (name: value: value) outputs.homeManagerModules.programs)
+    (attrsets.mapAttrsToList (_name: value: value) outputs.homeManagerModules.functionality)
+    (attrsets.mapAttrsToList (_name: value: value) outputs.homeManagerModules.programs)
   ];
 }

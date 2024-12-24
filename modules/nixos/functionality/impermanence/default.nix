@@ -11,7 +11,6 @@ with lib; let
   namespace = "functionality";
 
   cfg = config.modules.${namespace}.${name};
-  homeManagerLoaded = builtins.hasAttr "home-manager" options;
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc "impermanence");

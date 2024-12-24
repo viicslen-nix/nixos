@@ -99,7 +99,7 @@ in {
       };
     }
     (mkIf homeManagerLoaded {
-      home-manager.users = lib.genAttrs cfg.users (user: {
+      home-manager.users = lib.genAttrs cfg.users (_user: {
         gtk.enable = true;
         gtk.iconTheme.name = "Adwaita";
         gtk.iconTheme.package = pkgs.adwaita-icon-theme;

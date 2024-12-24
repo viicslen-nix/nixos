@@ -71,8 +71,8 @@
     };
 
     # GNOME 46: triple-buffering-v4-46
-    gnome = _prev.gnome.overrideScope (gnomeFinal: gnomePrev: {
-      mutter = gnomePrev.mutter.overrideAttrs (old: {
+    gnome = _prev.gnome.overrideScope (_gnomeFinal: gnomePrev: {
+      mutter = gnomePrev.mutter.overrideAttrs (_old: {
         src = final.fetchgit {
           url = "https://gitlab.gnome.org/vanvugt/mutter.git";
           rev = "663f19bc02c1b4e3d1a67b4ad72d644f9b9d6970";
