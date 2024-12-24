@@ -9,19 +9,12 @@
   home = {
     username = user;
     homeDirectory = "/home/${user}";
+    packages = import ./packages.nix { inherit pkgs; };
 
     sessionVariables = {
       EDITOR = "nvim";
       NIXOS_OZONE_WL = "1";
     };
-
-    packages = with pkgs; [
-      microsoft-edge-wayland
-      discord
-      remmina
-      moonlight-qt
-      legcord
-    ];
   };
 
   programs = {
