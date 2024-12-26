@@ -51,6 +51,14 @@ let external_completer = {|spans|
     } | do $in $spans
 }
 
+def "nuk get" [resource] {
+    kubectl -o json get $resource| from json | get items | flatten
+}
+
+def "nuk delete" [resource key pattern] {
+    kubectl -o json get $resource| from json | get items | flatten | where $key =~ $pattern | each {|res| kubectl delete $resource $res.name}
+}
+
 $env.config = {
     show_banner: false,
     completions: {
