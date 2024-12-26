@@ -18,8 +18,6 @@
   };
 
   programs = {
-    ray.enable = true;
-    tinkerwell.enable = true;
     carapace.enable = true;
     thefuck.enable = true;
     zoxide.enable = true;
@@ -101,11 +99,13 @@
   modules = {
     programs = {
       zsh.enable = true;
+      ray.enable = true;
       tmux.enable = true;
       kitty.enable = true;
       atuin.enable = true;
       nushell.enable = true;
       starship.enable = true;
+      tinkerwell.enable = true;
     };
 
     functionality.impermanence = {
