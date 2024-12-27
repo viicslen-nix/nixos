@@ -1,23 +1,19 @@
 {
-  pkgs,
-  inputs,
-  lib,
+  config,
   ...
-}: {
-  # xdg.configFile."hypr/hyprpaper.conf".text = ''
-  # preload = ${config.theme.wallpaper}
-  # wallpaper = , ${config.theme.wallpaper}
-  # '';
+}: let
+  wallpaper = config.stylix.image;
+in {
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      ipc = "on";
+      splash = true;
+      splash_offset = 2.0;
 
-  systemd.user.services.hyprpaper = {
-    Unit = {
-      Description = "Hyprland wallpaper daemon";
-      PartOf = ["graphical-session.target"];
+      preload = [wallpaper];
+
+      wallpaper = [",${wallpaper}"];
     };
-    Service = {
-      ExecStart = "${lib.getExe inputs.hyprpaper.packages.${pkgs.system}.default}";
-      Restart = "on-failure";
-    };
-    Install.WantedBy = ["graphical-session.target"];
   };
 }
