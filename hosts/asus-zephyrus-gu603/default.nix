@@ -112,6 +112,7 @@ with lib; {
     };
 
     programs = {
+      kanata.enable = true;
       docker.nvidiaSupport = true;
 
       github-runner = {
