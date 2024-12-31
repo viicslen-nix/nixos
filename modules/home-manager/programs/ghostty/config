@@ -1,0 +1,9 @@
+theme = MaterialDarker
+adjust-cell-height = 35%
+adjust-cell-width = 5%
+background-opacity = 0.7
+window-inherit-working-directory = true
+gtk-titlebar = true
+adw-toolbar-style = flat
+gtk-adwaita = true
+auto-update = off
