@@ -7,3 +7,7 @@ gtk-titlebar = true
 adw-toolbar-style = flat
 gtk-adwaita = true
 auto-update = off
+
+
+keybind = ctrl+shift+q=close_surface
+keybind = ctrl+shift+w=toggle_window_decorations
