@@ -49,6 +49,7 @@
     docker = import ./programs/docker;
     mkcert = import ./programs/mkcert;
     podman = import ./programs/podman;
+    kanata = import ./programs/kanata;
     mullvad = import ./programs/mullvad;
     corepack = import ./programs/corepack;
     one-password = import ./programs/one-password;

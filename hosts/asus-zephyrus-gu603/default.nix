@@ -112,7 +112,7 @@ with lib; {
     };
 
     programs = {
-      kanata.enable = true;
+      kanata.enable = false;
       docker.nvidiaSupport = true;
 
       github-runner = {
@@ -125,7 +125,7 @@ with lib; {
 
   hardware.logitech.wireless.enable = true;
   services.displayManager.defaultSession = "hyprland-uwsm";
-  environment.sessionVariables.GSK_RENDERER = "ngl";
+  # environment.sessionVariables.GSK_RENDERER = "ngl";
 
   system.stateVersion = "25.05";
 }

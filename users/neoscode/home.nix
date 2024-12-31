@@ -103,6 +103,7 @@
       tmux.enable = true;
       kitty.enable = true;
       atuin.enable = true;
+      ghostty.enable = true;
       nushell.enable = true;
       starship.enable = true;
       tinkerwell.enable = true;

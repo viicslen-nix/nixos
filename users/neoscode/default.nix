@@ -41,6 +41,7 @@ in {
     };
 
     programs = {
+      kanata.users = [user.name];
       docker.users = [user.name];
       mkcert.rootCA.users = [user.name];
       onePassword.users = [user.name];

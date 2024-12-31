@@ -46,8 +46,9 @@ in {
         modules-left = [
           "custom/startmenu"
           "hyprland/workspaces"
-          "hyprland/window"
+          "custom/screenshot"
           "idle_inhibitor"
+          "hyprland/window"
         ];
         modules-right = [
           "privacy"
@@ -156,11 +157,20 @@ in {
           on-click-right = "${pkgs.mullvad}/bin/mullvad disconnect";
           on-click-middle = "${pkgs.mullvad}/bin/mullvad reconnect";
         };
+        "custom/screenshot" = let
+          screenshot = flags: ''grim -g "$(slurp ${flags})" -t ppm - | satty -f -'';
+          hyprshot = mode: "${pkgs.hyprshot}/bin/hyprshot -m ${mode} --freeze";
+        in {
+          format = " ";
+          tooltip = true;
+          on-click = hyprshot "region";
+          on-click-right = screenshot "";
+        };
         "idle_inhibitor" = {
           format = "{icon}";
           format-icons = {
-            activated = "";
-            deactivated = "󰾫";
+            activated = " ";
+            deactivated = "󰾫 ";
           };
           tooltip = "true";
         };

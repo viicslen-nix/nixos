@@ -32,6 +32,10 @@ nix-upgrade-path COMMAND='switch':
 upgrade COMMAND='switch':
   nh os {{COMMAND}}
 
+full-upgrade:
+  just update
+  just upgrade boot
+
 # Commit any pending file changes and upgrade the system
 commit-and-upgrade MESSAGE COMMAND='switch':
   git add .

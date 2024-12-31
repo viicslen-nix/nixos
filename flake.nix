@@ -136,6 +136,7 @@
     lan-mouse.url = "github:feschber/lan-mouse";
     zen-browser.url = "github:MarceColl/zen-browser-flake";
     one-password-shell-plugins.url = "github:1Password/shell-plugins";
+    ghostty.url = "github:ghostty-org/ghostty";
   };
 
   outputs = {

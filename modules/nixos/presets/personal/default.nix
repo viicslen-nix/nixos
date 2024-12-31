@@ -43,8 +43,6 @@ in {
       # Development
       vscode
       obsidian
-      qownnotes
-      mysql-workbench
       drawio
 
       # Browsers

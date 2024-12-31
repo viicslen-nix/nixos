@@ -30,7 +30,7 @@ in {
       # "__GLX_VENDOR_LIBRARY_NAME,nvidia"
       # "__GL_VRR_ALLOWED,1"
       # "WLR_DRM_NO_ATOMIC,1"
-      "GSK_RENDERER,ngl"
+      # "GSK_RENDERER,ngl"
 
       "QT_QPA_PLATFORM,wayland"
       "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
