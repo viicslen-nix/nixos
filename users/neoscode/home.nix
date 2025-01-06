@@ -22,6 +22,13 @@
     thefuck.enable = true;
     zoxide.enable = true;
 
+    tmate = {
+      enable = true;
+      extraConfig = ''
+        source-file ~/.config/tmux/tmux.conf
+      '';
+    };
+
     gh = {
       enable = true;
       gitCredentialHelper.enable = true;
@@ -122,6 +129,7 @@
         "atuin"
       ];
       config = [
+        "Lens"
         "Code"
         "Slack"
         "Insomnia"
