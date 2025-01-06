@@ -17,7 +17,7 @@ in {
     description = user.description;
     initialPassword = lib.mkIf (user.password == "") user.name;
     hashedPassword = lib.mkIf (user.password != "") user.password;
-    extraGroups = ["networkmanager" "wheel" user.name];
+    extraGroups = ["networkmanager" "wheel" "adbusers" user.name];
     shell = pkgs.nushell;
     useDefaultShell = false;
   };
