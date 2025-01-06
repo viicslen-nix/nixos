@@ -4,4 +4,7 @@
   remmina
   moonlight-qt
   legcord
+  android-tools
+  discord
+  vial
 ]
