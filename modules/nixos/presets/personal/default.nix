@@ -49,6 +49,8 @@ in {
       pkgs.inputs.zen-browser.default
     ];
 
+    programs.adb.enable = true;
+
     modules.programs = {
       qmk.enable = true;
       mullvad.enable = true;
