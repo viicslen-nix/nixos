@@ -15,10 +15,13 @@ in {
     redis = mkEnableOption (mdDoc "Redis");
     soketi = mkEnableOption (mdDoc "Soketi");
     meilisearch = mkEnableOption (mdDoc "Meilisearch");
-    buggregator = mkEnableOption (mdDoc "Buggregator");
     nginx-proxy-manager = mkEnableOption (mdDoc "Nginx Proxy Manager");
     local-ai = mkEnableOption (mdDoc "Local AI");
   };
+
+  imports = [
+    ./buggregator
+  ];
 
   config = {
     virtualisation.oci-containers.containers = {
@@ -103,20 +106,6 @@ in {
           SOKETI_DEFAULT_APP_KEY = "soketi";
           SOKETI_DEFAULT_APP_SECRET = "soketi";
         };
-      };
-
-      buggregator = mkIf cfg.buggregator {
-        hostname = "buggregator";
-        image = "ghcr.io/buggregator/server:latest";
-        ports = [
-          "127.0.0.1:8000:8000"
-          "127.0.0.1:1025:1025"
-          "127.0.0.1:9912:9912"
-          "127.0.0.1:9913:9913"
-        ];
-        extraOptions = [
-          "--network=local"
-        ];
       };
 
       nginx-proxy-manager = mkIf cfg.nginx-proxy-manager {
