@@ -75,7 +75,7 @@ in {
         mysql = true;
         redis = true;
         soketi = true;
-        buggregator = true;
+        buggregator.enable = true;
         meilisearch = true;
         nginx-proxy-manager = true;
         local-ai = true;
@@ -146,6 +146,7 @@ in {
       atlas
       sublime-merge
       devbox
+      s5cmd
     ];
   };
 }
