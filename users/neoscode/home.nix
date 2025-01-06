@@ -22,13 +22,6 @@
     thefuck.enable = true;
     zoxide.enable = true;
 
-    tmate = {
-      enable = true;
-      extraConfig = ''
-        source-file ~/.config/tmux/tmux.conf
-      '';
-    };
-
     gh = {
       enable = true;
       gitCredentialHelper.enable = true;
@@ -108,6 +101,7 @@
       zsh.enable = true;
       ray.enable = true;
       tmux.enable = true;
+      tmate.enable = true;
       kitty.enable = true;
       atuin.enable = true;
       ghostty.enable = true;

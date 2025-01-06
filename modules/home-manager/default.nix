@@ -23,6 +23,7 @@
     firefox = import ./programs/firefox;
     zsh = import ./programs/zsh;
     tmux = import ./programs/tmux;
+    tmate = import ./programs/tmate;
     aider = import ./programs/aider;
     zellij = import ./programs/zellij;
     corepack = import ./programs/corepack;
