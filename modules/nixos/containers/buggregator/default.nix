@@ -28,18 +28,9 @@ in {
           "--network=local"
         ];
         volumes = [
-          "/var/lib/buggregator:/app/runtime/configs"
+          "${builtins.toString ./config}:/app/runtime/configs"
         ];
       };
-    };
-
-    fileSystems."/var/lib/buggregator" = {
-      device = "./config";
-      fsType = "none";
-      options = [
-        "bind"
-        "ro"
-      ];
     };
   };
 }
