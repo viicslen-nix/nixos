@@ -1,12 +1,19 @@
-{pkgs, ...}: {
-  home.packages = with pkgs; [
-    inputs.shell.default
+{pkgs, inputs, ...}: {
+  home.packages = [
+    (inputs.astal.lib.mkLuaPackage {
+      inherit pkgs;
+      name = "tokyob0t";
+      src = ./tokyob0t;
+
+      extraPackages = [
+        pkgs.inputs.astal.battery
+        pkgs.dart-sass
+      ];
+    })
   ];
 
-  xdg.configFile."marble".source = ./config;
-
   wayland.windowManager.hyprland.settings = let
-    shell = "marble -b hypr";
+    shell = "tokyob0t -b hypr";
   in {
     exec-once = [
       "uwsm app -- ${shell}"

@@ -1,14 +1,13 @@
 {
-  system,
-  astal,
   pkgs,
-}: astal.lib.mkLuaPackage {
+  inputs,
+}: inputs.astal.lib.mkLuaPackage {
     inherit pkgs;
     name = "tokyob0t";
     src = ./.;
 
     extraPackages = [
-      astal.packages.${system}.battery
+      pkgs.inputs.astal.battery
       pkgs.dart-sass
     ];
 }

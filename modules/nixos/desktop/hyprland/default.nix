@@ -127,8 +127,6 @@ in {
           # utils
           networkmanagerapplet # needed for nm-applet icons
           pkgs.inputs.pyprland.pyprland
-          pkgs.inputs.shell.default
-          astalShells.tokyob0t
           wl-screenrec
           wlr-randr
           wlroots

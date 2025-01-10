@@ -1,9 +1,0 @@
-{
-    "vertical": true,
-    "timeout": 2000,
-    "margin": 0,
-    "slide": true,
-    "anchors": [
-        "right"
-    ]
-}

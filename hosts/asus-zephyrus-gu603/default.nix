@@ -51,12 +51,7 @@ with lib; {
     };
 
     desktop = {
-      gnome = {
-        enable = true;
-        additionalExtensions = [
-          pkgs.draw-on-your-screen2
-        ];
-      };
+      gnome.enable = true;
 
       hyprland = {
         enable = true;
