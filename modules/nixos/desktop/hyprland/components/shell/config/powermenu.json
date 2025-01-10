@@ -1,0 +1,9 @@
+{
+    "layout": "1x4",
+    "labels": true,
+    "iconSize": 4,
+    "sleep": "systemctl suspend",
+    "reboot": "systemctl reboot",
+    "logout": "hyprctl dispatch exit",
+    "shutdown": "shutdown now"
+}

@@ -1,0 +1,11 @@
+{
+    "anchor": [
+        "top",
+        "right"
+    ],
+    "blacklist": [
+        "Spotify"
+    ],
+    "width": 24,
+    "dissmissOnHover": false
+}
