@@ -114,7 +114,7 @@
     stylix.url = "github:danth/stylix";
     base16.url = "github:SenchoPens/base16.nix";
     tt-schemes = {
-      url = "github:tinted-theming/schemes/b3273211d5d1510aee669083fc5a1e0e4b5e310c";
+      url = "github:tinted-theming/schemes";
       flake = false;
     };
     rofi-themes = {
