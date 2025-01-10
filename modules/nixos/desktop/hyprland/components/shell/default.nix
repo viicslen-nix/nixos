@@ -8,8 +8,6 @@
   wayland.windowManager.hyprland.settings = let
     shell = "marble -b hypr";
   in {
-    "$launcher" = "${shell} -t launcher";
-
     exec-once = [
       "uwsm app -- ${shell}"
     ];
