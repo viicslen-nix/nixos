@@ -110,6 +110,11 @@
     ags.url = "github:Aylur/ags/v1";
     matugen.url = "github:InioX/matugen?ref=v2.2.0";
 
+    shell = {
+      url = "git+ssh://git@github.com/viicslen/shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Theming
     stylix.url = "github:danth/stylix";
     base16.url = "github:SenchoPens/base16.nix";
