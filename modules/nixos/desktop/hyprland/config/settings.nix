@@ -59,7 +59,7 @@ in {
       "uwsm app -- wl-paste --type text --watch cliphist store"
       "uwsm app -- wl-paste --type image --watch cliphist store"
 
-      "uwsm app --swww img ${wallpaper}"
+      "swww img ${wallpaper}"
     ];
 
     general = {
