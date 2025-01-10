@@ -11,7 +11,8 @@
     ./swaync
     ./waybar
     ./rofi
-    ./shell
+
     # ./ags
+    # ./shell
   ];
 }
