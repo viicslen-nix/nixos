@@ -14,7 +14,6 @@
     systemd.user.startServices = mkDefault "sd-switch";
 
     # Configure the package manager
-    nixpkgs.config = import ./nixpkgs.nix;
     xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs.nix;
   };
 }
