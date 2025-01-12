@@ -29,10 +29,7 @@ in {
       sesh
       asciinema
       waveterm
-
-      # Devices
-      solaar
-      openrgb-with-all-plugins
+      yazi
 
       # GUI Apps
       tangram
@@ -44,9 +41,6 @@ in {
       vscode
       obsidian
       drawio
-
-      # Browsers
-      pkgs.inputs.zen-browser.default
     ];
 
     programs.adb.enable = true;
