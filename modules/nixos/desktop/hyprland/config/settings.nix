@@ -145,6 +145,10 @@ in {
       workspace_swipe_forever = true;
     };
 
+    xwayland = {
+      force_zero_scaling = true;
+    };
+
     render.direct_scanout = true;
     debug.disable_logs = false;
   };
