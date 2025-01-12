@@ -15,10 +15,32 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      inputs.ghostty.default
-    ];
+    programs.ghostty = {
+      enable = true;
+      installVimSyntax = true;
+      installBatSyntax = true;
+      package = pkgs.inputs.ghostty.default;
+      settings = {
+        auto-update = "off";
 
-    xdg.configFile."ghostty/config".source = ./config;
+        adjust-cell-height = "35%";
+        adjust-cell-width = "5%";
+        confirm-close-surface = "always";
+        window-inherit-working-directory = false;
+
+        gtk-titlebar = true;
+        gtk-adwaita = true;
+        adw-toolbar-style = "flat";
+
+        font-family = lib.mkForce [
+          config.stylix.fonts.monospace.name
+        ];
+
+        keybind = [
+          "ctrl+shift+q=close_surface"
+          "ctrl+shift+w=toggle_window_decorations"
+        ];
+      };
+    };
   };
 }
