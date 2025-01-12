@@ -106,12 +106,13 @@
       inputs.hyprland.follows = "hyprland";
     };
 
-    # Ags
-    ags.url = "github:Aylur/ags/v1";
-    matugen.url = "github:InioX/matugen?ref=v2.2.0";
-
-    shell = {
-      url = "git+ssh://git@github.com/viicslen/shell";
+    # Astal
+    astal = {
+      url = "github:aylur/astal";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ags = {
+      url = "github:aylur/ags";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
