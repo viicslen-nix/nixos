@@ -64,13 +64,20 @@ in {
         fonts = {
           monospace = {
             package = pkgs.nerd-fonts.fira-mono;
-            name = "Fira Code Nerd Font";
+            name = "Fira Code Mono Nerd Font";
           };
         };
 
         cursor = {
           name = "Adwaita";
           size = 24;
+        };
+
+        opacity = {
+          popups = 0.7;
+          desktop = 0.3;
+          terminal = 0.7;
+          applications = 0.9;
         };
 
         targets = {
