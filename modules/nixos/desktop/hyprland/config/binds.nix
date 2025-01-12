@@ -18,7 +18,7 @@
       "$mod" = "SUPER";
 
       # applications
-      "$terminal" = "kitty";
+      "$terminal" = "ghostty";
       "$browser" = "microsoft-edge";
       "$fileManager" = "nautilus";
       "$passwordManager" = "1password --quick-access";
