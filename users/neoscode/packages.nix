@@ -7,4 +7,6 @@
   android-tools
   discord
   vial
+  inputs.zen-browser.default
+  openrgb-with-all-plugins
 ]
