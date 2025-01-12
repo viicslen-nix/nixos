@@ -146,7 +146,7 @@ in {
       atlas
       sublime-merge
       devbox
-      s5cmd
+      act
     ];
   };
 }
