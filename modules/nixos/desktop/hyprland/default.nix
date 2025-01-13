@@ -161,18 +161,8 @@ in {
 
         wayland.windowManager.hyprland = {
           enable = true;
-          systemd = {
-            enable = false;
-            variables = ["--all"];
-          };
+          systemd.enable = false;
           package = pkgs.inputs.hyprland.hyprland;
-        };
-
-        # make stuff work on wayland
-        home.sessionVariables = {
-          QT_QPA_PLATFORM = "wayland";
-          SDL_VIDEODRIVER = "wayland";
-          XDG_SESSION_TYPE = "wayland";
         };
 
         dconf.settings."org/gnome/desktop/wm/preferences".button-layout = ":";

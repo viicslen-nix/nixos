@@ -1,45 +1,15 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: let
   pointer = config.stylix.cursor;
-  wallpaper = config.stylix.image;
 in {
   wayland.windowManager.hyprland.settings = {
     monitor = [
       "eDP-1,2560x1600@60,0x0,1.6"
       ",preferred,auto,1"
-    ];
-
-    env = [
-      "NIXOS_OZONE_WL,1"
-      "NIXPKGS_ALLOW_UNFREE,1"
-
-      "XDG_CURRENT_DESKTOP,Hyprland"
-      "XDG_SESSION_DESKTOP,Hyprland"
-
-      "XDG_SESSION_TYPE,wayland"
-      "CLUTTER_BACKEND,wayland"
-      "GDK_BACKEND,wayland,x11"
-      "SDL_VIDEODRIVER,wayland"
-
-      # NVIDIA
-      # "GBM_BACKEND,nvidia-drm"
-      # "LIBVA_DRIVER_NAME,nvidia"
-      # "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-      # "__GL_VRR_ALLOWED,1"
-      # "WLR_DRM_NO_ATOMIC,1"
-      # "GSK_RENDERER,ngl"
-
-      "QT_QPA_PLATFORM,wayland"
-      "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
-      "QT_AUTO_SCREEN_SCALE_FACTOR,1"
-
-      "MOZ_ENABLE_WAYLAND,1"
-
-      "GDK_SCALE,1.6"
-      "XCURSOR_SIZE,${toString pointer.size}"
     ];
 
     exec-once = [
@@ -58,8 +28,6 @@ in {
 
       "uwsm app -- wl-paste --type text --watch cliphist store"
       "uwsm app -- wl-paste --type image --watch cliphist store"
-
-      "swww img ${wallpaper}"
     ];
 
     general = {
