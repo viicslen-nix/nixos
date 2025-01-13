@@ -81,7 +81,7 @@
     };
 
     nvchad = {
-      enable = true;
+      enable = false;
       backup = false;
       extraPackages = with pkgs; [
         nixd
@@ -108,11 +108,13 @@
       nushell.enable = true;
       starship.enable = true;
       tinkerwell.enable = true;
+      nvf.enable = true;
     };
 
     functionality.impermanence = {
       enable = true;
       share = [
+        "Steam"
         "JetBrains"
         "keyrings"
         "direnv"
@@ -158,6 +160,7 @@
         ".kube"
         ".java"
         ".gnupg"
+        ".steam"
         ".nixops"
         ".vscode"
         ".docker"

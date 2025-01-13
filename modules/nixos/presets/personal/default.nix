@@ -54,6 +54,8 @@ in {
         gitSignCommits = true;
         allowedCustomBrowsers = [".zen-wrapped"];
       };
+
+      steam.enable = true;
     };
   };
 }

@@ -47,6 +47,7 @@
   programs = {
     qmk = import ./programs/qmk;
     docker = import ./programs/docker;
+    steam = import ./programs/steam;
     mkcert = import ./programs/mkcert;
     podman = import ./programs/podman;
     kanata = import ./programs/kanata;
