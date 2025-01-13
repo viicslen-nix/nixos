@@ -5,9 +5,19 @@
       name = "tokyob0t";
       src = ./tokyob0t;
 
-      extraPackages = [
-        pkgs.inputs.astal.battery
-        pkgs.dart-sass
+      extraPackages = with pkgs.inputs.astal; [
+        astal3
+        io
+        apps
+        battery
+        bluetooth
+        hyprland
+        mpris
+        network
+        notifd
+        powerprofiles
+        tray
+        wireplumber
       ];
     })
   ];
