@@ -9,4 +9,5 @@
   vial
   inputs.zen-browser.default
   openrgb-with-all-plugins
+  jetbrains-toolbox
 ]
