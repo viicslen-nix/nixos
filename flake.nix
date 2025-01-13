@@ -69,6 +69,10 @@
       url = "github:viicslen/neovim";
       flake = false;
     };
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Hyprland
     hyprland.url = "github:hyprwm/Hyprland";
