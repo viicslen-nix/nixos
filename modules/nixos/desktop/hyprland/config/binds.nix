@@ -38,7 +38,7 @@
         "$mod, G, togglegroup,"
         "$mod, R, togglesplit,"
         "$mod, T, togglefloating,"
-        "$mod, P, pseudo,"
+        "$mod, P, pin,"
         "$mod ALT, ,resizeactive,"
 
         # cycle monitors
