@@ -27,9 +27,11 @@ in {
         adjust-cell-width = "5%";
         confirm-close-surface = "always";
         window-inherit-working-directory = false;
+        window-theme = "ghostty";
 
-        gtk-titlebar = true;
         gtk-adwaita = true;
+        gtk-titlebar = false;
+        gtk-tabs-location = "bottom";
         adw-toolbar-style = "flat";
 
         font-family = lib.mkForce [

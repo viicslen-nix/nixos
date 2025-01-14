@@ -21,17 +21,17 @@
     GDK_SCALE = "1.6";
 
     # Nvidia
-    NVD_BACKEND = "direct";
-    LIBVA_DRIVER_NAME = "nvidia";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    __GL_GSYNC_ALLOWED = "1";
-    __GL_VRR_ALLOWED = "1";
+    # NVD_BACKEND = "direct";
+    # LIBVA_DRIVER_NAME = "nvidia";
+    # __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    # __GL_GSYNC_ALLOWED = "1";
+    # __GL_VRR_ALLOWED = "1";
   };
 
   hyprVariables = {
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_DESKTOP = "Hyprland";
-    AQ_DRM_DEVICES = "/dev/dri/by-path/pci-0000:01:00.0-card:/dev/dri/by-path/pci-0000:00:02.0-card";
+    # AQ_DRM_DEVICES = "/dev/dri/by-path/pci-0000:01:00.0-card:/dev/dri/by-path/pci-0000:00:02.0-card";
   };
 in {
   home.sessionVariables = globalVariables;
@@ -42,7 +42,7 @@ in {
   };
 
   wayland.windowManager.hyprland.settings.env = lib.concatLists [
-    (lib.concatMapAttrsStringSep "\n" (name: value: "${name},${value}") globalVariables)
-    (lib.concatMapAttrsStringSep "\n" (name: value: "${name},${value}") hyprVariables)
+    (lib.mapAttrsToList (name: value: "${name},${value}") globalVariables)
+    (lib.mapAttrsToList (name: value: "${name},${value}") hyprVariables)
   ];
 }

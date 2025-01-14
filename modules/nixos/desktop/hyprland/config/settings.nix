@@ -1,11 +1,7 @@
 {
-  config,
   pkgs,
-  lib,
   ...
-}: let
-  pointer = config.stylix.cursor;
-in {
+}: {
   wayland.windowManager.hyprland.settings = {
     monitor = [
       "eDP-1,2560x1600@60,0x0,1.6"
@@ -18,8 +14,6 @@ in {
 
       "uwsm app -- ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
       "uwsm app -- gnome-keyring-daemon --start --components=secrets"
-
-      "uwsm app -- hyprctl setcursor ${pointer.name} ${toString pointer.size}"
 
       "uwsm app -- pypr"
       "uwsm app -- swww-daemon"
@@ -117,6 +111,7 @@ in {
       force_zero_scaling = true;
     };
 
+    cursor.use_cou_buffer = true;
     render.direct_scanout = true;
     debug.disable_logs = false;
   };
