@@ -26,7 +26,6 @@ in {
       skypeforlinux
       kdePackages.kcachegrind
       graphviz
-      sesh
       asciinema
       waveterm
       yazi
