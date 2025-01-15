@@ -109,6 +109,11 @@
       starship.enable = true;
       tinkerwell.enable = true;
       nvf.enable = true;
+      sesh = {
+        enable = true;
+        enableNushellIntegration = true;
+        enableTmuxIntegration = true;
+      };
     };
 
     functionality.impermanence = {
