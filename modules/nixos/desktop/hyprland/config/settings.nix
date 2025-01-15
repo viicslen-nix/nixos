@@ -111,7 +111,7 @@
       force_zero_scaling = true;
     };
 
-    cursor.use_cou_buffer = true;
+    cursor.use_cpu_buffer = 1;
     render.direct_scanout = true;
     debug.disable_logs = false;
   };
