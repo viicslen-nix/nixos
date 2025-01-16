@@ -30,6 +30,9 @@ in {
           CPU_HWP_DYN_BOOST_ON_AC = 0;
           CPU_HWP_DYN_BOOST_ON_BAT = 0;
           CPU_SCALING_GOVERNOR_ON_BATTERY = "powersave";
+
+          INTEL_GPU_MIN_FREQ_ON_AC = 500;
+          INTEL_GPU_MIN_FREQ_ON_BAT = 300;
         };
       };
     };
