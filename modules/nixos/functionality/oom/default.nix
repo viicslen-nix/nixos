@@ -67,7 +67,7 @@ in {
   config = mkIf cfg.enable {
     # Enable earlyoom to prevent system freezes
     services.earlyoom = {
-      enable = true;
+      enable = false;
       enableNotifications = true;
       extraArgs = let
         catPatterns = patterns: builtins.concatStringsSep "|" patterns;
