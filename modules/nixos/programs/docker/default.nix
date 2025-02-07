@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }:
@@ -38,6 +39,10 @@ in {
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      docker-credential-helpers
+    ];
+
     virtualisation = {
       docker.enable = true;
       docker.autoPrune.enable = true;
