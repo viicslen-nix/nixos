@@ -40,7 +40,7 @@ in {
           };
 
           spellcheck = {
-            enable = true;
+            enable = false;
             languages = ["en" "es"];
           };
 
@@ -134,7 +134,14 @@ in {
           };
 
           # Plugins
-          telescope.enable = true;
+          telescope = {
+            enable = true;
+            setupOpts.pickers.find_files = {
+              hidden = true;
+              no_ignore = true;
+            };
+          };
+
           autocomplete.nvim-cmp.enable = true;
           autopairs.nvim-autopairs.enable = true;
           dashboard.dashboard-nvim.enable = true;
@@ -143,7 +150,6 @@ in {
           projects.project-nvim.enable = true;
           runner.run-nvim.enable = true;
           statusline.lualine.enable = true;
-          utility.images.image-nvim.enable = true;
           utility.motion.precognition.enable  = true;
           utility.outline.aerial-nvim.enable = true;
           utility.preview.markdownPreview.enable = true;
