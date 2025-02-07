@@ -51,7 +51,10 @@ in {
       onePassword = {
         enable = true;
         gitSignCommits = true;
-        allowedCustomBrowsers = [".zen-wrapped"];
+        allowedCustomBrowsers = [
+          ".zen-wrapped"
+          "zen"
+        ];
       };
 
       steam.enable = true;
