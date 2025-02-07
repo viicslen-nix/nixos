@@ -1,8 +1,8 @@
 {
   imports = [
     ./hyprexpo.nix
-    # ./hyprspace.nix
     ./hyprsplit.nix
+    # ./hyprspace.nix
     # ./hyprchroma.nix
   ];
 }
