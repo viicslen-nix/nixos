@@ -13,21 +13,11 @@ in {
   services.blueman-applet.enable = true;
 
   # Configure Hyprland
-  wayland.windowManager.hyprland.settings = {
-    exec-once = [
-      "killall -q waybar;sleep .5 && waybar"
-    ];
-
-    bind = [
-      "$mod CTRL SHIFT, R, exec, killall -q waybar;sleep .5 && waybar"
-    ];
-
-    layerrule = [
-      "blur, ^(waybar)$"
-      "blurpopups, ^(waybar)$"
-      "ignorealpha 0.2, ^(waybar)$"
-    ];
-  };
+  wayland.windowManager.hyprland.settings.layerrule = [
+    "blur, ^(waybar)$"
+    "blurpopups, ^(waybar)$"
+    "ignorealpha 0.2, ^(waybar)$"
+  ];
 
   # Disable Stylix Theme
   stylix.targets.waybar.enable = false;
@@ -35,7 +25,7 @@ in {
   # Configure & Theme Waybar
   programs.waybar = {
     enable = true;
-    package = pkgs.waybar;
+    systemd.enable = true;
     settings = [
       {
         layer = "top";
