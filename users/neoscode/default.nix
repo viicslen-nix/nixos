@@ -29,6 +29,8 @@ in {
     })
   ];
 
+  hardware.openrazer.users = [user.name];
+
   modules = {
     functionality.backups = {
       home.users = [user.name];
