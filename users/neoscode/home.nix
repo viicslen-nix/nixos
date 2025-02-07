@@ -4,6 +4,7 @@
 }: {
   lib,
   pkgs,
+  config,
   ...
 }: {
   home = {
@@ -21,6 +22,7 @@
     carapace.enable = true;
     thefuck.enable = true;
     zoxide.enable = true;
+    k9s.enable = true;
 
     gh = {
       enable = true;
@@ -57,6 +59,46 @@
         "SellDiam" = {
           hostname = "webapps";
           user = "inventory";
+        };
+
+        "DOS" = {
+          hostname = "storesites";
+          user = "dostov";
+        };
+
+        "BLVD" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "EXB" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "DTC" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "NFC" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "TJD" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "47DD" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "PELA" = {
+          hostname = "storesites";
+          user = "REDACTED";
         };
       };
     };
@@ -101,6 +143,7 @@
       zsh.enable = true;
       ray.enable = true;
       tmux.enable = true;
+      aider.enable = true;
       tmate.enable = true;
       kitty.enable = true;
       atuin.enable = true;
@@ -217,14 +260,16 @@
     };
   };
 
+  home.file."/home/neoscode/.config/mimeapps.list".force = lib.mkForce true;
+
   dconf.settings = {
     "org/gnome/shell" = {
       favorite-apps = [
         "org.gnome.Nautilus.desktop"
         "microsoft-edge.desktop"
         "phpstorm.desktop"
-        "kitty.desktop"
-        "slack.desktop"
+        "ghostty.desktop"
+        "legcord.desktop"
       ];
     };
 
@@ -233,6 +278,6 @@
       menu-button-border-radius = lib.hm.gvariant.mkTuple [true 10];
     };
 
-    "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":";
+    "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":minimize,maximize,close";
   };
 }
