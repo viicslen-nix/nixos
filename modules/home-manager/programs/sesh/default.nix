@@ -35,10 +35,15 @@ in {
       [[session]]
       name = "mylisterhub-cloud-config"
       path = "~/Development/mylisterhub-cloud-config"
+      startup_command = "k9s"
 
       [[session]]
       name = "inventory-main-app"
       path = "~/Development/inventory-main-app"
+
+      [[session]]
+      name = "NixOS Config ⚙️"
+      path = "/etc/nixos"
 
       [[session]]
       name = "Downloads 📥"
