@@ -25,14 +25,15 @@ in {
 
         adjust-cell-height = "35%";
         adjust-cell-width = "5%";
+        window-padding-y = 0;
+        window-padding-color = "extend";
+        window-padding-balance = true;
         confirm-close-surface = "always";
         window-inherit-working-directory = false;
         window-theme = "ghostty";
 
         gtk-adwaita = true;
-        gtk-titlebar = false;
-        gtk-tabs-location = "bottom";
-        adw-toolbar-style = "flat";
+        adw-toolbar-style = "raised-border";
 
         font-family = lib.mkForce [
           config.stylix.fonts.monospace.name
@@ -43,6 +44,10 @@ in {
           "ctrl+shift+w=toggle_window_decorations"
         ];
       };
+    };
+
+    dconf.settings."org/gnome/shell/extensions/blur-my-shell/applications" = {
+      whitelist = ["com.mitchellh.ghostty"];
     };
   };
 }
