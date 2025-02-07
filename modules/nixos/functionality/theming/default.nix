@@ -81,18 +81,34 @@ in {
         };
 
         targets = {
-          gnome.enable = true;
+          qt.enable = false; # Will be themed with adwaita
 
+          grub.useImage = true;
           plymouth.logo = plymouthLogo;
-
-          chromium.enable = false;
         };
+      };
+
+      environment.systemPackages = with pkgs; [
+        adwaita-qt6
+        adwaita-qt
+      ];
+
+      qt = {
+        enable = true;
+        platformTheme = "gnome";
+        style = "adwaita-dark";
       };
     }
     (mkIf homeManagerLoaded {
       home-manager.sharedModules = [
         {
-          stylix.enable = true;
+          stylix = {
+            enable = true;
+
+            targets = {
+              qt.enable = false; # Will be themed with adwaita
+            };
+          };
 
           gtk = {
             gtk3.extraConfig = {
@@ -104,8 +120,8 @@ in {
           };
           qt = {
             enable = true;
-            style.name = "adwaita-dark";
-            platformTheme.name = "gtk3";
+            style.name = mkForce "adwaita-dark";
+            platformTheme.name = mkForce "adwaita";
           };
         }
       ];
