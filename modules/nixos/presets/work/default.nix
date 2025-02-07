@@ -24,6 +24,10 @@ in {
         # Remote
         "webapps" = "REDACTED";
         "storesites" = "REDACTED";
+        "db-prod-master" = "50.116.56.10";
+        "db-prod-read" = "50.116.56.249";
+        "db-staging-master" = "45.79.180.78";
+        "db-staging-read" = "45.79.180.88";
 
         # Development
         "ai.local" = "127.0.0.1";
@@ -71,14 +75,12 @@ in {
       };
 
       containers = {
-        portainer = true;
         mysql = true;
         redis = true;
         soketi = true;
         buggregator.enable = true;
         meilisearch = true;
         nginx-proxy-manager = true;
-        local-ai = true;
       };
     };
 
