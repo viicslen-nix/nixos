@@ -118,9 +118,17 @@ with lib; {
     };
   };
 
-  hardware.logitech.wireless.enable = true;
+  hardware = {
+    logitech.wireless.enable = true;
+    openrazer.enable = true;
+  };
+
   services.displayManager.defaultSession = "hyprland-uwsm";
-  # environment.sessionVariables.GSK_RENDERER = "ngl";
+
+  # Disable the built-in keyboard
+  services.udev.extraRules = lib.mkAfter ''
+    KERNEL=="event*", ATTRS{name}=="AT Translated Set 2 keyboard", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+  '';
 
   system.stateVersion = "25.05";
 }
