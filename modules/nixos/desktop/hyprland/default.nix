@@ -113,6 +113,7 @@ in {
           # wallpaper
           swww
           waypaper
+          hyprpaper
 
           # screenshot
           grim

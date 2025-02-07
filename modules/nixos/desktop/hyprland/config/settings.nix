@@ -112,11 +112,15 @@
     };
 
     render = {
-      direct_scanout = true;
+      direct_scanout = 2;
       explicit_sync = 2;
     };
 
-    cursor.use_cpu_buffer = 1;
+    cursor = {
+      no_hardware_cursors = true;
+      use_cpu_buffer = 1;
+    };
+
     debug.disable_logs = false;
   };
 }
