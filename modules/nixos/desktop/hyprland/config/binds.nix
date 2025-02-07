@@ -18,10 +18,10 @@
       "$mod" = "SUPER";
 
       # applications
-      "$terminal" = "ghostty";
-      "$browser" = "microsoft-edge";
-      "$fileManager" = "nautilus";
-      "$passwordManager" = "1password --quick-access";
+      "$terminal" = "uwsm app -- ghostty";
+      "$browser" = "uwsm app -- microsoft-edge";
+      "$fileManager" = "uwsm app -- nautilus";
+      "$passwordManager" = "uwsm app -- 1password --quick-access";
 
       # mouse movements
       bindm = [
@@ -109,16 +109,16 @@
       # apps
       submap = apps
 
-      binde = , p, exec, phpstorm
-      binde = , d, exec, datagrip
-      binde = , w, exec, webstorm
-      binde = , s, exec, slack
-      binde = , l, exec, legcord
-      binde = , f, exec, firefox
-      binde = , c, exec, code
-      binde = , e, exec, nautilus
-      binde = , t, exec, kitty
-      binde = , b, exec, microsoft-edge
+      binde = , p, exec, uwsm app -- phpstorm
+      binde = , d, exec, uwsm app -- datagrip
+      binde = , w, exec, uwsm app -- webstorm
+      binde = , s, exec, uwsm app -- slack
+      binde = , l, exec, uwsm app -- legcord
+      binde = , f, exec, uwsm app -- firefox
+      binde = , c, exec, uwsm app -- code
+      binde = , e, exec, uwsm app -- nautilus
+      binde = , t, exec, uwsm app -- kitty
+      binde = , b, exec, uwsm app -- microsoft-edge
 
       bind = , escape, submap, reset
       bind = , catchall, submap, reset
