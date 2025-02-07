@@ -25,21 +25,21 @@ in {
 
   config = {
     virtualisation.oci-containers.containers = {
-      # portainer = mkIf cfg.portainer {
-      #   hostname = "portainer";
-      #   image = "portainer/portainer-ee:latest";
-      #   ports = [
-      #     # "127.0.0.1:8000:8000"
-      #     "127.0.0.1:9443:9443"
-      #   ];
-      #   volumes = [
-      #     "portainer:/data"
-      #     "/var/run/docker.sock:/var/run/docker.sock"
-      #   ];
-      #   extraOptions = [
-      #     "--network=local"
-      #   ];
-      # };
+      portainer = mkIf cfg.portainer {
+        hostname = "portainer";
+        image = "portainer/portainer-ee:latest";
+        ports = [
+          # "127.0.0.1:8000:8000"
+          "127.0.0.1:9443:9443"
+        ];
+        volumes = [
+          "portainer:/data"
+          "/var/run/docker.sock:/var/run/docker.sock"
+        ];
+        extraOptions = [
+          "--network=local"
+        ];
+      };
 
       mysql = mkIf cfg.mysql {
         hostname = "mysql";
