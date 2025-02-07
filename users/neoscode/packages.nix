@@ -1,13 +1,21 @@
 { pkgs, ... }: with pkgs; [
+  # Browsers
   microsoft-edge-wayland
-  discord
+  inputs.zen-browser.default
+
+  # Remote
   remmina
   moonlight-qt
-  legcord
-  android-tools
+
+  # Communication
   discord
+  dissent
+  legcord
+
+  # Development
   vial
-  inputs.zen-browser.default
+  android-tools
+  scrcpy
   openrgb-with-all-plugins
   jetbrains-toolbox
 ]
