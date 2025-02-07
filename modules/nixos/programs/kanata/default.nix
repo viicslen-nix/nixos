@@ -28,7 +28,7 @@ in {
     hardware.uinput.enable = true;
 
     # Set up udev rules for uinput
-    services.udev.extraRules = ''
+    services.udev.extraRules = mkAfter ''
       KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
     '';
 
@@ -53,6 +53,39 @@ in {
         default = {
           devices = [
             "/dev/input/by-id/usb-0461_USB_Wired_Keyboard-event-kbd"
+          ];
+          extraDefCfg = "process-unmapped-keys yes";
+          config = ''
+            (defsrc
+              caps a s d f j k l ;
+              lsft
+            )
+            (defvar
+              tap-time 250
+              hold-time 300
+            )
+
+            (defalias
+              escshift (tap-hold 100 100 esc lsft)
+              a (tap-hold $tap-time $hold-time a lmet)
+              s (tap-hold $tap-time $hold-time s lalt)
+              d (tap-hold $tap-time $hold-time d lsft)
+              f (tap-hold $tap-time $hold-time f lctl)
+              j (tap-hold $tap-time $hold-time j rctl)
+              k (tap-hold $tap-time $hold-time k rsft)
+              l (tap-hold $tap-time $hold-time l ralt)
+              ; (tap-hold $tap-time $hold-time ; rmet)
+            )
+
+            (deflayer base
+              @escshift @a @s @d @f @j @k @l @;
+              lctl
+            )
+          '';
+        };
+        builtin = {
+          devices = [
+            "/dev/input/by-id/usb-ASUSTeK_Computer_Inc._N-KEY_Device-if02-event-kbd"
           ];
           extraDefCfg = "process-unmapped-keys yes";
           config = ''
