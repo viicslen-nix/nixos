@@ -29,7 +29,7 @@ in {
         tab_bar_align = "center";
         tab_bar_style = "powerline";
         tab_powerline_style = "slanted";
-        cursor_trail = true;
+        cursor_trail = 1;
       };
 
       extraConfig = ''
