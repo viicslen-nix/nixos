@@ -27,7 +27,6 @@ in {
         vim = {
           viAlias = true;
           vimAlias = true;
-          disableArrows = true;
           hideSearchHighlight = true;
           syntaxHighlighting = true;
           useSystemClipboard = true;
