@@ -206,6 +206,11 @@ in {
 
           filetree.nvimTree = {
             enable = true;
+            openOnSetup = false;
+            setupOpts.filters = {
+              git_ignored = true;
+              dotfiles = true;
+            };
           };
 
           git = {
