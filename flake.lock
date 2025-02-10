@@ -5128,7 +5128,6 @@
         "tmux-1password": "tmux-1password",
         "tmux-tokyo-night": "tmux-tokyo-night",
         "tt-schemes": "tt-schemes",
-        "wallpapers": "wallpapers",
         "zen-browser": "zen-browser",
         "zjstatus": "zjstatus"
       }
@@ -5610,22 +5609,6 @@
       "original": {
         "owner": "tinted-theming",
         "repo": "schemes",
-        "type": "github"
-      }
-    },
-    "wallpapers": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1738253880,
-        "narHash": "sha256-5ZH9z2jYiBHzXpHRiwFX5r5wWBeu2pI8of1kigUrO0Y=",
-        "owner": "JaKooLit",
-        "repo": "Wallpaper-Bank",
-        "rev": "c06358ea75720b6e9d3c779677c7dcf76576fb42",
-        "type": "github"
-      },
-      "original": {
-        "owner": "JaKooLit",
-        "repo": "Wallpaper-Bank",
         "type": "github"
       }
     },

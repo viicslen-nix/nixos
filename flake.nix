@@ -135,10 +135,6 @@
       url = "github:Murzchnvok/rofi-collection";
       flake = false;
     };
-    wallpapers = {
-      url = "github:JaKooLit/Wallpaper-Bank";
-      flake = false;
-    };
 
     # Tools
     agenix.url = "github:ryantm/agenix";

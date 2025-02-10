@@ -14,7 +14,10 @@ with lib; let
 
   homeManagerLoaded = builtins.hasAttr "home-manager" options;
 
-  defaultWallpaper = "${inputs.wallpapers}/wallpapers/Lofi-Urban-Nightscape.png";
+  defaultWallpaper = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/JaKooLit/Wallpaper-Bank/c06358ea75720b6e9d3c779677c7dcf76576fb42/wallpapers/Lofi-Urban-Nightscape.png";
+    sha256 = "sha256-YfHrEWLRomDRDbyboXNccMYKOuMY1JjHVczp3qb8U1c=";
+  };
   plymouthLogo = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/NixOS/nixos-artwork/f84c13adae08e860a7c3f76ab3a9bef916d276cc/logo/nix-snowflake-colours.svg";
     sha256 = "pHYa+d5f6MAaY8xWd3lDjhagS+nvwDL3w7zSsQyqH7A=";
