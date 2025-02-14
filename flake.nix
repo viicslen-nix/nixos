@@ -60,6 +60,10 @@
     zjstatus.url = "github:dj95/zjstatus";
 
     # Nvim
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nvchad = {
       url = "github:nix-community/nix4nvchad";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -69,9 +73,17 @@
       url = "github:viicslen/neovim";
       flake = false;
     };
-    nvf = {
-      url = "github:notashelf/nvf";
-      inputs.nixpkgs.follows = "nixpkgs";
+    nvim-promise-async = {
+      url = "github:kevinhwang91/promise-async";
+      flake = false;
+    };
+    nvim-nui = {
+      url = "github:MunifTanjim/nui.nvim";
+      flake = false;
+    };
+    nvim-laravel = {
+      url = "github:adalessa/laravel.nvim";
+      flake = false;
     };
 
     # Hyprland

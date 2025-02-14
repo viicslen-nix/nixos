@@ -2309,6 +2309,54 @@
         "type": "github"
       }
     },
+    "nvim-laravel": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1739296378,
+        "narHash": "sha256-lN9/jXIfAAFzzNWZZ/kMAZq/L4rhAQPQBFxFHCuBvr0=",
+        "owner": "adalessa",
+        "repo": "laravel.nvim",
+        "rev": "1740398fecc363821ab1bd5af452ab009d87cebc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "adalessa",
+        "repo": "laravel.nvim",
+        "type": "github"
+      }
+    },
+    "nvim-nui": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1733856815,
+        "narHash": "sha256-6U7E/i5FuNXQy+sF4C5DVxuTPqNKD5wxUgFohpOjm9Q=",
+        "owner": "MunifTanjim",
+        "repo": "nui.nvim",
+        "rev": "53e907ffe5eedebdca1cd503b00aa8692068ca46",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MunifTanjim",
+        "repo": "nui.nvim",
+        "type": "github"
+      }
+    },
+    "nvim-promise-async": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1722813441,
+        "narHash": "sha256-9eM66brPjiFlY64vmBetRYrKnpDyN7+/URMm4GsGimA=",
+        "owner": "kevinhwang91",
+        "repo": "promise-async",
+        "rev": "119e8961014c9bfaf1487bf3c2a393d254f337e2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kevinhwang91",
+        "repo": "promise-async",
+        "type": "github"
+      }
+    },
     "one-password-shell-plugins": {
       "inputs": {
         "flake-utils": "flake-utils_5",
@@ -5120,6 +5168,9 @@
         "nvchad": "nvchad",
         "nvchad-config": "nvchad-config",
         "nvf": "nvf",
+        "nvim-laravel": "nvim-laravel",
+        "nvim-nui": "nvim-nui",
+        "nvim-promise-async": "nvim-promise-async",
         "one-password-shell-plugins": "one-password-shell-plugins",
         "pyprland": "pyprland",
         "rofi-collections": "rofi-collections",
