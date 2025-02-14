@@ -59,7 +59,7 @@
     # Zellij
     zjstatus.url = "github:dj95/zjstatus";
 
-    # NvChad
+    # Nvim
     nvchad = {
       url = "github:nix-community/nix4nvchad";
       inputs.nixpkgs.follows = "nixpkgs";
