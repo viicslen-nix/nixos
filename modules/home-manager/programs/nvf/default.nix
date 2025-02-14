@@ -227,17 +227,55 @@ in {
             lazygit.enable = true;
           };
 
-          extraPlugins = with pkgs.vimPlugins; {
-            aerial = {
+          lazy.plugins = with pkgs.vimPlugins; {
+            "aerial.nvim" = {
               package = aerial-nvim;
-              setup = "require('aerial').setup {}";
+              setupModule = "aerial";
+              setupOpts = {};
             };
 
-            harpoon = {
+            "harpoon" = {
               package = harpoon;
-              setup = "require('harpoon').setup {}";
-              after = ["aerial"];
+              setupModule = "harpoon";
+              setupOpts = {};
+              lazy = true;
             };
+
+            # "vim-dotenv" = {
+            #   package = vim-dotenv;
+            #   setupModule = "dotenv";
+            #   setupOpts = {};
+            # };
+
+            # "promise-async" = {
+            #   package = pkgs.vimUtils.buildVimPlugin {
+            #     src = inputs.nvim-promise-async;
+            #     pname = "promise-async";
+            #     version = "latest";
+            #   };
+            #   setupModule = "promise";
+            #   setupOpts = {};
+            # };
+
+            # "nui.nvim" = {
+            #   package = pkgs.vimUtils.buildVimPlugin {
+            #     src = inputs.nvim-nui;
+            #     pname = "nui.nvim";
+            #     version = "latest";
+            #   };
+            #   setupModule = "nui";
+            #   setupOpts = {};
+            # };
+
+            # "laravel.nvim" = {
+            #   package = pkgs.vimUtils.buildVimPlugin {
+            #     src = inputs.nvim-laravel;
+            #     pname = "laravel.nvim";
+            #     version = "latest";
+            #   };
+            #   setupModule = "laravel";
+            #   setupOpts = {};
+            # };
           };
         };
       };
