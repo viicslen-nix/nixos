@@ -18,7 +18,7 @@
       "$mod" = "SUPER";
 
       # applications
-      "$terminal" = "uwsm app -- ghostty";
+      "$terminal" = "uwsm app -- kitty";
       "$browser" = "uwsm app -- microsoft-edge";
       "$fileManager" = "uwsm app -- nautilus";
       "$passwordManager" = "uwsm app -- 1password --quick-access";
