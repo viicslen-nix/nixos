@@ -30,5 +30,6 @@
     ghostty = import ./programs/ghostty;
     nvf = import ./programs/nvf;
     sesh = import ./programs/sesh;
+    btop = import ./programs/btop;
   };
 }
