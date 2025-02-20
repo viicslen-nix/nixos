@@ -36,7 +36,7 @@ in {
   };
 
   imports = [
-    inputs.hyprland.nixosModules.default
+    # inputs.hyprland.nixosModules.default
   ];
 
   config = mkIf cfg.enable (mkMerge [
@@ -46,8 +46,8 @@ in {
           enable = true;
           withUWSM = true;
           xwayland.enable = true;
-          package = pkgs.inputs.hyprland.hyprland;
-          portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
+          # package = pkgs.inputs.hyprland.hyprland;
+          # portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
         };
 
         dconf.enable = true;
@@ -62,8 +62,8 @@ in {
           xdg-desktop-portal
         ];
         configPackages = with pkgs; [
-          xdg-desktop-portal-gtk
           xdg-desktop-portal-hyprland
+          xdg-desktop-portal-gtk
           xdg-desktop-portal
         ];
         config = {
