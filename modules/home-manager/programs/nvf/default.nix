@@ -96,7 +96,7 @@ in {
             colorizer.enable = true;
             illuminate.enable = true;
             fastaction.enable = true;
-            modes-nvim.enable = true;
+            modes-nvim.enable = true; # Look
             smartcolumn.enable = true;
 
             breadcrumbs = {
@@ -141,6 +141,13 @@ in {
             };
           };
 
+          treesitter = {
+            fold = true;
+            autotagHtml = true;
+            context.enable = true;
+            indent.enable = true;
+          };
+
           autocomplete.nvim-cmp.enable = true;
           autopairs.nvim-autopairs.enable = true;
           dashboard.dashboard-nvim.enable = true;
@@ -149,16 +156,24 @@ in {
           projects.project-nvim.enable = true;
           runner.run-nvim.enable = true;
           statusline.lualine.enable = true;
-          utility.motion.precognition.enable  = true;
-          utility.outline.aerial-nvim.enable = true;
-          utility.preview.markdownPreview.enable = true;
-          utility.surround.enable = true;
-          utility.vim-wakatime.enable = true;
-          visuals.cinnamon-nvim.enable = true;
-          visuals.fidget-nvim.enable = true;
-          visuals.indent-blankline.enable = true;
-          visuals.nvim-scrollbar.enable = true;
-          visuals.nvim-web-devicons.enable = true;
+
+          utility = {
+            outline.aerial-nvim.enable = true;
+            preview.markdownPreview.enable = true;
+            surround.enable = true;
+            vim-wakatime.enable = true;
+          };
+
+          visuals = {
+            cinnamon-nvim.enable = true;
+            indent-blankline.enable = true;
+            nvim-scrollbar.enable = true;
+            nvim-web-devicons.enable = true;
+
+            fidget-nvim = {
+              enable = false;
+            };
+          };
 
           tabline.nvimBufferline = {
             enable = true;
@@ -167,13 +182,6 @@ in {
               cycleNext = "<Tab>";
               cyclePrevious = "<S-Tab>";
             };
-          };
-
-          treesitter = {
-            fold = true;
-            autotagHtml = true;
-            context.enable = true;
-            indent.enable = true;
           };
 
           assistant.copilot = {
@@ -228,12 +236,6 @@ in {
           };
 
           lazy.plugins = with pkgs.vimPlugins; {
-            "aerial.nvim" = {
-              package = aerial-nvim;
-              setupModule = "aerial";
-              setupOpts = {};
-            };
-
             "harpoon" = {
               package = harpoon;
               setupModule = "harpoon";
@@ -241,41 +243,59 @@ in {
               lazy = true;
             };
 
-            # "vim-dotenv" = {
-            #   package = vim-dotenv;
-            #   setupModule = "dotenv";
-            #   setupOpts = {};
-            # };
+            "neotest" = {
+              package = neotest;
+              setupModule = "neotest";
+              setupOpts = {};
+              lazy = true;
+            };
 
-            # "promise-async" = {
-            #   package = pkgs.vimUtils.buildVimPlugin {
-            #     src = inputs.nvim-promise-async;
-            #     pname = "promise-async";
-            #     version = "latest";
-            #   };
-            #   setupModule = "promise";
-            #   setupOpts = {};
-            # };
+            "neotest-pest" = {
+              package = pkgs.myVimPlugins.neotest-pest;
+              setupModule = "neotest-pest";
+              setupOpts = {};
+              lazy = true;
+            };
 
-            # "nui.nvim" = {
-            #   package = pkgs.vimUtils.buildVimPlugin {
-            #     src = inputs.nvim-nui;
-            #     pname = "nui.nvim";
-            #     version = "latest";
-            #   };
-            #   setupModule = "nui";
-            #   setupOpts = {};
-            # };
-
-            # "laravel.nvim" = {
-            #   package = pkgs.vimUtils.buildVimPlugin {
-            #     src = inputs.nvim-laravel;
-            #     pname = "laravel.nvim";
-            #     version = "latest";
-            #   };
-            #   setupModule = "laravel";
-            #   setupOpts = {};
-            # };
+            "laravel.nvim" = {
+              package = pkgs.myVimPlugins.laravel-nvim;
+              setupModule = "laravel";
+              cmd = ["Laravel"];
+              lazy = true;
+              keys = [
+                {
+                  key = "<leader>la";
+                  action = ":Laravel artisan<cr>";
+                  mode = "n";
+                }
+                {
+                  key = "<leader>lr";
+                  action = ":Laravel routes<cr>";
+                  mode = "n";
+                }
+                {
+                  key = "<leader>lm";
+                  action = ":Laravel related<cr>";
+                  mode = "n";
+                }
+                {
+                  key = "gf";
+                  action = ''
+                    function()
+                      if require("laravel").app("gf").cursor_on_resource() then
+                        return "<cmd>Laravel gf<CR>"
+                      else
+                        return "gf"
+                      end
+                    end
+                  '';
+                  lua = true;
+                  noremap = false;
+                  expr = true;
+                  mode = "n";
+                }
+              ];
+            };
           };
         };
       };
