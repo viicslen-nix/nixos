@@ -10,7 +10,14 @@
     password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
   };
 in {
-  age.identityPaths = ["${config.users.users.${user.name}.home}/.ssh/agenix"];
+  age = {
+    identityPaths = ["${config.users.users.${user.name}.home}/.ssh/agenix"];
+
+    secrets.intelephense = {
+      file = ../../secrets/intelephense/licence.age;
+      path = "/home/${user}/.config/intelephense/licence.txt";
+    };
+  };
 
   users.users.${user.name} = {
     isNormalUser = true;
