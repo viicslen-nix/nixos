@@ -73,18 +73,6 @@
       url = "github:viicslen/neovim";
       flake = false;
     };
-    nvim-promise-async = {
-      url = "github:kevinhwang91/promise-async";
-      flake = false;
-    };
-    nvim-nui = {
-      url = "github:MunifTanjim/nui.nvim";
-      flake = false;
-    };
-    nvim-laravel = {
-      url = "github:adalessa/laravel.nvim";
-      flake = false;
-    };
 
     # Hyprland
     hyprland.url = "github:hyprwm/Hyprland";
