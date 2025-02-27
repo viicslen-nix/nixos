@@ -6,7 +6,7 @@
     sha256 = "sha256-hJmjiBEn48yfULxhgFbiUm455pTxu7D+tN4N2mvyHag=";
   };
   pname = "laravel.nvim";
-  version = "latest";
+  version = "3.2.1";
   buildInputs = with vimPlugins; [
     nvim-treesitter-parsers.php
     nvim-treesitter-parsers.json
