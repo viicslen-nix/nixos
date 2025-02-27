@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   inputs,
   ...
 }:
@@ -94,7 +93,6 @@ with lib; {
       impermanence = {
         enable = true;
         directories = [
-          "/sys/class/backlight/intel_backlight/brightness"
           "/etc/mullvad-vpn"
           "/etc/gdm"
         ];
