@@ -14,7 +14,7 @@ in {
       # apps
       submap = hyprflows
 
-      binde = , 1, exec, ${work}/bin/hyprsflow-work
+      binde = , 1, exec, ${work}/bin/hyprflow-work
 
       bind = , escape, submap, reset
       bind = , catchall, submap, reset
