@@ -1,5 +1,6 @@
 { pkgs, ... }: with pkgs; [
   # Browsers
+  brave
   microsoft-edge-wayland
   inputs.zen-browser.default
 
