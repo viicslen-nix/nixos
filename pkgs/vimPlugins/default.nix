@@ -1,3 +1,3 @@
 {pkgs}: {
-  laravel-nvim = pkgs.callPackage ./laravel.nix {};
+  laravel-nvim = pkgs.callPackage ./laravel-nvim.nix {};
 }

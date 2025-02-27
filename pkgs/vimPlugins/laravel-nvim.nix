@@ -3,7 +3,7 @@
     owner = "adalessa";
     repo = "laravel.nvim";
     rev = "v3.2.1";
-    sha256 = "";
+    sha256 = "sha256-hJmjiBEn48yfULxhgFbiUm455pTxu7D+tN4N2mvyHag=";
   };
   pname = "laravel.nvim";
   version = "latest";
