@@ -32,6 +32,10 @@ nix-upgrade-path COMMAND='switch':
 upgrade COMMAND='switch':
   nh os {{COMMAND}}
 
+full-upgrade:
+  just update
+  just upgrade boot
+
 # Commit any pending file changes and upgrade the system
 commit-and-upgrade MESSAGE COMMAND='switch':
   git add .
@@ -55,7 +59,14 @@ history:
 
 # Open a nix shell with the flake
 repl:
-  sudo nixos-rebuild repl --flake .
+  nixos-rebuild repl --flake .
+
+# Check the syntax of a nix file
+check FILE:
+  nix-instantiate --parse-only {{FILE}}
+
+lint FILE='.':
+  nix run github:astro/deadnix -- -eq {{FILE}}
 
 # remove all generations older than 7 days
 clean:

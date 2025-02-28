@@ -66,9 +66,14 @@
       '';
     };
 
+    # Enable vencord patch for official discord client
+    discord = _prev.discord.override {
+      withVencord = true;
+    };
+
     # GNOME 46: triple-buffering-v4-46
-    gnome = _prev.gnome.overrideScope (gnomeFinal: gnomePrev: {
-      mutter = gnomePrev.mutter.overrideAttrs (old: {
+    gnome = _prev.gnome.overrideScope (_gnomeFinal: gnomePrev: {
+      mutter = gnomePrev.mutter.overrideAttrs (_old: {
         src = final.fetchgit {
           url = "https://gitlab.gnome.org/vanvugt/mutter.git";
           rev = "663f19bc02c1b4e3d1a67b4ad72d644f9b9d6970";
@@ -79,5 +84,17 @@
 
     # NvChad
     nvchad = inputs.nvchad.packages."${_prev.system}".nvchad;
+
+    # Enable Wayland for 1Password
+    # Currently broken, cannot copy password from 1Password
+    # _1password-gui = _prev._1password-gui.overrideAttrs (_old: {
+    #   preFixup =  ''
+    #     makeShellWrapper $out/share/1password/1password $out/bin/1password \
+    #       "''${gappsWrapperArgs[@]}" \
+    #       --suffix PATH : ${_prev.lib.makeBinPath [ _prev.xdg-utils ]} \
+    #       --prefix LD_LIBRARY_PATH : ${_prev.lib.makeLibraryPath [ _prev.udev ]} \
+    #       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}"
+    #   '';
+    # });
   };
 }

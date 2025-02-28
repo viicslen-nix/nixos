@@ -1,0 +1,24 @@
+{
+  lib,
+  config,
+  options,
+  ...
+}:
+with lib; let
+  name = "impermanence";
+  namespace = "features";
+
+  cfg = config.${namespace}.${name};
+  homeManagerLoaded = builtins.hasAttr "home-manager" options;
+in {
+  options.features.${name} = {
+    enable = mkEnableOption (mdDoc name);
+  };
+
+  config = mkIf cfg.enable (mkMerge [
+    {
+    }
+    (mkIf homeManagerLoaded {
+      })
+  ]);
+}

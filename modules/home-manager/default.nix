@@ -2,17 +2,34 @@
 # These should be stuff you would like to share with others, not your personal configurations.
 {
   # List your module files here
-  alacritty = import ./alacritty;
-  lan-mouse = import ./lan-mouse;
-  chromium = import ./chromium;
-  kitty = import ./kitty;
-  tinkerwell = import ./tinkerwell;
-  ray = import ./ray;
-  firefox = import ./firefox;
-  autostart = import ./autostart;
-  zsh = import ./zsh;
-  tmux = import ./tmux;
-  aider = import ./aider;
-  zellij = import ./zellij;
-  corepack = import ./corepack;
+  default = ./imports.nix;
+  defaults = ./defaults;
+
+  functionality = {
+    autostart = import ./functionality/autostart;
+    impermanence = import ./functionality/impermanence;
+  };
+
+  programs = {
+    nushell = import ./programs/nushell;
+    starship = import ./programs/starship;
+    atuin = import ./programs/atuin;
+    alacritty = import ./programs/alacritty;
+    lan-mouse = import ./programs/lan-mouse;
+    chromium = import ./programs/chromium;
+    kitty = import ./programs/kitty;
+    tinkerwell = import ./programs/tinkerwell;
+    ray = import ./programs/ray;
+    firefox = import ./programs/firefox;
+    zsh = import ./programs/zsh;
+    tmux = import ./programs/tmux;
+    tmate = import ./programs/tmate;
+    aider = import ./programs/aider;
+    zellij = import ./programs/zellij;
+    corepack = import ./programs/corepack;
+    ghostty = import ./programs/ghostty;
+    nvf = import ./programs/nvf;
+    sesh = import ./programs/sesh;
+    btop = import ./programs/btop;
+  };
 }

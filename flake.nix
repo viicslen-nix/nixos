@@ -40,6 +40,12 @@
       flake = false;
     };
 
+    # NuShell
+    nu-scripts = {
+      url = "github:nushell/nu_scripts";
+      flake = false;
+    };
+
     # Tmux
     tmux-1password = {
       url = "github:yardnsm/tmux-1password";
@@ -53,7 +59,11 @@
     # Zellij
     zjstatus.url = "github:dj95/zjstatus";
 
-    # NvChad
+    # Nvim
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nvchad = {
       url = "github:nix-community/nix4nvchad";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -65,7 +75,7 @@
     };
 
     # Hyprland
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprland.url = "github:hyprwm/Hyprland";
     pyprland.url = "github:hyprland-community/pyprland";
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
@@ -95,10 +105,20 @@
       url = "github:shezdy/hyprsplit";
       inputs.hyprland.follows = "hyprland";
     };
+    hyprchroma = {
+      url = "github:alexhulbert/Hyprchroma";
+      inputs.hyprland.follows = "hyprland";
+    };
 
-    # Ags
-    ags.url = "github:Aylur/ags/v1";
-    matugen.url = "github:InioX/matugen?ref=v2.2.0";
+    # Astal
+    astal = {
+      url = "github:aylur/astal";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ags = {
+      url = "github:aylur/ags";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Theming
     stylix.url = "github:danth/stylix";
@@ -115,10 +135,6 @@
       url = "github:Murzchnvok/rofi-collection";
       flake = false;
     };
-    wallpapers = {
-      url = "github:JaKooLit/Wallpaper-Bank";
-      flake = false;
-    };
 
     # Tools
     agenix.url = "github:ryantm/agenix";
@@ -126,13 +142,12 @@
     lan-mouse.url = "github:feschber/lan-mouse";
     zen-browser.url = "github:MarceColl/zen-browser-flake";
     one-password-shell-plugins.url = "github:1Password/shell-plugins";
+    ghostty.url = "github:ghostty-org/ghostty";
   };
 
   outputs = {
     self,
     nixpkgs,
-    home-manager,
-    nixos-hardware,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -150,7 +165,10 @@
   in {
     # Your custom packages
     # Accessible through 'nix build', 'nix shell', etc
-    packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+    packages = forAllSystems (system: import ./pkgs {
+      inherit inputs;
+      pkgs = nixpkgs.legacyPackages.${system};
+    });
 
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
@@ -177,62 +195,12 @@
     nixosConfigurations = {
       asus-zephyrus-gu603 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        modules = [./hosts/asus-zephyrus-gu603];
-        specialArgs = {
-          inherit inputs outputs;
-          user = "neoscode";
-          name = "Victor R";
-          password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
-        };
-      };
-
-      acer-aspire-tc780 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [./hosts/acer-aspire-tc780];
-        specialArgs = {
-          inherit inputs outputs;
-          user = "dostov-02";
-          name = "Dostov";
-        };
-      };
-
-      neoscode-server = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [./hosts/neoscode-server];
-        specialArgs = {
-          inherit inputs outputs;
-          user = "neoscode";
-          name = "Victor R";
-          password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
-        };
-      };
-    };
-
-    colmena = {
-      meta = {
-        # Override to pin the Nixpkgs version (recommended). This option
-        # accepts one of the following:
-        # - A path to a Nixpkgs checkout
-        # - The Nixpkgs lambda (e.g., import <nixpkgs>)
-        # - An initialized Nixpkgs attribute set
-        nixpkgs = import nixpkgs {
-          system = "x86_64-linux";
-          overlays = [];
-        };
-      };
-
-      acer-aspire-tc780 = {
-        # Like NixOps and Morph, Colmena will attempt to connect to
-        # the remote host using the attribute name by default. You
-        # can override it like:
-        deployment.targetHost = "host-b.mydomain.tld";
-
-        # You can filter hosts by tags with --on @tag-a,@tag-b.
-        # In this example, you can deploy to hosts with the "web" tag using:
-        #    colmena apply --on @web
-        # You can use globs in tag matching as well:
-        #    colmena apply --on '@infra-*'
-        deployment.tags = ["web" "infra-lax"];
+        specialArgs = {inherit inputs outputs;};
+        modules = [
+          outputs.nixosModules.default
+          outputs.homeManagerModules.default
+          ./hosts/asus-zephyrus-gu603
+        ];
       };
     };
   };
