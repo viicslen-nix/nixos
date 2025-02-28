@@ -61,14 +61,23 @@ in {
             markdown.enable = true;
             nix.enable = true;
             nu.enable = true;
-            php.enable = true;
             python.enable = true;
             sql.enable = true;
             tailwind.enable = true;
             terraform.enable = true;
-            ts.enable = true;
-            ts.extensions.ts-error-translator.enable = true;
             zig.enable = true;
+
+            ts = {
+              enable = true;
+              extensions.ts-error-translator.enable = true;
+            };
+
+            php = {
+              enable = true;
+              lsp = {
+                package = pkgs.intelephense;
+              };
+            };
           };
 
           lsp = {

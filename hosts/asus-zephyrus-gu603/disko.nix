@@ -1,12 +1,7 @@
 {
   device ? throw "Set this to your disk device, e.g. /dev/sda",
-  inputs,
   ...
 }: {
-  imports = [
-    inputs.disko.nixosModules.disko
-  ];
-
   disko.devices = {
     disk.main = {
       inherit device;

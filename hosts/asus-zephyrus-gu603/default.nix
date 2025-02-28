@@ -6,6 +6,7 @@
 with lib; {
   imports = [
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
+    inputs.disko.nixosModules.disko
     (import ./disko.nix {
       inherit inputs;
       device = "/dev/nvme0n1";
