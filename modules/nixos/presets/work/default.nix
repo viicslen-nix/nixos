@@ -16,33 +16,6 @@ in {
 
   config = mkIf cfg.enable {
     modules = {
-      functionality.network.hosts = {
-        # Docker
-        "kubernetes.docker.internal" = "127.0.0.1";
-        "host.docker.internal" = "127.0.0.1";
-
-        # Remote
-        "webapps" = "REDACTED";
-        "storesites" = "REDACTED";
-        "db-prod-master" = "50.116.56.10";
-        "db-prod-read" = "50.116.56.249";
-        "db-staging-master" = "45.79.180.78";
-        "db-staging-read" = "45.79.180.88";
-
-        # Development
-        "ai.local" = "127.0.0.1";
-        "home.local" = "127.0.0.1";
-        "buggregator.local" = "127.0.0.1";
-        "npm.local" = "127.0.0.1";
-        "portainer.local" = "127.0.0.1";
-        "phpmyadmin.local" = "127.0.0.1";
-        "selldiam.test" = "127.0.0.1";
-        "mylisterhub.test" = "127.0.0.1";
-        "app.mylisterhub.test" = "127.0.0.1";
-        "admin.mylisterhub.test" = "127.0.0.1";
-        "*.mylisterhub.test" = "127.0.0.1";
-      };
-
       programs = {
         corepack.enable = true;
 
@@ -108,21 +81,9 @@ in {
         '';
       };
     in [
-      # Communication
-      slack
-
       # Formatters
       delta
       jq
-
-      # Editors
-      jetbrains-toolbox
-      jetbrains.idea-ultimate
-      jetbrains.phpstorm
-      jetbrains.datagrip
-      jetbrains.webstorm
-      jetbrains.goland
-      vscode
 
       # Build
       libgcc
@@ -144,9 +105,7 @@ in {
       kubectl
       kubernetes-helm
       linode-cli
-      dbeaver-bin
       atlas
-      sublime-merge
       devbox
       act
     ];

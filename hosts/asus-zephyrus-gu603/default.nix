@@ -15,14 +15,18 @@ with lib; {
     ../../users/neoscode
   ];
 
-  boot.loader = {
-    efi.canTouchEfiVariables = false;
+  boot = {
+    plymouth.enable = true;
+    
+    loader = {
+      efi.canTouchEfiVariables = false;
 
-    grub = {
-      enable = true;
-      device = "nodev";
-      efiSupport = true;
-      configurationLimit = 10;
+      grub = {
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
+        configurationLimit = 10;
+      };
     };
   };
 
@@ -98,6 +102,33 @@ with lib; {
           "/etc/gdm"
         ];
       };
+
+      network.hosts = {
+        # Docker
+        "kubernetes.docker.internal" = "127.0.0.1";
+        "host.docker.internal" = "127.0.0.1";
+
+        # Remote
+        "webapps" = "REDACTED";
+        "storesites" = "REDACTED";
+        "db-prod-master" = "50.116.56.10";
+        "db-prod-read" = "50.116.56.249";
+        "db-staging-master" = "45.79.180.78";
+        "db-staging-read" = "45.79.180.88";
+
+        # Development
+        "ai.local" = "127.0.0.1";
+        "home.local" = "127.0.0.1";
+        "buggregator.local" = "127.0.0.1";
+        "npm.local" = "127.0.0.1";
+        "portainer.local" = "127.0.0.1";
+        "phpmyadmin.local" = "127.0.0.1";
+        "selldiam.test" = "127.0.0.1";
+        "mylisterhub.test" = "127.0.0.1";
+        "app.mylisterhub.test" = "127.0.0.1";
+        "admin.mylisterhub.test" = "127.0.0.1";
+        "*.mylisterhub.test" = "127.0.0.1";
+      };
     };
 
     presets = {
@@ -108,12 +139,22 @@ with lib; {
 
     programs = {
       kanata.enable = false;
+      mullvad.enable = true;
       docker.nvidiaSupport = true;
 
       github-runner = {
         enable = false;
         url = "https://github.com/FmTod";
         secrets.token = ../../secrets/github/runner.age;
+      };
+
+      onePassword = {
+        enable = true;
+        gitSignCommits = true;
+        allowedCustomBrowsers = [
+          ".zen-wrapped"
+          "zen"
+        ];
       };
     };
   };
@@ -129,6 +170,27 @@ with lib; {
   services.udev.extraRules = lib.mkAfter ''
     KERNEL=="event*", ATTRS{name}=="AT Translated Set 2 keyboard", ENV{LIBINPUT_IGNORE_DEVICE}="1"
   '';
+
+  environment.systemPackages = [
+    jetbrains-toolbox
+    jetbrains.idea-ultimate
+    jetbrains.phpstorm
+    jetbrains.datagrip
+    jetbrains.webstorm
+    jetbrains.goland
+    vscode
+    waveterm
+    lens
+    skypeforlinux
+    insomnia
+    tangram
+    endeavour
+    drawing
+    kooha
+    vscode
+    obsidian
+    drawio
+  ];
 
   system.stateVersion = "25.05";
 }

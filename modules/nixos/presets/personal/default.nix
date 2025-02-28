@@ -15,49 +15,15 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # Enable Plymouth
-    boot.plymouth.enable = true;
-
     environment.systemPackages = with pkgs; [
-      insomnia
       nix-alien
       nix-init
-      lens
-      skypeforlinux
-      kdePackages.kcachegrind
       graphviz
       asciinema
-      waveterm
       yazi
-
-      # GUI Apps
-      tangram
-      endeavour
-      drawing
-      kooha
-
-      # Development
-      vscode
-      obsidian
-      drawio
     ];
 
-    programs.adb.enable = true;
-
-    modules.programs = {
-      qmk.enable = true;
-      mullvad.enable = true;
-
-      onePassword = {
-        enable = true;
-        gitSignCommits = true;
-        allowedCustomBrowsers = [
-          ".zen-wrapped"
-          "zen"
-        ];
-      };
-
-      steam.enable = true;
-    };
+    programs.adb.enable = mkDefault true;
+    modules.programs.qmk.enable = mkDefault true;
   };
 }
