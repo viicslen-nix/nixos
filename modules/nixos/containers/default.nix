@@ -97,7 +97,7 @@ in {
           "--network=local"
         ];
         environment = {
-          MEILI_NO_ANALYTICS = "false";
+          MEILI_NO_ANALYTICS = "true";
         };
         log-driver = cfg.settings.log-driver;
       };
