@@ -16,6 +16,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # WSL
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
+
     # Home manager
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -200,6 +204,16 @@
           outputs.nixosModules.default
           outputs.homeManagerModules.default
           ./hosts/asus-zephyrus-gu603
+        ];
+      };
+
+      wsl = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {inherit inputs outputs;};
+        modules = [
+          outputs.nixosModules.default
+          outputs.homeManagerModules.default
+          ./hosts/wsl
         ];
       };
     };

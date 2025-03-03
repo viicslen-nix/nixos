@@ -17,6 +17,15 @@ in {
     meilisearch = mkEnableOption (mdDoc "Meilisearch");
     nginx-proxy-manager = mkEnableOption (mdDoc "Nginx Proxy Manager");
     local-ai = mkEnableOption (mdDoc "Local AI");
+
+    settings.log-driver = mkOption {
+      type = types.str;
+      default = "journald";
+      example = "journald";
+      description = ''
+        The default log driver to use for containers.
+      '';
+    };
   };
 
   imports = [
@@ -39,6 +48,7 @@ in {
         extraOptions = [
           "--network=local"
         ];
+        log-driver = cfg.settings.log-driver;
       };
 
       mysql = mkIf cfg.mysql {
@@ -56,6 +66,7 @@ in {
         environment = {
           MYSQL_ROOT_PASSWORD = "secret";
         };
+        log-driver = cfg.settings.log-driver;
       };
 
       redis = mkIf cfg.redis {
@@ -70,6 +81,7 @@ in {
         extraOptions = [
           "--network=local"
         ];
+        log-driver = cfg.settings.log-driver;
       };
 
       meilisearch = mkIf cfg.meilisearch {
@@ -87,6 +99,7 @@ in {
         environment = {
           MEILI_NO_ANALYTICS = "false";
         };
+        log-driver = cfg.settings.log-driver;
       };
 
       soketi = mkIf cfg.soketi {
@@ -106,6 +119,7 @@ in {
           SOKETI_DEFAULT_APP_KEY = "soketi";
           SOKETI_DEFAULT_APP_SECRET = "soketi";
         };
+        log-driver = cfg.settings.log-driver;
       };
 
       nginx-proxy-manager = mkIf cfg.nginx-proxy-manager {
@@ -123,6 +137,7 @@ in {
         extraOptions = [
           "--network=local"
         ];
+        log-driver = cfg.settings.log-driver;
       };
 
       local-ai = mkIf cfg.local-ai {
@@ -138,6 +153,7 @@ in {
           "--network=local"
           "--device=nvidia.com/gpu=all"
         ];
+        log-driver = cfg.settings.log-driver;
       };
     };
   };
