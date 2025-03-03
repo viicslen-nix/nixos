@@ -11,6 +11,13 @@ with lib; {
     ../../users/neoscode
   ];
 
+  system.stateVersion = "25.05";
+
+  networking = {
+    hostName = "wsl";
+    firewall.enable = mkForce false;
+  };
+
   wsl = {
     enable = true;
     defaultUser = "neoscode";
@@ -28,9 +35,17 @@ with lib; {
     ];
   };
 
-  networking = {
-    hostName = "wsl";
-    firewall.enable = mkForce false;
+  environment = {
+    shellAliases = {
+      ssh = "ssh.exe";
+      ssh-add = "ssh-add.exe";
+    };
+
+    systemPackages = with pkgs; [
+      jetbrains.webstorm
+      jetbrains.phpstorm
+      jetbrains.jdk
+    ];
   };
 
   programs = {
@@ -40,25 +55,37 @@ with lib; {
 
   services.vscode-server.enable = true;
 
-  environment.shellAliases = {
-    ssh = "ssh.exe";
-    ssh-add = "ssh-add.exe";
-  };
-
   modules = {
+    presets = {
+      base.enable = true;
+      work.enable = true;
+      personal.enable = true;
+    };
+
     functionality = {
       theming.enable = true;
       appImages.enable = true;
     };
 
     containers.settings.log-driver = "local";
-
-    presets = {
-      base.enable = true;
-      work.enable = true;
-      personal.enable = true;
-    };
   };
 
-  system.stateVersion = "25.05";
+  nixpkgs.overlays = [
+    (final: prev:
+    let
+      toolNames = ["phpstorm" "webstorm"];
+      makeToolOverlay = toolName: {
+        ${toolName} = prev.jetbrains.${toolName}.overrideAttrs (old: {
+          patches = (old.patches or []) ++ [ ./JetbrainsRemoteDev.patch ];
+          installPhase = (old.installPhase or "") + ''
+            makeWrapper "$out/$pname/bin/remote-dev-server.sh" "$out/bin/$pname-remote-dev-server" \
+              --prefix PATH : "$out/libexec/$pname:${final.lib.makeBinPath [ final.jdk final.coreutils final.gnugrep final.which final.git ]}" \
+              --prefix LD_LIBRARY_PATH : "${final.lib.makeLibraryPath ([ final.stdenv.cc.cc.lib final.libsecret final.e2fsprogs final.libnotify ])}" \
+              --set-default JDK_HOME "${final.jetbrains.jdk}" \
+              --set-default JAVA_HOME "${final.jetbrains.jdk}"
+          '';
+        });
+      };
+    in { jetbrains = prev.jetbrains // builtins.foldl' (acc: toolName: acc // makeToolOverlay toolName) {} toolNames; })
+  ];
 }
