@@ -84,17 +84,5 @@
 
     # NvChad
     nvchad = inputs.nvchad.packages."${_prev.system}".nvchad;
-
-    # Enable Wayland for 1Password
-    # Currently broken, cannot copy password from 1Password
-    # _1password-gui = _prev._1password-gui.overrideAttrs (_old: {
-    #   preFixup =  ''
-    #     makeShellWrapper $out/share/1password/1password $out/bin/1password \
-    #       "''${gappsWrapperArgs[@]}" \
-    #       --suffix PATH : ${_prev.lib.makeBinPath [ _prev.xdg-utils ]} \
-    #       --prefix LD_LIBRARY_PATH : ${_prev.lib.makeLibraryPath [ _prev.udev ]} \
-    #       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}"
-    #   '';
-    # });
   };
 }
