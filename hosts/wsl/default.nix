@@ -33,7 +33,11 @@ with lib; {
     firewall.enable = mkForce false;
   };
 
-  programs.git.config.programs.core.sshCommand = "ssh.exe";
+  programs = {
+    nix-ld.enable = true;
+    git.config.programs.core.sshCommand = "ssh.exe";
+  };
+
   services.vscode-server.enable = true;
 
   environment.shellAliases = {
@@ -43,20 +47,11 @@ with lib; {
 
   modules = {
     functionality = {
-      oom.enable = mkForce false;
       theming.enable = true;
       appImages.enable = true;
-
-      network.hosts = mkForce {};
-
-      impermanence = {
-        enable = false;
-        directories = [
-          "/etc/mullvad-vpn"
-          "/etc/gdm"
-        ];
-      };
     };
+
+    containers.settings.log-driver = "local";
 
     presets = {
       base.enable = true;
