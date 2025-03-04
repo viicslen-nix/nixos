@@ -13,6 +13,8 @@
     # Flakes
     flake-parts.url = "github:hercules-ci/flake-parts";
     easy-hosts.url = "github:tgirlcloud/easy-hosts";
+    mission-control.url = "github:Platonic-Systems/mission-control";
+    flake-root.url = "github:srid/flake-root";
 
     # Disko
     disko = {
@@ -151,18 +153,29 @@
     zen-browser.url = "github:MarceColl/zen-browser-flake";
     one-password-shell-plugins.url = "github:1Password/shell-plugins";
     ghostty.url = "github:ghostty-org/ghostty";
+
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
     flake-parts,
+    nixpkgs,
     self,
     ...
   }: let
     inherit (self) outputs;
+
+    # Use our custom lib enhanced with nixpkgs and hm one
+    lib = import ./nix/lib {lib = nixpkgs.lib;} // nixpkgs.lib;
   in
     flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
         inputs.easy-hosts.flakeModule
+        inputs.mission-control.flakeModule
+        inputs.flake-root.flakeModule
       ];
       systems = [
         "aarch64-linux"
@@ -175,8 +188,15 @@
         pkgs,
         system,
         config,
+        inputs',
         ...
       }: {
+        # make pkgs available to all `perSystem` functions
+        module.args.pkgs = inputs'.nixpkgs.legacyPackages;
+
+        # make custom lib available to all `perSystem` functions
+        module.args.lib = lib;
+
         # Formatter for your nix files, available through 'nix fmt'
         # Other options beside 'alejandra' include 'nixpkgs-fmt'
         formatter = pkgs.alejandra;
@@ -199,9 +219,7 @@
         # Reusable home-manager modules you might want to export
         # These are usually stuff you would upstream into home-manager
         homeManagerModules = import ./modules/home-manager;
-
-        # Your nixos configurations
-        easy-hosts = import ./hosts {inherit inputs outputs;};
       };
+      easyHosts = import ./hosts {inherit inputs outputs;};
     };
 }

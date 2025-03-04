@@ -1,15 +1,22 @@
-{inputs, outputs }: {
+{
+  inputs,
+  outputs,
+}: {
+  additionalClasses = {
+    wsl = "nixos";
+  };
+
   hosts = {
     wsl = {
+      class = "wsl";
       arch = "x86_64";
-      class = "nixos";
-      path = ./hosts/wsl;
+      path = ./wsl;
     };
 
     asus-zephyrus-gu603 = {
-      arch = "x86_64";
       class = "nixos";
-      path = ./hosts/asus-zephyrus-gu603;
+      arch = "x86_64";
+      path = ./asus-zephyrus-gu603;
     };
   };
 
