@@ -201,19 +201,7 @@
         homeManagerModules = import ./modules/home-manager;
 
         # Your nixos configurations
-        easy-hosts = {
-          autoConstruct = true;
-          path = ./hosts;
-
-          shared = {
-            modules = [
-              outputs.nixosModules.default
-              outputs.homeManagerModules.default
-            ];
-
-            specialArgs = {inherit inputs outputs;};
-          };
-        };
+        easy-hosts = import ./hosts {inherit inputs outputs;};
       };
     };
 }
