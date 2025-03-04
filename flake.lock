@@ -522,6 +522,21 @@
         "type": "github"
       }
     },
+    "flake-root": {
+      "locked": {
+        "lastModified": 1723604017,
+        "narHash": "sha256-rBtQ8gg+Dn4Sx/s+pvjdq3CB2wQNzx9XGFq/JVGCB6k=",
+        "owner": "srid",
+        "repo": "flake-root",
+        "rev": "b759a56851e10cb13f6b8e5698af7b59c44be26e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "srid",
+        "repo": "flake-root",
+        "type": "github"
+      }
+    },
     "flake-schemas": {
       "locked": {
         "lastModified": 1721999734,
@@ -1604,6 +1619,21 @@
         "type": "github"
       }
     },
+    "mission-control": {
+      "locked": {
+        "lastModified": 1733438716,
+        "narHash": "sha256-1tt43rwHk0N5fwEhbpsHWO4nBVFCQN0w1KM427DNycM=",
+        "owner": "Platonic-Systems",
+        "repo": "mission-control",
+        "rev": "65d04c4ab9db076eff09824d2936a5c215c21f36",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Platonic-Systems",
+        "repo": "mission-control",
+        "type": "github"
+      }
+    },
     "mnw": {
       "locked": {
         "lastModified": 1738852285,
@@ -1743,6 +1773,42 @@
       "original": {
         "owner": "nix-community",
         "repo": "nix-index-database",
+        "type": "github"
+      }
+    },
+    "nixlib": {
+      "locked": {
+        "lastModified": 1736643958,
+        "narHash": "sha256-tmpqTSWVRJVhpvfSN9KXBvKEXplrwKnSZNAoNPf/S/s=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "1418bc28a52126761c02dd3d89b2d8ca0f521181",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
+    "nixos-generators": {
+      "inputs": {
+        "nixlib": "nixlib",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1740947705,
+        "narHash": "sha256-Co2kAD2SZalOm+5zoxmzEVZNvZ17TyafuFsD46BwSdY=",
+        "owner": "nix-community",
+        "repo": "nixos-generators",
+        "rev": "507911df8c35939050ae324caccc7cf4ffb76565",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixos-generators",
         "type": "github"
       }
     },
@@ -2413,6 +2479,7 @@
         "disko": "disko",
         "easy-hosts": "easy-hosts",
         "flake-parts": "flake-parts",
+        "flake-root": "flake-root",
         "fzf-tab": "fzf-tab",
         "ghostty": "ghostty",
         "home-manager": "home-manager_3",
@@ -2427,7 +2494,9 @@
         "impermanence": "impermanence",
         "lan-mouse": "lan-mouse",
         "laravel-sail": "laravel-sail",
+        "mission-control": "mission-control",
         "nix-alien": "nix-alien",
+        "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_7",
