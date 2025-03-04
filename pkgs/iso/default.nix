@@ -1,4 +1,9 @@
-{inputs, pkgs, ...}: inputs.nixos-generators.nixosGenerate {
+{
+  inputs,
+  pkgs,
+  ...
+}:
+inputs.nixos-generators.nixosGenerate {
   inherit pkgs;
   format = "install-iso";
   modules = [

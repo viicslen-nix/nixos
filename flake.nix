@@ -167,9 +167,6 @@
     ...
   }: let
     inherit (self) outputs;
-
-    # Use our custom lib enhanced with nixpkgs and hm one
-    lib = import ./nix/lib {lib = nixpkgs.lib;} // nixpkgs.lib;
   in
     flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
@@ -191,12 +188,6 @@
         inputs',
         ...
       }: {
-        # make pkgs available to all `perSystem` functions
-        module.args.pkgs = inputs'.nixpkgs.legacyPackages;
-
-        # make custom lib available to all `perSystem` functions
-        module.args.lib = lib;
-
         # Formatter for your nix files, available through 'nix fmt'
         # Other options beside 'alejandra' include 'nixpkgs-fmt'
         formatter = pkgs.alejandra;
