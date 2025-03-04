@@ -1,4 +1,8 @@
-{pkgs, inputs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   home.packages = [
     (inputs.astal.lib.mkLuaPackage {
       inherit pkgs;

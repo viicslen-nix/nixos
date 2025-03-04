@@ -22,7 +22,7 @@ in {
       qmk_hid
     ];
 
-    services.udev.packages = [ pkgs.via ];
+    services.udev.packages = [pkgs.via];
 
     hardware.keyboard.qmk.enable = true;
 

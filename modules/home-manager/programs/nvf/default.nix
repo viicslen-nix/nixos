@@ -121,7 +121,8 @@ in {
             style = "dark";
             transparent = true;
             base16-colors = {
-              inherit (config.lib.stylix.colors)
+              inherit
+                (config.lib.stylix.colors)
                 base00
                 base01
                 base02
@@ -137,7 +138,8 @@ in {
                 base0C
                 base0D
                 base0E
-                base0F;
+                base0F
+                ;
             };
           };
 

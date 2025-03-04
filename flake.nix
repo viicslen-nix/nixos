@@ -10,6 +10,10 @@
     # Hardware
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
+    # Flakes
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    easy-hosts.url = "github:tgirlcloud/easy-hosts";
+
     # Disko
     disko = {
       url = "github:nix-community/disko";
@@ -149,73 +153,67 @@
     ghostty.url = "github:ghostty-org/ghostty";
   };
 
-  outputs = {
+  outputs = inputs @ {
+    flake-parts,
     self,
-    nixpkgs,
     ...
-  } @ inputs: let
+  }: let
     inherit (self) outputs;
-    # Supported systems for your flake packages, shell, etc.
-    systems = [
-      "aarch64-linux"
-      "i686-linux"
-      "x86_64-linux"
-      "aarch64-darwin"
-      "x86_64-darwin"
-    ];
-    # This is a function that generates an attribute by calling a function you
-    # pass to it, with each system as an argument
-    forAllSystems = nixpkgs.lib.genAttrs systems;
-  in {
-    # Your custom packages
-    # Accessible through 'nix build', 'nix shell', etc
-    packages = forAllSystems (system: import ./pkgs {
-      inherit inputs;
-      pkgs = nixpkgs.legacyPackages.${system};
-    });
+  in
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      imports = [
+        inputs.easy-hosts.flakeModule
+      ];
+      systems = [
+        "aarch64-linux"
+        "i686-linux"
+        "x86_64-linux"
+        "aarch64-darwin"
+        "x86_64-darwin"
+      ];
+      perSystem = {
+        pkgs,
+        system,
+        config,
+        ...
+      }: {
+        # Formatter for your nix files, available through 'nix fmt'
+        # Other options beside 'alejandra' include 'nixpkgs-fmt'
+        formatter = pkgs.alejandra;
 
-    # Formatter for your nix files, available through 'nix fmt'
-    # Other options beside 'alejandra' include 'nixpkgs-fmt'
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+        # Your custom packages
+        # Accessible through 'nix build', 'nix shell', etc
+        packages = import ./pkgs {inherit inputs pkgs;};
 
-    # Your custom packages and modifications, exported as overlays
-    overlays = import ./overlays {inherit inputs;};
-
-    # Your custom dev shells
-    devShells = forAllSystems (
-      system:
-        import ./dev-shells {inherit inputs system;}
-    );
-
-    # Reusable nixos modules you might want to export
-    # These are usually stuff you would upstream into nixpkgs
-    nixosModules = import ./modules/nixos;
-
-    # Reusable home-manager modules you might want to export
-    # These are usually stuff you would upstream into home-manager
-    homeManagerModules = import ./modules/home-manager;
-
-    # Your nixos configurations
-    nixosConfigurations = {
-      asus-zephyrus-gu603 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs outputs;};
-        modules = [
-          outputs.nixosModules.default
-          outputs.homeManagerModules.default
-          ./hosts/asus-zephyrus-gu603
-        ];
+        # Your custom dev shells
+        devShells = import ./dev-shells {inherit inputs system;};
       };
+      flake = {
+        # Your custom packages and modifications, exported as overlays
+        overlays = import ./overlays {inherit inputs;};
 
-      wsl = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs outputs;};
-        modules = [
-          outputs.nixosModules.default
-          outputs.homeManagerModules.default
-          ./hosts/wsl
-        ];
+        # Reusable nixos modules you might want to export
+        # These are usually stuff you would upstream into nixpkgs
+        nixosModules = import ./modules/nixos;
+
+        # Reusable home-manager modules you might want to export
+        # These are usually stuff you would upstream into home-manager
+        homeManagerModules = import ./modules/home-manager;
+
+        # Your nixos configurations
+        easy-hosts = {
+          autoConstruct = true;
+          path = ./hosts;
+
+          shared = {
+            modules = [
+              outputs.nixosModules.default
+              outputs.homeManagerModules.default
+            ];
+
+            specialArgs = {inherit inputs outputs;};
+          };
+        };
       };
     };
-  };
 }

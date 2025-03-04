@@ -18,7 +18,7 @@
   };
 
   # This one brings our custom packages from the 'pkgs' directory
-  additions = final: _prev: import ../pkgs {pkgs = final;};
+  additions = final: _prev: import ../pkgs {inherit inputs; pkgs = final;};
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
   # be accessible through 'pkgs.unstable'

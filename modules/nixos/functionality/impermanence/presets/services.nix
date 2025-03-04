@@ -1,6 +1,4 @@
-{
-  systemConfig,
-}: let
+{systemConfig}: let
   inherit (systemConfig) services;
   dataDirGen = svc: {"${svc}".directories = [services."${svc}".dataDir];};
   stateDirGen = svc: {"${svc}".directories = [services."${svc}".stateDirGen];};

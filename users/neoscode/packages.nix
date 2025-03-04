@@ -1,4 +1,5 @@
-{ pkgs, ... }: with pkgs; [
+{pkgs, ...}:
+with pkgs; [
   # Browsers
   brave
   microsoft-edge-wayland

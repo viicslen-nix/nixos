@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-}: let
+{lib, ...}: let
   globalVariables = {
     # Allow unfree packages
     NIXPKGS_ALLOW_UNFREE = "1";

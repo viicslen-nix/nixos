@@ -28,13 +28,13 @@ fi
 
 # Run nix command with the provided host and disk
 if confirm "Format disk '$DISK' using disko"; then
-  sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko "hosts/$HOST/disko.nix" --arg device "/dev/$DISK"
+  sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko "hosts/$HOST/disko.nix" --arg device '"/dev/$DISK"'
 fi
 
 # Copy config to /mnt/etc/
 if confirm "Copy config to /mnt/etc/"; then
   sudo mkdir -p /mnt/etc
-  sudo cp -r . /mnt/etc/
+  sudo cp -r . /mnt/etc/nixos
 fi
 
 # Run nixos-install with the provided host
