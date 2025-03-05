@@ -3,13 +3,13 @@
   pkgs,
   inputs,
   ...
-}:
-with lib; {
+}: let
+  users = ["neoscode"];
+in with lib; {
   imports = [
     inputs.nixos-wsl.nixosModules.default
     inputs.vscode-server.nixosModules.default
-    ../../users/neoscode
-  ];
+  ] ++ (map (u: ../../users/${u}) users);
 
   system.stateVersion = "25.05";
 
@@ -45,6 +45,7 @@ with lib; {
       jetbrains.webstorm
       jetbrains.phpstorm
       jetbrains.jdk
+
     ];
   };
 

@@ -1,9 +1,11 @@
 {
   lib,
+  pkgs,
   inputs,
   ...
-}:
-with lib; {
+}: let
+  users = ["neoscode"];
+in with lib; {
   imports = [
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
     inputs.disko.nixosModules.disko
@@ -12,8 +14,11 @@ with lib; {
       device = "/dev/nvme0n1";
     })
     ./hardware.nix
-    ../../users/neoscode
-  ];
+  ] ++ (map (u: ../../users/${u}) users);
+
+  system.stateVersion = "25.05";
+
+  home-manager.shareModules = [ ./home.nix ];
 
   boot = {
     plymouth.enable = true;
@@ -35,6 +40,41 @@ with lib; {
     hostName = "asus-zephyrus-gu603";
     firewall.enable = mkForce false;
   };
+
+  hardware = {
+    logitech.wireless.enable = true;
+    openrazer.enable = true;
+  };
+
+  services = {
+    displayManager.defaultSession = "hyprland-uwsm";
+
+    # Disable the built-in keyboard
+    udev.extraRules = lib.mkAfter ''
+      KERNEL=="event*", ATTRS{name}=="AT Translated Set 2 keyboard", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+    '';
+  };
+
+  environment.systemPackages = with pkgs; [
+    jetbrains-toolbox
+    jetbrains.idea-ultimate
+    jetbrains.phpstorm
+    jetbrains.datagrip
+    jetbrains.webstorm
+    jetbrains.goland
+    vscode
+    waveterm
+    lens
+    skypeforlinux
+    insomnia
+    tangram
+    endeavour
+    drawing
+    kooha
+    vscode
+    obsidian
+    drawio
+  ];
 
   modules = {
     hardware = {
@@ -158,162 +198,4 @@ with lib; {
       };
     };
   };
-
-  home-manager.users.neoscode = {
-    modules.functionality.impermanence = {
-      enable = true;
-      share = [
-        "Steam"
-        "JetBrains"
-        "keyrings"
-        "direnv"
-        "zoxide"
-        "mkcert"
-        "pnpm"
-        "nvim"
-        "atuin"
-      ];
-      config = [
-        "Lens"
-        "Code"
-        "Slack"
-        "Insomnia"
-        "JetBrains"
-        "1Password"
-        "Tinkerwell"
-        "Mullvad VPN"
-        "GitHub Desktop"
-        "microsoft-edge"
-        "github-copilot"
-        "tinkerwell"
-        "composer"
-        "discord"
-        "legcord"
-        "direnv"
-        "gcloud"
-        "helm"
-        "op"
-      ];
-      cache = [
-        "JetBrains"
-        "starship"
-        "carapace"
-        "zoxide"
-        "atuin"
-        "helm"
-      ];
-      directories = [
-        ".pki"
-        ".ssh"
-        ".zen"
-        ".kube"
-        ".java"
-        ".gnupg"
-        ".steam"
-        ".nixops"
-        ".vscode"
-        ".docker"
-        ".mozilla"
-        ".thunderbird"
-        ".tmux/resurrect"
-      ];
-      files = [
-        ".env.aider"
-        ".gitconfig"
-        ".ideavimrc"
-        ".zsh_history"
-        ".wakatime.cfg"
-        ".config/background"
-        ".config/monitors.xml"
-      ];
-    };
-
-    xdg = {
-      configFile."gh/hosts.yml".source = (pkgs.formats.yaml {}).generate "hosts.yml" {
-        "github.com" = {
-          user = "viicslen";
-          git_protocol = "https";
-          users = {
-            viicslen = "";
-          };
-        };
-      };
-
-      mimeApps = {
-        enable = true;
-        associations.added = {
-          "text/html" = "org.gnome.Epiphany.desktop;microsoft-edge.desktop";
-          "application/xhtml+xml" = "org.gnome.Epiphany.desktop;microsoft-edge.desktop";
-          "x-scheme-handler/sms" = "org.gnome.Shell.Extensions.GSConnect.desktop";
-          "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
-          "x-scheme-handler/http" = "org.gnome.Epiphany.desktop;microsoft-edge.desktop";
-          "x-scheme-handler/https" = "org.gnome.Epiphany.desktop;microsoft-edge.desktop";
-          "x-scheme-handler/mailto" = "org.gnome.Geary.desktop";
-        };
-        defaultApplications = {
-          "text/html" = "microsoft-edge.desktop";
-          "application/xhtml+xml" = "microsoft-edge.desktop";
-          "x-scheme-handler/http" = "microsoft-edge.desktop";
-          "x-scheme-handler/https" = "microsoft-edge.desktop";
-          "x-scheme-handler/mailto" = "org.gnome.Geary.desktop";
-        };
-      };
-    };
-
-    dconf.settings = {
-      "org/gnome/shell" = {
-        favorite-apps = [
-          "org.gnome.Nautilus.desktop"
-          "microsoft-edge.desktop"
-          "phpstorm.desktop"
-          "ghostty.desktop"
-          "legcord.desktop"
-        ];
-      };
-
-      "org/gnome/shell/extensions/arcmenu" = {
-        menu-button-border-color = lib.hm.gvariant.mkTuple [true "transparent"];
-        menu-button-border-radius = lib.hm.gvariant.mkTuple [true 10];
-      };
-
-      "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":minimize,maximize,close";
-    };
-
-    home.file."/home/neoscode/.config/mimeapps.list".force = lib.mkForce true;
-  };
-
-  hardware = {
-    logitech.wireless.enable = true;
-    openrazer.enable = true;
-  };
-
-  services.displayManager.defaultSession = "hyprland-uwsm";
-
-  # Disable the built-in keyboard
-  services.udev.extraRules = lib.mkAfter ''
-    KERNEL=="event*", ATTRS{name}=="AT Translated Set 2 keyboard", ENV{LIBINPUT_IGNORE_DEVICE}="1"
-  '';
-
-  environment.systemPackages = [
-    jetbrains-toolbox
-    jetbrains.idea-ultimate
-    jetbrains.phpstorm
-    jetbrains.datagrip
-    jetbrains.webstorm
-    jetbrains.goland
-    vscode
-    waveterm
-    lens
-    skypeforlinux
-    insomnia
-    tangram
-    endeavour
-    drawing
-    kooha
-    vscode
-    obsidian
-    drawio
-  ];
-
-  system.stateVersion = "25.05";
 }
