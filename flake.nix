@@ -165,52 +165,52 @@
     nixpkgs,
     self,
     ...
-  }: let
-    inherit (self) outputs;
-  in
-    flake-parts.lib.mkFlake {inherit inputs;} {
-      imports = [
-        inputs.easy-hosts.flakeModule
-        inputs.mission-control.flakeModule
-        inputs.flake-root.flakeModule
-      ];
-      systems = [
-        "aarch64-linux"
-        "i686-linux"
-        "x86_64-linux"
-        "aarch64-darwin"
-        "x86_64-darwin"
-      ];
-      perSystem = {
-        pkgs,
-        system,
-        config,
-        inputs',
-        ...
-      }: {
-        # Formatter for your nix files, available through 'nix fmt'
-        # Other options beside 'alejandra' include 'nixpkgs-fmt'
-        formatter = pkgs.alejandra;
+  }: flake-parts.lib.mkFlake {inherit inputs;} {
+    imports = [
+      inputs.easy-hosts.flakeModule
+      inputs.mission-control.flakeModule
+      inputs.flake-root.flakeModule
+    ];
+    systems = [
+      "aarch64-linux"
+      "i686-linux"
+      "x86_64-linux"
+      "aarch64-darwin"
+      "x86_64-darwin"
+    ];
+    perSystem = {
+      pkgs,
+      system,
+      config,
+      inputs',
+      ...
+    }: {
+      # Formatter for your nix files, available through 'nix fmt'
+      # Other options beside 'alejandra' include 'nixpkgs-fmt'
+      formatter = pkgs.alejandra;
 
-        # Your custom packages
-        # Accessible through 'nix build', 'nix shell', etc
-        packages = import ./pkgs {inherit inputs pkgs;};
+      # Your custom packages
+      # Accessible through 'nix build', 'nix shell', etc
+      packages = import ./pkgs {inherit inputs pkgs;};
 
-        # Your custom dev shells
-        devShells = import ./dev-shells {inherit inputs system;};
-      };
-      flake = {
-        # Your custom packages and modifications, exported as overlays
-        overlays = import ./overlays {inherit inputs;};
-
-        # Reusable nixos modules you might want to export
-        # These are usually stuff you would upstream into nixpkgs
-        nixosModules = import ./modules/nixos;
-
-        # Reusable home-manager modules you might want to export
-        # These are usually stuff you would upstream into home-manager
-        homeManagerModules = import ./modules/home-manager;
-      };
-      easyHosts = import ./hosts {inherit inputs outputs;};
+      # Your custom dev shells
+      devShells = import ./dev-shells {inherit inputs system;};
     };
+    flake = {
+      # Your custom packages and modifications, exported as overlays
+      overlays = import ./overlays {inherit inputs;};
+
+      # Reusable nixos modules you might want to export
+      # These are usually stuff you would upstream into nixpkgs
+      nixosModules = import ./modules/nixos;
+
+      # Reusable home-manager modules you might want to export
+      # These are usually stuff you would upstream into home-manager
+      homeManagerModules = import ./modules/home-manager;
+    };
+    easyHosts = import ./hosts {
+      inherit inputs;
+      outputs = self;
+    };
+  };
 }

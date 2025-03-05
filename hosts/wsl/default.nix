@@ -5,69 +5,71 @@
   ...
 }: let
   users = ["neoscode"];
-in with lib; {
-  imports = [
-    inputs.nixos-wsl.nixosModules.default
-    inputs.vscode-server.nixosModules.default
-  ] ++ (map (u: ../../users/${u}) users);
+in
+  with lib; {
+    imports =
+      [
+        inputs.nixos-wsl.nixosModules.default
+        inputs.vscode-server.nixosModules.default
+      ]
+      ++ (map (u: ../../users/${u}) users);
 
-  system.stateVersion = "25.05";
+    system.stateVersion = "25.05";
 
-  networking = {
-    hostName = "wsl";
-    firewall.enable = mkForce false;
-  };
-
-  wsl = {
-    enable = true;
-    defaultUser = "neoscode";
-    interop.register = true;
-    docker-desktop.enable = true;
-    startMenuLaunchers = true;
-    useWindowsDriver = true;
-    extraBin = [
-      {
-        src = lib.getExe pkgs.git;
-      }
-      {
-        src = lib.getExe pkgs.bash;
-      }
-    ];
-  };
-
-  environment = {
-    shellAliases = {
-      ssh = "ssh.exe";
-      ssh-add = "ssh-add.exe";
+    networking = {
+      hostName = "wsl";
+      firewall.enable = mkForce false;
     };
 
-    systemPackages = with pkgs; [
-      jetbrains.webstorm
-      jetbrains.phpstorm
-      jetbrains.jdk
-
-    ];
-  };
-
-  programs = {
-    nix-ld.enable = true;
-    git.config.programs.core.sshCommand = "ssh.exe";
-  };
-
-  services.vscode-server.enable = true;
-
-  modules = {
-    presets = {
-      base.enable = true;
-      work.enable = true;
-      personal.enable = true;
+    wsl = {
+      enable = true;
+      defaultUser = "neoscode";
+      interop.register = true;
+      docker-desktop.enable = true;
+      startMenuLaunchers = true;
+      useWindowsDriver = true;
+      extraBin = [
+        {
+          src = lib.getExe pkgs.git;
+        }
+        {
+          src = lib.getExe pkgs.bash;
+        }
+      ];
     };
 
-    functionality = {
-      theming.enable = true;
-      appImages.enable = true;
+    environment = {
+      shellAliases = {
+        ssh = "ssh.exe";
+        ssh-add = "ssh-add.exe";
+      };
+
+      systemPackages = with pkgs; [
+        jetbrains.webstorm
+        jetbrains.phpstorm
+        jetbrains.jdk
+      ];
     };
 
-    containers.settings.log-driver = "local";
-  };
-}
+    programs = {
+      nix-ld.enable = true;
+      git.config.programs.core.sshCommand = "ssh.exe";
+    };
+
+    services.vscode-server.enable = true;
+
+    modules = {
+      presets = {
+        base.enable = true;
+        work.enable = true;
+        personal.enable = true;
+      };
+
+      functionality = {
+        theming.enable = true;
+        appImages.enable = true;
+      };
+
+      containers.settings.log-driver = "local";
+    };
+  }
