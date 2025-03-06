@@ -1,7 +1,7 @@
 {
   lib,
   inputs,
-  outputs,
+  config,
   ...
 }:
 with lib; {
@@ -12,9 +12,9 @@ with lib; {
   home-manager.sharedModules = builtins.concatLists [
     [
       inputs.nvchad.homeManagerModule
-      outputs.homeManagerModules.defaults
+      config.flake.homeManagerModules.defaults
     ]
-    (attrsets.mapAttrsToList (_name: value: value) outputs.homeManagerModules.functionality)
-    (attrsets.mapAttrsToList (_name: value: value) outputs.homeManagerModules.programs)
+    (attrsets.mapAttrsToList (_name: value: value) config.flake.homeManagerModules.functionality)
+    (attrsets.mapAttrsToList (_name: value: value) config.flake.homeManagerModules.programs)
   ];
 }

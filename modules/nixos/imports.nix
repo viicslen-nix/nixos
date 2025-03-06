@@ -1,7 +1,7 @@
 {
   lib,
   inputs,
-  outputs,
+  config,
   ...
 }:
 with lib; {
@@ -10,12 +10,12 @@ with lib; {
       inputs.nur.modules.nixos.default
       inputs.agenix.nixosModules.default
       inputs.chaotic.nixosModules.default
-      outputs.nixosModules.containers
+      config.flake.nixosModules.containers
     ]
-    (attrsets.mapAttrsToList (_name: value: value) outputs.nixosModules.presets)
-    (attrsets.mapAttrsToList (_name: value: value) outputs.nixosModules.desktop)
-    (attrsets.mapAttrsToList (_name: value: value) outputs.nixosModules.hardware)
-    (attrsets.mapAttrsToList (_name: value: value) outputs.nixosModules.programs)
-    (attrsets.mapAttrsToList (_name: value: value) outputs.nixosModules.functionality)
+    (attrsets.mapAttrsToList (_name: value: value) config.flake.nixosModules.presets)
+    (attrsets.mapAttrsToList (_name: value: value) config.flake.nixosModules.desktop)
+    (attrsets.mapAttrsToList (_name: value: value) config.flake.nixosModules.hardware)
+    (attrsets.mapAttrsToList (_name: value: value) config.flake.nixosModules.programs)
+    (attrsets.mapAttrsToList (_name: value: value) config.flake.nixosModules.functionality)
   ];
 }

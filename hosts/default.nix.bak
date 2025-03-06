@@ -1,6 +1,6 @@
 {
   inputs,
-  outputs,
+  config,
 }: {
   additionalClasses = {
     wsl = "nixos";
@@ -22,16 +22,16 @@
 
   perClass = class: {
     modules = inputs.nixpkgs.lib.optionals (class == "nixos") [
-      outputs.nixosModules.default
+      config.flake.nixosModules.default
     ];
   };
 
   shared = {
     modules = [
-      outputs.nixosModules.default
-      outputs.homeManagerModules.default
+      config.flake.nixosModules.default
+      config.flake.homeManagerModules.default
     ];
 
-    specialArgs = {inherit inputs outputs;};
+    specialArgs = {inherit inputs;};
   };
 }

@@ -15,6 +15,7 @@
     easy-hosts.url = "github:tgirlcloud/easy-hosts";
     mission-control.url = "github:Platonic-Systems/mission-control";
     flake-root.url = "github:srid/flake-root";
+    ez-configs.url = "github:ehllie/ez-configs";
 
     # Disko
     disko = {
@@ -163,13 +164,13 @@
   outputs = inputs @ {
     flake-parts,
     nixpkgs,
-    self,
     ...
-  }: flake-parts.lib.mkFlake {inherit inputs;} {
+  }: flake-parts.lib.mkFlake {inherit inputs;} ({ withSystem, ... }: {
     imports = [
       inputs.easy-hosts.flakeModule
       inputs.mission-control.flakeModule
       inputs.flake-root.flakeModule
+      inputs.ez-configs.flakeModule
     ];
     systems = [
       "aarch64-linux"
@@ -208,9 +209,13 @@
       # These are usually stuff you would upstream into home-manager
       homeManagerModules = import ./modules/home-manager;
     };
-    easyHosts = import ./hosts {
-      inherit inputs;
-      outputs = self;
+    # easyHosts = import ./hosts {inherit inputs;};
+
+    ezConfigs = {
+      globalArgs = {inherit inputs;};
+      home.modulesDirectory = ./modules/home-manager;
+      nixos.modulesDirectory = ./modules/nixos;
+      nixos.configurationsDirectory = ./hosts;
     };
-  };
+  });
 }
