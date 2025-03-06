@@ -17,6 +17,11 @@
     flake-root.url = "github:srid/flake-root";
     ez-configs.url = "github:ehllie/ez-configs";
 
+    nypkgs = {
+      url = "github:yunfachi/nypkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Disko
     disko = {
       url = "github:nix-community/disko";
@@ -165,7 +170,7 @@
     flake-parts,
     nixpkgs,
     ...
-  }: flake-parts.lib.mkFlake {inherit inputs;} ({ withSystem, ... }: {
+  }: flake-parts.lib.mkFlake {inherit inputs;} ({ config, withSystem, ... }: {
     imports = [
       inputs.easy-hosts.flakeModule
       inputs.mission-control.flakeModule
@@ -209,13 +214,16 @@
       # These are usually stuff you would upstream into home-manager
       homeManagerModules = import ./modules/home-manager;
     };
-    # easyHosts = import ./hosts {inherit inputs;};
+    easyHosts = import ./hosts {inherit inputs;};
 
-    ezConfigs = {
-      globalArgs = {inherit inputs;};
-      home.modulesDirectory = ./modules/home-manager;
-      nixos.modulesDirectory = ./modules/nixos;
-      nixos.configurationsDirectory = ./hosts;
-    };
+    # ezConfigs = {
+    #   root = ./.;
+    #   globalArgs = {inherit inputs;};
+    #   home.modulesDirectory = "${config.ezConfigs.root}/modules/home-manager";
+    #   home.configurationsDirectory = "${config.ezConfigs.root}/users";
+
+    #   nixos.modulesDirectory = "${config.ezConfigs.root}/modules/nixos";
+    #   nixos.configurationsDirectory = "${config.ezConfigs.root}/hosts";
+    # };
   });
 }

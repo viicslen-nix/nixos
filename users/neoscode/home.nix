@@ -1,16 +1,14 @@
 {
-  user,
-  name,
-}: {
-  lib,
   pkgs,
-  config,
   ...
-}: {
+}: let
+  user = "neoscode";
+  name = "Victor R";
+in {
   home = {
     username = user;
     homeDirectory = "/home/${user}";
-    packages = import ./packages.nix {inherit pkgs;};
+    # packages = import ./packages.nix {inherit pkgs;};
 
     sessionVariables = {
       EDITOR = "nvim";

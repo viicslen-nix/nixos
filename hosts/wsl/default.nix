@@ -15,6 +15,7 @@ in
       ++ (map (u: ../../users/${u}) users);
 
     system.stateVersion = "25.05";
+    nixpkgs.hostPlatform = "x86_64-linux";
 
     networking = {
       hostName = "wsl";
