@@ -10,17 +10,12 @@
     # Hardware
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    # Flakes
+    # Flake Parts
     flake-parts.url = "github:hercules-ci/flake-parts";
     easy-hosts.url = "github:tgirlcloud/easy-hosts";
     mission-control.url = "github:Platonic-Systems/mission-control";
     flake-root.url = "github:srid/flake-root";
     ez-configs.url = "github:ehllie/ez-configs";
-
-    nypkgs = {
-      url = "github:yunfachi/nypkgs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     # Disko
     disko = {
@@ -38,10 +33,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Community packages
-    nur.url = "github:nix-community/NUR";
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
+    # ISO builder
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Impermanence
     impermanence.url = "github:nix-community/impermanence";
@@ -55,24 +51,14 @@
       url = "github:Aloxaf/fzf-tab";
       flake = false;
     };
-
-    # NuShell
     nu-scripts = {
       url = "github:nushell/nu_scripts";
-      flake = false;
-    };
-
-    # Tmux
-    tmux-1password = {
-      url = "github:yardnsm/tmux-1password";
       flake = false;
     };
     tmux-tokyo-night = {
       url = "github:janoamaral/tokyo-night-tmux";
       flake = false;
     };
-
-    # Zellij
     zjstatus.url = "github:dj95/zjstatus";
 
     # Nvim
@@ -80,15 +66,13 @@
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nvchad = {
-      url = "github:nix-community/nix4nvchad";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nvchad-starter.follows = "nvchad-config";
-    };
-    nvchad-config = {
-      url = "github:viicslen/neovim";
+
+    # 1Password
+    tmux-1password = {
+      url = "github:yardnsm/tmux-1password";
       flake = false;
     };
+    one-password-shell-plugins.url = "github:1Password/shell-plugins";
 
     # Hyprland
     hyprland.url = "github:hyprwm/Hyprland";
@@ -126,16 +110,6 @@
       inputs.hyprland.follows = "hyprland";
     };
 
-    # Astal
-    astal = {
-      url = "github:aylur/astal";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    ags = {
-      url = "github:aylur/ags";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Theming
     stylix.url = "github:danth/stylix";
     base16.url = "github:SenchoPens/base16.nix";
@@ -152,18 +126,15 @@
       flake = false;
     };
 
-    # Tools
+    # Community packages
+    nur.url = "github:nix-community/NUR";
     agenix.url = "github:ryantm/agenix";
-    nix-alien.url = "github:thiagokokada/nix-alien";
-    lan-mouse.url = "github:feschber/lan-mouse";
-    zen-browser.url = "github:MarceColl/zen-browser-flake";
-    one-password-shell-plugins.url = "github:1Password/shell-plugins";
     ghostty.url = "github:ghostty-org/ghostty";
-
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    lan-mouse.url = "github:feschber/lan-mouse";
+    nix-alien.url = "github:thiagokokada/nix-alien";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    zen-browser.url = "github:MarceColl/zen-browser-flake";
+    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
   };
 
   outputs = inputs @ {
@@ -173,7 +144,8 @@
     ...
   }: let
     inherit (self) outputs;
-    in flake-parts.lib.mkFlake {inherit inputs;} ({
+  in
+    flake-parts.lib.mkFlake {inherit inputs;} ({
       config,
       withSystem,
       flake-parts-lib,
@@ -213,45 +185,16 @@
         # Your custom packages and modifications, exported as overlays
         overlays = import ./overlays {inherit inputs;};
 
-        # Reusable nixos modules you might want to export
-        # These are usually stuff you would upstream into nixpkgs
-        nixosModules = import ./modules/nixos;
-
         # Reusable home-manager modules you might want to export
         # These are usually stuff you would upstream into home-manager
         homeManagerModules = import ./modules/home-manager;
       };
       easyHosts = import ./hosts {inherit inputs outputs;};
-      # ezConfigs = {
-      #   root = ./.;
-
-      #   globalArgs = {
-      #     inherit inputs outputs;
-      #   };
-
-      #   nixos = {
-      #     # modulesDirectory = "${config.ezConfigs.root}/modules/nixos";
-
-      #     hosts.asus-zephyrus-gu603.userHomeModules = ["neoscode"];
-      #     hosts.wsl.userHomeModules = ["neoscode"];
-
-      #     configurationsDirectory = "${config.ezConfigs.root}/hosts";
-      #     specialArgs = {
-      #       users = {
-      #         neoscode = {
-      #           description = "Victor R";
-      #           password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
-      #         };
-      #       };
-      #     };
-      #   };
-
-      #   home = {
-      #     # modulesDirectory = "${config.ezConfigs.root}/modules/home-manager";
-      #     configurationsDirectory = "${config.ezConfigs.root}/users";
-      #   };
-      # };
-    }) // {
-      # nixosModules = import ./modules/nixos;
+    })
+    // {
+      # Reusable nixos modules you might want to export
+      # These are usually stuff you would upstream into nixpkgs
+      # Flake-parts does some weird stuff with the output of flake.nixosModules
+      nixosModules = import ./modules/nixos;
     };
 }

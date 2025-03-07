@@ -22,8 +22,8 @@
 
   shared = {
     modules = [
-      # ../modules/nixos/all.nix
-      ../modules/home-manager/all.nix
+      outputs.nixosModules.all
+      outputs.homeManagerModules.all
     ];
 
     specialArgs = {inherit inputs outputs;};

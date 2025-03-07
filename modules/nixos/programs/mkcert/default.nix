@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  users,
   config,
   ...
 }:
@@ -14,13 +15,6 @@ in {
     enable = mkEnableOption (mdDoc name);
     rootCA = {
       enable = mkEnableOption "Enable mkcert root CA certificate.";
-      users = mkOption {
-        type = types.listOf types.str;
-        default = [];
-        description = ''
-          List of users to load the root CA certificate for mkcert.
-        '';
-      };
       path = mkOption {
         type = types.str;
         default = ".local/share/mkcert/rootCA.pem";
@@ -50,6 +44,6 @@ in {
       '')
     ];
 
-    security.pki.certificateFiles = mkIf cfg.rootCA.enable (lists.forEach cfg.rootCA.users (user: "${config.users.users.${user}.home}/${user}/${cfg.rootCA.path}"));
+    security.pki.certificateFiles = mkIf cfg.rootCA.enable map (user: "${config.users.users.${user}.home}/${user}/${cfg.rootCA.path}") attrNames users;
   };
 }

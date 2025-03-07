@@ -6,18 +6,19 @@
   ...
 }:
 with lib; {
-  imports = [
-    inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
-    inputs.disko.nixosModules.disko
-    (import ./disko.nix {
-      inherit inputs;
-      device = "/dev/nvme0n1";
-    })
-    ./hardware.nix
-  ];
+  imports =
+    [
+      inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
+      inputs.disko.nixosModules.disko
+      (import ./disko.nix {
+        inherit inputs;
+        device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_223766801969";
+      })
+      ./hardware.nix
+    ]
+    ++ map (name: ../../users/${name}) (attrNames users);
 
   system.stateVersion = "25.05";
-
   home-manager.shareModules = [./home.nix];
 
   boot = {
@@ -47,14 +48,6 @@ with lib; {
     hostId = "86f2c355";
     hostName = "asus-zephyrus-gu603";
     firewall.enable = mkForce false;
-  };
-
-  age = {
-    identityPaths = map (user: "${config.users.users.${user.name}.home}/.ssh/agenix") users;
-
-    secrets = {
-      intelephense.file = ../../secrets/intelephense/licence.age;
-    };
   };
 
   services = {
@@ -118,15 +111,11 @@ with lib; {
     };
 
     desktop = {
-      gnome = {
-        enable = true;
-        users = attrNames users;
-      };
+      gnome.enable = true;
 
       hyprland = {
         enable = true;
         gnomeCompatibility = true;
-        users = attrNames users;
       };
     };
 
@@ -206,15 +195,8 @@ with lib; {
     };
 
     programs = {
-      kanata.users = attrNames users;
-      mkcert.rootCA.users = attrNames users;
-
       mullvad.enable = true;
-
-      docker = {
-        nvidiaSupport = true;
-        users = attrNames users;
-      };
+      docker.nvidiaSupport = true;
 
       onePassword = {
         enable = true;

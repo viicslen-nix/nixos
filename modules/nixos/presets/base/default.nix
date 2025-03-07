@@ -1,8 +1,10 @@
 {
   lib,
   pkgs,
+  users,
   config,
   inputs,
+  outputs,
   ...
 }:
 with lib; let
@@ -41,6 +43,8 @@ in {
   };
 
   config = mkIf cfg.enable {
+    age.identityPaths = map (user: "${config.users.users.${user.name}.home}/.ssh/agenix") users;
+
     programs = {
       # Enable NH for easier system rebuilds
       nh = {
@@ -174,11 +178,11 @@ in {
       # You can add overlays here
       overlays = [
         # Add overlays your own flake exports (from overlays and pkgs dir):
-        config.flake.overlays.additions
-        config.flake.overlays.modifications
-        config.flake.overlays.stable-packages
-        config.flake.overlays.unstable-packages
-        config.flake.overlays.flake-inputs
+        outputs.overlays.additions
+        outputs.overlays.modifications
+        outputs.overlays.stable-packages
+        outputs.overlays.unstable-packages
+        outputs.overlays.flake-inputs
 
         inputs.nix-alien.overlays.default
         inputs.nixpkgs-wayland.overlay

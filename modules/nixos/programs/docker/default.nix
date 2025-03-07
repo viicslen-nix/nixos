@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  users,
   config,
   ...
 }:
@@ -17,12 +18,6 @@ in {
       type = types.bool;
       default = false;
       description = "Enable support for NVIDIA GPUs";
-    };
-
-    users = mkOption {
-      type = types.listOf types.str;
-      default = [];
-      description = "The users to add to the docker group";
     };
 
     networkInterface = mkOption {
@@ -52,7 +47,7 @@ in {
       oci-containers.backend = "docker";
     };
 
-    users.users = lib.genAttrs cfg.users (_user: {
+    users.users = lib.genAttrs (attrNames users) (_user: {
       extraGroups = ["docker"];
     });
 

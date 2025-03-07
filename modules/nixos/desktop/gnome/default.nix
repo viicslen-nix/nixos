@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  users,
   config,
   options,
   ...
@@ -30,12 +31,6 @@ with lib; let
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc "gnome");
-
-    users = mkOption {
-      type = types.listOf types.str;
-      default = [];
-      description = "The users update the settings for";
-    };
 
     enableGdm = mkOption {
       type = types.bool;
@@ -99,7 +94,7 @@ in {
       };
     }
     (mkIf homeManagerLoaded {
-      home-manager.users = lib.genAttrs cfg.users (_user: {
+      home-manager.sharedModules = [{
         gtk.enable = true;
         gtk.iconTheme.name = "Adwaita";
         gtk.iconTheme.package = pkgs.adwaita-icon-theme;
@@ -270,7 +265,7 @@ in {
             '';
           };
         };
-      });
+      }];
     })
   ]);
 }

@@ -5,9 +5,12 @@
   ...
 }:
 with lib; {
-  imports = builtins.concatLists [
+  imports = [
+    inputs.home-manager.nixosModules.default
+  ];
+
+  home-manager.sharedModules = builtins.concatLists [
     [
-      inputs.nvchad.homeManagerModule
       outputs.homeManagerModules.defaults
     ]
     (attrsets.mapAttrsToList (_name: value: value) outputs.homeManagerModules.functionality)

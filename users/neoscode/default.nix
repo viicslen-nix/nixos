@@ -122,21 +122,6 @@ in {
         user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJk8lwwP7GnxZMgpx+C30i/Lw912BBoFccz4gjek8lCX";
       };
     };
-
-    nvchad = {
-      enable = false;
-      backup = false;
-      extraPackages = with pkgs; [
-        nixd
-        python3
-        php83
-        php83Packages.composer
-        docker-compose-language-service
-        dockerfile-language-server-nodejs
-        nodePackages.bash-language-server
-        stable.nodePackages.volar
-      ];
-    };
   };
 
   modules = {
