@@ -16,11 +16,59 @@ in {
   };
 
   config = mkIf cfg.enable {
-    age.secrets.intelephense.file = ../../secrets/intelephense/licence.age;
-
     home-manager.users =
       lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
-        xdg.configFile."intelephense/licence.txt".source = config.age.secrets.intelephense.path;
+        programs.ssh.matchBlocks = {
+        "FmTod" = {
+          hostname = "webapps";
+          user = "fmtod";
+        };
+
+        "SellDiam" = {
+          hostname = "webapps";
+          user = "inventory";
+        };
+
+        "DOS" = {
+          hostname = "storesites";
+          user = "dostov";
+        };
+
+        "BLVD" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "EXB" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "DTC" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "NFC" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "TJD" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "47DD" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "PELA" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+      };
       }))
       users;
 
