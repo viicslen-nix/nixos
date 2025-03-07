@@ -176,13 +176,13 @@
     in flake-parts.lib.mkFlake {inherit inputs;} ({
       config,
       withSystem,
+      flake-parts-lib,
       ...
     }: {
       imports = [
         inputs.easy-hosts.flakeModule
         inputs.mission-control.flakeModule
         inputs.flake-root.flakeModule
-        inputs.ez-configs.flakeModule
       ];
       systems = [
         "aarch64-linux"
@@ -221,34 +221,37 @@
         # These are usually stuff you would upstream into home-manager
         homeManagerModules = import ./modules/home-manager;
       };
-      ezConfigs = {
-        root = ./.;
+      easyHosts = import ./hosts {inherit inputs outputs;};
+      # ezConfigs = {
+      #   root = ./.;
 
-        globalArgs = {
-          inherit inputs outputs;
-        };
+      #   globalArgs = {
+      #     inherit inputs outputs;
+      #   };
 
-        nixos = {
-          # modulesDirectory = "${config.ezConfigs.root}/modules/nixos";
+      #   nixos = {
+      #     # modulesDirectory = "${config.ezConfigs.root}/modules/nixos";
 
-          hosts.asus-zephyrus-gu603.userHomeModules = ["neoscode"];
-          hosts.wsl.userHomeModules = ["neoscode"];
+      #     hosts.asus-zephyrus-gu603.userHomeModules = ["neoscode"];
+      #     hosts.wsl.userHomeModules = ["neoscode"];
 
-          configurationsDirectory = "${config.ezConfigs.root}/hosts";
-          specialArgs = {
-            users = {
-              neoscode = {
-                description = "Victor R";
-                password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
-              };
-            };
-          };
-        };
+      #     configurationsDirectory = "${config.ezConfigs.root}/hosts";
+      #     specialArgs = {
+      #       users = {
+      #         neoscode = {
+      #           description = "Victor R";
+      #           password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
+      #         };
+      #       };
+      #     };
+      #   };
 
-        home = {
-          # modulesDirectory = "${config.ezConfigs.root}/modules/home-manager";
-          configurationsDirectory = "${config.ezConfigs.root}/users";
-        };
-      };
-    });
+      #   home = {
+      #     # modulesDirectory = "${config.ezConfigs.root}/modules/home-manager";
+      #     configurationsDirectory = "${config.ezConfigs.root}/users";
+      #   };
+      # };
+    }) // {
+      # nixosModules = import ./modules/nixos;
+    };
 }
