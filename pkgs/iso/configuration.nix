@@ -26,11 +26,6 @@ with lib; {
     nixPath = ["nixpkgs=${pkgs.path}"];
   };
 
-  nixpkgs = {
-    hostPlatform = lib.mkDefault "x86_64-linux";
-    config.allowUnfree = true;
-  };
-
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     supportedFilesystems = lib.mkForce ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs"];
