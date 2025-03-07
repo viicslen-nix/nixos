@@ -12,10 +12,14 @@
 
     # Flake Parts
     flake-parts.url = "github:hercules-ci/flake-parts";
-    easy-hosts.url = "github:tgirlcloud/easy-hosts";
     mission-control.url = "github:Platonic-Systems/mission-control";
-    flake-root.url = "github:srid/flake-root";
+    easy-hosts.url = "github:tgirlcloud/easy-hosts";
     ez-configs.url = "github:ehllie/ez-configs";
+    flake-root.url = "github:srid/flake-root";
+    flake-registry = {
+      url = "github:NixOS/flake-registry";
+      flake = false;
+    };
 
     # Disko
     disko = {

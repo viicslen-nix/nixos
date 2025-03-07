@@ -1,4 +1,9 @@
-{pkgs, config, osConfig, ...}: let
+{
+  pkgs,
+  config,
+  osConfig,
+  ...
+}: let
   user = "neoscode";
 in {
   age = {

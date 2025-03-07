@@ -51,13 +51,7 @@ with lib; {
   # Add root user for troubleshooting
   users = {
     mutableUsers = false;
-
-    users.root = {
-      isNormalUser = true;
-      home = "/root";
-      shell = pkgs.zsh;
-      hashedPassword = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
-    };
+    extraUsers.root.hashedPassword = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
   };
 
   services = {
