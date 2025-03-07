@@ -23,12 +23,6 @@ in {
       description = "The hyprland package to use";
     };
 
-    users = mkOption {
-      type = types.listOf types.str;
-      default = [];
-      description = "The users to configure hyprland for";
-    };
-
     gnomeCompatibility = mkOption {
       type = types.bool;
       default = false;
@@ -144,7 +138,7 @@ in {
       };
     }
     (mkIf homeManagerLoaded {
-      home-manager.users = lib.genAttrs cfg.users (_user: {
+      home-manager.sharedModules = [{
         imports = [
           inputs.hyprland.homeManagerModules.default
           ./config
@@ -167,7 +161,7 @@ in {
         };
 
         dconf.settings."org/gnome/desktop/wm/preferences".button-layout = ":";
-      });
+      }];
     })
   ]);
 }

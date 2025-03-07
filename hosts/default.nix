@@ -1,5 +1,6 @@
 {
   inputs,
+  outputs,
 }: {
   additionalClasses = {
     wsl = "nixos";
@@ -21,10 +22,10 @@
 
   shared = {
     modules = [
-      ../modules/nixos/imports.nix
-      ../modules/home-manager/imports.nix
+      outputs.nixosModules.all
+      outputs.homeManagerModules.all
     ];
 
-    specialArgs = {inherit inputs;};
+    specialArgs = {inherit inputs outputs;};
   };
 }

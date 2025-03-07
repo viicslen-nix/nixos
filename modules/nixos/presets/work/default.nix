@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  users,
   config,
   ...
 }:
@@ -15,6 +16,14 @@ in {
   };
 
   config = mkIf cfg.enable {
+    age.secrets.intelephense.file = ../../secrets/intelephense/licence.age;
+
+    home-manager.users =
+      lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
+        xdg.configFile."intelephense/licence.txt".source = config.age.secrets.intelephense.path;
+      }))
+      users;
+
     modules = {
       programs = {
         corepack.enable = true;

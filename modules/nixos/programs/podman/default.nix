@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  users,
   config,
   ...
 }:
@@ -12,16 +13,10 @@ with lib; let
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc feature);
-
-    users = mkOption {
-      type = types.str;
-      default = [];
-      description = "The users to add to the podman group";
-    };
   };
 
   config = mkIf cfg.enable {
-    users.users = lib.genAttrs cfg.users (_user: {
+    users.users = lib.genAttrs (attrNames users) (_user: {
       extraGroups = ["podman"];
     });
 
