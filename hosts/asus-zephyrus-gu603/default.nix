@@ -6,17 +6,15 @@
   ...
 }:
 with lib; {
-  imports =
-    [
-      inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
-      inputs.disko.nixosModules.disko
-      (import ./disko.nix {
-        inherit inputs;
-        device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_223766801969";
-      })
-      ./hardware.nix
-    ]
-    ++ map (name: ../../users/${name}) (attrNames users);
+  imports = [
+    inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
+    inputs.disko.nixosModules.disko
+    (import ./disko.nix {
+      inherit inputs;
+      device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_223766801969";
+    })
+    ./hardware.nix
+  ];
 
   system.stateVersion = "25.05";
   home-manager.shareModules = [./home.nix];
@@ -58,18 +56,6 @@ with lib; {
       KERNEL=="event*", ATTRS{name}=="AT Translated Set 2 keyboard", ENV{LIBINPUT_IGNORE_DEVICE}="1"
     '';
   };
-
-  users.users =
-    lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
-      isNormalUser = true;
-      description = value.description;
-      initialPassword = lib.mkIf (value.password == "") name;
-      hashedPassword = lib.mkIf (value.password != "") value.password;
-      extraGroups = ["networkmanager" "wheel" "adbusers" name];
-      shell = pkgs.nushell;
-      useDefaultShell = false;
-    }))
-    users;
 
   environment.systemPackages = with pkgs; [
     jetbrains-toolbox

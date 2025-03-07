@@ -45,6 +45,18 @@ in {
   config = mkIf cfg.enable {
     age.identityPaths = map (user: "${config.users.users.${user.name}.home}/.ssh/agenix") users;
 
+    users.users =
+      lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
+        isNormalUser = true;
+        description = value.description;
+        initialPassword = lib.mkIf (value.password == "") name;
+        hashedPassword = lib.mkIf (value.password != "") value.password;
+        extraGroups = ["networkmanager" "wheel" "adbusers" name];
+        shell = pkgs.nushell;
+        useDefaultShell = false;
+      }))
+      users;
+
     programs = {
       # Enable NH for easier system rebuilds
       nh = {
@@ -105,6 +117,8 @@ in {
         inherit inputs outputs;
         stateVersion = config.system.stateVersion;
       };
+
+      users = genAttrs (filter (user: (pathExists ../../../../users/${user})) (attrNames users)) (name: import ../../../../users/${name});
     };
 
     environment = {

@@ -138,30 +138,32 @@ in {
       };
     }
     (mkIf homeManagerLoaded {
-      home-manager.sharedModules = [{
-        imports = [
-          inputs.hyprland.homeManagerModules.default
-          ./config
-          ./components
-        ];
+      home-manager.sharedModules = [
+        {
+          imports = [
+            inputs.hyprland.homeManagerModules.default
+            ./config
+            ./components
+          ];
 
-        xdg.desktopEntries."org.gnome.Settings" = {
-          name = "Settings";
-          comment = "Gnome Control Center";
-          icon = "org.gnome.Settings";
-          exec = "env XDG_CURRENT_DESKTOP=gnome ${pkgs.gnome-control-center}/bin/gnome-control-center";
-          categories = ["X-Preferences"];
-          terminal = false;
-        };
+          xdg.desktopEntries."org.gnome.Settings" = {
+            name = "Settings";
+            comment = "Gnome Control Center";
+            icon = "org.gnome.Settings";
+            exec = "env XDG_CURRENT_DESKTOP=gnome ${pkgs.gnome-control-center}/bin/gnome-control-center";
+            categories = ["X-Preferences"];
+            terminal = false;
+          };
 
-        wayland.windowManager.hyprland = {
-          enable = true;
-          systemd.enable = false;
-          package = pkgs.inputs.hyprland.hyprland;
-        };
+          wayland.windowManager.hyprland = {
+            enable = true;
+            systemd.enable = false;
+            package = pkgs.inputs.hyprland.hyprland;
+          };
 
-        dconf.settings."org/gnome/desktop/wm/preferences".button-layout = ":";
-      }];
+          dconf.settings."org/gnome/desktop/wm/preferences".button-layout = ":";
+        }
+      ];
     })
   ]);
 }

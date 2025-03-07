@@ -1,13 +1,6 @@
-{
-  pkgs,
-  osConfig,
-  ...
-}: let
+{pkgs, osConfig, ...}: let
   user = "neoscode";
-  name = "Victor R";
 in {
-  xdg.configFile."intelephense/licence.txt".source = osConfig.age.secrets.intelephense.path;
-
   home = {
     username = osConfig.users.users.${user}.name;
     homeDirectory = osConfig.users.users.${user}.home;
@@ -51,63 +44,12 @@ in {
     ssh = {
       enable = true;
       controlPath = "/home/${user}/.ssh/controlmasters/%r@%h:%p";
-      matchBlocks = {
-        "FmTod" = {
-          hostname = "webapps";
-          user = "fmtod";
-        };
-
-        "SellDiam" = {
-          hostname = "webapps";
-          user = "inventory";
-        };
-
-        "DOS" = {
-          hostname = "storesites";
-          user = "dostov";
-        };
-
-        "BLVD" = {
-          hostname = "storesites";
-          user = "REDACTED";
-        };
-
-        "EXB" = {
-          hostname = "storesites";
-          user = "REDACTED";
-        };
-
-        "DTC" = {
-          hostname = "storesites";
-          user = "REDACTED";
-        };
-
-        "NFC" = {
-          hostname = "storesites";
-          user = "REDACTED";
-        };
-
-        "TJD" = {
-          hostname = "storesites";
-          user = "REDACTED";
-        };
-
-        "47DD" = {
-          hostname = "storesites";
-          user = "REDACTED";
-        };
-
-        "PELA" = {
-          hostname = "storesites";
-          user = "REDACTED";
-        };
-      };
     };
 
     git = {
       enable = true;
       delta.enable = true;
-      userName = name;
+      userName = osConfig.users.users.${user}.description;
       userEmail = "39545521+viicslen@users.noreply.github.com";
       aliases = {
         nah = ''!f(){ git reset --hard; git clean -df; if [ -d ".git/rebase-apply" ] || [ -d ".git/rebase-merge" ]; then git rebase --abort; fi; }; f'';

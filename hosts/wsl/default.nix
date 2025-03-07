@@ -1,17 +1,14 @@
 {
   lib,
   pkgs,
-  users,
   inputs,
   ...
 }:
 with lib; {
-  imports =
-    [
-      inputs.nixos-wsl.nixosModules.default
-      inputs.vscode-server.nixosModules.default
-    ]
-    ++ map (name: ../../users/${name}) (attrNames users);
+  imports = [
+    inputs.nixos-wsl.nixosModules.default
+    inputs.vscode-server.nixosModules.default
+  ];
 
   system.stateVersion = "25.05";
   nixpkgs.hostPlatform = "x86_64-linux";
@@ -68,16 +65,4 @@ with lib; {
     functionality.theming.enable = true;
     containers.settings.log-driver = "local";
   };
-
-  users.users =
-    lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
-      isNormalUser = true;
-      description = value.description;
-      initialPassword = lib.mkIf (value.password == "") name;
-      hashedPassword = lib.mkIf (value.password != "") value.password;
-      extraGroups = ["networkmanager" "wheel" "adbusers" name];
-      shell = pkgs.nushell;
-      useDefaultShell = false;
-    }))
-    users;
 }
