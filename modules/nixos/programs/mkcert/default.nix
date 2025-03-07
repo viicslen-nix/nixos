@@ -44,6 +44,6 @@ in {
       '')
     ];
 
-    security.pki.certificateFiles = mkIf cfg.rootCA.enable map (user: "${config.users.users.${user}.home}/${user}/${cfg.rootCA.path}") attrNames users;
+    security.pki.certificateFiles = mkIf cfg.rootCA.enable (map (user: "${config.users.users.${user}.home}/${user}/${cfg.rootCA.path}") (attrNames users));
   };
 }
