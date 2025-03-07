@@ -17,6 +17,7 @@ in {
 
   imports = [
     inputs.nvf.homeManagerModules.default
+    ./php.nix
   ];
 
   config = mkIf cfg.enable {
