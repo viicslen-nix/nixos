@@ -48,6 +48,13 @@ with lib; {
     firewall.enable = mkForce false;
   };
 
+  # Add root user for troubleshooting
+  users.users.root = {
+    isNormalUser = true;
+    home = "/root";
+    shell = pkgs.zsh;
+  };
+
   services = {
     displayManager.defaultSession = "hyprland-uwsm";
 

@@ -1,6 +1,15 @@
-{pkgs, osConfig, ...}: let
+{pkgs, config, osConfig, ...}: let
   user = "neoscode";
 in {
+  age = {
+    identityPaths = ["${osConfig.users.users.${user}.home}/.ssh/agenix"];
+
+    secrets.intelephense = {
+      file = ../../secrets/intelephense/licence.age;
+      path = "${osConfig.users.users.${user}.home}/.config/intelephense/licence.txt";
+    };
+  };
+
   home = {
     username = osConfig.users.users.${user}.name;
     homeDirectory = osConfig.users.users.${user}.home;

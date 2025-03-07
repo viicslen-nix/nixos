@@ -43,7 +43,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    age.identityPaths = map (user: "${config.users.users.${user.name}.home}/.ssh/agenix") users;
+    age.identityPaths = map (user: "${config.users.users.${user}.home}/.ssh/agenix") (attrNames users);
 
     users.users =
       lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
