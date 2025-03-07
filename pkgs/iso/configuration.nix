@@ -33,14 +33,16 @@ with lib; {
 
   networking = {
     firewall.enable = false;
-    useNetworkd = true;
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-      "2606:4700:4700::1111"
-      "2606:4700:4700::1001"
-    ];
-    usePredictableInterfaceNames = false;
+    wireless.enable = false;
+    networkmanager = {
+      enable = true;
+      insertNameservers = [
+        "1.1.1.1"
+        "1.0.0.1"
+        "2606:4700:4700::1111"
+        "2606:4700:4700::1001"
+      ];
+    };
   };
 
   systemd = {
@@ -92,13 +94,23 @@ with lib; {
     qemuGuest.enable = true;
     resolved.enable = false;
     openssh.settings.PermitRootLogin = lib.mkForce "yes";
+
+    xserver = {
+      enable = true;
+      displayManager.gdm.enable = true;
+      desktopManager.gnome.enable = true;
+    };
   };
 
   environment = {
     # Use helix as the default editor
     variables.EDITOR = "hx";
 
-    systemPackages = with pkgs; [
+    systemPackages = with pkgs; let
+      gitBin = getExe git;
+      gumBin = getExe gum;
+      gsettingsBin = getExe' glib "gsettings";
+    in [
       helix
       vim
       curl
@@ -108,15 +120,15 @@ with lib; {
       partclone
       ntfsprogs
       ntfs3g
+      networkmanager
       git
-      gum
       (writeShellScriptBin "disko-install" ''
         #!/usr/bin/env bash
 
         set -euo pipefail
 
-        gsettings set org.gnome.desktop.session idle-delay 0
-        gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+        ${gsettingsBin} set org.gnome.desktop.session idle-delay 0
+        ${gsettingsBin} set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
 
         if [ "$(id -u)" -eq 0 ]; then
           echo "ERROR! $(basename "$0") should be run as a regular user"
@@ -124,19 +136,19 @@ with lib; {
         fi
 
         if [ ! -d "$HOME/nixos/.git" ]; then
-          git clone https://github.com/viicslen/nixos.git "$HOME/nixos"
+          ${gitBin} clone https://github.com/viicslen/nixos.git "$HOME/nixos"
         fi
 
-        TARGET_HOST=$(ls -1 ~/nixos/hosts/*/default.nix | cut -d'/' -f6 | grep -v iso | gum choose)
+        TARGET_HOST=$(ls -1 ~/nixos/hosts/*/default.nix | cut -d'/' -f6 | grep -v iso | ${gumBin} choose)
 
         if [ ! -e "$HOME/nixos/hosts/$TARGET_HOST/disko.nix" ]; then
           echo "ERROR! $(basename "$0") could not find the required $HOME/nixos/hosts/$TARGET_HOST/disko.nix"
           exit 1
         fi
 
-        TARGET_DISK=$(lsblk -o NAME,SIZE,TYPE,TRAN,MODEL | grep disk | gum choose | awk '{print $1}')
+        TARGET_DISK=$(lsblk -o NAME,SIZE,TYPE,TRAN,MODEL | grep disk | ${gumBin} choose | awk '{print $1}')
 
-        gum confirm  --default=false \
+        ${gumBin} confirm  --default=false \
         "🔥 🔥 🔥 WARNING!!!! This will ERASE ALL DATA on the disk $TARGET_HOST. Are you sure you want to continue?"
 
         echo "Partitioning Disks"
