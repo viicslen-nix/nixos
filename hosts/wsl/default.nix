@@ -1,18 +1,14 @@
 {
   lib,
   pkgs,
+  users,
   inputs,
   ...
-}: let
-  users = ["neoscode"];
-in
-  with lib; {
-    imports =
-      [
-        inputs.nixos-wsl.nixosModules.default
-        inputs.vscode-server.nixosModules.default
-      ]
-      ++ (map (u: ../../users/${u}) users);
+}: with lib; {
+    imports = [
+      inputs.nixos-wsl.nixosModules.default
+      inputs.vscode-server.nixosModules.default
+    ];
 
     system.stateVersion = "25.05";
     nixpkgs.hostPlatform = "x86_64-linux";

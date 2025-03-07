@@ -3,72 +3,81 @@
   pkgs,
   ...
 }: {
-  modules.functionality.impermanence = {
-    enable = true;
-    share = [
-      "Steam"
-      "JetBrains"
-      "keyrings"
-      "direnv"
-      "zoxide"
-      "mkcert"
-      "pnpm"
-      "nvim"
-      "atuin"
-    ];
-    config = [
-      "Lens"
-      "Code"
-      "Slack"
-      "Insomnia"
-      "JetBrains"
-      "1Password"
-      "Tinkerwell"
-      "Mullvad VPN"
-      "GitHub Desktop"
-      "microsoft-edge"
-      "github-copilot"
-      "tinkerwell"
-      "composer"
-      "discord"
-      "legcord"
-      "direnv"
-      "gcloud"
-      "helm"
-      "op"
-    ];
-    cache = [
-      "JetBrains"
-      "starship"
-      "carapace"
-      "zoxide"
-      "atuin"
-      "helm"
-    ];
-    directories = [
-      ".pki"
-      ".ssh"
-      ".zen"
-      ".kube"
-      ".java"
-      ".gnupg"
-      ".steam"
-      ".nixops"
-      ".vscode"
-      ".docker"
-      ".mozilla"
-      ".thunderbird"
-      ".tmux/resurrect"
-    ];
-    files = [
-      ".env.aider"
-      ".gitconfig"
-      ".ideavimrc"
-      ".zsh_history"
-      ".wakatime.cfg"
-      ".config/background"
-      ".config/monitors.xml"
-    ];
+  modules = {
+    functionality.impermanence = {
+      enable = true;
+      share = [
+        "Steam"
+        "JetBrains"
+        "keyrings"
+        "direnv"
+        "zoxide"
+        "mkcert"
+        "pnpm"
+        "nvim"
+        "atuin"
+      ];
+      config = [
+        "Lens"
+        "Code"
+        "Slack"
+        "Insomnia"
+        "JetBrains"
+        "1Password"
+        "Tinkerwell"
+        "Mullvad VPN"
+        "GitHub Desktop"
+        "microsoft-edge"
+        "github-copilot"
+        "tinkerwell"
+        "composer"
+        "discord"
+        "legcord"
+        "direnv"
+        "gcloud"
+        "helm"
+        "op"
+      ];
+      cache = [
+        "JetBrains"
+        "starship"
+        "carapace"
+        "zoxide"
+        "atuin"
+        "helm"
+      ];
+      directories = [
+        ".pki"
+        ".ssh"
+        ".zen"
+        ".kube"
+        ".java"
+        ".gnupg"
+        ".steam"
+        ".nixops"
+        ".vscode"
+        ".docker"
+        ".mozilla"
+        ".thunderbird"
+        ".tmux/resurrect"
+      ];
+      files = [
+        ".env.aider"
+        ".gitconfig"
+        ".ideavimrc"
+        ".zsh_history"
+        ".wakatime.cfg"
+        ".config/background"
+        ".config/monitors.xml"
+      ];
+    };
+
+    programs = {
+      ray.enable = true;
+      kitty.enable = true;
+      ghostty.enable = true;
+      tinkerwell.enable = true;
+    };
   };
 
   xdg = {

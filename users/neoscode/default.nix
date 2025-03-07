@@ -1,59 +1,159 @@
 {
-  lib,
   pkgs,
-  config,
+  osConfig,
   ...
 }: let
-  user = {
-    name = "neoscode";
-    description = "Victor R";
-    password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
-  };
+  user = "neoscode";
+  name = "Victor R";
 in {
-  age = {
-    identityPaths = ["${config.users.users.${user.name}.home}/.ssh/agenix"];
+  xdg.configFile."intelephense/licence.txt".source = osConfig.age.secrets.intelephense.path;
 
-    secrets.intelephense = {
-      file = ../../secrets/intelephense/licence.age;
-      path = "/home/${user.name}/.config/intelephense/licence.txt";
+  home = {
+    username = osConfig.users.users.${user}.name;
+    homeDirectory = osConfig.users.users.${user}.home;
+
+    sessionVariables = {
+      EDITOR = "nvim";
+      NIXOS_OZONE_WL = "1";
     };
   };
 
-  users.users.${user.name} = {
-    isNormalUser = true;
-    description = user.description;
-    initialPassword = lib.mkIf (user.password == "") user.name;
-    hashedPassword = lib.mkIf (user.password != "") user.password;
-    extraGroups = ["networkmanager" "wheel" "adbusers" user.name];
-    shell = pkgs.nushell;
-    useDefaultShell = false;
+  programs = {
+    carapace.enable = true;
+    thefuck.enable = true;
+    zoxide.enable = true;
+    k9s.enable = true;
+    btop.enable = true;
+
+    gh = {
+      enable = true;
+      gitCredentialHelper.enable = true;
+      extensions = [pkgs.gh-copilot];
+    };
+
+    direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
+
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+      tmux.enableShellIntegration = true;
+    };
+
+    hstr = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    ssh = {
+      enable = true;
+      controlPath = "/home/${user}/.ssh/controlmasters/%r@%h:%p";
+      matchBlocks = {
+        "FmTod" = {
+          hostname = "webapps";
+          user = "fmtod";
+        };
+
+        "SellDiam" = {
+          hostname = "webapps";
+          user = "inventory";
+        };
+
+        "DOS" = {
+          hostname = "storesites";
+          user = "dostov";
+        };
+
+        "BLVD" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "EXB" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "DTC" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "NFC" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "TJD" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "47DD" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+
+        "PELA" = {
+          hostname = "storesites";
+          user = "REDACTED";
+        };
+      };
+    };
+
+    git = {
+      enable = true;
+      delta.enable = true;
+      userName = name;
+      userEmail = "39545521+viicslen@users.noreply.github.com";
+      aliases = {
+        nah = ''!f(){ git reset --hard; git clean -df; if [ -d ".git/rebase-apply" ] || [ -d ".git/rebase-merge" ]; then git rebase --abort; fi; }; f'';
+        forget = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D";
+        forgetlist = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}'";
+        uncommit = "reset --soft HEAD~0";
+      };
+      extraConfig = {
+        pull.rebase = true;
+        init.defaultBranch = "main";
+        web.browser = "microsoft-edge";
+        user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJk8lwwP7GnxZMgpx+C30i/Lw912BBoFccz4gjek8lCX";
+      };
+    };
+
+    nvchad = {
+      enable = false;
+      backup = false;
+      extraPackages = with pkgs; [
+        nixd
+        python3
+        php83
+        php83Packages.composer
+        docker-compose-language-service
+        dockerfile-language-server-nodejs
+        nodePackages.bash-language-server
+        stable.nodePackages.volar
+      ];
+    };
   };
-
-  home-manager.users.${user.name}.imports = [
-    (import ./home.nix {
-      user = user.name;
-      name = user.description;
-    })
-  ];
-
-  hardware.openrazer.users = [user.name];
 
   modules = {
-    functionality.backups = {
-      home.users = [user.name];
-      paths = ["/persist/home/${user.name}/Development"];
-    };
-
-    desktop = {
-      gnome.users = [user.name];
-      hyprland.users = [user.name];
-    };
-
     programs = {
-      kanata.users = [user.name];
-      docker.users = [user.name];
-      mkcert.rootCA.users = [user.name];
-      onePassword.users = [user.name];
+      zsh.enable = true;
+      tmux.enable = true;
+      aider.enable = true;
+      tmate.enable = true;
+      atuin.enable = true;
+      nushell.enable = true;
+      starship.enable = true;
+      nvf.enable = true;
+      sesh = {
+        enable = true;
+        enableNushellIntegration = true;
+        enableTmuxIntegration = true;
+      };
     };
   };
 }

@@ -169,61 +169,86 @@
   outputs = inputs @ {
     flake-parts,
     nixpkgs,
+    self,
     ...
-  }: flake-parts.lib.mkFlake {inherit inputs;} ({ config, withSystem, ... }: {
-    imports = [
-      inputs.easy-hosts.flakeModule
-      inputs.mission-control.flakeModule
-      inputs.flake-root.flakeModule
-      inputs.ez-configs.flakeModule
-    ];
-    systems = [
-      "aarch64-linux"
-      "i686-linux"
-      "x86_64-linux"
-      "aarch64-darwin"
-      "x86_64-darwin"
-    ];
-    perSystem = {
-      pkgs,
-      system,
+  }: let
+    inherit (self) outputs;
+    in flake-parts.lib.mkFlake {inherit inputs;} ({
       config,
-      inputs',
+      withSystem,
       ...
     }: {
-      # Formatter for your nix files, available through 'nix fmt'
-      # Other options beside 'alejandra' include 'nixpkgs-fmt'
-      formatter = pkgs.alejandra;
+      imports = [
+        inputs.easy-hosts.flakeModule
+        inputs.mission-control.flakeModule
+        inputs.flake-root.flakeModule
+        inputs.ez-configs.flakeModule
+      ];
+      systems = [
+        "aarch64-linux"
+        "i686-linux"
+        "x86_64-linux"
+        "aarch64-darwin"
+        "x86_64-darwin"
+      ];
+      perSystem = {
+        pkgs,
+        system,
+        config,
+        inputs',
+        ...
+      }: {
+        # Formatter for your nix files, available through 'nix fmt'
+        # Other options beside 'alejandra' include 'nixpkgs-fmt'
+        formatter = pkgs.alejandra;
 
-      # Your custom packages
-      # Accessible through 'nix build', 'nix shell', etc
-      packages = import ./pkgs {inherit inputs pkgs;};
+        # Your custom packages
+        # Accessible through 'nix build', 'nix shell', etc
+        packages = import ./pkgs {inherit inputs pkgs;};
 
-      # Your custom dev shells
-      devShells = import ./dev-shells {inherit inputs system;};
-    };
-    flake = {
-      # Your custom packages and modifications, exported as overlays
-      overlays = import ./overlays {inherit inputs;};
+        # Your custom dev shells
+        devShells = import ./dev-shells {inherit inputs system;};
+      };
+      flake = {
+        # Your custom packages and modifications, exported as overlays
+        overlays = import ./overlays {inherit inputs;};
 
-      # Reusable nixos modules you might want to export
-      # These are usually stuff you would upstream into nixpkgs
-      nixosModules = import ./modules/nixos;
+        # Reusable nixos modules you might want to export
+        # These are usually stuff you would upstream into nixpkgs
+        nixosModules = import ./modules/nixos;
 
-      # Reusable home-manager modules you might want to export
-      # These are usually stuff you would upstream into home-manager
-      homeManagerModules = import ./modules/home-manager;
-    };
-    easyHosts = import ./hosts {inherit inputs;};
+        # Reusable home-manager modules you might want to export
+        # These are usually stuff you would upstream into home-manager
+        homeManagerModules = import ./modules/home-manager;
+      };
+      ezConfigs = {
+        root = ./.;
 
-    # ezConfigs = {
-    #   root = ./.;
-    #   globalArgs = {inherit inputs;};
-    #   home.modulesDirectory = "${config.ezConfigs.root}/modules/home-manager";
-    #   home.configurationsDirectory = "${config.ezConfigs.root}/users";
+        globalArgs = {
+          inherit inputs outputs;
+        };
 
-    #   nixos.modulesDirectory = "${config.ezConfigs.root}/modules/nixos";
-    #   nixos.configurationsDirectory = "${config.ezConfigs.root}/hosts";
-    # };
-  });
+        nixos = {
+          # modulesDirectory = "${config.ezConfigs.root}/modules/nixos";
+
+          hosts.asus-zephyrus-gu603.userHomeModules = ["neoscode"];
+          hosts.wsl.userHomeModules = ["neoscode"];
+
+          configurationsDirectory = "${config.ezConfigs.root}/hosts";
+          specialArgs = {
+            users = {
+              neoscode = {
+                description = "Victor R";
+                password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
+              };
+            };
+          };
+        };
+
+        home = {
+          # modulesDirectory = "${config.ezConfigs.root}/modules/home-manager";
+          configurationsDirectory = "${config.ezConfigs.root}/users";
+        };
+      };
+    });
 }
