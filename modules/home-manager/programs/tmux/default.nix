@@ -47,6 +47,9 @@ in {
         };
         extraConfig = ''
           set -g @tokyo-night-tmux_theme "storm" # options: night, storm, day
+          set -g @tokyo-night-tmux_window_id_style fsquare
+          set -g @tokyo-night-tmux_pane_id_style hide
+          set -g @tokyo-night-tmux_zoom_id_style hide
           set -g @tokyo-night-tmux_show_datetime 0
           set -g @tokyo-night-tmux_path_format "relative"
           set -g @tokyo-night-tmux_show_git 1
