@@ -73,10 +73,10 @@
     };
 
     programs = {
-      ray.enable = true;
+      # ray.enable = true;
       kitty.enable = true;
-      ghostty.enable = true;
-      tinkerwell.enable = true;
+      # ghostty.enable = true;
+      # tinkerwell.enable = true;
     };
   };
 
@@ -92,7 +92,7 @@
     };
 
     mimeApps = {
-      enable = true;
+      # enable = true;
       associations.added = {
         "text/html" = "org.gnome.Epiphany.desktop;microsoft-edge.desktop";
         "application/xhtml+xml" = "org.gnome.Epiphany.desktop;microsoft-edge.desktop";
@@ -131,5 +131,5 @@
     "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":minimize,maximize,close";
   };
 
-  home.file."/home/neoscode/.config/mimeapps.list".force = lib.mkForce true;
+  # home.file."/home/neoscode/.config/mimeapps.list".force = lib.mkForce true;
 }

@@ -55,7 +55,7 @@ with lib; {
   };
 
   services = {
-    displayManager.defaultSession = "hyprland-uwsm";
+    # displayManager.defaultSession = "hyprland-uwsm";
 
     # Disable the built-in keyboard
     udev.extraRules = lib.mkAfter ''
@@ -182,7 +182,7 @@ with lib; {
     presets = {
       base.enable = true;
       # work.enable = true;
-      personal.enable = true;
+      # personal.enable = true;
     };
 
     programs = {
