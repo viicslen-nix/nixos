@@ -17,7 +17,7 @@ with lib; {
   ];
 
   system.stateVersion = "25.05";
-  home-manager.shareModules = [./home.nix];
+  home-manager.sharedModules = [./home.nix];
 
   boot = {
     plymouth.enable = true;
@@ -35,9 +35,9 @@ with lib; {
   };
 
   hardware = {
-    logitech.wireless.enable = true;
+    # logitech.wireless.enable = true;
     openrazer = {
-      enable = true;
+      # enable = true;
       users = attrNames users;
     };
   };
@@ -64,24 +64,23 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
-    jetbrains-toolbox
-    jetbrains.idea-ultimate
-    jetbrains.phpstorm
-    jetbrains.datagrip
-    jetbrains.webstorm
-    jetbrains.goland
+    # jetbrains-toolbox
+    # jetbrains.idea-ultimate
+    # jetbrains.phpstorm
+    # jetbrains.datagrip
+    # jetbrains.webstorm
+    # jetbrains.goland
     vscode
-    waveterm
-    lens
-    skypeforlinux
-    insomnia
-    tangram
-    endeavour
-    drawing
-    kooha
-    vscode
-    obsidian
-    drawio
+    # waveterm
+    # lens
+    # skypeforlinux
+    # insomnia
+    # tangram
+    # endeavour
+    # drawing
+    # kooha
+    # obsidian
+    # drawio
   ];
 
   modules = {
@@ -106,19 +105,19 @@ with lib; {
       gnome.enable = true;
 
       hyprland = {
-        enable = true;
-        gnomeCompatibility = true;
+        # enable = true;
+        # gnomeCompatibility = true;
       };
     };
 
     functionality = {
       oom.enable = true;
       theming.enable = true;
-      appImages.enable = true;
+      # appImages.enable = true;
       powerManagement.enable = true;
 
       backups = {
-        enable = true;
+        # enable = true;
         repository = "b2:viicslen-asus-zephyrus-gu603";
 
         secrets = {
@@ -182,7 +181,7 @@ with lib; {
 
     presets = {
       base.enable = true;
-      work.enable = true;
+      # work.enable = true;
       personal.enable = true;
     };
 
