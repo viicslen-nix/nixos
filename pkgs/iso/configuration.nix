@@ -158,12 +158,14 @@ with lib; {
         -- \
         --mode disko \
         "$HOME/nixos/hosts/$TARGET_HOST/disko.nix" \
-        --arg device '"/dev/''${TARGET_DISK}"'
+        --arg device '"/dev/$TARGET_DISK"'
 
         sudo nixos-install --flake "$HOME/nixos#$TARGET_HOST"
       '')
     ];
   };
+
+  programs.direnv.enable = true;
 
   documentation = {
     enable = false;
