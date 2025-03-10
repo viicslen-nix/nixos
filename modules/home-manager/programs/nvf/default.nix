@@ -17,7 +17,7 @@ in {
 
   imports = [
     inputs.nvf.homeManagerModules.default
-    ./php.nix
+    # ./php.nix
   ];
 
   config = mkIf cfg.enable {
@@ -76,7 +76,10 @@ in {
             php = {
               enable = true;
               lsp = {
-                package = pkgs.intelephense;
+                package = [
+                  (getExe pkgs.intelephense)
+                  "--stdio"
+                ];
               };
             };
           };
@@ -97,6 +100,17 @@ in {
               listImplementations = "<leader>gi";
               listReferences = "<leader>gr";
             };
+
+            lspconfig.sources.php-lsp = mkForce ''
+              lspconfig.intelephense.setup {
+                capabilities = capabilities,
+                on_attach = default_on_attach,
+                cmd = {
+                  "${getExe pkgs.intelephense}",
+                  "--stdio"
+                },
+              }
+            '';
           };
 
           # UI
