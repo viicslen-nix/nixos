@@ -180,10 +180,12 @@
 
         # Your custom packages
         # Accessible through 'nix build', 'nix shell', etc
-        packages = import ./pkgs {inherit inputs pkgs;};
+        packages = import ./pkgs {inherit inputs system pkgs;};
 
         # Your custom dev shells
-        devShells = import ./dev-shells {inherit inputs system;};
+        devShells = import ./dev-shells {inherit inputs config system pkgs;};
+
+        mission-control.scripts = import ./scripts {inherit inputs system pkgs;};
       };
       flake = {
         # Your custom packages and modifications, exported as overlays
