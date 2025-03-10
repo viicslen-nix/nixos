@@ -77,9 +77,6 @@ gc:
   sudo nix store gc --debug
   sudo nix-collect-garbage --delete-old
 
-link:
-  sudo ln -s ~/.nix /etc/nixos
-
 
 ############################################################################
 #
