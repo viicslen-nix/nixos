@@ -76,28 +76,6 @@ in {
       programs = {
         corepack.enable = true;
 
-        docker = {
-          enable = true;
-          allowTcpPorts = [
-            # Traefik
-            80
-            443
-            8080
-
-            # PHPStorm Xdebug
-            9003
-
-            # Portainer
-            9443
-
-            # MySQL
-            3306
-
-            # Ray
-            23517
-          ];
-        };
-
         mkcert = {
           enable = true;
           rootCA.enable = false;

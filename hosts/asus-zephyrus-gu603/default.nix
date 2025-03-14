@@ -190,7 +190,29 @@ with lib; {
 
     programs = {
       mullvad.enable = true;
-      docker.nvidiaSupport = true;
+
+      docker = {
+        enable = true;
+        nvidiaSupport = true;
+        allowTcpPorts = [
+          # Traefik
+          80
+          443
+          8080
+
+          # PHPStorm Xdebug
+          9003
+
+          # Portainer
+          9443
+
+          # MySQL
+          3306
+
+          # Ray
+          23517
+        ];
+      };
 
       onePassword = {
         enable = true;

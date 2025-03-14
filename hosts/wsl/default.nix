@@ -71,15 +71,20 @@ with lib; {
   };
 
   services.vscode-server.enable = true;
+  virtualisation.docker.enable = mkForce false;
 
   modules = {
+    functionality.theming.enable = true;
+
     presets = {
       base.enable = true;
       work.enable = true;
       personal.enable = true;
     };
 
-    functionality.theming.enable = true;
-    containers.settings.log-driver = "local";
+    containers.settings = {
+      backend = "docker";
+      log-driver = "local";
+    };
   };
 }
