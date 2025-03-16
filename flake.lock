@@ -2342,6 +2342,29 @@
         "type": "github"
       }
     },
+    "plasma-manager": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1740569341,
+        "narHash": "sha256-WV8nY2IOfWdzBF5syVgCcgOchg/qQtpYh6LECYS9XkY=",
+        "owner": "nix-community",
+        "repo": "plasma-manager",
+        "rev": "5eeb0172fb74392053b66a8149e61b5e191b2845",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "plasma-manager",
+        "type": "github"
+      }
+    },
     "poetry2nix": {
       "inputs": {
         "flake-utils": "flake-utils_5",
@@ -2481,6 +2504,7 @@
         "nur": "nur",
         "nvf": "nvf",
         "one-password-shell-plugins": "one-password-shell-plugins",
+        "plasma-manager": "plasma-manager",
         "pyprland": "pyprland",
         "rofi-collections": "rofi-collections",
         "rofi-themes": "rofi-themes",
