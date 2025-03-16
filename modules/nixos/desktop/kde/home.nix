@@ -1,4 +1,9 @@
 {
+  services.kdeconnect = {
+    enable = true;
+    indicator = true;
+  };
+
   programs.plasma = {
     enable = true;
 
