@@ -52,8 +52,8 @@
       done
 
       echo "=== System Upgrade ==="
-      echo "Hostname: ${HOSTNAME}"
-      echo "Action: ${ACTION}"
+      echo "Hostname: ''${HOSTNAME}"
+      echo "Action: ''${ACTION}"
       echo "======================"
 
       if command -v nh &> /dev/null; then
