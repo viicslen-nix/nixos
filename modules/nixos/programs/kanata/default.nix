@@ -80,7 +80,7 @@ in {
         };
         builtin = {
           devices = [
-            "/dev/input/by-id/usb-ASUSTeK_Computer_Inc._N-KEY_Device-if02-event-kbd"
+            "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
           ];
           extraDefCfg = "process-unmapped-keys yes";
           config = ''
