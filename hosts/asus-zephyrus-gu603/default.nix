@@ -35,9 +35,8 @@ with lib; {
   };
 
   hardware = {
-    # logitech.wireless.enable = true;
     openrazer = {
-      # enable = true;
+      enable = true;
       users = attrNames users;
     };
   };
@@ -64,24 +63,23 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
-    # jetbrains-toolbox
-    # jetbrains.idea-ultimate
-    # jetbrains.phpstorm
-    # jetbrains.datagrip
-    # jetbrains.webstorm
-    # jetbrains.goland
+    jetbrains.idea-ultimate
+    jetbrains.phpstorm
+    jetbrains.datagrip
+    jetbrains.webstorm
+    jetbrains.goland
+    microsoft-edge
     vscode
-    # waveterm
-    # lens
-    # skypeforlinux
-    # insomnia
-    # tangram
-    # endeavour
-    # drawing
-    # kooha
-    # obsidian
-    # drawio
+    lens
+    insomnia
+    drawing
+    kooha
+    obsidian
+    drawio
   ];
+
+  # programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
+  programs.ssh.askPassword = mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
 
   modules = {
     hardware = {
@@ -104,20 +102,25 @@ with lib; {
     desktop = {
       gnome.enable = true;
 
-      hyprland = {
-        # enable = true;
-        # gnomeCompatibility = true;
+      # hyprland = {
+      #   enable = true;
+      #   gnomeCompatibility = true;
+      # };
+
+      kde = {
+        enable = true;
+        enableSddm = false;
       };
     };
 
     functionality = {
       oom.enable = true;
       theming.enable = true;
-      # appImages.enable = true;
+      appImages.enable = true;
       powerManagement.enable = true;
 
       backups = {
-        # enable = true;
+        enable = true;
         repository = "b2:viicslen-asus-zephyrus-gu603";
 
         secrets = {
@@ -181,8 +184,8 @@ with lib; {
 
     presets = {
       base.enable = true;
-      # work.enable = true;
-      # personal.enable = true;
+      work.enable = true;
+      personal.enable = true;
     };
 
     programs = {
