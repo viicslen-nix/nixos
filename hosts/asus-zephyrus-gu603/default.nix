@@ -54,7 +54,7 @@ with lib; {
   };
 
   services = {
-    # displayManager.defaultSession = "hyprland-uwsm";
+    displayManager.defaultSession = "hyprland-uwsm";
 
     # Disable the built-in keyboard
     udev.extraRules = lib.mkAfter ''
@@ -102,15 +102,15 @@ with lib; {
     desktop = {
       gnome.enable = true;
 
-      # hyprland = {
-      #   enable = true;
-      #   gnomeCompatibility = true;
-      # };
-
-      kde = {
+      hyprland = {
         enable = true;
-        enableSddm = false;
+        gnomeCompatibility = true;
       };
+
+      # kde = {
+      #   enable = true;
+      #   enableSddm = false;
+      # };
     };
 
     functionality = {
