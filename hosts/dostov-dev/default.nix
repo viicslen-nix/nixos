@@ -52,11 +52,7 @@ with lib; {
   modules = {
     hardware = {
       intel.enable = true;
-
-      nvidia = {
-        enable = true;
-        modern = true;
-      };
+      nvidia.enable = true;
     };
 
     desktop = {
