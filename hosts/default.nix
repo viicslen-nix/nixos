@@ -13,6 +13,12 @@
       path = ./wsl;
     };
 
+    dostov-dev = {
+      class = "nixos";
+      arch = "x86_64";
+      path = ./dostov-dev;
+    };
+
     asus-zephyrus-gu603 = {
       class = "nixos";
       arch = "x86_64";
