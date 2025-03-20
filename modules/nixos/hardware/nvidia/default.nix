@@ -37,6 +37,7 @@ in {
         dynamicBoost.enable = mkIf cfg.modern true;
         powerManagement.enable = mkIf cfg.modern true;
         powerManagement.finegrained = mkIf cfg.modern true;
+        prime.offload.enable = mkIf cfg.modern true;
       };
     };
 
