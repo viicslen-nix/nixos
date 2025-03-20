@@ -1,15 +1,20 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, lib, users, ... }:
-
+{
+  config,
+  pkgs,
+  lib,
+  users,
+  ...
+}:
 with lib; {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware.nix
+  ];
 
+  system.stateVersion = "25.05";
   home-manager.sharedModules = [./home.nix];
 
   # Bootloader.
@@ -17,7 +22,6 @@ with lib; {
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking = {
-    # hostId = "86f2c355";
     hostName = "dostov-dev";
     firewall.enable = mkForce false;
   };
@@ -26,13 +30,10 @@ with lib; {
   users.users.dostov = {
     isNormalUser = true;
     description = "dostov";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
+    extraGroups = ["networkmanager" "wheel"];
   };
 
-   environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     jetbrains.idea-ultimate
     jetbrains.phpstorm
     jetbrains.datagrip
@@ -47,9 +48,6 @@ with lib; {
     obsidian
     drawio
   ];
-
-  system.stateVersion = "25.05";
-
 
   modules = {
     hardware = {
@@ -139,10 +137,6 @@ with lib; {
       onePassword = {
         enable = true;
         gitSignCommits = true;
-        allowedCustomBrowsers = [
-          ".zen-wrapped"
-          "zen"
-        ];
         users = attrNames users;
       };
     };

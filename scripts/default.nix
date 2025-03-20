@@ -2,7 +2,7 @@
 with pkgs; {
   upgrade = {
     description = "Upgrade System";
-    exec = (writeShellScriptBin "system-upgrade" ''
+    exec = writeShellScriptBin "system-upgrade" ''
       #!${stdenv.shell}
 
       HOSTNAME=$(hostname)
@@ -62,21 +62,21 @@ with pkgs; {
       else
         sudo nixos-rebuild ''${ACTION} --flake .#''${HOSTNAME}
       fi
-    '');
+    '';
   };
 
   update = {
     description = "Update Inputs";
-    exec = (writeShellScriptBin "system-update" ''
-  #!${stdenv.shell}
+    exec = writeShellScriptBin "system-update" ''
+      #!${stdenv.shell}
 
-  if [ "$#" -eq 0 ]; then
-    nix flake update
-  else
-    for input in "$@"; do
-      nix flake lock --update-input ''${input}
-    done
-  fi
-'');
+      if [ "$#" -eq 0 ]; then
+        nix flake update
+      else
+        for input in "$@"; do
+          nix flake lock --update-input ''${input}
+        done
+      fi
+    '';
   };
 }

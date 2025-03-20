@@ -1,4 +1,9 @@
-{writeShellScriptBin,stdenv,...}: writeShellScriptBin "system-update" ''
+{
+  writeShellScriptBin,
+  stdenv,
+  ...
+}:
+writeShellScriptBin "system-update" ''
   #!${stdenv.shell}
 
   if [ "$#" -eq 0 ]; then
