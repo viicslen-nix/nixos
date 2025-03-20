@@ -76,6 +76,9 @@ with lib; {
     kooha
     obsidian
     drawio
+    legcord
+    warp-terminal
+    fish
   ];
 
   # programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
@@ -171,6 +174,7 @@ with lib; {
         "ai.local" = "127.0.0.1";
         "home.local" = "127.0.0.1";
         "buggregator.local" = "127.0.0.1";
+        "soketi.local" = "127.0.0.1";
         "npm.local" = "127.0.0.1";
         "portainer.local" = "127.0.0.1";
         "phpmyadmin.local" = "127.0.0.1";
@@ -179,6 +183,7 @@ with lib; {
         "app.mylisterhub.test" = "127.0.0.1";
         "admin.mylisterhub.test" = "127.0.0.1";
         "*.mylisterhub.test" = "127.0.0.1";
+        "time-tracker.test" = "127.0.0.1";
       };
     };
 
@@ -194,6 +199,7 @@ with lib; {
       docker = {
         enable = true;
         nvidiaSupport = true;
+        storageDriver = "btrfs";
         allowTcpPorts = [
           # Traefik
           80

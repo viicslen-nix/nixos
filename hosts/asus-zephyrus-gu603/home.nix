@@ -3,6 +3,10 @@
   pkgs,
   ...
 }: {
+  # home.packages = with pkgs; [
+  #   legcord
+  # ];
+
   modules = {
     functionality.impermanence = {
       enable = true;
@@ -41,6 +45,7 @@
         "GitHub Desktop"
         "microsoft-edge"
         "github-copilot"
+        "warp-terminal"
         "tinkerwell"
         "composer"
         "discord"
@@ -158,6 +163,10 @@
       kitty.enable = true;
       # ghostty.enable = true;
       # tinkerwell.enable = true;
+      lan-mouse = {
+        enable = true;
+        autostart = true;
+      };
     };
   };
 

@@ -31,6 +31,11 @@ in {
       default = [80 443];
       description = "The TCP ports to allow in the firewall";
     };
+
+    storageDriver = mkOption {
+      type = types.str;
+      description = "The storage driver to use";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -39,8 +44,11 @@ in {
     ];
 
     virtualisation = {
-      docker.enable = true;
-      docker.autoPrune.enable = true;
+      docker = {
+        enable = true;
+        autoPrune.enable = true;
+        storageDriver = cfg.storageDriver;
+      };
 
       podman.enable = false;
 

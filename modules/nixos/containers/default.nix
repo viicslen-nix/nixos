@@ -72,9 +72,13 @@ in {
           ];
           volumes = [
             "percona-mysql:/var/lib/mysql"
+            "percona-mysql-config:/etc/my.cnf.d"
           ];
-          extraOptions = [
-            "--network=local"
+          networks = [
+            "local"
+          ];
+          cmd = [
+            "--disable-log-bin"
           ];
           environment = {
             MYSQL_ROOT_PASSWORD = "secret";
