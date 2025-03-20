@@ -45,9 +45,9 @@ with lib; {
     legcord
     drawing
     vscode
-    lens
-    kooha
     drawio
+    kooha
+    lens
   ];
 
   modules = {
