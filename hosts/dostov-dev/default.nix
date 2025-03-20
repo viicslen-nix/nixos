@@ -34,18 +34,19 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
+    microsoft-edge-wayland
     jetbrains.idea-ultimate
     jetbrains.phpstorm
     jetbrains.datagrip
     jetbrains.webstorm
     jetbrains.goland
-    microsoft-edge
+    insomnia
+    obsidian
+    legcord
+    drawing
     vscode
     lens
-    insomnia
-    drawing
     kooha
-    obsidian
     drawio
   ];
 
