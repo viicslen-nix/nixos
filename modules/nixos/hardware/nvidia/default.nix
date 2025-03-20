@@ -13,6 +13,7 @@ in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
     modern = mkEnableOption (mdDoc "Enable modern NVIDIA driver");
+    prime = mkEnableOption (mdDoc "Enable PRIME offloading");
     specialisation = mkEnableOption (mdDoc "Enable specialisation for NVIDIA sync");
   };
 
@@ -36,13 +37,13 @@ in {
         modesetting.enable = true;
         dynamicBoost.enable = mkIf cfg.modern true;
         powerManagement.enable = mkIf cfg.modern true;
-        powerManagement.finegrained = mkIf cfg.modern true;
-        prime.offload.enable = mkIf cfg.modern true;
+        powerManagement.finegrained = mkIf (cfg.modern && cfg.prime) true;
+        prime.offload.enable = mkIf (cfg.modern && cfg.prime) true;
       };
     };
 
-    specialisation = {
-      nvidia-sync.configuration = mkIf cfg.specialisation {
+    specialisation = mkIf cfg.specialisation {
+      nvidia-sync.configuration = {
         system.nixos.tags = ["nvidia-sync"];
         hardware.nvidia = {
           powerManagement.finegrained = lib.mkForce false;
