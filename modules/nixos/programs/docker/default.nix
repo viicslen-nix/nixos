@@ -34,6 +34,7 @@ in {
 
     storageDriver = mkOption {
       type = types.str;
+      default = "overlay2";
       description = "The storage driver to use";
     };
   };
