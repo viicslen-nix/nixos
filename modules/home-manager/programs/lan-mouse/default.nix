@@ -7,7 +7,7 @@
 }:
 with lib; let
   name = "lan-mouse";
-  namespace = "features";
+  namespace = "programs";
 
   cfg = config.modules.${namespace}.${name};
 in {
