@@ -1,9 +1,7 @@
 {
   lib,
   pkgs,
-  inputs,
   config,
-  options,
   ...
 }:
 with lib; let
@@ -11,7 +9,6 @@ with lib; let
   namespace = "desktop";
 
   cfg = config.modules.${namespace}.${name};
-  homeManagerLoaded = builtins.hasAttr "home-manager" options;
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc feature);
@@ -23,8 +20,7 @@ in {
     };
   };
 
-  config = mkIf cfg.enable (mkMerge [
-    {
+  config = mkIf cfg.enable {
       services.xserver.enable = mkDefault true;
       services.desktopManager.plasma6.enable = true;
 
@@ -37,12 +33,5 @@ in {
         konsole
         oxygen
       ];
-    }
-    (mkIf homeManagerLoaded {
-      home-manager.sharedModules = [
-        inputs.plasma-manager.homeManagerModules.plasma-manager
-        ./home.nix
-      ];
-    })
-  ]);
+    };
 }
