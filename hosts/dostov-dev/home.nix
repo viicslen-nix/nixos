@@ -3,19 +3,6 @@
   pkgs,
   ...
 }: {
-  modules = {
-    programs = {
-      # ray.enable = true;
-      kitty.enable = true;
-      # ghostty.enable = true;
-      # tinkerwell.enable = true;
-      lan-mouse = {
-        enable = true;
-        autostart = true;
-      };
-    };
-  };
-
   xdg = {
     configFile."gh/hosts.yml".source = (pkgs.formats.yaml {}).generate "hosts.yml" {
       "github.com" = {
@@ -48,24 +35,17 @@
     };
   };
 
-  dconf.settings = {
-    "org/gnome/shell" = {
-      favorite-apps = [
-        "org.gnome.Nautilus.desktop"
-        "microsoft-edge.desktop"
-        "phpstorm.desktop"
-        "ghostty.desktop"
-        "legcord.desktop"
-      ];
+  modules = {
+    programs = {
+      ray.enable = true;
+      kitty.enable = true;
+      tinkerwell.enable = true;
+      lan-mouse = {
+        enable = true;
+        autostart = true;
+      };
     };
-
-    "org/gnome/shell/extensions/arcmenu" = {
-      menu-button-border-color = lib.hm.gvariant.mkTuple [true "transparent"];
-      menu-button-border-radius = lib.hm.gvariant.mkTuple [true 10];
-    };
-
-    "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":minimize,maximize,close";
   };
 
-  # home.file."/home/neoscode/.config/mimeapps.list".force = lib.mkForce true;
+  stylix.targets.kde.enable = false;
 }

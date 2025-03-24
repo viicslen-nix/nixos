@@ -2,7 +2,6 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
-  config,
   pkgs,
   lib,
   users,
@@ -17,20 +16,43 @@ with lib; {
   system.stateVersion = "25.05";
   home-manager.sharedModules = [./home.nix];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    plymouth.enable = true;
+    loader = {
+      efi.canTouchEfiVariables = true;
+
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 10;
+      };
+    };
+  };
 
   networking = {
     hostName = "dostov-dev";
     firewall.enable = mkForce false;
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.dostov = {
-    isNormalUser = true;
-    description = "dostov";
-    extraGroups = ["networkmanager" "wheel"];
+  users.users = {
+    dostov = {
+      isNormalUser = true;
+      description = "dostov";
+      extraGroups = ["networkmanager" "wheel"];
+    };
+
+    neoscode.openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOaNSsNMlFN0+bSryhAdcS38d0Egk/M3SvzP4Yb4Wf4H dostov@dostov-dev"
+    ];
+  };
+
+  services = {
+    xserver.displayManager.gdm.enable = true;
+
+    openssh = {
+      enable = true;
+      startWhenNeeded = true;
+      passwordAuthentication = true;
+    };
   };
 
   environment.systemPackages = with pkgs; [
@@ -54,15 +76,18 @@ with lib; {
     hardware = {
       intel.enable = true;
       nvidia.enable = true;
+
+      display = {
+        enable = true;
+        resolution = "1920x1080";
+        refreshRate = "60";
+        port = "HDMI-A-1";
+      };
     };
 
-    desktop = {
-      gnome.enable = true;
-
-      hyprland = {
-        enable = true;
-        gnomeCompatibility = true;
-      };
+    desktop.kde = {
+      enable = true;
+      enableSddm = false;
     };
 
     functionality = {
