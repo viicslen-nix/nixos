@@ -81,8 +81,8 @@ with lib; {
     fish
   ];
 
-  # programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
-  programs.ssh.askPassword = mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
+  # programs.ssh.askPassword = mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
+  # programs.ssh.askPassword = mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
 
   modules = {
     hardware = {
