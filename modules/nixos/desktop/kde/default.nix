@@ -21,17 +21,21 @@ in {
   };
 
   config = mkIf cfg.enable {
-      services.xserver.enable = mkDefault true;
-      services.desktopManager.plasma6.enable = true;
+      services = {
+        xserver.enable = mkDefault true;
+        desktopManager.plasma6.enable = true;
 
-      services.displayManager.sddm = mkIf cfg.enableSddm {
-        enable = true;
-        wayland.enable = true;
+        displayManager.sddm = mkIf cfg.enableSddm {
+          enable = true;
+          wayland.enable = true;
+        };
       };
 
       environment.plasma6.excludePackages = with pkgs.kdePackages; [
         konsole
         oxygen
       ];
+
+      programs.kdeconnect.enable = true;
     };
 }
