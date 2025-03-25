@@ -47,6 +47,7 @@
         "github-copilot"
         "warp-terminal"
         "tinkerwell"
+        "lan-mouse"
         "composer"
         "discord"
         "legcord"
@@ -95,66 +96,6 @@
         ".wakatime.cfg"
         ".config/background"
         ".config/monitors.xml"
-
-        # Plasma
-        ".config/akregatorrc"
-        ".config/baloofileinformationrc"
-        ".config/baloofilerc"
-        ".config/bluedevilglobalrc"
-        ".config/device_automounter_kcmrc"
-        ".config/dolphinrc"
-        ".config/filetypesrc"
-        ".config/gtkrc"
-        ".config/gtkrc-2.0"
-        ".config/gwenviewrc"
-        ".config/kactivitymanagerd-pluginsrc"
-        ".config/kactivitymanagerd-statsrc"
-        ".config/kactivitymanagerd-switcher"
-        ".config/kactivitymanagerdrc"
-        ".config/katemetainfos"
-        ".config/katerc"
-        ".config/kateschemarc"
-        ".config/katevirc"
-        ".config/kcmfonts"
-        ".config/kcminputrc"
-        ".config/kconf_updaterc"
-        ".config/kded5rc"
-        ".config/kdeglobals"
-        ".config/kgammarc"
-        ".config/kglobalshortcutsrc"
-        ".config/khotkeysrc"
-        ".config/kmixrc"
-        ".config/konsolerc"
-        ".config/kscreenlockerrc"
-        ".config/ksmserverrc"
-        ".config/ksplashrc"
-        ".config/ktimezonedrc"
-        ".config/kwinrc"
-        ".config/kwinrulesrc"
-        ".config/kxkbrc"
-        ".config/mimeapps.list"
-        ".config/partitionmanagerrc"
-        ".config/plasma-localerc"
-        ".config/plasma-nm"
-        ".config/plasma-org.kde.plasma.desktop-appletsrc"
-        ".config/plasmanotifyrc"
-        ".config/plasmarc"
-        ".config/plasmashellrc"
-        ".config/PlasmaUserFeedback"
-        ".config/plasmawindowed-appletsrc"
-        ".config/plasmawindowedrc"
-        ".config/powermanagementprofilesrc"
-        ".config/spectaclerc"
-        ".config/startkderc"
-        ".config/systemsettingsrc"
-        ".config/Trolltech.conf"
-        ".config/user-dirs.dirs"
-        ".config/user-dirs.locale"
-
-        ".local/share/krunnerstaterc"
-        ".local/share/user-places.xbel"
-        ".local/share/user-places.xbel.bak"
-        ".local/share/user-places.xbel.tbcache"
       ];
     };
 
@@ -171,13 +112,29 @@
   };
 
   xdg = {
-    configFile."gh/hosts.yml".source = (pkgs.formats.yaml {}).generate "hosts.yml" {
-      "github.com" = {
-        user = "viicslen";
-        git_protocol = "https";
-        users = {
-          viicslen = "";
+    configFile = {
+      "gh/hosts.yml".source = (pkgs.formats.yaml {}).generate "hosts.yml" {
+        "github.com" = {
+          user = "viicslen";
+          git_protocol = "https";
+          users = {
+            viicslen = "";
+          };
         };
+      };
+
+      "lan-mouse/config.toml".source = (pkgs.formats.toml {}).generate "config.toml" {
+        authorized_fingerprints = {
+          "f1:40:12:eb:e0:e1:5d:4c:0e:45:61:e1:9f:7d:1c:9b:59:0b:91:ac:96:ea:a0:38:d3:8b:c9:f7:4e:9d:ad:46" = "dostov-dev";
+        };
+        clients = [
+          {
+            position = "top";
+            hostname = "dostov-dev";
+            activate_on_startup = true;
+            ips = ["192.168.5.61"];
+          }
+        ];
       };
     };
 
