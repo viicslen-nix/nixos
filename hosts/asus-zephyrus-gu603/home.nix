@@ -131,8 +131,8 @@
           {
             position = "top";
             hostname = "dostov-dev";
-            activate_on_startup = true;
             ips = ["192.168.5.61"];
+            port = 4242;
           }
         ];
       };
