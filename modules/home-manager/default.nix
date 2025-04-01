@@ -9,7 +9,7 @@
   functionality = {
     autostart = import ./functionality/autostart;
     impermanence = import ./functionality/impermanence;
-    homeManager = import ./functionality/homeManager;
+    home-manager = import ./functionality/home-manager;
   };
 
   programs = {
