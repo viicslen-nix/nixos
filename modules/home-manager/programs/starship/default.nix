@@ -16,6 +16,8 @@ in {
   config.programs.starship = mkIf cfg.enable {
     enable = true;
 
-    settings = builtins.fromTOML (builtins.unsafeDiscardStringContext (builtins.readFile ./config.toml));
+    settings = builtins.fromTOML (builtins.unsafeDiscardStringContext (builtins.readFile ./config.toml)) // {
+      palette = mkForce "main";
+    };
   };
 }

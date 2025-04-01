@@ -27,7 +27,6 @@ $line_break\
 $character\
 """
 
-palette = 'main'
 add_newline = true
 
 [palettes.main]
