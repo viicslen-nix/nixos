@@ -22,8 +22,8 @@
           {
             position = "bottom";
             hostname = "asus-zephyrus-gu603";
-            activate_on_startup = true;
             ips = ["192.168.5.111"];
+            port = 4242;
           }
         ];
       };
@@ -49,6 +49,8 @@
   };
 
   modules = {
+    functionality.home-manager.overrideBackups = true;
+
     programs = {
       ray.enable = true;
       kitty.enable = true;

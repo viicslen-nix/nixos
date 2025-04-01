@@ -18,6 +18,7 @@ with lib; {
 
   boot = {
     plymouth.enable = true;
+
     loader = {
       efi.canTouchEfiVariables = true;
 
@@ -62,11 +63,14 @@ with lib; {
     jetbrains.datagrip
     jetbrains.webstorm
     jetbrains.goland
+    github-desktop
     insomnia
     obsidian
     legcord
     drawing
     vscode
+    code-cursor
+    windsurf
     drawio
     kooha
     lens
