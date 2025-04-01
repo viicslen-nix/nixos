@@ -12,7 +12,7 @@ with lib; let
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
-    modern = mkEnableOption (mdDoc "Enable modern NVIDIA driver");
+    modern = mkEnableOption (mdDoc "Enable modern NVIDIA power management");
     prime = mkEnableOption (mdDoc "Enable PRIME offloading");
     specialisation = mkEnableOption (mdDoc "Enable specialisation for NVIDIA sync");
   };
@@ -39,6 +39,8 @@ in {
         powerManagement.enable = mkIf cfg.modern true;
         powerManagement.finegrained = mkIf (cfg.modern && cfg.prime) true;
         prime.offload.enable = mkIf (cfg.modern && cfg.prime) true;
+
+        nvidiaSettings = true;
       };
     };
 
