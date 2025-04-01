@@ -71,11 +71,6 @@ in {
           };
         };
 
-        cursor = {
-          name = "Adwaita";
-          size = 24;
-        };
-
         opacity = {
           popups = 0.7;
           desktop = 0.3;
