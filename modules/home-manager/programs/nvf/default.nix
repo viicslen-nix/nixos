@@ -17,6 +17,7 @@ in {
 
   imports = [
     inputs.nvf.homeManagerModules.default
+    ../theme.nix
   ];
 
   config = mkIf cfg.enable {
@@ -41,6 +42,12 @@ in {
           spellcheck = {
             enable = false;
             languages = ["en" "es"];
+          };
+
+          theme = {
+            transparent = mkForce true;
+            name = mkForce "onedark";
+            style = "darker";
           };
 
           # LSP
