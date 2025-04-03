@@ -17,7 +17,6 @@ in {
 
   imports = [
     inputs.nvf.homeManagerModules.default
-    ../theme.nix
   ];
 
   config = mkIf cfg.enable {
@@ -45,10 +44,17 @@ in {
           };
 
           theme = {
-            transparent = mkForce true;
-            name = mkForce "onedark";
-            style = "darker";
+            enable = mkForce false;
           };
+
+          startPlugins = ["onedark" "base16"];
+          luaConfigRC.theme = inputs.nvf.lib.nvim.dag.entryBefore ["pluginConfigs" "lazyConfigs"] ''
+            require('onedark').setup {
+              transparent = true,
+              style = "darker"
+            }
+            require('onedark').load()
+          '';
 
           # LSP
           languages = {
@@ -81,12 +87,7 @@ in {
 
             php = {
               enable = true;
-              lsp = {
-                package = [
-                  (getExe pkgs.intelephense)
-                  "--stdio"
-                ];
-              };
+              lsp.server = "intelephense";
             };
           };
 
@@ -106,17 +107,6 @@ in {
               listImplementations = "<leader>gi";
               listReferences = "<leader>gr";
             };
-
-            lspconfig.sources.php-lsp = mkForce ''
-              lspconfig.intelephense.setup {
-                capabilities = capabilities,
-                on_attach = default_on_attach,
-                cmd = {
-                  "${getExe pkgs.intelephense}",
-                  "--stdio"
-                },
-              }
-            '';
           };
 
           # UI
@@ -154,11 +144,16 @@ in {
           autocomplete.nvim-cmp.enable = true;
           autopairs.nvim-autopairs.enable = true;
           dashboard.dashboard-nvim.enable = true;
-          notify.nvim-notify.enable = true;
           presence.neocord.enable = true;
           projects.project-nvim.enable = true;
           runner.run-nvim.enable = true;
           statusline.lualine.enable = true;
+          notify.nvim-notify = {
+            enable = true;
+            setupOpts = {
+              background_colour = "#000000";
+            };
+          };
 
           utility = {
             outline.aerial-nvim.enable = true;
