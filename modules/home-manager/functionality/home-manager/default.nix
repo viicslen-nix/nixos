@@ -5,8 +5,8 @@
   ...
 }:
 with lib; let
-  name = "functionality";
-  namespace = "home-manager";
+  name = "home-manager";
+  namespace = "functionality";
 
   cfg = config.modules.${namespace}.${name};
 in {
