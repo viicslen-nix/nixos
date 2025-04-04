@@ -57,23 +57,37 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
+    # Browsers
     microsoft-edge-wayland
+
+    # IDEs & Editors
     jetbrains.idea-ultimate
     jetbrains.phpstorm
     jetbrains.datagrip
     jetbrains.webstorm
     jetbrains.goland
-    github-desktop
-    insomnia
-    obsidian
-    legcord
-    drawing
-    vscode
     code-cursor
     windsurf
-    drawio
-    kooha
+    vscode
+
+    # Development Tools
+    github-desktop
+    insomnia
     lens
+
+    # Notes
+    obsidian
+
+    # Communication
+    legcord
+
+    # Drawing
+    drawing
+    drawio
+
+    # Misc
+    tlrc
+    vial
   ];
 
   modules = {
@@ -115,11 +129,13 @@ with lib; {
 
         # Development
         "ai.local" = "127.0.0.1";
-        "home.local" = "127.0.0.1";
-        "buggregator.local" = "127.0.0.1";
         "npm.local" = "127.0.0.1";
+        "home.local" = "127.0.0.1";
+        "soketi.local" = "127.0.0.1";
+        "buggregator.local" = "127.0.0.1";
         "portainer.local" = "127.0.0.1";
         "phpmyadmin.local" = "127.0.0.1";
+
         "selldiam.test" = "127.0.0.1";
         "mylisterhub.test" = "127.0.0.1";
         "app.mylisterhub.test" = "127.0.0.1";
