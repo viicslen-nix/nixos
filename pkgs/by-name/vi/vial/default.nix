@@ -9,7 +9,7 @@ let
 
   src = fetchurl {
     url = "https://github.com/vial-kb/vial-gui/releases/download/v${version}/${pname}-v${version}-x86_64.AppImage";
-    hash = "";
+    hash = "sha256-bWmKNKCrXzyNj7zYdEX+lfITdIernTp/WxFJnd1RRYU=";
   };
 
   appimageContents = appimageTools.extractType2 { inherit pname version src; };
