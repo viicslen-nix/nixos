@@ -8,16 +8,16 @@ with lib; let
   name = "functionality";
   namespace = "home-manager";
 
-  cfg = config.${namespace}.${name};
+  cfg = config.modules.${namespace}.${name};
 in {
-  options.${namespace}.${name} = {
+  options.modules.${namespace}.${name} = {
     overrideBackups = mkEnableOption (mdDoc ''
       Whether to overwrite the backup files created by home-manager.
     '');
   };
 
   config = {
-    home.activation.hmOverrideBackupFiles = cfg.overrideBackups (lib.hm.dag.entryAfter ["checkLinkTargets"] ''
+    home.activation.hmOverrideBackupFiles = mkIf cfg.overrideBackups (lib.hm.dag.entryAfter ["checkLinkTargets"] ''
       find ${config.home.homeDirectory} -type f -name "*.${osConfig.home-manager.backupFileExtension}" | while read -r backupFile; do
         originalFile="''${backupFile%.${osConfig.home-manager.backupFileExtension}}"
         if [ -f "$originalFile" ]; then
