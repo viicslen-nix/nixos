@@ -79,4 +79,18 @@ with pkgs; {
       fi
     '';
   };
+
+  cleanup = {
+    description = "Cleanup Old Generations";
+    exec = writeShellScriptBin "system-cleanup" ''
+      #!${stdenv.shell}
+
+      if command -v nh &> /dev/null; then
+        nh clean all --ask $@
+      else
+        sudo nix store gc --debug $@
+        sudo nix-collect-garbage --delete-old $@
+      fi
+    '';
+  };
 }
