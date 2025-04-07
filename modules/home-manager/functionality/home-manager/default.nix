@@ -18,7 +18,7 @@ in {
 
   config = {
     home.activation.hmOverrideBackupFiles = mkIf cfg.overrideBackups (lib.hm.dag.entryAfter ["checkLinkTargets"] ''
-      find ${config.home.homeDirectory} -type f -name "*.${osConfig.home-manager.backupFileExtension}" | while read -r backupFile; do
+      find ${config.home.homeDirectory} -type f -name "*.${osConfig.home-manager.backupFileExtension}" 2>/dev/null | while read -r backupFile; do
         originalFile="''${backupFile%.${osConfig.home-manager.backupFileExtension}}"
         if [ -f "$originalFile" ]; then
           rm -f "$backupFile"
