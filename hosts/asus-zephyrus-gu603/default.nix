@@ -79,6 +79,7 @@ with lib; {
     legcord
     warp-terminal
     fish
+    windsurf
   ];
 
   # programs.ssh.askPassword = mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
@@ -184,6 +185,7 @@ with lib; {
         "admin.mylisterhub.test" = "127.0.0.1";
         "*.mylisterhub.test" = "127.0.0.1";
         "time-tracker.test" = "127.0.0.1";
+        "labreu.test" = "127.0.0.1";
       };
     };
 
