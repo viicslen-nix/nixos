@@ -41,6 +41,7 @@ in {
 
   imports = [
     ./buggregator
+    ./postgres
   ];
 
   config = {
