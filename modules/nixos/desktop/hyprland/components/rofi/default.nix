@@ -179,10 +179,10 @@
       "$mod, w, exec, ${webSearch}/bin/web-search -config ~/.config/rofi/long.rasi"
     ];
 
-    windowrule = [
-      "noborder,^(rofi)$"
-      "center,^(rofi)$"
-    ];
+    # windowrule = [
+    #   "noborder, rofi"
+    #   "center, rofi"
+    # ];
 
     layerrule = [
       "blur,^(rofi)$"

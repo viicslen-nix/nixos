@@ -23,7 +23,6 @@ in {
         highopacity
       ];
     in [
-      "blur, waybar"
       "blur, ${regexList blurred}"
       "xray 1, ${regexList ["bar"]}"
       "ignorealpha 0.5, ${regexList (highopacity ++ ["music"])}"
@@ -36,21 +35,21 @@ in {
       "f[1], gapsout:0, gapsin:0"
     ];
 
-    # window rules
-    windowrule = let
-      float = [
-        "org.gnome.Calculator"
-        "org.gnome.design.Palette"
-        "pavucontrol"
-        "pwvucontrol"
-        "nm-connection-editor"
-        "Color Picker"
-        "xdg-desktop-portal"
-        "xdg-desktop-portal-gnome"
-        "de.haeckerfelix.Fragments"
-        "com.github.Aylur.ags"
-      ];
-    in ["float,${regexList float}$"];
+    # # window rules
+    # windowrule = let
+    #   float = [
+    #     "org.gnome.Calculator"
+    #     "org.gnome.design.Palette"
+    #     "pavucontrol"
+    #     "pwvucontrol"
+    #     "nm-connection-editor"
+    #     "Color Picker"
+    #     "xdg-desktop-portal"
+    #     "xdg-desktop-portal-gnome"
+    #     "de.haeckerfelix.Fragments"
+    #     "com.github.Aylur.ags"
+    #   ];
+    # in ["float, ${regexList float}"];
 
     # window rules v2
     windowrulev2 = [

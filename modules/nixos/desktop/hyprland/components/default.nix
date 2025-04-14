@@ -1,16 +1,16 @@
 {
   imports = [
     ./hyprpaper.nix
-    ./hyprpanel.nix
     ./hyprlock.nix
     ./hypridle.nix
     ./pyprland.nix
     ./satty.nix
 
     ./workspaces
+    ./hyprpanel
     ./wlogout
-    ./swaync
-    ./waybar
+    # ./swaync
+    # ./waybar
     ./rofi
 
     # ./ags

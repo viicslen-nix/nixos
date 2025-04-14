@@ -1,7 +1,6 @@
 {pkgs, ...}: {
   wayland.windowManager.hyprland.settings = {
     monitor = [
-      "eDP-1,2560x1600@60,0x0,1.6"
       ",preferred,auto,1"
     ];
 
@@ -9,16 +8,13 @@
       "dbus-update-activation-environment --systemd --all"
       "systemctl --user import-environment QT_QPA_PLATFORMTHEME WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
 
-      "uwsm app -- ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
-      "uwsm app -- gnome-keyring-daemon --start --components=secrets"
+      "pypr"
+      "swww-daemon"
+      "1password --silent"
+      "mullvad-gui --silent"
 
-      "uwsm app -- pypr"
-      "uwsm app -- swww-daemon"
-      "uwsm app -- 1password --silent"
-      "uwsm app -- mullvad-gui --silent"
-
-      "uwsm app -- wl-paste --type text --watch cliphist store"
-      "uwsm app -- wl-paste --type image --watch cliphist store"
+      "wl-paste --type text --watch cliphist store"
+      "wl-paste --type image --watch cliphist store"
     ];
 
     general = {
@@ -84,7 +80,7 @@
       mouse_refocus = false;
 
       accel_profile = "flat";
-      touchpad.scroll_factor = 0.1;
+      # touchpad.scroll_factor = 0.1;
     };
 
     dwindle = {
@@ -95,8 +91,8 @@
     misc = {
       animate_mouse_windowdragging = false;
       initial_workspace_tracking = 1;
-      disable_autoreload = true;
-      vrr = 1;
+      # disable_autoreload = false;
+      # vrr = 1;
     };
 
     gestures = {
@@ -108,14 +104,14 @@
       force_zero_scaling = true;
     };
 
-    render = {
-      direct_scanout = 2;
-      explicit_sync = 2;
-    };
+    # render = {
+    #   direct_scanout = 2;
+    #   explicit_sync = 2;
+    # };
 
     cursor = {
       no_hardware_cursors = true;
-      use_cpu_buffer = 1;
+      # use_cpu_buffer = 1;
     };
 
     debug.disable_logs = false;
