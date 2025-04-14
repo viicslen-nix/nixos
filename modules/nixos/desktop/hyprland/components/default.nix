@@ -1,6 +1,7 @@
 {
   imports = [
     ./hyprpaper.nix
+    ./hyprpanel.nix
     ./hyprlock.nix
     ./hypridle.nix
     ./pyprland.nix
