@@ -1,7 +1,8 @@
-{
-  pkgs,
-  ...
-}: {
+{inputs, pkgs, lib, ...}: {
+  imports = [
+    inputs.zen-browser.homeModules.beta
+  ];
+
   xdg = {
     configFile = {
       "gh/hosts.yml".source = (pkgs.formats.yaml {}).generate "hosts.yml" {
@@ -48,8 +49,14 @@
     };
   };
 
+  home.file.".config/hypr/pyprland.toml".text = lib.mkAfter ''
+    [monitors.placement."LW9AA0048525"]
+    rightOf = "DP-1"
+    transform = 3
+  '';
+
   modules = {
-    functionality.home-manager.overrideBackups = true;
+    # functionality.home-manager.overrideBackups = true;
 
     programs = {
       ray.enable = true;

@@ -59,6 +59,7 @@ with lib; {
   environment.systemPackages = with pkgs; [
     # Browsers
     microsoft-edge-wayland
+    pkgs.inputs.zen-browser.default
 
     # IDEs & Editors
     jetbrains.idea-ultimate
@@ -103,9 +104,13 @@ with lib; {
       };
     };
 
-    desktop.kde = {
-      enable = true;
-      enableSddm = false;
+    desktop = {
+      kde = {
+        enable = true;
+        enableSddm = false;
+      };
+
+      hyprland.enable = true;
     };
 
     functionality = {
@@ -141,6 +146,7 @@ with lib; {
         "app.mylisterhub.test" = "127.0.0.1";
         "admin.mylisterhub.test" = "127.0.0.1";
         "*.mylisterhub.test" = "127.0.0.1";
+        "time-tracker.test" = "127.0.0.1";
       };
     };
 
@@ -180,6 +186,10 @@ with lib; {
         enable = true;
         gitSignCommits = true;
         users = attrNames users;
+        allowedCustomBrowsers = [
+          ".zen-wrapped"
+          "zen"
+        ];
       };
     };
   };

@@ -94,6 +94,10 @@
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
     };
+    hyprpanel = {
+      url = "github:Jas-SinghFSU/HyprPanel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hypridle = {
       url = "github:hyprwm/hypridle";
       inputs.hyprlang.follows = "hyprland/hyprlang";
@@ -142,8 +146,11 @@
     lan-mouse.url = "github:feschber/lan-mouse";
     nix-alien.url = "github:thiagokokada/nix-alien";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    zen-browser.url = "github:MarceColl/zen-browser-flake";
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {

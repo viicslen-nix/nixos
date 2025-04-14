@@ -178,5 +178,21 @@
     "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":minimize,maximize,close";
   };
 
+  wayland.windowManager.hyprland.settings.monitor = [
+    "eDP-1,2560x1600@60,0x0,1.6"
+  ];
+
+  home.file.".config/hypr/pyprland.toml".text = lib.mkAfter ''
+    [monitors.placement."G276HL"]
+    topOf = "eDP-1"
+
+    [monitors.placement."G274F"]
+    leftOf = "eDP-1"
+
+    [monitors.placement."Acer CB281HK"]
+    topOf = "DP-1"
+    scale = 1.875000
+  '';
+
   # home.file."/home/neoscode/.config/mimeapps.list".force = lib.mkForce true;
 }
