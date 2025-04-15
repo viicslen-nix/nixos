@@ -77,9 +77,9 @@ with lib; {
     obsidian
     drawio
     legcord
-    warp-terminal
     fish
     windsurf
+    pkgs.inputs.zen-browser.default
   ];
 
   # programs.ssh.askPassword = mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";

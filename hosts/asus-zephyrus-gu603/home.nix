@@ -105,7 +105,7 @@
       # ghostty.enable = true;
       # tinkerwell.enable = true;
       lan-mouse = {
-        enable = true;
+        enable = false;
         autostart = true;
       };
     };
