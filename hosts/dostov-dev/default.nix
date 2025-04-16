@@ -96,12 +96,12 @@ with lib; {
       intel.enable = true;
       nvidia.enable = true;
 
-      display = {
-        enable = true;
-        resolution = "1920x1080";
-        refreshRate = "60";
-        port = "HDMI-A-1";
-      };
+      # display = {
+      #   enable = true;
+      #   resolution = "1920x1080";
+      #   refreshRate = "60";
+      #   port = "DP-1";
+      # };
     };
 
     desktop = {

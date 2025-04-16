@@ -55,6 +55,12 @@
     transform = 3
   '';
 
+  wayland.windowManager.hyprland.settings.monitor = [
+    "DP-1, 1920x1080@59.99, 0x0, 1, vrr, 0"
+    "DP-2, 1920x1080@59.99, 1920x0, 1, transform, 3, vrr, 0"
+    ", preferred, auto, 1"
+  ];
+
   modules = {
     # functionality.home-manager.overrideBackups = true;
 
@@ -62,10 +68,6 @@
       ray.enable = true;
       kitty.enable = true;
       tinkerwell.enable = true;
-      lan-mouse = {
-        enable = true;
-        autostart = true;
-      };
     };
   };
 
