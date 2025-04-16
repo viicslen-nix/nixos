@@ -40,8 +40,8 @@ in {
           enable = true;
           withUWSM = true;
           xwayland.enable = true;
-          package = pkgs.inputs.hyprland.hyprland;
-          portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
+          # package = pkgs.inputs.hyprland.hyprland;
+          # portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
         };
 
         dconf.enable = true;
@@ -86,8 +86,6 @@ in {
 
       # Enable reequired services
       services = {
-        blueman.enable = true;
-
         gnome = mkIf cfg.gnomeCompatibility {
           gnome-keyring.enable = true;
           gnome-remote-desktop.enable = true;

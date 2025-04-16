@@ -20,18 +20,6 @@
         "pnpm"
         "nvim"
         "atuin"
-
-        # Plasma
-        "baloo"
-        "dolphin"
-        "kactivitymanagerd"
-        "kate"
-        "klipper"
-        "konsole"
-        "kscreen"
-        "kwalletd"
-        "kxmlgui5"
-        "sddm"
       ];
       config = [
         "Lens"
@@ -55,14 +43,6 @@
         "gcloud"
         "helm"
         "op"
-
-        # Plasma
-        "gtk-3.0"
-        "gtk-4.0"
-        "KDE"
-        "kde.org"
-        "plasma-workspace"
-        "xsettingsd"
       ];
       cache = [
         "JetBrains"
@@ -86,7 +66,6 @@
         ".mozilla"
         ".thunderbird"
         ".tmux/resurrect"
-        ".kde"
       ];
       files = [
         ".env.aider"
@@ -94,20 +73,11 @@
         ".ideavimrc"
         ".zsh_history"
         ".wakatime.cfg"
-        ".config/background"
-        ".config/monitors.xml"
       ];
     };
 
     programs = {
-      # ray.enable = true;
       kitty.enable = true;
-      # ghostty.enable = true;
-      # tinkerwell.enable = true;
-      lan-mouse = {
-        enable = false;
-        autostart = true;
-      };
     };
   };
 
@@ -193,6 +163,35 @@
     topOf = "DP-1"
     scale = 1.875000
   '';
+
+  programs.hyprpanel.settings.layout = {
+    "bar.layouts" = {
+      "0" = {
+        left = [
+          "dashboard"
+          "workspaces"
+          "windowtitle"
+          "hypridle"
+          "submap"
+        ];
+        middle = [
+          "cpu"
+          "ram"
+          "storage"
+        ];
+        right = [
+          "systray"
+          "volume"
+          "bluetooth"
+          "network"
+          "battery"
+          "clock"
+          "notifications"
+          "power"
+        ];
+      };
+    };
+  };
 
   # home.file."/home/neoscode/.config/mimeapps.list".force = lib.mkForce true;
 }

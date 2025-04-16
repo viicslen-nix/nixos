@@ -4,15 +4,12 @@
   imports = [ inputs.hyprpanel.homeManagerModules.hyprpanel ];
 
   wayland.windowManager.hyprland.settings.layerrule = [
-    "blur, ^(gjs)$"
-    "blur, ^(bar-0)$"
-    "blur, ^(bar-1)$"
-    "blurpopups, ^(gjs)$"
-    "blurpopups, ^(bar-0)$"
-    "blurpopups, ^(bar-1)$"
-    "ignorealpha 0.2, ^(gjs)$"
-    "ignorealpha 0.2, ^(bar-0)$"
-    "ignorealpha 0.2, ^(bar-1)$"
+    "blur, .*menu$"
+    "blur, ^(bar-[0-9])$"
+    "blurpopups, ^(bar-[0-9])$"
+    "blurpopups, .*menu$"
+    "ignorealpha 0.2, ^(bar-[0-9])$"
+    "ignorealpha 0.2, .*menu$"
   ];
 
   programs.hyprpanel = {
@@ -20,12 +17,6 @@
     # Enable the module.
     # Default: false
     enable = true;
-
-    # Automatically restart HyprPanel with systemd.
-    # Useful when updating your config so that you
-    # don't need to manually restart it.
-    # Default: false
-    systemd.enable = true;
 
     # Add '/nix/store/.../hyprpanel' to your
     # Hyprland config 'exec-once'.
@@ -44,7 +35,10 @@
     # Default: <same as gui>
     settings = {
       tear = true;
+      scalingPriority = "both";
       menus.dashboard.stats.enable_gpu = true;
+      menus.dashboard.directories.enabled = false;
+      menus.clock.weather.location = "Miami, FL";
 
       bar = {
         clock.format = "%a %b %d  %I:%M %p";
@@ -61,17 +55,16 @@
       };
 
       theme = {
-        font.size = "1.2rem";
+        font.size = "1.05rem";
 
         osd.scaling = 80;
         notification.scaling = 90;
 
         bar = {
           scaling = 70;
-          opacity = 60;
-          transparent = true;
-          outer_spacing = "0.8em";
-          buttons.background_opacity = 85;
+          opacity = 30;
+          outer_spacing = "0.7em";
+          buttons.background_opacity = 90;
 
           menus = {
             opacity = 90;
@@ -84,54 +77,10 @@
               volume.scaling = 80;
               network.scaling = 85;
               battery.scaling = 70;
-              bluetooth.scaling = 70;
+              bluetooth.scaling = 85;
               dashboard.scaling = 70;
               notifications.scaling =  85;
             };
-          };
-        };
-      };
-
-      # Configure bar layouts for monitors.
-      # See 'https://hyprpanel.com/configuration/panel.html'.
-      # Default: null
-      layout = {
-        "bar.layouts" = {
-          "0" = {
-            "left" = [
-              "launcher"
-              "dashboard"
-              "workspaces"
-              "windowtitle"
-              "hypridle"
-              "submap"
-            ];
-            "middle" = [
-              "cpu"
-              "ram"
-              "storage"
-            ];
-            "right" = [
-              "volume"
-              "network"
-              "systray"
-              "clock"
-              "notifications"
-              "power"
-            ];
-          };
-          "1" = {
-            "left" = [
-              "dashboard"
-              "workspaces"
-              "windowtitle"
-            ];
-            "middle" = [];
-            "right" = [
-              "volume"
-              "clock"
-              "notifications"
-            ];
           };
         };
       };

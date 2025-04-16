@@ -124,7 +124,7 @@ with lib; {
       powerManagement.enable = true;
 
       backups = {
-        enable = true;
+        enable = false;
         repository = "b2:viicslen-asus-zephyrus-gu603";
 
         secrets = {

@@ -64,6 +64,12 @@ in {
         image = cfg.wallpaper;
         polarity = cfg.polarity;
 
+        cursor = {
+          size = 32;
+          name = "Graphite-dark-cursors";
+          package = pkgs.graphite-cursors;
+        };
+
         fonts = {
           monospace = {
             package = pkgs.nerd-fonts.fira-mono;
@@ -79,22 +85,9 @@ in {
         };
 
         targets = {
-          qt.enable = false; # Will be themed with adwaita
-
           grub.useImage = true;
           plymouth.logo = plymouthLogo;
         };
-      };
-
-      environment.systemPackages = with pkgs; [
-        adwaita-qt6
-        adwaita-qt
-      ];
-
-      qt = {
-        enable = true;
-        platformTheme = "gnome";
-        style = "adwaita-dark";
       };
     }
     (mkIf homeManagerLoaded {
@@ -102,10 +95,7 @@ in {
         {
           stylix = {
             enable = true;
-
-            targets = {
-              qt.enable = false; # Will be themed with adwaita
-            };
+            targets.firefox.profileNames = ["default"];
           };
 
           gtk = {
@@ -115,11 +105,6 @@ in {
             gtk4.extraConfig = {
               gtk-application-prefer-dark-theme = 1;
             };
-          };
-          qt = {
-            enable = true;
-            style.name = mkForce "adwaita-dark";
-            platformTheme.name = mkForce "adwaita";
           };
         }
       ];

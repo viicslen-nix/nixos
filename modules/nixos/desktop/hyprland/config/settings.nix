@@ -8,6 +8,9 @@
       "dbus-update-activation-environment --systemd --all"
       "systemctl --user import-environment QT_QPA_PLATFORMTHEME WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
 
+      "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+      "gnome-keyring-daemon --start --components=secrets"
+
       "pypr"
       "swww-daemon"
       "1password --silent"
@@ -91,8 +94,7 @@
     misc = {
       animate_mouse_windowdragging = false;
       initial_workspace_tracking = 1;
-      # disable_autoreload = false;
-      # vrr = 1;
+      vrr = 1;
     };
 
     gestures = {
@@ -104,14 +106,15 @@
       force_zero_scaling = true;
     };
 
-    # render = {
-    #   direct_scanout = 2;
-    #   explicit_sync = 2;
-    # };
+    render = {
+      direct_scanout = 2;
+      explicit_sync = 2;
+      explicit_sync_kms = 2;
+    };
 
     cursor = {
-      no_hardware_cursors = true;
-      # use_cpu_buffer = 1;
+      no_hardware_cursors = 2;
+      use_cpu_buffer = 2;
     };
 
     debug.disable_logs = false;
