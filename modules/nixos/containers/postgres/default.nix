@@ -15,7 +15,7 @@ in {
 
   config = mkIf cfg.enable {
     virtualisation.oci-containers.containers = {
-      buggregator = {
+      postgres = {
         hostname = "postgres";
         image = "postgres:latest";
         ports = [
