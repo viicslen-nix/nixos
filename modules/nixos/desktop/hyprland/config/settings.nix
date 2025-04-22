@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{lib, pkgs, ...}: with lib; {
   wayland.windowManager.hyprland.settings = {
     monitor = [
       ",preferred,auto,1"
@@ -83,7 +83,6 @@
       mouse_refocus = false;
 
       accel_profile = "flat";
-      # touchpad.scroll_factor = 0.1;
     };
 
     dwindle = {
@@ -94,7 +93,7 @@
     misc = {
       animate_mouse_windowdragging = false;
       initial_workspace_tracking = 1;
-      vrr = 1;
+      vrr = mkDefault 2;
     };
 
     gestures = {
@@ -107,16 +106,14 @@
     };
 
     render = {
-      direct_scanout = 2;
-      explicit_sync = 2;
-      explicit_sync_kms = 2;
+      direct_scanout = mkDefault 2;
+      explicit_sync = mkDefault 2;
+      explicit_sync_kms = mkDefault 2;
     };
 
     cursor = {
-      no_hardware_cursors = 2;
-      use_cpu_buffer = 2;
+      no_hardware_cursors = mkDefault 2;
+      use_cpu_buffer = mkDefault 2;
     };
-
-    debug.disable_logs = false;
   };
 }
