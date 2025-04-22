@@ -18,10 +18,10 @@
       "$mod" = "SUPER";
 
       # applications
-      "$terminal" = "uwsm app -- kitty";
-      "$browser" = "uwsm app -- microsoft-edge";
-      "$fileManager" = "uwsm app -- nautilus";
-      "$passwordManager" = "uwsm app -- 1password --quick-access";
+      "$terminal" = "kitty";
+      "$browser" = "microsoft-edge";
+      "$fileManager" = "nautilus";
+      "$passwordManager" = "1password --quick-access";
 
       # mouse movements
       bindm = [
