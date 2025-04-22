@@ -93,6 +93,8 @@ in {
     (mkIf homeManagerLoaded {
       home-manager.sharedModules = [
         {
+          home.pointerCursor.enable = true;
+
           stylix = {
             enable = true;
             targets.firefox.profileNames = ["default"];
