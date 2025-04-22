@@ -3,14 +3,20 @@
 {
   imports = [ inputs.hyprpanel.homeManagerModules.hyprpanel ];
 
-  wayland.windowManager.hyprland.settings.layerrule = [
-    "blur, .*menu$"
-    "blur, ^(bar-[0-9])$"
-    "blurpopups, ^(bar-[0-9])$"
-    "blurpopups, .*menu$"
-    "ignorealpha 0.2, ^(bar-[0-9])$"
-    "ignorealpha 0.2, .*menu$"
-  ];
+  wayland.windowManager.hyprland.settings = {
+    layerrule = [
+      "blur, .*menu$"
+      "blur, ^(bar-[0-9])$"
+      "blurpopups, ^(bar-[0-9])$"
+      "blurpopups, .*menu$"
+      "ignorealpha 0.2, ^(bar-[0-9])$"
+      "ignorealpha 0.2, .*menu$"
+    ];
+
+    bind = [
+      "$mod CTRL SHIFT, R, exec, hyprpanel restart"
+    ];
+  };
 
   programs.hyprpanel = {
 
@@ -50,7 +56,6 @@
           show_numbered = false;
           showWsIcons = true;
           showApplicationIcons = true;
-          workspaceIconMap = {};
         };
       };
 
@@ -63,7 +68,7 @@
         bar = {
           scaling = 70;
           opacity = 30;
-          outer_spacing = "0.7em";
+          outer_spacing = "0.8em";
           buttons.background_opacity = 90;
 
           menus = {
