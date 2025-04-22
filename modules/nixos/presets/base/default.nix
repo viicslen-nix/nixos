@@ -177,6 +177,7 @@ in {
       # Set flake path in environment
       sessionVariables = {
         FLAKE = lib.mkDefault cfg.flakeLocation;
+        NIXOS_OZONE_WL = "1";
       };
 
       # Install available shells
