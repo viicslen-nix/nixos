@@ -1,6 +1,15 @@
-{inputs, pkgs, lib, ...}: {
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     inputs.zen-browser.homeModules.beta
+  ];
+
+  home.autostart = [
+    pkgs.jetbrains-toolbox
   ];
 
   xdg = {
