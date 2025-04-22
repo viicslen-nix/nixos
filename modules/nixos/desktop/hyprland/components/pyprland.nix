@@ -28,15 +28,5 @@
     lazy = true
     size = "40% 90%"
     unfocus = "hide"
-
-    [monitors.placement."G276HL"]
-    topOf = "eDP-1"
-
-    [monitors.placement."G274F"]
-    leftOf = "eDP-1"
-
-    [monitors.placement."Acer CB281HK"]
-    topOf = "DP-1"
-    scale = 1.875000
   '';
 }
