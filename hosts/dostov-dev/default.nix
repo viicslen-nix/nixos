@@ -67,9 +67,21 @@ with lib; {
     jetbrains.datagrip
     jetbrains.webstorm
     jetbrains.goland
+    jetbrains-toolbox
     code-cursor
     windsurf
     vscode
+    (vscode.fhsWithPackages
+      (ps:
+        with ps; [
+          php84
+          php84Packages.composer
+          nodePackages.nodejs
+          corepack
+          zlib
+          openssl.dev
+          pkg-config
+        ]))
 
     # Development Tools
     github-desktop
@@ -89,19 +101,16 @@ with lib; {
     # Misc
     tlrc
     vial
+    uv
   ];
+
+  programs.nix-ld.enable = true;
+  stylix.cursor.size = 24;
 
   modules = {
     hardware = {
       intel.enable = true;
       nvidia.enable = true;
-
-      # display = {
-      #   enable = true;
-      #   resolution = "1920x1080";
-      #   refreshRate = "60";
-      #   port = "DP-1";
-      # };
     };
 
     desktop = {
