@@ -13,6 +13,9 @@ with lib; let
   cfg = config.modules.${namespace}.${name};
 
   homeManagerLoaded = builtins.hasAttr "home-manager" options;
+  stylixCursorSizeSet = builtins.hasAttr "stylix" config
+    && builtins.hasAttr "cursor" config.stylix
+    && builtins.hasAttr "size" config.stylix.cursor;
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc "hyprland");
@@ -33,7 +36,7 @@ in {
       default = {
         XDG_CURRENT_DESKTOP = "Hyprland";
         XDG_SESSION_DESKTOP = "Hyprland";
-        XCURSOR_SIZE = builtins.toString config.home.pointerCursor.size;
+        XCURSOR_SIZE = mkIf stylixCursorSizeSet (builtins.toString config.stylix.cursor.size);
       };
     };
 
