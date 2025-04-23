@@ -65,9 +65,8 @@ in {
         polarity = cfg.polarity;
 
         cursor = {
-          size = 32;
-          name = "Graphite-dark-cursors";
-          package = pkgs.graphite-cursors;
+          name = "Bibata-Modern-Classic";
+          package = pkgs.bibata-cursors;
         };
 
         fonts = {
