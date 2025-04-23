@@ -70,7 +70,6 @@ with lib; {
     jetbrains-toolbox
     code-cursor
     windsurf
-    vscode
     (vscode.fhsWithPackages
       (ps:
         with ps; [
@@ -101,7 +100,7 @@ with lib; {
     # Misc
     tlrc
     vial
-    uv
+    # uv
   ];
 
   programs.nix-ld.enable = true;
@@ -119,7 +118,6 @@ with lib; {
         enableSddm = false;
       };
 
-      hyprland.enable = true;
       hyprland = {
         enable = true;
         extraGlobalVariables = {
@@ -128,8 +126,8 @@ with lib; {
           __GLX_VENDOR_LIBRARY_NAME = "nvidia";
           __GL_GSYNC_ALLOWED = "0";
           __GL_VRR_ALLOWED = "0";
-        }
-      }
+        };
+      };
     };
 
     functionality = {
