@@ -70,17 +70,7 @@ with lib; {
     jetbrains-toolbox
     code-cursor
     windsurf
-    (vscode.fhsWithPackages
-      (ps:
-        with ps; [
-          php84
-          php84Packages.composer
-          nodePackages.nodejs
-          corepack
-          zlib
-          openssl.dev
-          pkg-config
-        ]))
+    vscode
 
     # Development Tools
     github-desktop
