@@ -52,11 +52,13 @@ in {
     {
       # Enable the 1Password CLI
       programs._1password.enable = true;
+      # programs._1password.package = pkgs.stable._1password;
 
       # Enable the 1Password GUI and configure the polkit policy
       programs._1password-gui = {
         enable = true;
         polkitPolicyOwners = cfg.users;
+        # package = pkgs.stable._1password-gui;
       };
 
       # Configure the environment variable for the 1Password socket
