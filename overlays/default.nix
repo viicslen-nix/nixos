@@ -82,7 +82,19 @@
       '';
     };
 
-    legcord = _prev.legcord.overrideAttrs (old: {
+    legcord = let
+      electronVer = "36.0.0-beta.9";
+      electronPkg = _prev.electron_35-bin.overrideAttrs {
+        pname = "electron_36-bin";
+        version = electronVer;
+        src = _prev.fetchurl {
+          url = "https://github.com/electron/electron/releases/download/v${electronVer}/electron-v${electronVer}-linux-x64.zip";
+          sha256 = "sha256-i09lv+qgpeA9P+WBPLosOxhpaLlgp0IbFdFZZaiCZOw=";
+        };
+      };
+    in (_prev.legcord.override {
+      electron = electronPkg;
+    }).overrideAttrs (old: {
       postFixup = ''
         ${old.postFixup or ""}
         wrapProgramShell $out/bin/legcord \
