@@ -17,15 +17,16 @@ in {
   config = mkIf cfg.enable {
     programs.vscode = {
       enable = true;
-      package = pkgs.vscode.fhsWithPackages (ps: with ps; [
-        php84
-        php84Packages.composer
-        nodePackages.nodejs
-        corepack
-        zlib
-        openssl.dev
-        pkg-config
-      ]);
+      package = pkgs.vscode.fhsWithPackages (ps:
+        with ps; [
+          php84
+          php84Packages.composer
+          nodePackages.nodejs
+          corepack
+          zlib
+          openssl.dev
+          pkg-config
+        ]);
     };
   };
 }

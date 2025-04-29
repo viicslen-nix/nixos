@@ -48,18 +48,27 @@ with lib; {
 
   services = {
     xserver.displayManager.gdm.enable = true;
+    displayManager.defaultSession = "hyprland-uwsm";
 
     openssh = {
       enable = true;
       startWhenNeeded = true;
-      passwordAuthentication = true;
+      settings.PasswordAuthentication = true;
     };
   };
 
   environment.systemPackages = with pkgs; [
     # Browsers
     microsoft-edge-wayland
-    pkgs.inputs.zen-browser.default
+    # pkgs.inputs.zen-browser.twilight
+    (pkgs.inputs.zen-browser.default.override {
+      extraPrefsFiles = [
+        (builtins.fetchurl {
+          url = "https://raw.githubusercontent.com/MrOtherGuy/fx-autoconfig/master/program/config.js";
+          sha256 = "1mx679fbc4d9x4bnqajqx5a95y1lfasvf90pbqkh9sm3ch945p40";
+        })
+      ];
+    })
 
     # IDEs & Editors
     jetbrains.idea-ultimate
@@ -103,13 +112,11 @@ with lib; {
     };
 
     desktop = {
-      kde = {
-        enable = true;
-        enableSddm = false;
-      };
+      gnome.enable = true;
 
       hyprland = {
         enable = true;
+        gnomeCompatibility = true;
         extraGlobalVariables = {
           NVD_BACKEND = "direct";
           LIBVA_DRIVER_NAME = "nvidia";

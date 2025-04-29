@@ -53,29 +53,32 @@ in {
 
     # window rules v2
     windowrulev2 = [
-      # smart gaps
+      # Smart Gaps
       "bordersize 0, floating:0, onworkspace:w[tv1]"
       "rounding 0, floating:0, onworkspace:w[tv1]"
       "bordersize 0, floating:0, onworkspace:f[1]"
       "rounding 0, floating:0, onworkspace:f[1]"
 
-      # fix xwayland apps
+      # Fix xwayland apps
       "rounding 0, xwayland:1"
 
-      # disable shadows when only one window is present
+      # Disable shadows when only one window is present
       "noshadow, onworkspace:w[t1]"
 
-      # throw sharing indicators away
+      # Throw sharing indicators away
       "workspace special silent, title:^(.*is sharing (your screen|a window)\.)$"
 
-      # idle inhibit while watching videos
+      # Idle inhibit while watching videos
       "idleinhibit focus, class:^(mpv|.+exe|celluloid)$"
       "idleinhibit focus, class:^(firefox|microsoft-edge)$, title:^(.*YouTube.*)$"
       "idleinhibit fullscreen, class:^(firefox|microsoft-edge)$"
 
-      # make PiP windows stay on top
+      # Make PiP windows stay on top
       "float, title:^(Picture-in-Picture)$"
       "pin, title:^(Picture-in-Picture)$"
+
+      # Transparency
+      "opacity 0.90 0.90, class:^(org.gnome.Nautilus|legcord|discord|code|libreoffice-calc)$"
 
       # GCR Prompter
       "dimaround, class:^(gcr-prompter)$"
@@ -102,15 +105,7 @@ in {
       # JetBrains IDEs
       "center, class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$"
       "size <90% <80%, class:^(.*jetbrains.*)$, title:^(win.*)$"
-      "size 640 400, class:^(.*jetbrains.*)$, title:^(splash)$"
       "opacity 0.90 0.90, class:^(.*jetbrains.*)$"
-
-      # VS Code
-      "opacity 0.90 0.90, title:(.*)(Visual Studio Code)$"
-
-      # Discord
-      "opacity 0.90 0.90, class:^(discord)$"
-      "opacity 0.90 0.90, class:^(legcord)$"
 
       # Satty
       "float, class:^(com.gabm.satty)$"

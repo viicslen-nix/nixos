@@ -1,7 +1,6 @@
 # *.nix
-{ inputs, ... }:
-{
-  imports = [ inputs.hyprpanel.homeManagerModules.hyprpanel ];
+{inputs, ...}: {
+  imports = [inputs.hyprpanel.homeManagerModules.hyprpanel];
 
   wayland.windowManager.hyprland.settings = {
     layerrule = [
@@ -19,7 +18,6 @@
   };
 
   programs.hyprpanel = {
-
     # Enable the module.
     # Default: false
     enable = true;
@@ -84,7 +82,7 @@
               battery.scaling = 70;
               bluetooth.scaling = 85;
               dashboard.scaling = 70;
-              notifications.scaling =  85;
+              notifications.scaling = 85;
             };
           };
         };

@@ -13,7 +13,8 @@ with lib; let
   cfg = config.modules.${namespace}.${name};
 
   homeManagerLoaded = builtins.hasAttr "home-manager" options;
-  stylixCursorSizeSet = builtins.hasAttr "stylix" config
+  stylixCursorSizeSet =
+    builtins.hasAttr "stylix" config
     && builtins.hasAttr "cursor" config.stylix
     && builtins.hasAttr "size" config.stylix.cursor;
 in {
@@ -110,7 +111,10 @@ in {
               "kde"
               "gtk"
             ];
-            "org.freedesktop.impl.portal.FileChooser" = if cfg.gnomeCompatibility then ["xdg-desktop-portal-gtk"] else ["kde"];
+            "org.freedesktop.impl.portal.FileChooser" =
+              if cfg.gnomeCompatibility
+              then ["xdg-desktop-portal-gtk"]
+              else ["kde"];
           };
         };
       };

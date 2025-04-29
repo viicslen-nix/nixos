@@ -3,7 +3,8 @@
   config,
   osConfig,
   ...
-}: with lib; let
+}:
+with lib; let
   hyprConfig = osConfig.modules.desktop.hyprland;
 in {
   home.sessionVariables = hyprConfig.globalVariables;

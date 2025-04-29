@@ -114,15 +114,9 @@
     };
   };
 
-  modules = {
-    # functionality.home-manager.overrideBackups = true;
-
-    programs = {
-      ray.enable = true;
-      kitty.enable = true;
-      tinkerwell.enable = true;
-    };
+  modules.programs = {
+    ray.enable = true;
+    kitty.enable = true;
+    tinkerwell.enable = true;
   };
-
-  stylix.targets.kde.enable = false;
 }

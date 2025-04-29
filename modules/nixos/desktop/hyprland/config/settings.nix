@@ -1,4 +1,9 @@
-{lib, pkgs, ...}: with lib; {
+{
+  lib,
+  pkgs,
+  ...
+}:
+with lib; {
   wayland.windowManager.hyprland.settings = {
     monitor = [
       ",preferred,auto,1"

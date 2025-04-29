@@ -96,7 +96,10 @@ in {
 
           stylix = {
             enable = true;
-            targets.firefox.profileNames = ["default"];
+            targets = {
+              qt.platform = "qtct";
+              firefox.profileNames = ["default"];
+            };
           };
 
           gtk = {

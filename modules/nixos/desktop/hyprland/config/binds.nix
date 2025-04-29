@@ -20,7 +20,7 @@
       # applications
       "$terminal" = "kitty";
       "$browser" = "zen";
-      "$fileManager" = "dolphin";
+      "$fileManager" = "nautilus";
       "$passwordManager" = "1password --quick-access";
 
       # mouse movements
