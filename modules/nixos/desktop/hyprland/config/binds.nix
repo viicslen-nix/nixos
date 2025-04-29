@@ -19,8 +19,8 @@
 
       # applications
       "$terminal" = "kitty";
-      "$browser" = "microsoft-edge";
-      "$fileManager" = "nautilus";
+      "$browser" = "zen";
+      "$fileManager" = "dolphin";
       "$passwordManager" = "1password --quick-access";
 
       # mouse movements
@@ -80,7 +80,7 @@
         "CTRL SHIFT, Space, exec, $passwordManager"
 
         # submaps
-        "$mod, Space, submap, apps"
+        "$mod, A, submap, apps"
       ];
 
       bindl = [

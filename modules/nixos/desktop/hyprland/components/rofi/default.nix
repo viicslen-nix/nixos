@@ -170,7 +170,7 @@
     webSearch = import ./scripts/web-search.nix {inherit pkgs;};
   in {
     bindr = [
-      "$mod, SUPER_L, exec, ${launcher} -show drun -run-command \"uwsm app -- {cmd}\""
+      "$mod, Space, exec, ${launcher} -show drun -run-command \"uwsm app -- {cmd}\""
     ];
 
     bind = [
