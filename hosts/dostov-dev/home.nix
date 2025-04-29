@@ -74,6 +74,46 @@
     cursor.no_hardware_cursors = 1;
   };
 
+  programs.hyprpanel.settings.layout = {
+    "bar.layouts" = {
+      "0" = {
+        left = [
+          "dashboard"
+          "workspaces"
+          "windowtitle"
+          "hypridle"
+          "submap"
+        ];
+        middle = [
+          "cpu"
+          "ram"
+          "storage"
+        ];
+        right = [
+          "systray"
+          "volume"
+          "network"
+          "clock"
+          "notifications"
+          "power"
+        ];
+      };
+      "1" = {
+        left = [
+          "workspaces"
+          "windowtitle"
+          "submap"
+        ];
+        middle = [];
+        right = [
+          "volume"
+          "clock"
+          "notifications"
+        ];
+      };
+    };
+  };
+
   modules = {
     # functionality.home-manager.overrideBackups = true;
 
