@@ -24,6 +24,9 @@ in {
         extraOptions = [
           "--network=local"
         ];
+        volumes = [
+          "pgdata:/var/lib/postgresql/data"
+        ];
         environment = {
           POSTGRES_PASSWORD = "secret";
         };

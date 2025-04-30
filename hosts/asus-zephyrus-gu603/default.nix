@@ -124,7 +124,7 @@ with lib; {
       powerManagement.enable = true;
 
       backups = {
-        enable = false;
+        enable = true;
         repository = "b2:viicslen-asus-zephyrus-gu603";
 
         secrets = {
@@ -186,6 +186,7 @@ with lib; {
         "*.mylisterhub.test" = "127.0.0.1";
         "time-tracker.test" = "127.0.0.1";
         "labreu.test" = "127.0.0.1";
+        "store.labreu.test" = "127.0.0.1";
       };
     };
 
@@ -232,5 +233,7 @@ with lib; {
         users = attrNames users;
       };
     };
+
+    containers.postgres.enable = true;
   };
 }
