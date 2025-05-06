@@ -4,6 +4,7 @@
     ./hyprlock.nix
     ./hypridle.nix
     ./pyprland.nix
+    ./flameshot.nix
     ./satty.nix
 
     ./workspaces

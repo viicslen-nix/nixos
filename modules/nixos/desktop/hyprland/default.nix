@@ -155,6 +155,7 @@ in {
           # screenshot
           grim
           slurp
+          flameshot
           pkgs.inputs.hyprland-contrib.grimblast
           satty
 
@@ -166,6 +167,7 @@ in {
           # networkmanagerapplet # needed for nm-applet icons
           pkgs.inputs.pyprland.pyprland
           wl-screenrec
+          wl-clipboard
           wlr-randr
           wlroots
         ];

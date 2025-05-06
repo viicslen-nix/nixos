@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, lib, ...}: with lib; {
   home.file.".config/swappy/config".text = ''
     [Default]
     save_dir=$HOME/Pictures/Screenshots
@@ -11,11 +11,9 @@
   '';
 
   wayland.windowManager.hyprland.settings.bind = let
-    screenshot = flags: ''grim -g "$(slurp ${flags})" -t ppm - | satty -f -'';
-    hyprshot = mode: "${pkgs.hyprshot}/bin/hyprshot -m ${mode} --freeze";
+    hyprshot = mode: "${getExe' pkgs.hyprshot} -m ${mode} --freeze";
   in [
     "$mod SHIFT, S, exec, ${hyprshot "region"}"
     "$mod SHIFT CTRL, S, exec, ${hyprshot "active -m output"}"
-    "$mod SHIFT ALT, S, exec, ${screenshot ""}"
   ];
 }
