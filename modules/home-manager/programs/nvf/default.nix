@@ -17,6 +17,7 @@ in {
 
   imports = [
     inputs.nvf.homeManagerModules.default
+    ./keybinds.nix
   ];
 
   config = mkIf cfg.enable {
@@ -98,15 +99,6 @@ in {
             lspkind.enable = true;
             otter-nvim.enable = true;
             trouble.enable = true;
-
-            mappings = {
-              goToDeclaration = "<leader>gD";
-              goToDefinition = "<leader>gd";
-              goToType = "<leader>gt";
-              hover = "<leader>h";
-              listImplementations = "<leader>gi";
-              listReferences = "<leader>gr";
-            };
           };
 
           # UI
@@ -148,6 +140,9 @@ in {
           projects.project-nvim.enable = true;
           runner.run-nvim.enable = true;
           statusline.lualine.enable = true;
+          tabline.nvimBufferline.enable = true;
+          comments.comment-nvim.enable = true;
+
           notify.nvim-notify = {
             enable = true;
             setupOpts = {
@@ -168,41 +163,17 @@ in {
             nvim-scrollbar.enable = true;
             nvim-web-devicons.enable = true;
 
-            fidget-nvim = {
-              enable = false;
-            };
-          };
-
-          tabline.nvimBufferline = {
-            enable = true;
-            mappings = {
-              closeCurrent = "<leader>x";
-              cycleNext = "<Tab>";
-              cyclePrevious = "<S-Tab>";
-            };
+            fidget-nvim.enable = false;
           };
 
           assistant.copilot = {
             enable = true;
             cmp.enable = true;
-            mappings.suggestion.acceptLine = "<M-L>";
           };
 
           binds = {
             cheatsheet.enable = true;
             whichKey.enable = true;
-          };
-
-          comments.comment-nvim = {
-            enable = true;
-            mappings = {
-              toggleCurrentLine = "<C-/>";
-              toggleCurrentBlock = "<C-?>";
-              toggleOpLeaderLine = "/";
-              toggleOpLeaderBlock = "?";
-              toggleSelectedLine = "<C-/>";
-              toggleSelectedBlock = "<C-?>";
-            };
           };
 
           debugger.nvim-dap = {
@@ -260,39 +231,6 @@ in {
               setupModule = "laravel";
               cmd = ["Laravel"];
               lazy = true;
-              keys = [
-                {
-                  key = "<leader>la";
-                  action = ":Laravel artisan<cr>";
-                  mode = "n";
-                }
-                {
-                  key = "<leader>lr";
-                  action = ":Laravel routes<cr>";
-                  mode = "n";
-                }
-                {
-                  key = "<leader>lm";
-                  action = ":Laravel related<cr>";
-                  mode = "n";
-                }
-                {
-                  key = "gf";
-                  action = ''
-                    function()
-                      if require("laravel").app("gf").cursor_on_resource() then
-                        return "<cmd>Laravel gf<CR>"
-                      else
-                        return "gf"
-                      end
-                    end
-                  '';
-                  lua = true;
-                  noremap = false;
-                  expr = true;
-                  mode = "n";
-                }
-              ];
             };
           };
         };
