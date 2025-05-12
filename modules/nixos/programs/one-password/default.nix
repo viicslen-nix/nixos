@@ -132,6 +132,8 @@ in {
           }
         ];
 
+        programs.jujutsu.settings.signing.backends.ssh.program = mkIf cfg.gitSignCommits "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+
         # Configure the 1Password quick access keybinding for gnome
         dconf.settings = {
           "org/gnome/settings-daemon/plugins/media-keys" = {

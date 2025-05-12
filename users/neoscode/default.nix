@@ -94,6 +94,12 @@ in {
         enableNushellIntegration = true;
         enableTmuxIntegration = true;
       };
+      jujutsu = {
+        enable = true;
+        userName = osConfig.users.users.${user}.description;
+        userEmail = "39545521+viicslen@users.noreply.github.com";
+        signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJk8lwwP7GnxZMgpx+C30i/Lw912BBoFccz4gjek8lCX";
+      };
     };
   };
 }
