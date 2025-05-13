@@ -83,6 +83,7 @@ with lib; {
 
     input = {
       kb_layout = "us";
+      kb_options = "compose:rwin";
 
       follow_mouse = 1;
       mouse_refocus = false;

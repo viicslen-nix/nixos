@@ -1,5 +1,17 @@
 {
   programs.nvf.settings.vim = {
+    keymaps = [
+      {
+        key = "<C-s>";
+        mode = ["n" "v" "i"];
+        action = "<ESC>:w<CR>";
+        desc = "Save file";
+        silent = true;
+        unique = false;
+        noremap = true;
+      }
+    ];
+
     lsp.mappings = {
       goToDeclaration = "<leader>gD";
       goToDefinition = "<leader>gd";

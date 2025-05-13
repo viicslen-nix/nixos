@@ -11,7 +11,7 @@
   '';
 
   wayland.windowManager.hyprland.settings.bind = let
-    hyprshot = mode: "${getExe' pkgs.hyprshot} -m ${mode} --freeze";
+    hyprshot = mode: "${getExe pkgs.hyprshot} -m ${mode} --freeze";
   in [
     "$mod SHIFT, S, exec, ${hyprshot "region"}"
     "$mod SHIFT CTRL, S, exec, ${hyprshot "active -m output"}"

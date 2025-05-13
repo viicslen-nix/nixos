@@ -83,6 +83,7 @@ in {
         };
 
         dconf.enable = true;
+        hyprlock.enable = true;
         seahorse.enable = mkIf cfg.gnomeCompatibility true;
       };
 

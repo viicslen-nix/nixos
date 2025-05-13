@@ -121,6 +121,11 @@ in {
           telescope = {
             enable = true;
             setupOpts.pickers.find_files = {
+              find_command = [
+                (lib.getExe pkgs.fd)
+                "--type=file"
+                "--unrestricted"
+              ];
               hidden = true;
               no_ignore = true;
             };

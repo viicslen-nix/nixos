@@ -21,6 +21,7 @@ in {
       graphviz
       asciinema
       yazi
+      nextcloud-client
     ];
 
     programs.adb.enable = mkDefault true;

@@ -1,4 +1,4 @@
-{config, ...}: let
+{lib, config, ...}: let
   wallpaper = config.stylix.image;
   colors = config.lib.stylix.colors;
 in {
@@ -6,42 +6,68 @@ in {
     enable = true;
     settings = {
       general = {
-        disable_loading_bar = true;
-        grace = 10;
-        hide_cursor = true;
+        hide_cursor = false;
         no_fade_in = false;
       };
+
+      animations = {
+        enabled = true;
+        bezier = "linear, 1, 1, 0, 0";
+        animation = [
+          "fadeIn, 1, 5, linear"
+          "fadeOut, 1, 5, linear"
+          "inputFieldDots, 1, 2, linear"
+        ];
+      };
+
       background = {
+        monitor = "";
+        path = lib.mkForce "screenshot";
         blur_passes = 3;
         blur_size = 8;
-        path = wallpaper;
       };
+
       input-field = {
         monitor = "";
-        size = "200, 50";
-        position = "0, -80";
-        dots_center = true;
+        size = "20%, 5%";
+        outline_thickness = 3;
+
         fade_on_empty = false;
-        outline_thickness = 5;
-        placeholder_text = "Password...";
-        shadow_passes = 2;
+
+        placeholder_text = "Input password...";
+        fail_text = "$PAMFAIL";
+
+        dots_spacing = 0.3;
+
+        position = "0, -20";
+        halign = "center";
+        valign = "center";
       };
-      labels = [
+
+      label = [
         {
           monitor = "";
-          text = "$TIME";
-          font_size = 50;
-          color = "rgb(${colors.base00})";
+          text = "$TIME12";
+          font_size = 40;
 
-          position = {
-            x = 0;
-            y = 80;
-          };
-
-          valign = "center";
+          position = "0, 140";
           halign = "center";
+          valign = "center";
+        }
+        {
+          monitor = "";
+          text = "cmd[update:60000] date +\"%A, %d %B %Y\"";
+          font_size = 25;
+
+          position = "0, 80";
+          halign = "center";
+          valign = "center";
         }
       ];
     };
   };
+
+  wayland.windowManager.hyprland.settings.bind = [
+    "CTRL SHIFT, L, exec, hyprlock"
+  ];
 }

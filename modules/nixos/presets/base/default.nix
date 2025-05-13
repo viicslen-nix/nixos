@@ -131,6 +131,7 @@ in {
           wget
           curl
           git
+          jujutsu
           fzf
           lshw
           lsd

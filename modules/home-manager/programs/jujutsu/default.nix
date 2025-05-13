@@ -31,7 +31,7 @@ in {
       jujutsu
       lazyjj
       meld
-      mergirag
+      mergiraf
     ];
 
     programs.jujutsu = {
