@@ -111,19 +111,19 @@
     mimeApps = {
       # enable = true;
       associations.added = {
-        "text/html" = "org.gnome.Epiphany.desktop;microsoft-edge.desktop";
-        "application/xhtml+xml" = "org.gnome.Epiphany.desktop;microsoft-edge.desktop";
+        "text/html" = "org.gnome.Epiphany.desktop;zen.desktop";
+        "application/xhtml+xml" = "org.gnome.Epiphany.desktop;zen.desktop";
         "x-scheme-handler/sms" = "org.gnome.Shell.Extensions.GSConnect.desktop";
         "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
-        "x-scheme-handler/http" = "org.gnome.Epiphany.desktop;microsoft-edge.desktop";
-        "x-scheme-handler/https" = "org.gnome.Epiphany.desktop;microsoft-edge.desktop";
+        "x-scheme-handler/http" = "org.gnome.Epiphany.desktop;zen.desktop";
+        "x-scheme-handler/https" = "org.gnome.Epiphany.desktop;zen.desktop";
         "x-scheme-handler/mailto" = "org.gnome.Geary.desktop";
       };
       defaultApplications = {
-        "text/html" = "microsoft-edge.desktop";
-        "application/xhtml+xml" = "microsoft-edge.desktop";
-        "x-scheme-handler/http" = "microsoft-edge.desktop";
-        "x-scheme-handler/https" = "microsoft-edge.desktop";
+        "text/html" = "zen.desktop";
+        "application/xhtml+xml" = "zen.desktop";
+        "x-scheme-handler/http" = "zen.desktop";
+        "x-scheme-handler/https" = "zen.desktop";
         "x-scheme-handler/mailto" = "org.gnome.Geary.desktop";
       };
     };
@@ -133,7 +133,7 @@
     "org/gnome/shell" = {
       favorite-apps = [
         "org.gnome.Nautilus.desktop"
-        "microsoft-edge.desktop"
+        "zen.desktop"
         "phpstorm.desktop"
         "ghostty.desktop"
         "legcord.desktop"
