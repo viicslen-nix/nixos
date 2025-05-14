@@ -80,15 +80,11 @@ in {
             tailwind.enable = true;
             terraform.enable = true;
             zig.enable = true;
+            php.enable = true;
 
             ts = {
               enable = true;
               extensions.ts-error-translator.enable = true;
-            };
-
-            php = {
-              enable = true;
-              lsp.server = "intelephense";
             };
           };
 
