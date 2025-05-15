@@ -98,10 +98,10 @@ in {
         ];
         configPackages = with pkgs; [
           xdg-desktop-portal-hyprland
-          kdePackages.xdg-desktop-portal-kde
           xdg-desktop-portal-gnome
           xdg-desktop-portal-gtk
           xdg-desktop-portal
+          kdePackages.xdg-desktop-portal-kde
         ];
         config = {
           common = {
@@ -109,8 +109,8 @@ in {
               "hyprland"
               "gnome"
               "xdph"
-              "kde"
               "gtk"
+              "kde"
             ];
             "org.freedesktop.impl.portal.FileChooser" =
               if cfg.gnomeCompatibility
