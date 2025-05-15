@@ -38,6 +38,12 @@ in {
       description = "Whether to enable the GDM window manager";
     };
 
+    remoteDesktop = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Enable remote desktop support";
+    };
+
     exclude = mkOption {
       type = types.listOf types.package;
       default = with pkgs; [
@@ -93,6 +99,30 @@ in {
         GI_TYPELIB_PATH = "/run/current-system/sw/lib/girepository-1.0";
       };
     }
+    (mkIf cfg.remoteDesktop {
+        services = {
+          gnome.gnome-remote-desktop.enable = true;
+
+          xrdp = {
+            enable = true;
+            openFirewall = true;
+            defaultWindowManager = "${pkgs.gnome-session}/bin/gnome-session";
+          };
+        };
+
+        # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
+        # If no user is logged in, the machine will power down after 20 minutes.
+        systemd.targets = {
+          sleep.enable = false;
+          suspend.enable = false;
+          hibernate.enable = false;
+          hybrid-sleep.enable = false;
+        };
+
+        environment.systemPackages = [
+          pkgs.gnome-remote-desktop
+        ];
+    })
     (mkIf homeManagerLoaded {
       home-manager.sharedModules = [
         {
