@@ -55,6 +55,16 @@ with lib; {
       startWhenNeeded = true;
       settings.PasswordAuthentication = true;
     };
+
+    cloudflared = {
+      enable = true;
+      tunnels = {
+        "0998f771c-00d1-4caa-9c82-de93b57c89a0" = {
+          credentialsFile = "/home/neoscode/.cloudflared/998f771c-00d1-4caa-9c82-de93b57c89a0.json";
+          default = "http_status:404";
+        };
+      };
+    };
   };
 
   environment.systemPackages = with pkgs; [
@@ -112,7 +122,10 @@ with lib; {
     };
 
     desktop = {
-      gnome.enable = true;
+      gnome = {
+        enable = true;
+        remoteDesktop = true;
+      };
 
       hyprland = {
         enable = true;
