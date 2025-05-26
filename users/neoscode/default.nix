@@ -10,7 +10,7 @@ in {
 
     secrets.intelephense = {
       file = ../../secrets/intelephense/licence.age;
-      path = "${osConfig.users.users.${user}.home}/.config/intelephense/licence.txt";
+      path = "${osConfig.users.users.${user}.home}/intelephense/licence.txt";
     };
   };
 
