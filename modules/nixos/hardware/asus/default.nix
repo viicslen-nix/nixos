@@ -18,7 +18,6 @@ in {
     environment.systemPackages = with pkgs; [
       asusctl
       supergfxctl
-      gnomeExtensions.supergfxctl-gex
     ];
 
     services = {

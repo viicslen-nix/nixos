@@ -20,7 +20,6 @@ with lib; let
     pkgs.gnomeExtensions.arcmenu
     pkgs.gnomeExtensions.user-themes
     pkgs.gnomeExtensions.autohide-battery
-    pkgs.gnomeExtensions.supergfxctl-gex
     pkgs.gnomeExtensions.caffeine
     pkgs.gnomeExtensions.gsconnect
     pkgs.gnomeExtensions.arrange-windows
