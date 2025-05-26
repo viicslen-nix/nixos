@@ -20,10 +20,10 @@ pkgs.writeShellScriptBin "web-search" ''
 
    main() {
      # Pass the list to rofi
-     platform=$( (gen_list) | ${pkgs.rofi-wayland}/bin/rofi -dmenu -config ~/.config/rofi/long.rasi )
+     platform=$( (gen_list) | ${pkgs.rofi-wayland}/bin/rofi -dmenu )
 
      if [[ -n "$platform" ]]; then
-       query=$( (echo ) | ${pkgs.rofi-wayland}/bin/rofi -dmenu -config ~/.config/rofi/long.rasi )
+       query=$( (echo ) | ${pkgs.rofi-wayland}/bin/rofi -dmenu )
 
        if [[ -n "$query" ]]; then
   url=''${URLS[$platform]}$query

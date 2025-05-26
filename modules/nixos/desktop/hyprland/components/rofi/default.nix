@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   config,
   ...
@@ -133,12 +134,14 @@
       "element-icon" = {
         size = mkLiteral "36px";
         cursor = mkLiteral "inherit";
+        background-color = lib.mkForce (mkLiteral "transparent");
       };
       "element-text" = {
         font = "JetBrainsMono Nerd Font Mono 12";
         cursor = mkLiteral "inherit";
         vertical-align = mkLiteral "0.5";
         horizontal-align = mkLiteral "0.0";
+        background-color = lib.mkForce (mkLiteral "transparent");
       };
       "message" = {
         background-color = mkLiteral "transparent";
@@ -167,20 +170,20 @@
         pkill -x rofi
         exit 0
       fi
-      ${pkgs.rofi-wayland}/bin/rofi -show drun
+      ${pkgs.rofi-wayland}/bin/rofi -show drun -config ~/.config/rofi/icon.rasi
     '';
     launcher = "${rofi}/bin/launcher";
     emojiPicker = import ./scripts/emoji-picker.nix {inherit pkgs;};
     webSearch = import ./scripts/web-search.nix {inherit pkgs;};
   in {
     bindr = [
-      "$mod, Space, exec, ${launcher} -show drun -config ~/.config/rofi/icon.rasi"
+      "$mod, Space, exec, ${launcher}"
     ];
 
     bind = [
-      "$mod, v, exec, cliphist list | ${launcher} -dmenu -config ~/.config/rofi/long.rasi | cliphist decode | wl-copy"
+      "$mod, v, exec, cliphist list | ${pkgs.rofi-wayland}/bin/rofi -dmenu | cliphist decode | wl-copy"
       "$mod, o, exec, ${emojiPicker}/bin/emoji-picker"
-      "$mod, w, exec, ${webSearch}/bin/web-search -config ~/.config/rofi/long.rasi"
+      "$mod, w, exec, ${webSearch}/bin/web-search"
     ];
 
     # windowrule = [
