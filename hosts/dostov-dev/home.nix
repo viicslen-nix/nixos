@@ -4,10 +4,6 @@
   lib,
   ...
 }: {
-  imports = [
-    inputs.zen-browser.homeModules.beta
-  ];
-
   home.autostart = [
     pkgs.jetbrains-toolbox
   ];
@@ -79,15 +75,6 @@
     kitty.enable = true;
     tinkerwell.enable = true;
   };
-
-  # programs.zen-browser = {
-  #   enable = true;
-  #   policies = {
-  #     DisableAppUpdate = true;
-  #     DisableTelemetry = true;
-  #   };
-  #   nativeMessagingHosts = [pkgs.firefoxpwa];
-  # };
 
   # programs.hyprpanel.settings.layout = {
   #   "bar.layouts" = {

@@ -68,7 +68,6 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
-    # pkgs.inputs.zen-browser.twilight
     (pkgs.inputs.zen-browser.default.override {
       nativeMessagingHosts = [
         pkgs.firefoxpwa
