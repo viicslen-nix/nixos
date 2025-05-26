@@ -19,7 +19,7 @@
 
       # applications
       "$terminal" = "kitty";
-      "$browser" = "zen";
+      "$browser" = "zen-beta";
       "$fileManager" = "nautilus";
       "$passwordManager" = "1password --quick-access";
 
