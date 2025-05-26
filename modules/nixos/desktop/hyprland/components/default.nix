@@ -1,17 +1,18 @@
 {
   imports = [
+    ./flameshot.nix
     ./hyprpaper.nix
     ./hyprlock.nix
     ./hypridle.nix
     ./pyprland.nix
-    ./flameshot.nix
+    ./swayosd.nix
     ./satty.nix
 
     ./workspaces
-    ./hyprpanel
+    # ./hyprpanel
     ./wlogout
-    # ./swaync
-    # ./waybar
+    ./swaync
+    ./waybar
     ./rofi
 
     # ./ags
