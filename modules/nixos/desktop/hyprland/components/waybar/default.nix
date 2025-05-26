@@ -36,9 +36,10 @@ in {
         modules-left = [
           "custom/startmenu"
           "hyprland/workspaces"
+          "hyprland/window"
+          "hyprland/submap"
           "custom/screenshot"
           "idle_inhibitor"
-          "hyprland/window"
         ];
         modules-right = [
           "privacy"
@@ -61,6 +62,8 @@ in {
           orientation = "horizontal";
           modules = [
             "custom/vpn"
+            "network"
+            "bluetooth"
             "wireplumber"
             "backlight"
             "battery"
@@ -100,20 +103,38 @@ in {
           tooltip = true;
         };
         "network" = {
+          tooltip = true;
           format-icons = [
-            "󰤯"
-            "󰤟"
-            "󰤢"
-            "󰤥"
-            "󰤨"
+            "󰤯 "
+            "󰤟 "
+            "󰤢 "
+            "󰤥 "
+            "󰤨 "
           ];
-          format-ethernet = " {bandwidthDownOctets}";
-          format-wifi = "{icon} {signalStrength}%";
-          format-disconnected = "󰤮";
-          tooltip = false;
+          format-ethernet = "󰈀 ";
+          format-wifi = "{icon}";
+          format-disconnected = "󰤮 ";
+          tooltip-format = "{ifname} via {gwaddr}";
+          tooltip-format-wifi = "{essid} ({signalStrength}%)";
+          tooltip-format-ethernet = "{ifname}";
+          tooltip-format-disconnected = "Disconnected";
+          on-click = lib.getExe pkgs.rofi-network-manager;
+        };
+        "bluetooth" = {
+          tooltip = true;
+          format = "{icon}";
+          format-on = "󰂯 ";
+          format-off = "󰂲 ";
+          format-connected = " ";
+          tooltip-format = "{status}";
+          tooltip-format-connected = "{device_enumerate}";
+	        tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
+        	tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
+          on-click = lib.getExe pkgs.rofi-bluetooth;
         };
         "tray" = {
-          spacing = 12;
+          spacing = 5;
+          show-passive-items = true;
         };
         "custom/exit" = {
           tooltip = false;
