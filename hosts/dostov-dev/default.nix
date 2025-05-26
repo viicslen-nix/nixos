@@ -170,6 +170,7 @@ with lib; {
 
         "selldiam.test" = "127.0.0.1";
         "mylisterhub.test" = "127.0.0.1";
+        "vite.mylisterhub.test" = "127.0.0.1";
         "app.mylisterhub.test" = "127.0.0.1";
         "admin.mylisterhub.test" = "127.0.0.1";
         "*.mylisterhub.test" = "127.0.0.1";
