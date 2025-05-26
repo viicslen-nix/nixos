@@ -93,26 +93,26 @@
         '';
       });
 
-    _1password-gui-wayland = _prev._1password-gui.overrideAttrs (oldAttrs: {
-      preFixup = ''
-        # makeWrapper defaults to makeBinaryWrapper due to wrapGAppsHook
-        # but we need a shell wrapper specifically for `NIXOS_OZONE_WL`.
-        # Electron is trying to open udev via dlopen()
-        # and for some reason that doesn't seem to be impacted from the rpath.
-        # Adding udev to LD_LIBRARY_PATH fixes that.
-        # Make xdg-open overrideable at runtime.
-        makeShellWrapper $out/share/1password/1password $out/bin/1password \
-          "''${gappsWrapperArgs[@]}" \
-          --suffix PATH : ${_prev.lib.makeBinPath [_prev.xdg-utils]} \
-          --prefix LD_LIBRARY_PATH : ${_prev.lib.makeLibraryPath [_prev.udev]} \
-          --add-flags "--ozone-platform=wayland" \
-          --add-flags "--enable-wayland-ime=true" \
-          --add-flags "--ozone-platform-hint=auto" \
-          --add-flags "--enable-features=UseOzonePlatform" \
-          --add-flags "--enable-features=WaylandWindowDecorations" \
-          --add-flags "--enable-features=WaylandLinuxDrmSyncobj" \
-          --add-flags "--disable-gpu-sandbox"
-      '';
-    });
+    # _1password-gui-wayland = _prev._1password-gui.overrideAttrs (oldAttrs: {
+    #   preFixup = ''
+    #     # makeWrapper defaults to makeBinaryWrapper due to wrapGAppsHook
+    #     # but we need a shell wrapper specifically for `NIXOS_OZONE_WL`.
+    #     # Electron is trying to open udev via dlopen()
+    #     # and for some reason that doesn't seem to be impacted from the rpath.
+    #     # Adding udev to LD_LIBRARY_PATH fixes that.
+    #     # Make xdg-open overrideable at runtime.
+    #     makeShellWrapper $out/share/1password/1password $out/bin/1password \
+    #       "''${gappsWrapperArgs[@]}" \
+    #       --suffix PATH : ${_prev.lib.makeBinPath [_prev.xdg-utils]} \
+    #       --prefix LD_LIBRARY_PATH : ${_prev.lib.makeLibraryPath [_prev.udev]} \
+    #       --add-flags "--ozone-platform=wayland" \
+    #       --add-flags "--enable-wayland-ime=true" \
+    #       --add-flags "--ozone-platform-hint=auto" \
+    #       --add-flags "--enable-features=UseOzonePlatform" \
+    #       --add-flags "--enable-features=WaylandWindowDecorations" \
+    #       --add-flags "--enable-features=WaylandLinuxDrmSyncobj" \
+    #       --add-flags "--disable-gpu-sandbox"
+    #   '';
+    # });
   };
 }
