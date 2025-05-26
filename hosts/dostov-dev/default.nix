@@ -68,10 +68,11 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
-    # Browsers
-    microsoft-edge-wayland
     # pkgs.inputs.zen-browser.twilight
     (pkgs.inputs.zen-browser.default.override {
+      nativeMessagingHosts = [
+        pkgs.firefoxpwa
+      ];
       extraPrefsFiles = [
         (builtins.fetchurl {
           url = "https://raw.githubusercontent.com/MrOtherGuy/fx-autoconfig/master/program/config.js";

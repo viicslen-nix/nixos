@@ -80,6 +80,15 @@
     tinkerwell.enable = true;
   };
 
+  # programs.zen-browser = {
+  #   enable = true;
+  #   policies = {
+  #     DisableAppUpdate = true;
+  #     DisableTelemetry = true;
+  #   };
+  #   nativeMessagingHosts = [pkgs.firefoxpwa];
+  # };
+
   # programs.hyprpanel.settings.layout = {
   #   "bar.layouts" = {
   #     "0" = {
