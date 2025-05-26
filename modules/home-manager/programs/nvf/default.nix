@@ -30,7 +30,6 @@ in {
           vimAlias = true;
           hideSearchHighlight = true;
           syntaxHighlighting = true;
-          useSystemClipboard = true;
           undoFile.enable = true;
           withNodeJs = true;
 
@@ -60,7 +59,6 @@ in {
           # LSP
           languages = {
             enableDAP = true;
-            enableLSP = true;
             enableFormat = true;
             enableTreesitter = true;
             enableExtraDiagnostics = true;
