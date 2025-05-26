@@ -92,14 +92,17 @@ in {
         wlr.enable = true;
         extraPortals = with pkgs; [
           kdePackages.xdg-desktop-portal-kde
-          xdg-desktop-portal-gnome
+          xdg-desktop-portal-shana
           xdg-desktop-portal-gtk
+          xdg-desktop-portal-gnome
           xdg-desktop-portal
         ];
         configPackages = with pkgs; [
+          kdePackages.xdg-desktop-portal-kde
           xdg-desktop-portal-hyprland
-          xdg-desktop-portal-gnome
+          xdg-desktop-portal-shana
           xdg-desktop-portal-gtk
+          xdg-desktop-portal-gnome
           xdg-desktop-portal
           kdePackages.xdg-desktop-portal-kde
         ];
@@ -114,7 +117,7 @@ in {
             ];
             "org.freedesktop.impl.portal.FileChooser" =
               if cfg.gnomeCompatibility
-              then ["xdg-desktop-portal-gtk"]
+              then ["gtk"]
               else ["kde"];
           };
         };

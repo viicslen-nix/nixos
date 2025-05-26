@@ -42,7 +42,7 @@
     "$launcher" = "${ags} -t launcher";
 
     exec-once = [
-      "killall -q ags -b hypr;sleep .5 && ags -b hypr"
+      "killall -q ags;sleep .5 && ags -b hypr"
     ];
 
     bind = [

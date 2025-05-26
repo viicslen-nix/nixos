@@ -5,8 +5,8 @@
 }:
 with lib; {
   wayland.windowManager.hyprland.settings = {
-    exec-once = [
-      "killall -q swaync;sleep .5 && swaync"
+    exec-once = lib.mkAfter [
+      "killall -q swaync; sleep .5 && swaync"
     ];
 
     bind = [

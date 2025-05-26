@@ -1,4 +1,10 @@
-{pkgs, lib, config, ...}: with lib; {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+with lib; {
   home.file.".config/flameshot/flameshot.ini".text = with config.lib.stylix.colors; ''
     [General]
     allowMultipleGuiInstances=true
@@ -22,7 +28,7 @@
       "float,class:(flameshot),title:(flameshot)"
     ];
     bind = let
-      flameshot = (pkgs.flameshot.override { enableWlrSupport = true; });
+      flameshot = pkgs.flameshot.override {enableWlrSupport = true;};
     in [
       "$mod SHIFT ALT, S, exec, ${getExe flameshot} gui"
     ];

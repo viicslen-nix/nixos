@@ -16,10 +16,9 @@ with lib; {
       "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
       "gnome-keyring-daemon --start --components=secrets"
 
-      "pypr"
-      "swww-daemon"
-      "1password --silent"
-      "mullvad-gui --silent"
+      "killall -q swww-daemon; sleep .5 && swww-daemon"
+      "killall -q 1password; sleep .5 && 1password --silent"
+      "killall -q mullvad; sleep .5 && mullvad-gui --silent"
 
       "wl-paste --type text --watch cliphist store"
       "wl-paste --type image --watch cliphist store"

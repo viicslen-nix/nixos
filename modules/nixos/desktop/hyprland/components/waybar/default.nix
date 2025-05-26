@@ -128,9 +128,10 @@ in {
           format-connected = " ";
           tooltip-format = "{status}";
           tooltip-format-connected = "{device_enumerate}";
-	        tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
-        	tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
+          tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
+          tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
           on-click = lib.getExe pkgs.rofi-bluetooth;
+          on-click-right = "pypr toggle bluetooth";
         };
         "tray" = {
           spacing = 5;
@@ -144,7 +145,7 @@ in {
         "custom/startmenu" = {
           tooltip = false;
           format = "";
-          on-click = "sleep 0.1 && rofi -show drun";
+          on-click = "sleep 0.1 && rofi -show drun -config ~/.config/rofi/icon.rasi";
         };
         "custom/pipewire" = {
           tooltip = false;

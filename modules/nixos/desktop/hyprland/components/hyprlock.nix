@@ -1,4 +1,8 @@
-{lib, config, ...}: let
+{
+  lib,
+  config,
+  ...
+}: let
   wallpaper = config.stylix.image;
   colors = config.lib.stylix.colors;
 in {
