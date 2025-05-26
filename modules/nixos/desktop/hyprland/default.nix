@@ -159,7 +159,6 @@ in {
           wireplumber
 
           # wallpaper
-          swww
           waypaper
           hyprpaper
 
