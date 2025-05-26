@@ -82,16 +82,16 @@
       '';
     };
 
-    legcord =
-      (_prev.legcord.override {
-        electron = _prev.electron_36-bin;
-      }).overrideAttrs (old: {
-        postFixup = ''
-          ${old.postFixup or ""}
-          wrapProgramShell $out/bin/legcord \
-            --add-flags "--enable-features=WaylandLinuxDrmSyncobj"
-        '';
-      });
+    # legcord =
+    #   (_prev.legcord.override {
+    #     electron = _prev.electron_36-bin;
+    #   }).overrideAttrs (old: {
+    #     postFixup = ''
+    #       ${old.postFixup or ""}
+    #       wrapProgramShell $out/bin/legcord \
+    #         --add-flags "--enable-features=WaylandLinuxDrmSyncobj"
+    #     '';
+    #   });
 
     # _1password-gui-wayland = _prev._1password-gui.overrideAttrs (oldAttrs: {
     #   preFixup = ''
