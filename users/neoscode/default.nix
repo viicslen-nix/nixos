@@ -30,6 +30,7 @@ in {
     zoxide.enable = true;
     k9s.enable = true;
     btop.enable = true;
+    helix.enable = true;
 
     gh = {
       enable = true;
