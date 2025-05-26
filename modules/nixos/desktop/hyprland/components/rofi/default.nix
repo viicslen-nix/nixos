@@ -12,9 +12,9 @@
       location = 0;
       show-icons = true;
       drun-display-format = "{icon} {name}";
-      display-drun = " Apps";
-      display-run = " Run";
-      display-filebrowser = " File";
+      display-drun = "  Apps";
+      display-run = "  Run";
+      display-filebrowser = "  File";
     };
     theme = let
       inherit (config.lib.formats.rasi) mkLiteral;
@@ -39,7 +39,7 @@
       "mainbox" = {
         padding = mkLiteral "15px";
         enabled = true;
-        orientation = mkLiteral "vertical";
+        orientation = mkLiteral "horizontal";
         children = map mkLiteral [
           "inputbar"
           "listbox"
@@ -48,17 +48,18 @@
       };
       "inputbar" = {
         enabled = true;
-        padding = mkLiteral "10px 10px 200px 10px";
+        width = mkLiteral "20%";
+        padding = mkLiteral "10px";
         margin = mkLiteral "10px";
         background-color = mkLiteral "transparent";
         border-radius = "25px";
-        orientation = mkLiteral "horizontal";
+        orientation = mkLiteral "vertical";
         children = map mkLiteral [
           "entry"
           "dummy"
           "mode-switcher"
         ];
-        background-image = mkLiteral ''url("${wallpaper}", width)'';
+        background-image = mkLiteral ''url("${wallpaper}", height)'';
       };
       "entry" = {
         enabled = true;
@@ -83,8 +84,8 @@
       };
       "listview" = {
         enabled = true;
-        columns = 2;
-        lines = 6;
+        columns = 1;
+        lines = 8;
         cycle = true;
         dynamic = true;
         scrollbar = false;
@@ -125,6 +126,9 @@
         border-radius = mkLiteral "12px";
         background-color = mkLiteral "transparent";
         cursor = mkLiteral "pointer";
+        children = map mkLiteral [
+          "element-text"
+        ];
       };
       "element-icon" = {
         size = mkLiteral "36px";
@@ -170,7 +174,7 @@
     webSearch = import ./scripts/web-search.nix {inherit pkgs;};
   in {
     bindr = [
-      "$mod, Space, exec, ${launcher} -show drun -run-command \"uwsm app -- {cmd}\""
+      "$mod, Space, exec, ${launcher} -show drun -config ~/.config/rofi/icon.rasi"
     ];
 
     bind = [
@@ -191,6 +195,6 @@
 
   home.file = {
     ".config/rofi/emoji.rasi".source = ./emoji.rasi;
-    ".config/rofi/long.rasi".source = ./long.rasi;
+    ".config/rofi/icon.rasi".source = ./icon.rasi;
   };
 }
