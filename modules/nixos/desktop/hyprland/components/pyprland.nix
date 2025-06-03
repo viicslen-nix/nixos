@@ -11,13 +11,6 @@
     "--class=webapp-${name}"
     "--app=${url}"
   ]);
-  webapp-brave = name: url: (lib.concatStringsSep " " [
-    "${lib.getExe pkgs.brave}"
-    "--user-data-dir=${config.xdg.configHome}/chromium/webapps/${name}"
-    "--profile-directory=${name}"
-    "--class=webapp-${name}"
-    "--app=${url}"
-  ]);
 in {
   home.file.".config/hypr/pyprland.toml".text = ''
     [pyprland]
@@ -49,6 +42,20 @@ in {
     unfocus = "hide"
     lazy = true
 
+    [scratchpads.services]
+    animation = "fromRight"
+    command = "${pkgs.ferdium}/bin/ferdium"
+    class = "ferdium"
+    size = "40% 90%"
+    unfocus = "hide"
+
+    [scratchpads.notes]
+    animation = "fromRight"
+    command = "${lib.getExe pkgs.obsidian}"
+    class = "obsidian"
+    size = "40% 90%"
+    unfocus = "hide"
+
     [scratchpads.messages]
     animation = "fromRight"
     command = "${(webapp "messages" "https://messages.google.com/web/u/2/conversations")}"
@@ -67,7 +74,7 @@ in {
 
     [scratchpads.gemini]
     animation = "fromRight"
-    command = "${(webapp-brave "gemini" "https://gemini.google.com")}"
+    command = "${(webapp "gemini" "https://gemini.google.com")}"
     class = "brave-gemini.google.com__-gemini"
     size = "50% 90%"
     unfocus = "hide"
@@ -86,10 +93,12 @@ in {
     extraConfig = ''
       submap = scratchpads
 
-      binde = , m, exec, pypr toggle messages
-      binde = , w, exec, pypr toggle whatsapp
-      binde = , g, exec, pypr toggle gemini
-      binde = , r, exec, killall -q pypr-wrapped; sleep .5 && pypr
+      bind = , s, exec, pypr toggle services
+      bind = , n, exec, pypr toggle notes
+      bind = , m, exec, pypr toggle messages
+      bind = , w, exec, pypr toggle whatsapp
+      bind = , g, exec, pypr toggle gemini
+      bind = , r, exec, killall -q pypr-wrapped; sleep .5 && pypr
 
       bind = , escape, submap, reset
       bind = , catchall, submap, reset
