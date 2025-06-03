@@ -10,6 +10,34 @@
         unique = false;
         noremap = true;
       }
+      {
+        key = "<leader>;";
+        mode = ["n"];
+        action = "<S-a>;<ESC>";
+        desc = "Insert semicolon";
+        noremap = true;
+      }
+      {
+        key = "<leader>,";
+        mode = ["n"];
+        action = "<S-a>,<ESC>";
+        desc = "Insert comma";
+        noremap = true;
+      }
+      {
+        key = ">";
+        mode = ["v"];
+        action = ">gv";
+        desc = "Indent selection";
+        noremap = true;
+      }
+      {
+        key = "<";
+        mode = ["v"];
+        action = "<gv";
+        desc = "Unindent selection";
+        noremap = true;
+      }
     ];
 
     lsp.mappings = {
@@ -34,27 +62,30 @@
     comments.comment-nvim.mappings = {
       toggleCurrentLine = "<C-/>";
       toggleCurrentBlock = "<C-?>";
-      toggleOpLeaderLine = "/";
-      toggleOpLeaderBlock = "?";
       toggleSelectedLine = "<C-/>";
       toggleSelectedBlock = "<C-?>";
+      toggleOpLeaderLine = "<leader>/";
+      toggleOpLeaderBlock = "<leader>?";
     };
 
     lazy.plugins = {
       "laravel.nvim".keys = [
         {
-          key = "<leader>laa";
+          key = "<leader>lla";
           action = ":Laravel artisan<cr>";
+          desc = "Laravel Artisan";
           mode = "n";
         }
         {
-          key = "<leader>lar";
+          key = "<leader>llr";
           action = ":Laravel routes<cr>";
+          desc = "Laravel Routes";
           mode = "n";
         }
         {
-          key = "<leader>lam";
+          key = "<leader>llm";
           action = ":Laravel related<cr>";
+          desc = "Laravel Related";
           mode = "n";
         }
         {
