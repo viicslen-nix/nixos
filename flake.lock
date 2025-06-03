@@ -98,6 +98,27 @@
         "type": "github"
       }
     },
+    "astal_2": {
+      "inputs": {
+        "nixpkgs": [
+          "marble",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1748845209,
+        "narHash": "sha256-fWfMFjKNxzGjqW2XZHDg6cSyHcir8rk8ev9DHo2YkTA=",
+        "owner": "aylur",
+        "repo": "astal",
+        "rev": "7f2292f0792ffc9b127d4788b3dd3f104b5374b2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aylur",
+        "repo": "astal",
+        "type": "github"
+      }
+    },
     "base16": {
       "inputs": {
         "fromYaml": "fromYaml"
@@ -1699,6 +1720,23 @@
         "type": "github"
       }
     },
+    "marble": {
+      "inputs": {
+        "astal": "astal_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "flakes/marble",
+        "type": "path"
+      },
+      "original": {
+        "path": "flakes/marble",
+        "type": "path"
+      },
+      "parent": []
+    },
     "mission-control": {
       "locked": {
         "lastModified": 1733438716,
@@ -2548,6 +2586,7 @@
         "impermanence": "impermanence",
         "lan-mouse": "lan-mouse",
         "laravel-sail": "laravel-sail",
+        "marble": "marble",
         "mission-control": "mission-control",
         "nix-alien": "nix-alien",
         "nixos-generators": "nixos-generators",

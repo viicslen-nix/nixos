@@ -91,36 +91,43 @@ in {
         enable = true;
         wlr.enable = true;
         extraPortals = with pkgs; [
-          kdePackages.xdg-desktop-portal-kde
-          xdg-desktop-portal-shana
+          # kdePackages.xdg-desktop-portal-kde
+          xdg-desktop-portal-hyprland
+          # xdg-desktop-portal-shana
           xdg-desktop-portal-gtk
-          xdg-desktop-portal-gnome
+          # xdg-desktop-portal-gnome
           xdg-desktop-portal
         ];
         configPackages = with pkgs; [
-          kdePackages.xdg-desktop-portal-kde
+          # kdePackages.xdg-desktop-portal-kde
           xdg-desktop-portal-hyprland
-          xdg-desktop-portal-shana
+          # xdg-desktop-portal-shana
           xdg-desktop-portal-gtk
-          xdg-desktop-portal-gnome
+          # xdg-desktop-portal-gnome
           xdg-desktop-portal
-          kdePackages.xdg-desktop-portal-kde
         ];
-        config = {
-          common = {
-            default = [
-              "hyprland"
-              "gnome"
-              "xdph"
-              "gtk"
-              "kde"
-            ];
-            "org.freedesktop.impl.portal.FileChooser" =
-              if cfg.gnomeCompatibility
-              then ["gtk"]
-              else ["kde"];
-          };
-        };
+        # config = {
+        #   common = {
+        #     default = [
+        #       "hyprland"
+        #       "gnome"
+        #       "xdph"
+        #       "gtk"
+        #       "kde"
+        #     ];
+        #     "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
+        #     "org.freedesktop.impl.portal.FileChooser" = mkIf (cfg.gnomeCompatibility == false) ["kde"];
+        #   };
+        #   hyprland = {
+        #     default = [
+        #       "hyprland"
+        #       "xdph"
+        #       "gtk"
+        #     ];
+        #     "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
+        #     "org.freedesktop.impl.portal.FileChooser" = mkIf (cfg.gnomeCompatibility == false) ["kde"];
+        #   };
+        # };
       };
 
       # Enable configure security
@@ -170,6 +177,7 @@ in {
           # utils
           # networkmanagerapplet # needed for nm-applet icons
           pkgs.inputs.pyprland.pyprland
+          pkgs.intputs.marble.default
           wl-screenrec
           wl-clipboard
           wlr-randr

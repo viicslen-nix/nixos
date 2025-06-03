@@ -1,3 +1,6 @@
 [submodule "modules/nixos/desktop/hyprland/components/shell/src"]
 	path = modules/nixos/desktop/hyprland/components/shell/src
 	url = https://github.com/viicslen/shell.git
+[submodule "flakes/marble"]
+	path = flakes/marble
+	url = https://github.com/viicslen/nix-astal-marble

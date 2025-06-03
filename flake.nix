@@ -122,6 +122,10 @@
       url = "github:alexhulbert/Hyprchroma";
       inputs.hyprland.follows = "hyprland";
     };
+    marble = {
+      url = ./flakes/marble;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Theming
     stylix.url = "github:danth/stylix";
