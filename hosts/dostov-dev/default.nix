@@ -47,6 +47,7 @@ with lib; {
   };
 
   services = {
+    blueman.enable = true;
     xserver.displayManager.gdm.enable = true;
     displayManager.defaultSession = "hyprland-uwsm";
 
@@ -175,6 +176,7 @@ with lib; {
         "admin.mylisterhub.test" = "127.0.0.1";
         "*.mylisterhub.test" = "127.0.0.1";
         "time-tracker.test" = "127.0.0.1";
+        "socket.time-tracker.test" = "127.0.0.1";
       };
     };
 
