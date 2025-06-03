@@ -15,5 +15,9 @@
 
     # Configure the package manager
     xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs.nix;
+
+    # Disable manual
+    manual.manpages.enable = mkDefault false;
+    programs.man.enable = mkDefault false;
   };
 }
