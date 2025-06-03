@@ -7,12 +7,11 @@
     ./pyprland.nix
     ./swayosd.nix
     ./satty.nix
-    ./marble.nix
 
     ./workspaces
     # ./hyprpanel
     ./wlogout
-    # ./swaync
+    ./swaync
     ./waybar
     ./rofi
   ];
