@@ -2,6 +2,9 @@
   description = "Nixos config flake";
 
   inputs = {
+    # Enable submodules
+    self.submodules = true;
+
     # Nixpkgs
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
