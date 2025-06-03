@@ -177,7 +177,6 @@ in {
           # utils
           # networkmanagerapplet # needed for nm-applet icons
           pkgs.inputs.pyprland.pyprland
-          pkgs.inputs.marble.default
           wl-screenrec
           wl-clipboard
           wlr-randr

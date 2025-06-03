@@ -125,8 +125,8 @@
       url = "github:alexhulbert/Hyprchroma";
       inputs.hyprland.follows = "hyprland";
     };
-    marble = {
-      url = ./flakes/marble;
+    astal-shells = {
+      url = ./flakes/astal-shells;
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
