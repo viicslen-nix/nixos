@@ -76,6 +76,11 @@ in {
         init.defaultBranch = "main";
         web.browser = "microsoft-edge";
         user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJk8lwwP7GnxZMgpx+C30i/Lw912BBoFccz4gjek8lCX";
+
+        # Submodules
+        submodule.recurse = true;
+        status.submoduleSummary = true;
+        push.recurseSubmodules = "on-demand";
       };
     };
   };
