@@ -26,7 +26,6 @@ in {
 
   programs = {
     carapace.enable = true;
-    thefuck.enable = true;
     zoxide.enable = true;
     k9s.enable = true;
     btop.enable = true;

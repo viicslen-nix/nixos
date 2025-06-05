@@ -77,7 +77,6 @@ in {
       direnv.enableNushellIntegration = true;
       carapace.enableNushellIntegration = true;
       atuin.enableNushellIntegration = true;
-      thefuck.enableNushellIntegration = true;
       zoxide.enableNushellIntegration = true;
       yazi.enableNushellIntegration = true;
     };

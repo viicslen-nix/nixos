@@ -87,7 +87,6 @@ in {
       keychain.enableZshIntegration = true;
       direnv.enableZshIntegration = true;
       carapace.enableZshIntegration = true;
-      thefuck.enableZshIntegration = true;
       zoxide.enableZshIntegration = true;
       yazi.enableZshIntegration = true;
     };
