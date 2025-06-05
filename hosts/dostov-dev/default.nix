@@ -48,7 +48,7 @@ with lib; {
 
   services = {
     blueman.enable = true;
-    xserver.displayManager.gdm.enable = true;
+    displayManager.gdm.enable = true;
     displayManager.defaultSession = "hyprland-uwsm";
 
     openssh = {
