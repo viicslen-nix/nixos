@@ -118,11 +118,6 @@ in {
           telescope = {
             enable = true;
             setupOpts.pickers.find_files = {
-              find_command = [
-                (lib.getExe pkgs.fd)
-                "--type=file"
-                "--unrestricted"
-              ];
               hidden = true;
               no_ignore = true;
             };
@@ -135,15 +130,18 @@ in {
             indent.enable = true;
           };
 
-          autocomplete.nvim-cmp.enable = true;
+          autocomplete = {
+            enableSharedCmpSources = true;
+            nvim-cmp.enable = true;
+          };
           autopairs.nvim-autopairs.enable = true;
           dashboard.dashboard-nvim.enable = true;
-          presence.neocord.enable = true;
           projects.project-nvim.enable = true;
           runner.run-nvim.enable = true;
           statusline.lualine.enable = true;
           tabline.nvimBufferline.enable = true;
           comments.comment-nvim.enable = true;
+          snippets.luasnip.enable = true;
 
           notify.nvim-notify = {
             enable = true;
@@ -153,10 +151,34 @@ in {
           };
 
           utility = {
+            mkdir.enable = true;
+            direnv.enable = true;
+            surround.enable = true;
+            motion.leap.enable = true;
+            multicursor.enable = true;
+            diagnostics.enable = true;
+            vim-wakatime.enable = true;
             outline.aerial-nvim.enable = true;
             preview.markdownPreview.enable = true;
-            surround.enable = true;
-            vim-wakatime.enable = true;
+
+            images.image-nvim = {
+              enable = true;
+              setupOpts = {
+                backend = "kitty";
+                editorOnlyRenderWhenFocused = true;
+              };
+            };
+
+            snacks-nvim = {
+              enable = true;
+              setupOpts = {
+                lazygit.configure = true;
+                explorer.replace_netrw = true;
+                input = {};
+                quickfile = {};
+                picker.sources.explorer = {};
+              };
+            };
           };
 
           visuals = {
@@ -165,17 +187,42 @@ in {
             nvim-scrollbar.enable = true;
             nvim-web-devicons.enable = true;
 
-            fidget-nvim.enable = false;
+            fidget-nvim.enable = true;
+            fidget-nvim.setupOpts.progress.ignore_empty_message = true;
+
+            nvim-cursorline = {
+              enable = true;
+              setupOpts = {
+                cursorword.enable = true;
+                cursorline.enable = true;
+              };
+            };
           };
 
-          assistant.copilot = {
-            enable = true;
-            cmp.enable = true;
+          assistant = {
+            copilot = {
+              enable = true;
+              cmp.enable = true;
+            };
+            avante-nvim = {
+              enable = true;
+              setupOpts = {
+                auto_suggestions_provider = "copilot";
+                enable_cursor_planning_mode = true;
+                enable_claude_text_editor_tool_mode = true;
+                behaviour.auto_suggestions = false;
+              };
+            };
           };
 
           binds = {
             cheatsheet.enable = true;
-            whichKey.enable = true;
+            hardtime-nvim.enable = true;
+
+            whichKey = {
+              enable = true;
+              setupOpts.preset = "helix";
+            };
           };
 
           debugger.nvim-dap = {
@@ -186,15 +233,20 @@ in {
           filetree.nvimTree = {
             enable = true;
             openOnSetup = false;
-            setupOpts.filters = {
-              git_ignored = true;
-              dotfiles = true;
+            setupOpts = {
+              git.enable = true;
+              modified.enable = true;
+              hijack_cursor = true;
+              renderer.highlight_opened_files = "all";
+              view.cursorline = true;
             };
           };
 
           git = {
             enable = true;
             vim-fugitive.enable = true;
+            git-conflict.enable = true;
+            gitlinker-nvim.enable = true;
             gitsigns = {
               enable = true;
               codeActions.enable = true;
