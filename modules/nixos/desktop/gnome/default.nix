@@ -69,10 +69,10 @@ in {
     {
       # Enable the GNOME Desktop Environment.
       services.xserver.enable = mkDefault true;
-      services.xserver.desktopManager.gnome.enable = true;
+      services.desktopManager.gnome.enable = true;
 
       # Enable the GNOME Display Manager
-      services.xserver.displayManager.gdm = mkIf cfg.enableGdm {
+      services.displayManager.gdm = mkIf cfg.enableGdm {
         enable = true;
       };
 
