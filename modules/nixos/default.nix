@@ -20,6 +20,7 @@
     intel = import ./hardware/intel;
     nvidia = import ./hardware/nvidia;
     display = import ./hardware/display;
+    bluetooth = import ./hardware/bluetooth;
   };
 
   # Desktop

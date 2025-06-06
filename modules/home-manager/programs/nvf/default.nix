@@ -134,6 +134,7 @@ in {
             enableSharedCmpSources = true;
             nvim-cmp.enable = true;
           };
+
           autopairs.nvim-autopairs.enable = true;
           dashboard.dashboard-nvim.enable = true;
           projects.project-nvim.enable = true;
@@ -142,6 +143,7 @@ in {
           tabline.nvimBufferline.enable = true;
           comments.comment-nvim.enable = true;
           snippets.luasnip.enable = true;
+          diagnostics.enable = true;
 
           notify.nvim-notify = {
             enable = true;
@@ -155,8 +157,7 @@ in {
             direnv.enable = true;
             surround.enable = true;
             motion.leap.enable = true;
-            multicursor.enable = true;
-            diagnostics.enable = true;
+            multicursors.enable = true;
             vim-wakatime.enable = true;
             outline.aerial-nvim.enable = true;
             preview.markdownPreview.enable = true;
