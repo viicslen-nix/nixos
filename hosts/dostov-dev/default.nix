@@ -120,6 +120,7 @@ with lib; {
     hardware = {
       intel.enable = true;
       nvidia.enable = true;
+      bluetooth.enable = true;
     };
 
     desktop = {
