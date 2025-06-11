@@ -54,7 +54,7 @@ in {
     programs = {
       tmux.extraConfig = mkIf cfg.enableTmuxIntegration (mkAfter ''
         bind-key "T" run-shell "sesh connect \"$(
-          sesh list --icons -ctH | fzf-tmux -p 80%,70% \
+          sesh list --icons -ctHT | fzf-tmux -p 80%,70% \
             --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
             --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
             --bind 'tab:down,btab:up' \
@@ -72,7 +72,7 @@ in {
       nushell.extraConfig = mkIf cfg.enableNushellIntegration (mkAfter ''
         def sesh-sessions [] {
           # Use fzf to list and select a session
-          let session = (sesh list -ctH | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ' | str trim)
+          let session = (sesh list -ctHT | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ' | str trim)
 
           # Check if a session was selected
           if ($session == \'\') {
