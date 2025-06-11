@@ -80,6 +80,7 @@ with lib; {
         })
       ];
     })
+    brave
 
     # IDEs & Editors
     jetbrains.idea-ultimate
