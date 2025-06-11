@@ -96,6 +96,26 @@ in {
             lspkind.enable = true;
             otter-nvim.enable = true;
             trouble.enable = true;
+
+            servers = {
+              phpactor = {
+                enable = true;
+                filetypes = ["php"];
+                cmd = [
+                  (lib.getExe pkgs.phpactor)
+                  "language-server"
+                ];
+              };
+            };
+          };
+
+          formatter.conform-nvim = {
+            enable = true;
+            setupOpts = {
+              formatters_by_ft = {
+                php = ["pint"];
+              };
+            };
           };
 
           # UI
@@ -275,6 +295,9 @@ in {
               setupModule = "laravel";
               cmd = ["Laravel"];
               lazy = true;
+              opts = {
+                lsp_server = "intelephense";
+              };
             };
           };
         };
