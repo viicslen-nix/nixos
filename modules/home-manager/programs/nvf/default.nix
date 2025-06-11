@@ -295,7 +295,7 @@ in {
               setupModule = "laravel";
               cmd = ["Laravel"];
               lazy = true;
-              opts = {
+              setupOpts = {
                 lsp_server = "intelephense";
               };
             };
