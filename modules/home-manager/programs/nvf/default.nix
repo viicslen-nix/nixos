@@ -162,14 +162,6 @@ in {
             outline.aerial-nvim.enable = true;
             preview.markdownPreview.enable = true;
 
-            images.image-nvim = {
-              enable = true;
-              setupOpts = {
-                backend = "kitty";
-                editorOnlyRenderWhenFocused = true;
-              };
-            };
-
             snacks-nvim = {
               enable = true;
               setupOpts = {
@@ -187,9 +179,6 @@ in {
             indent-blankline.enable = true;
             nvim-scrollbar.enable = true;
             nvim-web-devicons.enable = true;
-
-            fidget-nvim.enable = true;
-            fidget-nvim.setupOpts.progress.ignore_empty_message = true;
 
             nvim-cursorline = {
               enable = true;
