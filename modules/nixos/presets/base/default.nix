@@ -32,11 +32,13 @@ in {
         noto-fonts
         noto-fonts-cjk-sans
         noto-fonts-emoji
+        victor-mono
         nerd-fonts.noto
         nerd-fonts.hack
         nerd-fonts.fira-code
         nerd-fonts.jetbrains-mono
         nerd-fonts.droid-sans-mono
+        nerd-fonts.victor-mono
       ];
       description = ''
         The list of fonts to install.
