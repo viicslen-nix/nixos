@@ -160,7 +160,7 @@
     leftOf = "eDP-1"
 
     [monitors.placement."Acer CB281HK"]
-    topOf = "DP-1"
+    topOf = "G274F"
     scale = 1.875000
   '';
 
