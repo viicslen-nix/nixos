@@ -36,6 +36,7 @@ in {
         nerd-fonts.noto
         nerd-fonts.hack
         nerd-fonts.fira-code
+        nerd-fonts.fira-mono
         nerd-fonts.jetbrains-mono
         nerd-fonts.droid-sans-mono
         nerd-fonts.victor-mono
