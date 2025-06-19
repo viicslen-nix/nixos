@@ -111,11 +111,8 @@ with lib; {
     # Misc
     tlrc
     vial
-    # uv
+    uv
   ];
-
-  programs.nix-ld.enable = true;
-  stylix.cursor.size = 24;
 
   modules = {
     hardware = {
@@ -145,9 +142,14 @@ with lib; {
 
     functionality = {
       oom.enable = true;
-      theming.enable = true;
       appImages.enable = true;
       powerManagement.enable = true;
+
+
+      theming = {
+        enable = true;
+        disabledTargets = ["chromium"];
+      };
 
       network.hosts = {
         # Docker
