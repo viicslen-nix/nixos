@@ -43,19 +43,6 @@ in {
             languages = ["en" "es"];
           };
 
-          theme = {
-            enable = mkForce false;
-          };
-
-          startPlugins = ["onedark" "base16"];
-          luaConfigRC.theme = inputs.nvf.lib.nvim.dag.entryBefore ["pluginConfigs" "lazyConfigs"] ''
-            require('onedark').setup {
-              transparent = true,
-              style = "darker"
-            }
-            require('onedark').load()
-          '';
-
           # LSP
           languages = {
             enableDAP = true;
@@ -97,16 +84,16 @@ in {
             otter-nvim.enable = true;
             trouble.enable = true;
 
-            servers = {
-              phpactor = {
-                enable = true;
-                filetypes = ["php"];
-                cmd = [
-                  (lib.getExe pkgs.phpactor)
-                  "language-server"
-                ];
-              };
-            };
+            # lspconfig.sources.phpactor = mkForce ''
+            #   lspconfig.phpactor.setup {
+            #     capabilities = capabilities,
+            #     on_attach = default_on_attach,
+            #     cmd = {
+            #       "${getExe pkgs.phpactor}",
+            #       "language-server"
+            #     },
+            #   }
+            # '';
           };
 
           formatter.conform-nvim = {
@@ -227,7 +214,15 @@ in {
 
           binds = {
             cheatsheet.enable = true;
-            hardtime-nvim.enable = true;
+            hardtime-nvim = {
+              enable = true;
+              setupOpts = {
+                disable_mouse = false;
+                restriction_mode = "hint";
+                force_exit_insert_mode = true;
+                disabled_keys = lib.mkLuaInline "{}";
+              };
+            };
 
             whichKey = {
               enable = true;
