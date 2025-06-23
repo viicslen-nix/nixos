@@ -1,3 +1,6 @@
 [submodule "flakes/marble"]
 	path = flakes/astal-shells
 	url = https://github.com/viicslen/nix-astal-shells
+[submodule "flakes/nvf"]
+	path = flakes/nvf
+	url = https://github.com/viicslen/nvf-config
