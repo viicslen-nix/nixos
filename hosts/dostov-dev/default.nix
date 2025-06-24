@@ -96,6 +96,7 @@ with lib; {
     # Development Tools
     github-desktop
     insomnia
+    postman
     lens
 
     # Notes
