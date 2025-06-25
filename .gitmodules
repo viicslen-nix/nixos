@@ -3,4 +3,4 @@
 	url = https://github.com/viicslen/nix-astal-shells
 [submodule "flakes/nvf"]
 	path = flakes/nvf
-	url = https://github.com/viicslen/nvf-config
+	url = https://github.com/viicslen/neovim
