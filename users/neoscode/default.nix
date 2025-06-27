@@ -95,7 +95,6 @@ in {
       atuin.enable = true;
       nushell.enable = true;
       starship.enable = true;
-      nvf.enable = true;
       sesh = {
         enable = true;
         enableNushellIntegration = true;

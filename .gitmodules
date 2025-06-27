@@ -2,5 +2,5 @@
 	path = flakes/astal-shells
 	url = https://github.com/viicslen/nix-astal-shells
 [submodule "flakes/nvf"]
-	path = flakes/nvf
+	path = flakes/neovim
 	url = https://github.com/viicslen/neovim

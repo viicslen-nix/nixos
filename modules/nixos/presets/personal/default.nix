@@ -22,6 +22,7 @@ in {
       asciinema
       yazi
       nextcloud-client
+      inputs.neovim.default
     ];
 
     programs.adb.enable = mkDefault true;

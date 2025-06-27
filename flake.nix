@@ -78,6 +78,10 @@
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    neovim = {
+      url = ./flakes/neovim;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # 1Password
     tmux-1password = {
