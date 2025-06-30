@@ -93,6 +93,7 @@ in {
       aider.enable = true;
       tmate.enable = true;
       atuin.enable = true;
+      ideavim.enable = true;
       nushell.enable = true;
       starship.enable = true;
       sesh = {

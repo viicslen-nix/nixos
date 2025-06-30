@@ -35,5 +35,6 @@
     btop = import ./programs/btop;
     vscode = import ./programs/vscode;
     jujutsu = import ./programs/jujutsu;
+    ideavim = import ./programs/ideavim;
   };
 }

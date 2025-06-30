@@ -1,0 +1,149 @@
+let mapleader=" "
+
+" https://github.com/JetBrains/ideavim/blob/master/doc/IdeaVim%20Plugins.md
+Plug 'machakann/vim-highlightedyank' " Highlight copied text
+Plug 'tpope/vim-surround'            " Delete/change/add parentheses/quotes/XML-tags/much more with ease
+Plug 'justinmk/vim-sneak'            " More efficient jumps than f/F
+
+set which-key            " Enable Which-Key plugin
+set NERDTree             " Enable NERDTree plugin
+set scrolloff=5          " Minimal number of lines above and below the cursor
+set incsearch            " Show where search pattern typed so far matches
+set visualbell           " No bleep sound
+set notimeout            " Do not hide Which-Key popup
+set hls                  " Enable search highlighting
+set ignorecase smartcase " Case-insensitive search
+set relativenumber       " Relative line numbers by default
+
+" Leader maps
+map <Leader>n :set rnu!<CR>
+map <Leader>q :q
+map <Leader>sw <Action>(SurroundWith)
+map <Leader>fm <Action>(ReformatCode)
+map <Leader>o <Action>(OptimizeImports)
+map <Leader>l <Action>(OverrideMethods)
+map <Leader>i <Action>(ImplementMethods)
+map <Leader>q <Action>(CloseContent)
+map <Leader>Q <Action>(ReopenClosedTab)
+map <Leader>rc <Action>(ChooseRunConfiguration)
+map <Leader>ds <Action>(ActivateProblemsViewToolWindow) " Shows errors, warnings, etc.
+map <Leader>a ggVG
+map <Leader>cs <Action>(ActivateCheckStyleC>olWindow)
+map <Leader>x <Action>(CloseContent)
+map <Leader>t :NERDTree<CR>
+
+" Splits
+map <Leader>spv <Action>(SplitVertically)
+map <Leader>sph <Action>(SplitHorizontally)
+map <Leader>sm <Action>(MoveEditorToOppositeTabGroup)
+
+" Git
+map <Leader>gf <Action>(Git.Fetch)
+map <Leader>gp <Action>(Vcs.UpdateProject)
+map <Leader>gP <Action>(Vcs.Push)
+map <Leader>gco <Action>(GitCheckoutFromInputAction)
+map <Leader>gcm <Action>(CheckinProject)<ESC>
+map <Leader>gb <Action>(Git.Branches)
+map <Leader>gcc <Action>(Git.Commit)
+map <Leader>gcg <Action>(copilot.git.commit.button)
+map <Leader>gcP <Action>(Git.Commit.And.Push.Executor)
+
+" Finding stuff
+map <Leader>ff <Action>(GotoFile)
+map <Leader>fc <Action>(GotoClass)
+map <Leader>fa <Action>(GotoAction)
+map <Leader>fw <Action>(FindInPath)
+map <Leader>fb <Action>(ShowBookmarks)
+
+" Config file shortcuts
+map <Leader>rc :e ~/.ideavimrc<CR>
+map <Leader>src <Action>(IdeaVim.ReloadVimRc.reload)
+
+" Sensible comment toggle
+xmap <Leader>/ <Action>(CommentByLineComment)<ESC><ESC>
+nmap <Leader>/ <Action>(CommentByLineComment)k
+
+" Switch between splits
+map <Leader>sh <c-w>h
+map <Leader>sl <c-w>l
+map <Leader>sj <c-w>j
+map <Leader>sk <c-w>k
+
+" HarpoonIJ (plugin required)
+map <Leader>hs <Action>(ShowHarpoon)
+map <Leader>ha <Action>(AddToHarpoon)
+map <Leader>h1 <Action>(SetHarpoon1)
+map <Leader>h2 <Action>(SetHarpoon2)
+map <Leader>h3 <Action>(SetHarpoon3)
+map <Leader>h4 <Action>(SetHarpoon4)
+map <Leader>h5 <Action>(SetHarpoon5)
+map <Leader>1 <Action>(GotoHarpoon1)
+map <Leader>2 <Action>(GotoHarpoon2)
+map <Leader>3 <Action>(GotoHarpoon3)
+map <Leader>4 <Action>(GotoHarpoon4)
+map <Leader>5 <Action>(GotoHarpoon5)
+
+" Clear search highlights
+nmap <ESC> :nohlsearch<CR>
+
+" General actions
+map U <C-r>
+map [[ <Action>(MethodUp)
+map ]] <Action>(MethodDown)
+map <Tab> <Action>(NextTab)
+map <S-Tab> <Action>(PreviousTab)
+map <C-n> :NERDTree<CR>
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+vnoremap <leader>d "_d
+nnoremap <leader>d "_d
+nnoremap <leader>dd "_dd
+nnoremap <leader>dw "_dw
+nnoremap <leader>d$ "_d$
+noremap <C-S-p> <Action>(Paste)
+vnoremap y ygv
+vnoremap < <gv
+vnoremap > >gv
+nnoremap <leader>, <S-a>,<ESC>
+nnoremap <leader>; <S-a>;<ESC>
+imap <C-s> <ESC>:w<CR>
+nmap <C-s> :w<CR>
+
+" Folding
+map zf <Action>(ExpandCollapseToggleAction)
+map za <Action>(CollapseAllRegions)
+map zA <Action>(ExpandAllRegions)
+xmap zs <Action>(CollapseSelection)<ESC>
+
+" Refactoring
+nmap rn <Action>(RenameElement)
+nmap rf <Action>(RenameFile)
+nmap rs <Action>(ChangeSignature)
+nmap rm <Action>(Move)
+nmap rc <Action>(CopyElement)
+
+" Bookmarks
+nmap m] <Action>(GotoNextBookmark)
+nmap m[ <Action>(GotoPreviousBookmark)
+
+" Go to
+map gu <Action>(ShowUsages)
+map gU <Action>(FindUsages)
+map gr <Action>(RecentFiles)
+map gt <Action>(GotoTypeDeclaration)
+map gd <Action>(GotoDeclaration)
+map gi <Action>(GotoImplementation)
+map gs <Action>(GotoSuperMethod)
+map gT <Action>(GotoTest)
+map gn <Action>(VcsShowNextChangeMarker)
+map gN <Action>(VcsShowPrevChangeMarker)
+
+" Replace default f/F/t/T with 1-char sneak
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
+
+" Debugging
+map <Leader>b <Action>(Debug)
+nnoremap <leader>bp :action ToggleLineBreakpoint<CR>
