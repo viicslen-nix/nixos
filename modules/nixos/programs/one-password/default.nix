@@ -93,12 +93,6 @@ in {
         xdg = {
           enable = mkDefault true;
 
-          # Disable gnome-keyring ssh-agent
-          configFile."autostart/gnome-keyring-ssh.desktop".text = ''
-            ${lib.fileContents "${pkgs.gnome-keyring}/etc/xdg/autostart/gnome-keyring-ssh.desktop"}
-            Hidden=true
-          '';
-
           # Configure the 1Password autostart desktop file
           configFile."autostart/1password.desktop".text = mkIf cfg.autostart (
             replaceStrings
