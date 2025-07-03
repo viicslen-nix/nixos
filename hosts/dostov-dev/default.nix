@@ -80,6 +80,7 @@ with lib; {
         })
       ];
     })
+    google-chrome
     brave
 
     # IDEs & Editors
