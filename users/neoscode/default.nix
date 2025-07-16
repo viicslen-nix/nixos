@@ -75,8 +75,7 @@ in {
       extraConfig = {
         pull.rebase = true;
         init.defaultBranch = "main";
-        web.browser = "microsoft-edge";
-        user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJk8lwwP7GnxZMgpx+C30i/Lw912BBoFccz4gjek8lCX";
+        user.signingkey = builtins.readFile ./ssh/git-signing-key.pub;
 
         submodule.recurse = true;
         status.submoduleSummary = true;
