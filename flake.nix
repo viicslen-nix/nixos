@@ -156,7 +156,6 @@
     ghostty.url = "github:ghostty-org/ghostty";
     lan-mouse.url = "github:feschber/lan-mouse";
     nix-alien.url = "github:thiagokokada/nix-alien";
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -218,7 +217,7 @@
         # These are usually stuff you would upstream into home-manager
         homeManagerModules = import ./modules/home-manager;
       };
-      easyHosts = import ./hosts {inherit inputs outputs;};
+      easy-hosts = import ./hosts {inherit inputs outputs;};
     })
     // {
       # Reusable nixos modules you might want to export
