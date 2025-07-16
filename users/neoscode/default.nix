@@ -78,10 +78,11 @@ in {
         user.signingkey = builtins.readFile ./ssh/git-signing-key.pub;
 
         submodule.recurse = true;
-        status.submoduleSummary = true;
+        # status.submoduleSummary = true;
+
         push = {
           autoSetupRemote = true;
-          recurseSubmodules = "on-demand";
+          # recurseSubmodules = "on-demand";
         };
       };
     };
