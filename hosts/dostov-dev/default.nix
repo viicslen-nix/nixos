@@ -110,6 +110,12 @@ with lib; {
     drawing
     drawio
 
+    # Office
+    onlyoffice-desktopeditors
+    softmaker-office
+    freeoffice
+    wpsoffice
+
     # Misc
     tlrc
     vial
