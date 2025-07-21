@@ -183,10 +183,6 @@ in {
         ];
       };
 
-      nixpkgs.overlays = [
-        inputs.hyprpanel.overlay
-      ];
-
       nix.settings = {
         substituters = [
           "https://hyprland.cachix.org"
