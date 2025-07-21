@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 with lib; let
@@ -15,7 +16,7 @@ in {
 
   config =
     mkIf cfg.enable {
-      programs.ld = {
+      programs.nix-ld = {
         enable = true;
         libraries = with pkgs; [
           gtk3
