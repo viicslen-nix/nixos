@@ -77,9 +77,6 @@ in {
 
       # Enable Zsh
       zsh.enable = true;
-
-      # Enable Nix LSP
-      nix-ld.enable = true;
     };
 
     services = {

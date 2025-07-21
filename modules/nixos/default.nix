@@ -46,6 +46,7 @@
 
   # Programs
   programs = {
+    ld = import ./programs/ld;
     qmk = import ./programs/qmk;
     docker = import ./programs/docker;
     steam = import ./programs/steam;
