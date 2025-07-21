@@ -92,6 +92,7 @@
 
     # Hyprland
     hyprland.url = "github:hyprwm/Hyprland";
+    waybar.url = "github:Alexays/Waybar/master";
     pyprland.url = "github:hyprland-community/pyprland";
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
