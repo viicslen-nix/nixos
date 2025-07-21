@@ -1,9 +1,12 @@
-{pkgs}:
-pkgs.writeShellScript "hyprflow-work" ''
-  ${pkgs.hyprland}/bin/hyprctl dispatch exec "[workspace 1 silent] zen-beta"
-  ${pkgs.hyprland}/bin/hyprctl dispatch exec "[workspace 11 silent] zen-beta"
-  ${pkgs.hyprland}/bin/hyprctl dispatch exec "[workspace 12 silent] legcord"
-  ${pkgs.hyprland}/bin/hyprctl dispatch exec "[workspace 12 silent] kitty"
-  ${pkgs.hyprland}/bin/hyprctl dispatch exec "[workspace 13 silent] code"
-  ${pkgs.hyprland}/bin/hyprctl dispatch exec "[workspace 13 silent] kitty"
-''
+{pkgs}: with pkgs; writeShellApplication {
+  name = "hyprflow-work";
+  runtimeInputs = [ hyprland ];
+  text = ''
+    ${hyprland}/bin/hyprctl dispatch exec "[workspace 1 silent] zen-beta"
+    ${hyprland}/bin/hyprctl dispatch exec "[workspace 11 silent] legcord"
+    ${hyprland}/bin/hyprctl dispatch exec "[workspace 11 silent] kitty"
+    ${hyprland}/bin/hyprctl dispatch exec "[workspace 12 silent] code"
+    ${hyprland}/bin/hyprctl dispatch exec "[workspace 12 silent] kitty"
+  '';
+  meta.description = "Hyprland workspace setup script for work environment";
+}
