@@ -42,6 +42,7 @@ in {
   imports = [
     ./buggregator
     ./postgres
+    ./qdrant
   ];
 
   config = {
