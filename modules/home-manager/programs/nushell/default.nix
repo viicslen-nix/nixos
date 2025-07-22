@@ -29,6 +29,8 @@ in {
           dsk = "dev-shell kubernetes";
           o = "xdg-open";
           spf = "search-package-files";
+          g = "git";
+          ss = "sesh-sessions";
 
           k = "kubectl";
           kga = "kubectl get all";
