@@ -25,9 +25,6 @@ in {
         extraOptions = [
           "--network=local"
         ];
-        volumes = [
-          "${builtins.toString ./config}:/app/runtime/configs"
-        ];
         log-driver = config.modules.containers.settings.log-driver;
       };
     };

@@ -86,8 +86,9 @@ in {
         mysql = true;
         redis = true;
         soketi = true;
-        buggregator.enable = true;
         meilisearch = true;
+        qdrant.enable = true;
+        buggregator.enable = true;
         nginx-proxy-manager = true;
       };
     };
