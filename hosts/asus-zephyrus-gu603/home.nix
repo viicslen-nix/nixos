@@ -70,7 +70,6 @@
       files = [
         ".env.aider"
         ".gitconfig"
-        ".ideavimrc"
         ".zsh_history"
         ".wakatime.cfg"
       ];
@@ -148,9 +147,15 @@
     "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":minimize,maximize,close";
   };
 
-  wayland.windowManager.hyprland.settings.monitor = [
-    "eDP-1,2560x1600@60,0x0,1.6"
-  ];
+  wayland.windowManager.hyprland.settings = {
+    monitor = [
+      "eDP-1,2560x1600@60,0x0,1.6"
+    ];
+    cursor = {
+      no_hardware_cursors = 1;
+      use_cpu_buffer = 0;
+    };
+  };
 
   home.file.".config/hypr/pyprland.toml".text = lib.mkAfter ''
     [monitors.placement."G276HL"]
