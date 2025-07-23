@@ -18,6 +18,7 @@ with lib; {
 
       "killall -q 1password; sleep .5 && 1password --silent"
       "killall -q mullvad; sleep .5 && mullvad-gui --silent"
+      "killall -q jetbrains-toolbox; sleep .5 && jetbrains-toolbox"
 
       "wl-paste --type text --watch cliphist store"
       "wl-paste --type image --watch cliphist store"
