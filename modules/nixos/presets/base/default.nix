@@ -238,7 +238,7 @@ in {
         ];
 
         # Limit the number of parallel jobs to avoid OOM
-        max-jobs = lib.mkDefault 16;
+        # max-jobs = lib.mkDefault 16;
       };
 
       # Perform garbage collection weekly to maintain low disk usage
