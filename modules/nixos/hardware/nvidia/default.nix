@@ -44,21 +44,6 @@ in {
       };
     };
 
-    specialisation = mkIf cfg.specialisation {
-      nvidia-sync.configuration = {
-        system.nixos.tags = ["nvidia-sync"];
-        hardware.nvidia = {
-          powerManagement.finegrained = lib.mkForce false;
-
-          prime.offload.enable = lib.mkForce false;
-          prime.offload.enableOffloadCmd = lib.mkForce false;
-
-          prime.sync.enable = lib.mkForce true;
-          dynamicBoost.enable = lib.mkForce true;
-        };
-      };
-    };
-
     environment.systemPackages = with pkgs; [
       zenith-nvidia
       nvtopPackages.nvidia
