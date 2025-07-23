@@ -40,15 +40,25 @@ in {
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      docker-credential-helpers
-    ];
+    environment = {
+      systemPackages = with pkgs; [
+        docker-credential-helpers
+        docker-buildx
+      ];
+
+      sessionVariables = {
+        COMPOSE_BAKE = "true";
+      };
+    };
 
     virtualisation = {
       docker = {
         enable = true;
         autoPrune.enable = true;
         storageDriver = cfg.storageDriver;
+        package = pkgs.docker.override {
+          buildxSupport = true;
+        };
       };
 
       podman.enable = false;

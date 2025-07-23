@@ -68,7 +68,6 @@ with lib; {
     jetbrains.datagrip
     jetbrains.webstorm
     jetbrains.goland
-    microsoft-edge
     vscode
     lens
     insomnia
@@ -80,6 +79,7 @@ with lib; {
     fish
     windsurf
     pkgs.inputs.zen-browser.default
+    dbeaver-bin
   ];
 
   # programs.ssh.askPassword = mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
