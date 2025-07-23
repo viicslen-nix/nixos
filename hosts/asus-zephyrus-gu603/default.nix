@@ -82,6 +82,7 @@ with lib; {
     windsurf
     pkgs.inputs.zen-browser.default
     dbeaver-bin
+    uv
   ];
 
   # programs.ssh.askPassword = mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
