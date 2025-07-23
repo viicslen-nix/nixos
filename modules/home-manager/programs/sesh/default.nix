@@ -72,7 +72,8 @@ in {
       nushell.extraConfig = mkIf cfg.enableNushellIntegration (mkAfter ''
         def sesh-sessions [] {
           # Use fzf to list and select a session
-          let session = (sesh list -ctHT | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ' | str trim)
+          let sessionList = (sesh list -ctHT | lines | append (ls -f ~/Development | where type == 'dir' | get name | each { |it| $it | str replace $env.HOME "~" }) | str join (char nl))
+          let session = ($sessionList | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ' --preview 'ls -d */' | str trim)
 
           # Check if a session was selected
           if ($session == \'\') {
