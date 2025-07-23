@@ -2,6 +2,7 @@
   lib,
   pkgs,
   inputs,
+  config,
   users,
   ...
 }:
@@ -63,11 +64,12 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
-    jetbrains.idea-ultimate
-    jetbrains.phpstorm
-    jetbrains.datagrip
-    jetbrains.webstorm
-    jetbrains.goland
+    # jetbrains.idea-ultimate
+    # jetbrains.phpstorm
+    # jetbrains.datagrip
+    # jetbrains.webstorm
+    # jetbrains.goland
+    jetbrains-toolbox
     vscode
     lens
     insomnia
@@ -109,6 +111,18 @@ with lib; {
       hyprland = {
         enable = true;
         gnomeCompatibility = true;
+        hyprVariables = {
+          XDG_CURRENT_DESKTOP = "Hyprland";
+          XDG_SESSION_DESKTOP = "Hyprland";
+          XCURSOR_SIZE = builtins.toString config.stylix.cursor.size;
+
+          # NVidia
+          GBM_BACKEND = "nvidia-drm";
+          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+          LIBVA_DRIVER_NAME = "nvidia";
+          __GL_GSYNC_ALLOWED = "1";
+          __GL_VRR_ALLOWED = "0";
+        };
       };
 
       # kde = {
