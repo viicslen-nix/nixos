@@ -97,7 +97,8 @@ with lib; {
     misc = {
       animate_mouse_windowdragging = false;
       initial_workspace_tracking = 1;
-      vrr = mkDefault 2;
+      anr_missed_pings = 3;
+      vrr = mkDefault 3;
     };
 
     gestures = {
@@ -118,6 +119,11 @@ with lib; {
     cursor = {
       no_hardware_cursors = mkDefault 2;
       use_cpu_buffer = mkDefault 2;
+    };
+
+    ecosystem = {
+      no_update_news = true;
+      no_donation_nag = true;
     };
   };
 }
