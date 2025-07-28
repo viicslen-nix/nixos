@@ -67,6 +67,7 @@ in {
       userEmail = "39545521+viicslen@users.noreply.github.com";
       aliases = {
         st = "status";
+        su = "submodule foreach 'git checkout main && git pull'";
         nah = ''!f(){ git reset --hard; git clean -df; if [ -d ".git/rebase-apply" ] || [ -d ".git/rebase-merge" ]; then git rebase --abort; fi; }; f'';
         forget = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D";
         forgetlist = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}'";
