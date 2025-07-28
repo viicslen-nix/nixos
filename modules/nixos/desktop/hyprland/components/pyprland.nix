@@ -46,7 +46,7 @@ in {
     animation = "fromRight"
     command = "${pkgs.ferdium}/bin/ferdium"
     class = "ferdium"
-    size = "40% 90%"
+    size = "60% 90%"
     unfocus = "hide"
 
     [scratchpads.notes]
