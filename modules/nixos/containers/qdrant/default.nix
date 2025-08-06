@@ -25,6 +25,10 @@ in {
         extraOptions = [
           "--network=local"
         ];
+        volumes = [
+          "qdrant-data:/qdrant/storage"
+          "${builtins.toString ./config}:/qdrant/config"
+        ];
         log-driver = config.modules.containers.settings.log-driver;
       };
     };
