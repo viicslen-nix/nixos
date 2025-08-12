@@ -14,6 +14,7 @@ set notimeout            " Do not hide Which-Key popup
 set hls                  " Enable search highlighting
 set ignorecase smartcase " Case-insensitive search
 set relativenumber       " Relative line numbers by default
+set ideajoin             " Join lines using idea
 
 " Leader maps
 map <Leader>n :set rnu!<CR>

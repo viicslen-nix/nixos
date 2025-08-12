@@ -25,6 +25,7 @@
         "Lens"
         "Code"
         "Slack"
+        "Ferdium"
         "Insomnia"
         "JetBrains"
         "1Password"
