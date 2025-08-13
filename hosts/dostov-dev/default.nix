@@ -119,6 +119,7 @@ with lib; {
     # Misc
     tlrc
     vial
+    kooha
     uv
 
     (writeShellApplication {
