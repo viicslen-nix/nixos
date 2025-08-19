@@ -72,6 +72,6 @@ in {
   };
 
   wayland.windowManager.hyprland.settings.bind = [
-    "CTRL SHIFT, L, exec, hyprlock"
+    "$mod CTRL, L, exec, hyprlock"
   ];
 }
