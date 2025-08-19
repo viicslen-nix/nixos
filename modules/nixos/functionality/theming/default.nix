@@ -126,7 +126,7 @@ in {
         };
 
         targets = lib.recursiveUpdate {
-          grub.useImage = true;
+          grub.useWallpaper = true;
           plymouth.logo = plymouthLogo;
           nvf.transparentBackground = true;
         } (createDisabledTargets cfg.disabledTargets options.stylix.targets or {});
