@@ -81,14 +81,16 @@ with lib; {
       ];
     })
     google-chrome
+    vivaldi
+    vivaldi-ffmpeg-codecs
     brave
 
     # IDEs & Editors
-    jetbrains.idea-ultimate
-    jetbrains.phpstorm
-    jetbrains.datagrip
-    jetbrains.webstorm
-    jetbrains.goland
+    # jetbrains.idea-ultimate
+    # jetbrains.phpstorm
+    # jetbrains.datagrip
+    # jetbrains.webstorm
+    # jetbrains.goland
     jetbrains-toolbox
     code-cursor
     windsurf
