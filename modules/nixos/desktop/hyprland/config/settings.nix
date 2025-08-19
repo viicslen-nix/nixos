@@ -113,8 +113,6 @@ with lib; {
 
     render = {
       direct_scanout = mkDefault 2;
-      explicit_sync = mkDefault 2;
-      explicit_sync_kms = mkDefault 2;
     };
 
     cursor = {
