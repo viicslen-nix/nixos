@@ -14,7 +14,6 @@ in {
     enable = mkEnableOption (mdDoc name);
     modern = mkEnableOption (mdDoc "Enable modern NVIDIA power management");
     prime = mkEnableOption (mdDoc "Enable PRIME offloading");
-    specialisation = mkEnableOption (mdDoc "Enable specialisation for NVIDIA sync");
   };
 
   config = mkIf cfg.enable {
