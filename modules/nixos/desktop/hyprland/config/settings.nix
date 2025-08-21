@@ -98,7 +98,7 @@ with lib; {
     misc = {
       animate_mouse_windowdragging = false;
       initial_workspace_tracking = 1;
-      anr_missed_pings = 3;
+      anr_missed_pings = 5;
       vrr = mkDefault 3;
     };
 
