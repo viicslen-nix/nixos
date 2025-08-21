@@ -92,12 +92,9 @@ with lib; {
     # jetbrains.webstorm
     # jetbrains.goland
     jetbrains-toolbox
-    code-cursor
-    windsurf
     vscode
 
     # Development Tools
-    github-desktop
     insomnia
     postman
     lens
@@ -114,9 +111,7 @@ with lib; {
 
     # Office
     onlyoffice-desktopeditors
-    softmaker-office
     freeoffice
-    wpsoffice
 
     # Misc
     tlrc
