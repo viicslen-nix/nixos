@@ -70,7 +70,7 @@ with pkgs; {
     exec = writeShellScriptBin "system-update" ''
       #!${stdenv.shell}
 
-      nix flake update --commit-lock-file $@
+      nix flake update $@
     '';
   };
 
