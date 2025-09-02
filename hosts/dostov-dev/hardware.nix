@@ -17,7 +17,7 @@
   boot.extraModulePackages = [];
 
   fileSystems = {
-    "/boot" = {
+    "/boot/efi" = {
       device = "/dev/disk/by-uuid/0025-F5CB";
       fsType = "vfat";
       options = ["fmask=0077" "dmask=0077"];

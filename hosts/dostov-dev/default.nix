@@ -20,12 +20,18 @@ with lib; {
     plymouth.enable = true;
 
     loader = {
-      efi.canTouchEfiVariables = true;
-
-      systemd-boot = {
-        enable = true;
-        configurationLimit = 10;
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot/efi";
       };
+
+      grub = {
+        configurationLimit = 10;
+        efiSupport = true;
+	      device = "nodev";
+      };
+
+      systemd-boot.enable = false;
     };
   };
 
@@ -104,6 +110,7 @@ with lib; {
 
     # Communication
     legcord
+    discordo
 
     # Drawing
     drawing
@@ -117,7 +124,7 @@ with lib; {
     tlrc
     vial
     kooha
-    uv
+    #uv
 
     (writeShellApplication {
       name = "hyprflow-work";
