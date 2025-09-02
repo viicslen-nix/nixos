@@ -9,7 +9,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
 
     # Hardware
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -131,10 +130,10 @@
       url = "github:alexhulbert/Hyprchroma";
       inputs.hyprland.follows = "hyprland";
     };
-    astal-shells = {
-      url = ./flakes/astal-shells;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # astal-shells = {
+    #   url = ./flakes/astal-shells;
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     # Theming
     stylix.url = "github:danth/stylix";

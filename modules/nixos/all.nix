@@ -7,7 +7,6 @@
 with lib; {
   imports = builtins.concatLists [
     [
-      inputs.determinate.nixosModules.default
       inputs.home-manager.nixosModules.default
       inputs.nur.modules.nixos.default
       inputs.agenix.nixosModules.default
