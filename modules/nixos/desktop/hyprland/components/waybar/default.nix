@@ -13,11 +13,17 @@ in {
   # services.blueman-applet.enable = true;
 
   # Configure Hyprland
-  wayland.windowManager.hyprland.settings.layerrule = [
-    "blur, ^(waybar)$"
-    "blurpopups, ^(waybar)$"
-    "ignorealpha 0.2, ^(waybar)$"
-  ];
+  wayland.windowManager.hyprland.settings = {
+    layerrule = [
+      "blur, ^(waybar)$"
+      "blurpopups, ^(waybar)$"
+      "ignorealpha 0.2, ^(waybar)$"
+    ];
+
+    bind = [
+      "$mod CTRL SHIFT, R, exec, systemctl --user restart waybar.service"
+    ];
+  };
 
   # Disable Stylix Theme
   stylix.targets.waybar.enable = false;
