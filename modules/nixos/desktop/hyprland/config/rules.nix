@@ -16,6 +16,7 @@ in {
         "system-menu"
         "anyrun"
         "logout_dialog"
+        "music"
       ];
 
       blurred = lib.concatLists [
@@ -25,8 +26,12 @@ in {
     in [
       "blur, ${regexList blurred}"
       "xray 1, ${regexList ["bar"]}"
-      "ignorealpha 0.5, ${regexList (highopacity ++ ["music"])}"
+      "blurpopups, ${regexList blurred}"
+      "ignorealpha 0.5, ${regexList highopacity}"
       "ignorealpha 0.2, ${regexList lowopacity}"
+
+      "blur, ^(.*jetbrains.*)$"
+      "blurpopups, ^(.*jetbrains.*)$"
     ];
 
     workspace = [
