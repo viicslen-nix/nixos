@@ -98,6 +98,7 @@ with lib; {
     # jetbrains.webstorm
     # jetbrains.goland
     jetbrains-toolbox
+    zed-editor-fhs
     vscode
 
     # Development Tools
