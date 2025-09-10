@@ -56,7 +56,7 @@ in {
 
     ssh = {
       enable = true;
-      controlPath = "/home/${user}/.ssh/controlmasters/%r@%h:%p";
+      matchBlocks."*".controlPath = "/home/${user}/.ssh/controlmasters/%r@%h:%p";
     };
 
     git = {
