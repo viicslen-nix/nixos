@@ -6,7 +6,7 @@
 }:
 with lib; let
   name = "zellij";
-  namespace = "features";
+  namespace = "programs";
 
   cfg = config.modules.${namespace}.${name};
 in {
