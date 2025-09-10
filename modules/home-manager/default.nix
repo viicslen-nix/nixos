@@ -36,5 +36,6 @@
     vscode = import ./programs/vscode;
     jujutsu = import ./programs/jujutsu;
     ideavim = import ./programs/ideavim;
+    k9s = import ./programs/k9s;
   };
 }

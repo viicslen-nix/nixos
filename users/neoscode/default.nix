@@ -27,7 +27,6 @@ in {
   programs = {
     carapace.enable = true;
     zoxide.enable = true;
-    k9s.enable = true;
     btop.enable = true;
     helix.enable = true;
 
@@ -92,6 +91,7 @@ in {
   modules = {
     programs = {
       zsh.enable = true;
+      k9s.enable = true;
       tmux.enable = true;
       aider.enable = true;
       tmate.enable = true;
