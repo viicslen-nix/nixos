@@ -37,6 +37,10 @@ in {
     programs.jujutsu = {
       enable = true;
       settings = {
+        git = {
+          auto-local-bookmark = true;
+          push-new-bookmarks = true;
+        };
         user = {
           name = cfg.userName;
           email = cfg.userEmail;
@@ -45,6 +49,7 @@ in {
           editor = "nvim";
           diff-editor = "meld-3";
           merge-editor = "meld";
+          default-command = ["log"];
         };
         signing = {
           backend = "ssh";
