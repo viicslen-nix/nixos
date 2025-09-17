@@ -27,6 +27,12 @@ in {
       default = {};
       description = "Define host file entries.";
     };
+
+    nameservers = mkOption {
+      type = types.listOf types.str;
+      default = [ "1.1.1.1" "1.0.0.1" ];
+      description = "Define DNS nameservers.";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -39,6 +45,9 @@ in {
 
       # Define host file entries.
       extraHosts = concatStringsSep "\n" (mapAttrsToList (name: value: "${value} ${name}") cfg.hosts);
+
+      # Define DNS nameservers.
+      nameservers = mkDefault cfg.nameservers;
     };
   };
 }
