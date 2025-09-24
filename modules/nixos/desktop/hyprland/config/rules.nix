@@ -29,9 +29,6 @@ in {
       "blurpopups, ${regexList blurred}"
       "ignorealpha 0.5, ${regexList highopacity}"
       "ignorealpha 0.2, ${regexList lowopacity}"
-
-      "blur, ^(.*jetbrains.*)$"
-      "blurpopups, ^(.*jetbrains.*)$"
     ];
 
     workspace = [
@@ -104,13 +101,34 @@ in {
       "float, title:(1Password)"
       "center, title:(1Password)"
 
-      # Microsoft Edge
-      "tile, class:^(microsoft-edge)$"
-
       # JetBrains IDEs
       "center, class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$"
       "size <90% <80%, class:^(.*jetbrains.*)$, title:^(win.*)$"
       "opacity 0.90 0.90, class:^(.*jetbrains.*)$"
+
+      "noinitialfocus, class:jetbrains-toolbox, floating:0"
+      "noinitialfocus, class:(jetbrains-)(.*), floating:0"
+      "noinitialfocus, class:(jetbrains-)(.*), title:^$, initialTitle:^$, floating:0"
+      "center, class:(jetbrains-)(.*), initialTitle:(.+), floating:0"
+      "center, class:(jetbrains-)(.*), title:^$, initialTitle:^$, floating:0"
+      "noinitialfocus, class:(jetbrains-) (.*), title:^win(.*), initialTitle:win.*, floating:0"
+
+      # # -- Fix odd behaviors in IntelliJ IDEs --
+      # #! Fix focus issues when dialogs are opened or closed
+      # # windowrulev2 = windowdance,class:^(jetbrains-.*)$,floating:1
+      # #! Fix splash screen showing in weird places and prevent annoying focus takeovers
+      # "center,class:^(jetbrains-.*)$,title:^(splash)$,floating:1"
+      # "nofocus,class:^(jetbrains-.*)$,title:^(splash)$,floating:1"
+      # "noborder,class:^(jetbrains-.*)$,title:^(splash)$,floating:1"
+
+      # #! Center popups/find windows
+      # "center,class:^(jetbrains-.*)$,title:^( )$,floating:1"
+      # #! Enabling this makes it impossible to provide input to any popup dialogue (search window, new file, etc.)
+      # "stayfocused,class:^(jetbrains-.*)$,title:^( )$,floating:1"
+      # "noborder,class:^(jetbrains-.*)$,title:^( )$,floating:1"
+      # #! Disable window flicker when autocomplete or tooltips appear
+      # "noinitialfocus,class:^(jetbrains-.*)$,title:^(win.*)$,floating:1"
+      # # -- End of IntelliJ Rules --
 
       # Satty
       "float, class:^(com.gabm.satty)$"
