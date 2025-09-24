@@ -87,8 +87,7 @@ with lib; {
       ];
     })
     google-chrome
-    vivaldi
-    vivaldi-ffmpeg-codecs
+    microsoft-edge
     brave
 
     # IDEs & Editors
