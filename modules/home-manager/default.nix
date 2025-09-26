@@ -7,6 +7,7 @@
   defaults = ./defaults;
 
   functionality = {
+    defaults = import ./functionality/defaults;
     autostart = import ./functionality/autostart;
     impermanence = import ./functionality/impermanence;
     home-manager = import ./functionality/home-manager;
