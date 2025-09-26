@@ -13,6 +13,7 @@
   };
 
   programs = {
+    git = import ./programs/git;
     nushell = import ./programs/nushell;
     starship = import ./programs/starship;
     atuin = import ./programs/atuin;
