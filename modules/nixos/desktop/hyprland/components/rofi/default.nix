@@ -6,7 +6,7 @@
 }: {
   programs.rofi = {
     enable = true;
-    package = pkgs.rofi-wayland;
+    package = pkgs.rofi;
     extraConfig = {
       modi = "drun,filebrowser,run";
       terminal = "${pkgs.kitty}/bin/kitty";
@@ -170,7 +170,7 @@
         pkill -x rofi
         exit 0
       fi
-      ${pkgs.rofi-wayland}/bin/rofi -show drun -config ~/.config/rofi/icon.rasi
+      ${pkgs.rofi}/bin/rofi -show drun -config ~/.config/rofi/icon.rasi
     '';
     launcher = "${rofi}/bin/launcher";
     emojiPicker = import ./scripts/emoji-picker.nix {inherit pkgs;};
@@ -181,7 +181,7 @@
     ];
 
     bind = [
-      "$mod, v, exec, cliphist list | ${pkgs.rofi-wayland}/bin/rofi -dmenu | cliphist decode | wl-copy"
+      "$mod, v, exec, cliphist list | ${pkgs.rofi}/bin/rofi -dmenu | cliphist decode | wl-copy"
       "$mod, o, exec, ${emojiPicker}/bin/emoji-picker"
       "$mod, w, exec, ${webSearch}/bin/web-search"
     ];
