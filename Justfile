@@ -86,7 +86,7 @@ gc:
 
 fmt:
   # format the nix files in this repo
-  nix fmt
+  nix fmt .
 
 path:
    $env.PATH | split row ":"
