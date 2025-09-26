@@ -30,7 +30,7 @@ in {
 
     nameservers = mkOption {
       type = types.listOf types.str;
-      default = [ "1.1.1.1" "1.0.0.1" ];
+      default = ["1.1.1.1" "1.0.0.1"];
       description = "Define DNS nameservers.";
     };
   };

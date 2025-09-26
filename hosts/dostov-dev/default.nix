@@ -28,7 +28,7 @@ with lib; {
       grub = {
         configurationLimit = 10;
         efiSupport = true;
-	      device = "nodev";
+        device = "nodev";
       };
 
       systemd-boot.enable = false;
@@ -128,7 +128,7 @@ with lib; {
 
     (writeShellApplication {
       name = "hyprflow-work";
-      runtimeInputs = [ hyprland ];
+      runtimeInputs = [hyprland];
       text = ''
         ${hyprland}/bin/hyprctl dispatch exec "[workspace 1 silent] zen-beta"
         ${hyprland}/bin/hyprctl dispatch exec "[workspace 11 silent] legcord"
@@ -170,7 +170,6 @@ with lib; {
       oom.enable = true;
       appImages.enable = true;
       powerManagement.enable = true;
-
 
       theming = {
         enable = true;

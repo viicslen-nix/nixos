@@ -24,37 +24,35 @@ with lib; let
   };
 
   # Function to create disabled targets attribute set
-  createDisabledTargets = targetsList: stylixOptions:
-    let
-      # Helper function to check if a nested path exists in stylix options
-      hasStylixTarget = path: stylixOptions:
-        let
-          pathList = lib.splitString "." path;
-          checkPath = opts: pathSegments:
-            if pathSegments == [] then true
-            else if builtins.hasAttr (builtins.head pathSegments) opts
-            then checkPath (builtins.getAttr (builtins.head pathSegments) opts) (builtins.tail pathSegments)
-            else false;
-        in
-        checkPath stylixOptions pathList;
-
-      # Filter targets that exist in stylix options
-      validTargets = builtins.filter (target: hasStylixTarget target stylixOptions) targetsList;
-
-      # Helper function to create nested attribute set
-      setAttrPath = path: value:
-        let
-          pathList = lib.splitString "." path;
-          createNested = segments:
-            if builtins.length segments == 1
-            then { ${builtins.head segments} = value; }
-            else { ${builtins.head segments} = createNested (builtins.tail segments); };
-        in
-        createNested pathList;
-
-      # Create attribute sets for each valid target
-      targetAttrs = map (target: setAttrPath "${target}.enable" false) validTargets;
+  createDisabledTargets = targetsList: stylixOptions: let
+    # Helper function to check if a nested path exists in stylix options
+    hasStylixTarget = path: stylixOptions: let
+      pathList = lib.splitString "." path;
+      checkPath = opts: pathSegments:
+        if pathSegments == []
+        then true
+        else if builtins.hasAttr (builtins.head pathSegments) opts
+        then checkPath (builtins.getAttr (builtins.head pathSegments) opts) (builtins.tail pathSegments)
+        else false;
     in
+      checkPath stylixOptions pathList;
+
+    # Filter targets that exist in stylix options
+    validTargets = builtins.filter (target: hasStylixTarget target stylixOptions) targetsList;
+
+    # Helper function to create nested attribute set
+    setAttrPath = path: value: let
+      pathList = lib.splitString "." path;
+      createNested = segments:
+        if builtins.length segments == 1
+        then {${builtins.head segments} = value;}
+        else {${builtins.head segments} = createNested (builtins.tail segments);};
+    in
+      createNested pathList;
+
+    # Create attribute sets for each valid target
+    targetAttrs = map (target: setAttrPath "${target}.enable" false) validTargets;
+  in
     # Merge all target attribute sets
     lib.foldl lib.recursiveUpdate {} targetAttrs;
 in {
@@ -130,7 +128,6 @@ in {
           plymouth.logo = plymouthLogo;
           nvf.transparentBackground = true;
         } (createDisabledTargets cfg.disabledTargets options.stylix.targets or {});
-
       };
     }
     (mkIf homeManagerLoaded {
