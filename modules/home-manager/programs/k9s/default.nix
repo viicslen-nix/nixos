@@ -23,12 +23,12 @@ in {
       };
 
       hotKeys = {
-          "shift-v" = {
-            shortCut = "Shift-V";
-            description = "Filter out completed pods";
-            command = "pods /!Completed";
-            keepHistory = true;
-          };
+        "shift-v" = {
+          shortCut = "Shift-V";
+          description = "Filter out completed pods";
+          command = "pods /!Completed";
+          keepHistory = true;
+        };
       };
     };
   };
