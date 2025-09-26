@@ -51,7 +51,6 @@ in {
         ++ mkIf (cfg.terminal != null) [cfg.terminal];
     };
 
-    # Configure xdg-open to use the specified browser
     xdg.configFile."mimeapps.list" = {
       text = mkIf (cfg.browser != null) ''
         [Default Applications]
@@ -62,6 +61,7 @@ in {
     };
 
     wayland.windowManager.hyprland.settings = {
+      "$editor" = mkIf (cfg.editor != null) toString cfg.editor;
       "$browser" = mkIf (cfg.browser != null) toString cfg.browser;
       "$terminal" = mkIf (cfg.terminal != null) toString cfg.terminal;
     };
