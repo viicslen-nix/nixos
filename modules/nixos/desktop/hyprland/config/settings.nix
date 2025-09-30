@@ -102,11 +102,6 @@ with lib; {
       vrr = mkDefault 3;
     };
 
-    gestures = {
-      workspace_swipe = true;
-      workspace_swipe_forever = true;
-    };
-
     xwayland = {
       force_zero_scaling = true;
     };

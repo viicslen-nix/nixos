@@ -104,14 +104,14 @@ in {
       # JetBrains IDEs
       "center, class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$"
       "size <90% <80%, class:^(.*jetbrains.*)$, title:^(win.*)$"
-      "opacity 0.90 0.90, class:^(.*jetbrains.*)$"
+      "opacity 0.95 0.95, class:^(.*jetbrains.*)$"
 
-      "noinitialfocus, class:jetbrains-toolbox, floating:0"
-      "noinitialfocus, class:(jetbrains-)(.*), floating:0"
-      "noinitialfocus, class:(jetbrains-)(.*), title:^$, initialTitle:^$, floating:0"
-      "center, class:(jetbrains-)(.*), initialTitle:(.+), floating:0"
-      "center, class:(jetbrains-)(.*), title:^$, initialTitle:^$, floating:0"
-      "noinitialfocus, class:(jetbrains-) (.*), title:^win(.*), initialTitle:win.*, floating:0"
+      # "noinitialfocus, class:jetbrains-toolbox, floating:0"
+      # "noinitialfocus, class:(jetbrains-)(.*), floating:0"
+      # "noinitialfocus, class:(jetbrains-)(.*), title:^$, initialTitle:^$, floating:0"
+      # "center, class:(jetbrains-)(.*), initialTitle:(.+), floating:0"
+      # "center, class:(jetbrains-)(.*), title:^$, initialTitle:^$, floating:0"
+      # "noinitialfocus, class:(jetbrains-) (.*), title:^win(.*), initialTitle:win.*, floating:0"
 
       # # -- Fix odd behaviors in IntelliJ IDEs --
       # #! Fix focus issues when dialogs are opened or closed

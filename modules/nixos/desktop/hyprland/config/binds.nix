@@ -18,8 +18,6 @@
       "$mod" = "SUPER";
 
       # applications
-      "$terminal" = "kitty";
-      "$browser" = "zen-beta";
       "$fileManager" = "nautilus";
       "$passwordManager" = "1password --quick-access";
 
