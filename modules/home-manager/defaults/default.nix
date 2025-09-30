@@ -4,8 +4,13 @@
   ...
 }: {
   config = with lib; {
-    # Set state version
-    home.stateVersion = mkDefault stateVersion;
+    home = {
+      # Set state version
+      stateVersion = mkDefault stateVersion;
+
+      # Add local bin to PATH
+      sessionPath = ["$HOME/.local/bin"];
+    };
 
     # Allow home-manager to manage itself
     programs.home-manager.enable = mkDefault true;
