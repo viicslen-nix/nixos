@@ -63,6 +63,7 @@ in {
   modules = {
     functionality.defaults = {
       browser = pkgs.microsoft-edge;
+      terminal = pkgs.kitty;
     };
     programs = {
       zsh.enable = true;
