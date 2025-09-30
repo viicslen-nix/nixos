@@ -23,8 +23,14 @@ in {
 
     package = mkOption {
       type = types.package;
-      default = pkgs.inputs.hyprland.hyprland;
+      default = pkgs.hyprland;
       description = "The hyprland package to use";
+    };
+
+    portalPackage = mkOption {
+      type = types.package;
+      default = pkgs.xdg-desktop-portal-hyprland;
+      description ="The portal package to use";
     };
 
     gnomeCompatibility = mkOption {
@@ -68,7 +74,7 @@ in {
   };
 
   imports = [
-    # inputs.hyprland.nixosModules.default
+    inputs.hyprland.nixosModules.default
   ];
 
   config = mkIf cfg.enable (mkMerge [
@@ -78,8 +84,8 @@ in {
           enable = true;
           withUWSM = true;
           xwayland.enable = true;
-          # package = pkgs.inputs.hyprland.hyprland;
-          # portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
+          package = cfg.package;
+          portalPackage = cfg.portalPackage;
         };
 
         dconf.enable = true;
@@ -92,7 +98,8 @@ in {
         wlr.enable = true;
         extraPortals = with pkgs; [
           # kdePackages.xdg-desktop-portal-kde
-          xdg-desktop-portal-hyprland
+          cfg.portalPackage
+          # xdg-desktop-portal-hyprland
           # xdg-desktop-portal-shana
           xdg-desktop-portal-gtk
           # xdg-desktop-portal-gnome
@@ -100,7 +107,8 @@ in {
         ];
         configPackages = with pkgs; [
           # kdePackages.xdg-desktop-portal-kde
-          xdg-desktop-portal-hyprland
+          cfg.portalPackage
+          # xdg-desktop-portal-hyprland
           # xdg-desktop-portal-shana
           xdg-desktop-portal-gtk
           # xdg-desktop-portal-gnome
