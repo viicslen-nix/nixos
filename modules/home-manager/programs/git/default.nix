@@ -12,17 +12,15 @@ in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
     user = mkOption {
-      type = types.str;
-      required = true;
+      type = types.nullOr types.str;
       description = "The user name to use for git commits.";
     };
     email = mkOption {
-      type = types.str;
-      required = true;
+      type = types.nullOr types.str;
       description = "The email address to use for git commits.";
     };
     signingKey = mkOption {
-      type = types.str;
+      type = types.nullOr types.str;
       default = null;
       description = "The GPG key to use for signing commits.";
     };
@@ -36,8 +34,8 @@ in {
   config.programs.git = mkIf cfg.enable {
     enable = true;
     delta.enable = true;
-    userName = mkIf cfg.user cfg.user;
-    userEmail = mkIf cfg.email cfg.email;
+    userName = mkIf (cfg.user != null) cfg.user;
+    userEmail = mkIf (cfg.email != null) cfg.email;
     aliases = {
       st = "status";
       su = "submodule foreach 'git checkout main && git pull'";
@@ -49,7 +47,7 @@ in {
     extraConfig = {
       pull.rebase = true;
       init.defaultBranch = cfg.defaultBranch;
-      user.signingkey = mkIf cfg.signingKey cfg.signingKey;
+      user.signingkey = mkIf (cfg.signingKey != null) cfg.signingKey;
 
       submodule.recurse = true;
       # status.submoduleSummary = true;
