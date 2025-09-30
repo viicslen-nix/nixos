@@ -60,7 +60,10 @@ with lib; {
     openssh = {
       enable = true;
       startWhenNeeded = true;
-      settings.PasswordAuthentication = true;
+      settings = {
+        PasswordAuthentication = false;
+        AllowUsers = ["neoscode"];
+      };
     };
 
     cloudflared = {
@@ -101,6 +104,7 @@ with lib; {
     vscode
 
     # Development Tools
+    ghostty
     insomnia
     postman
     lens
@@ -124,7 +128,7 @@ with lib; {
     tlrc
     vial
     kooha
-    #uv
+    uv
 
     (writeShellApplication {
       name = "hyprflow-work";
@@ -155,6 +159,8 @@ with lib; {
 
       hyprland = {
         enable = true;
+        package = pkgs.inputs.hyprland.hyprland;
+        portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
         gnomeCompatibility = true;
         extraGlobalVariables = {
           NVD_BACKEND = "direct";
