@@ -2,8 +2,9 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
-  config,
   lib,
+  pkgs,
+  config,
   modulesPath,
   ...
 }: {
@@ -13,8 +14,8 @@
 
   boot.initrd.availableKernelModules = ["vmd" "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
   boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-intel"];
-  boot.extraModulePackages = [];
+  boot.kernelModules = ["kvm-intel" "iptable_nat"];
+  boot.extraModulePackages = [ pkgs.iptables ];
 
   fileSystems = {
     "/boot/efi" = {
