@@ -152,8 +152,9 @@
     };
 
     # Community packages
-    nur.url = "github:nix-community/NUR";
     agenix.url = "github:ryantm/agenix";
+    nur.url = "github:nix-community/NUR";
+    winboat.url = "github:TibixDev/winboat";
     ghostty.url = "github:ghostty-org/ghostty";
     lan-mouse.url = "github:feschber/lan-mouse";
     nix-alien.url = "github:thiagokokada/nix-alien";
