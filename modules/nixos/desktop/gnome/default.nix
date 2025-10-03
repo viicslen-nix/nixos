@@ -43,6 +43,12 @@ in {
       description = "Enable remote desktop support";
     };
 
+    remoteDesktopPort = mkOption {
+      type = types.int;
+      default = 8389;
+      description = "Port for remote desktop (xrdp)";
+    };
+
     exclude = mkOption {
       type = types.listOf types.package;
       default = with pkgs; [
@@ -104,6 +110,7 @@ in {
 
         xrdp = {
           enable = true;
+          port = cfg.remoteDesktopPort;
           openFirewall = true;
           defaultWindowManager = "${pkgs.gnome-session}/bin/gnome-session";
         };
