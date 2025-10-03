@@ -78,6 +78,7 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
+    # Browsers
     (pkgs.inputs.zen-browser.default.override {
       nativeMessagingHosts = [
         pkgs.firefoxpwa
@@ -94,11 +95,6 @@ with lib; {
     brave
 
     # IDEs & Editors
-    # jetbrains.idea-ultimate
-    # jetbrains.phpstorm
-    # jetbrains.datagrip
-    # jetbrains.webstorm
-    # jetbrains.goland
     jetbrains-toolbox
     zed-editor-fhs
     vscode
@@ -123,6 +119,11 @@ with lib; {
     # Office
     onlyoffice-desktopeditors
     freeoffice
+
+    # Windows
+    pkgs.inputs.winboat.winboat
+    freerdp
+    iptables
 
     # Misc
     tlrc
