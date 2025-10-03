@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   osConfig,
   ...
@@ -56,7 +57,10 @@ in {
 
     ssh = {
       enable = true;
-      matchBlocks."*".controlPath = "/home/${user}/.ssh/controlmasters/%r@%h:%p";
+      matchBlocks = {
+        "*".controlPath = "/home/${user}/.ssh/controlmasters/%r@%h:%p";
+        "work.neoscode.com".proxyCommand = "${lib.getExe pkgs.cloudflared} access ssh --hostname %h";
+      };
     };
   };
 
