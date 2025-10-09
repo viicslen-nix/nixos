@@ -102,9 +102,9 @@ in {
       "center, title:(1Password)"
 
       # JetBrains IDEs
-      "center, class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$"
       "size <90% <80%, class:^(.*jetbrains.*)$, title:^(win.*)$"
       "opacity 0.95 0.95, class:^(.*jetbrains.*)$"
+      # "center, class:^(.*jetbrains.*)$, title:^(Confirm Exit|Open Project|win424|win201|splash)$"
 
       # "noinitialfocus, class:jetbrains-toolbox, floating:0"
       # "noinitialfocus, class:(jetbrains-)(.*), floating:0"
