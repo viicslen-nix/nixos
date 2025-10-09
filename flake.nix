@@ -209,6 +209,7 @@
         # Your custom dev shells
         devShells = import ./dev-shells {inherit inputs config system pkgs;};
 
+        # Commands and scripts to manage the flake
         mission-control.scripts = import ./scripts {inherit inputs system pkgs;};
       };
       flake = {
