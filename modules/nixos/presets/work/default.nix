@@ -132,9 +132,11 @@ in {
       luakit
       phpWithExtensions
       phpWithExtensions.packages.composer
+      nodejs_20
+      bun
+      go
 
       # Tools
-      nodejs_20
       mysql80
       awscli
       meld
