@@ -135,6 +135,7 @@ in {
       nodejs_20
       bun
       go
+      gosec
 
       # Tools
       mysql80
