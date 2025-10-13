@@ -1,0 +1,168 @@
+{
+  config,
+  users,
+  pkgs,
+  lib,
+  ...
+}: {
+  imports = [
+    ./hardware.nix
+  ];
+
+  ########################
+  # System State Version #
+  ########################
+  system.stateVersion = "25.05";
+
+  ####################
+  # Boot & Kernel    #
+  ####################
+  boot = {
+    loader = {
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 5;
+      };
+      efi.canTouchEfiVariables = true;
+      timeout = 0;
+    };
+
+    kernelParams = ["quiet"];
+    kernelPackages = pkgs.linuxPackages_cachyos;
+    kernel.sysctl = {
+      "kernel.split_lock_mitigate" = 0;
+      "kernel.nmi_watchdog" = 0;
+      "kernel.sched_bore" = "1";
+    };
+
+    initrd = {
+      systemd.enable = true;
+      kernelModules = [];
+      verbose = false;
+    };
+    plymouth.enable = true;
+    consoleLogLevel = 0;
+  };
+
+  systemd.settings.Manager = {DefaultTimeoutStopSec = "5s";};
+  hardware.amdgpu.initrd.enable = false;
+
+  ################
+  # FileSystems  #
+  ################
+  fileSystems."/" = {
+    options = ["compress=zstd"];
+  };
+
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+  };
+
+  ############
+  # Network  #
+  ############
+  networking = {
+    hostName = "lenovo-legion-go";
+    firewall.enable = false;
+  };
+
+  #################
+  # Bluetooth     #
+  #################
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.settings = {
+    General = {
+      MultiProfile = "multiple";
+      FastConnectable = true;
+    };
+  };
+
+  #################
+  # Security      #
+  #################
+  security = {
+    polkit.enable = true;
+    sudo.wheelNeedsPassword = false;
+  };
+
+  ###################
+  # Virtualization  #
+  ###################
+  virtualisation = {
+    docker.enable = true;
+    docker.enableOnBoot = false;
+    libvirtd.enable = true;
+  };
+
+  ########################
+  # Graphical & Jovian   #
+  ########################
+  jovian = {
+    steam = {
+      enable = true;
+      autoStart = true;
+      user = "steamos";
+      desktopSession = "cosmic";
+    };
+    decky-loader.enable = true;
+    hardware.has.amd.gpu = true;
+    steamos.useSteamOSConfig = true;
+  };
+
+  ########################
+  # Programs & Services    #
+  ########################
+  environment.sessionVariables = {
+    PROTON_USE_NTSYNC = "1";
+    ENABLE_HDR_WSI = "1";
+    DXVK_HDR = "1";
+    PROTON_ENABLE_AMD_AGS = "1";
+    PROTON_ENABLE_NVAPI = "1";
+    ENABLE_GAMESCOPE_WSI = "1";
+    STEAM_MULTIPLE_XWAYLANDS = "1";
+  };
+
+  services = {
+    xserver.enable = false;
+    automatic-timezoned.enable = true;
+    desktopManager.cosmic.enable = true;
+    code-server.enable = true;
+    flatpak.enable = true;
+    seatd.enable = true;
+    openssh.enable = true;
+  };
+
+  modules = {
+    presets.base.enable = true;
+
+    functionality = {
+      theming.enable = true;
+      appImages.enable = true;
+    };
+
+    programs = {
+      onePassword = {
+        enable = true;
+        gitSignCommits = true;
+        allowedCustomBrowsers = [
+          ".zen-wrapped"
+          "zen"
+        ];
+        users = attrNames users;
+      };
+    };
+  };
+
+  ###############
+  # Users       #
+  ###############
+  users.users.neoscode.extraGroups = [
+    "docker"
+    "video"
+    "seat"
+    "audio"
+    "libvirtd"
+    "code-server"
+  ];
+}
