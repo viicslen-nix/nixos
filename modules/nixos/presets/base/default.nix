@@ -147,18 +147,16 @@ in {
           pv
           tmux
           zoxide
-          htop
+          btop
           gcc
           glibc
           glib
           just
-          gtop
           wmctrl
           lazygit
           busybox
           libinput
           wl-clipboard
-          libreoffice
           hunspell
           hunspellDicts.en_US
           bluez
