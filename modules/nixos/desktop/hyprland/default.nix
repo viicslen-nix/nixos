@@ -30,7 +30,7 @@ in {
     portalPackage = mkOption {
       type = types.package;
       default = pkgs.xdg-desktop-portal-hyprland;
-      description ="The portal package to use";
+      description = "The portal package to use";
     };
 
     gnomeCompatibility = mkOption {

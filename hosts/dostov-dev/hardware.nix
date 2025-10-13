@@ -15,7 +15,7 @@
   boot.initrd.availableKernelModules = ["vmd" "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
   boot.initrd.kernelModules = [];
   boot.kernelModules = ["kvm-intel" "iptable_nat"];
-  boot.extraModulePackages = [ pkgs.iptables ];
+  boot.extraModulePackages = [pkgs.iptables];
 
   fileSystems = {
     "/boot/efi" = {
