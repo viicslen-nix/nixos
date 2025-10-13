@@ -24,6 +24,12 @@
       arch = "x86_64";
       path = ./asus-zephyrus-gu603;
     };
+
+    lenovo-legion-go = {
+      class = "nixos";
+      arch = "x86_64";
+      path = ./lenovo-legion-go;
+    };
   };
 
   shared = {
