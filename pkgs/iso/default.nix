@@ -1,12 +1,9 @@
 {
   pkgs,
   inputs,
+  lib,
   ...
 }:
-inputs.nixos-generators.nixosGenerate {
-  inherit pkgs;
-  format = "install-iso";
-  modules = [
-    ./configuration.nix
-  ];
-}
+lib.makeScope pkgs.newScope (self: with self; {
+  common = callPackage ./common.nix { inherit inputs pkgs lib;};
+})
