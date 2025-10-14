@@ -13,16 +13,20 @@
     # Hardware
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    # Flake Parts
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    mission-control.url = "github:Platonic-Systems/mission-control";
-    easy-hosts.url = "github:tgirlcloud/easy-hosts";
-    ez-configs.url = "github:ehllie/ez-configs";
-    flake-root.url = "github:srid/flake-root";
+    # Systems
+    systems.url = "github:nix-systems/default";
     flake-registry = {
       url = "github:NixOS/flake-registry";
       flake = false;
     };
+
+    # Flake Parts
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    pkgs-by-name.url = "github:drupol/pkgs-by-name-for-flake-parts";
+    mission-control.url = "github:Platonic-Systems/mission-control";
+    easy-hosts.url = "github:tgirlcloud/easy-hosts";
+    ez-configs.url = "github:ehllie/ez-configs";
+    flake-root.url = "github:srid/flake-root";
 
     # Disko
     disko = {
@@ -167,65 +171,55 @@
 
   outputs = inputs @ {
     flake-parts,
+    systems,
     nixpkgs,
     self,
     ...
-  }: let
-    inherit (self) outputs;
-  in
-    flake-parts.lib.mkFlake {inherit inputs;} ({
-      config,
-      withSystem,
-      flake-parts-lib,
-      ...
-    }: {
-      imports = [
-        inputs.easy-hosts.flakeModule
-        inputs.mission-control.flakeModule
-        inputs.flake-root.flakeModule
-      ];
-      systems = [
-        "aarch64-linux"
-        "i686-linux"
-        "x86_64-linux"
-        "aarch64-darwin"
-        "x86_64-darwin"
-      ];
-      perSystem = {
-        pkgs,
-        system,
-        config,
-        inputs',
-        ...
-      }: {
+  }:
+    with self.lib;
+      flake-parts.lib.mkFlake {inherit inputs;} {
+        imports = [
+          inputs.easy-hosts.flakeModule
+          inputs.flake-root.flakeModule
+        ];
+        systems = defaultSystems;
+        easy-hosts = import ./hosts {
+          inherit inputs;
+          outputs = self.outputs;
+        };
+      }
+      // {
+        lib = import ./lib {inherit inputs;};
+
         # Formatter for your nix files, available through 'nix fmt'
         # Other options beside 'alejandra' include 'nixpkgs-fmt'
-        formatter = pkgs.alejandra;
+        formatter = pkgFromSystem "alejandra";
+
+        # Your custom dev shells
+        devShells = genSystems (system:
+          import ./dev-shells {
+            inherit inputs system;
+            pkgs = pkgsFor system;
+          });
 
         # Your custom packages
         # Accessible through 'nix build', 'nix shell', etc
-        packages = import ./pkgs {inherit inputs system pkgs;};
+        packages = genSystems (system:
+          packagesFromDirectoryRecursive {
+            inherit (pkgsFor system) callPackage;
+            directory = ./packages/by-name;
+          });
 
-        # Your custom dev shells
-        devShells = import ./dev-shells {inherit inputs config system pkgs;};
-
-        # Commands and scripts to manage the flake
-        mission-control.scripts = import ./scripts {inherit inputs system pkgs;};
-      };
-      flake = {
         # Your custom packages and modifications, exported as overlays
         overlays = import ./overlays {inherit inputs;};
+
+        # Reusable nixos modules you might want to export
+        # These are usually stuff you would upstream into nixpkgs
+        # Flake-parts does some weird stuff with the output of flake.nixosModules
+        nixosModules = import ./modules/nixos;
 
         # Reusable home-manager modules you might want to export
         # These are usually stuff you would upstream into home-manager
         homeManagerModules = import ./modules/home-manager;
       };
-      easy-hosts = import ./hosts {inherit inputs outputs;};
-    })
-    // {
-      # Reusable nixos modules you might want to export
-      # These are usually stuff you would upstream into nixpkgs
-      # Flake-parts does some weird stuff with the output of flake.nixosModules
-      nixosModules = import ./modules/nixos;
-    };
 }

@@ -91,15 +91,11 @@ with lib; {
   };
 
   services = {
-    qemuGuest.enable = true;
     resolved.enable = false;
+    qemuGuest.enable = true;
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
     openssh.settings.PermitRootLogin = lib.mkForce "yes";
-
-    xserver = {
-      enable = true;
-      displayManager.gdm.enable = true;
-      desktopManager.gnome.enable = true;
-    };
   };
 
   environment = {

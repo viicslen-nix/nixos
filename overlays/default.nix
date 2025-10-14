@@ -18,11 +18,9 @@
   };
 
   # This one brings our custom packages from the 'pkgs' directory
-  additions = final: _prev:
-    import ../pkgs {
-      inherit inputs;
-      pkgs = final;
-    };
+  additions = final: _prev: {
+    local = inputs.self.packages.${final.system};
+  };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
   # be accessible through 'pkgs.unstable'
@@ -81,17 +79,6 @@
         --enable-features=WaylandLinuxDrmSyncobj
       '';
     };
-
-    # legcord =
-    #   (_prev.legcord.override {
-    #     electron = _prev.electron_36-bin;
-    #   }).overrideAttrs (old: {
-    #     postFixup = ''
-    #       ${old.postFixup or ""}
-    #       wrapProgramShell $out/bin/legcord \
-    #         --add-flags "--enable-features=WaylandLinuxDrmSyncobj"
-    #     '';
-    #   });
 
     # _1password-gui-wayland = _prev._1password-gui.overrideAttrs (oldAttrs: {
     #   preFixup = ''

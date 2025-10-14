@@ -161,6 +161,8 @@ in {
           hunspellDicts.en_US
           bluez
           bluez-tools
+          local.scripts.system-update
+          local.scripts.system-upgrade
         ]
         ++ import ./scripts.nix {
           inherit pkgs;
