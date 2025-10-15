@@ -26,6 +26,11 @@ jobs:
     name: Build ${{ inputs.display-name }}
     
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
       - name: Setup Nix Build Environment
         uses: ./.github/actions/setup-nix-build
         with:
