@@ -108,7 +108,7 @@
       enable = true;
       autoStart = true;
       user = "steamos";
-      desktopSession = "cosmic";
+      desktopSession = "gnome";
     };
     decky-loader.enable = true;
     hardware.has.amd.gpu = true;
