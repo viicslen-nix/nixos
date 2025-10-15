@@ -33,11 +33,16 @@
 
     loader = {
       timeout = 0;
-      systemd-boot = {
-        enable = true;
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot/efi";
+      };
+      grub = {
+        device = "nodev";
+        efiSupport = true;
         configurationLimit = 5;
       };
-      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = false;
     };
 
     plymouth.enable = true;
