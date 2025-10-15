@@ -1,4 +1,8 @@
 {inputs, pkgs, lib, ...}: {
+  imports = [
+    inputs.jovian.nixosModules.default
+  ];
+
   hardware.amdgpu.initrd.enable = false;
   boot.kernelParams = [ "quiet" ];
   boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
