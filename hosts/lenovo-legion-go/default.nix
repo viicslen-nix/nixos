@@ -53,12 +53,12 @@
   ################
   # FileSystems  #
   ################
-  fileSystems."/" = {
-    options = ["compress=zstd"];
-  };
+  # fileSystems."/" = {
+  #   options = ["compress=zstd"];
+  # };
 
   zramSwap = {
-    enable = true;
+    enable = false;
     algorithm = "zstd";
   };
 
@@ -74,6 +74,7 @@
   # Hardware      #
   #################
   hardware = {
+    enableAllFirmware = true;
     amdgpu.initrd.enable = false;
     bluetooth = {
       enable = true;
@@ -121,6 +122,11 @@
     openssh.enable = true;
     flatpak.enable = true;
     desktopManager.plasma6.enable = true;
+    handheld-daemon = {
+      enable = true;
+      user = "neoscode";
+      ui.enable = true;
+    };
   };
 
   modules = {
@@ -156,7 +162,11 @@
     };
     decky-loader.enable = true;
     hardware.has.amd.gpu = true;
-    steamos.useSteamOSConfig = true;
+    devices.steamdeck.enable = true;
+    steamos = {
+      useSteamOSConfig = true;
+      enableEarlyOOM = false;
+    };
   };
 
   ###############
