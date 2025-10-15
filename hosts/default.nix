@@ -2,42 +2,12 @@
   inputs,
   outputs,
 }: {
-  additionalClasses = {
-    wsl = "nixos";
-  };
-
-  hosts = {
-    wsl = {
-      class = "wsl";
-      arch = "x86_64";
-      path = ./wsl;
-    };
-
-    dostov-dev = {
-      class = "nixos";
-      arch = "x86_64";
-      path = ./dostov-dev;
-    };
-
-    asus-zephyrus-gu603 = {
-      class = "nixos";
-      arch = "x86_64";
-      path = ./asus-zephyrus-gu603;
-    };
-
-    lenovo-legion-go = {
-      class = "nixos";
-      arch = "x86_64";
-      path = ./lenovo-legion-go;
-    };
-  };
-
   shared = {
     modules = [
       outputs.nixosModules.all
       outputs.homeManagerModules.all
+      { system.stateVersion = "25.11"; }
     ];
-
     specialArgs = {
       inherit inputs outputs;
 
@@ -47,6 +17,28 @@
           password = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
         };
       };
+    };
+  };
+
+  hosts = {
+    wsl = {
+      system = "x86_64-linux";
+      path = ./wsl;
+    };
+
+    dostov-dev = {
+      system = "x86_64-linux";
+      path = ./dostov-dev;
+    };
+
+    asus-zephyrus-gu603 = {
+      system = "x86_64-linux";
+      path = ./asus-zephyrus-gu603;
+    };
+
+    lenovo-legion-go = {
+      system = "x86_64-linux";
+      path = ./lenovo-legion-go;
     };
   };
 }

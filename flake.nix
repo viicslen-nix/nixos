@@ -20,14 +20,6 @@
       flake = false;
     };
 
-    # Flake Parts
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    pkgs-by-name.url = "github:drupol/pkgs-by-name-for-flake-parts";
-    mission-control.url = "github:Platonic-Systems/mission-control";
-    easy-hosts.url = "github:tgirlcloud/easy-hosts";
-    ez-configs.url = "github:ehllie/ez-configs";
-    flake-root.url = "github:srid/flake-root";
-
     # Disko
     disko = {
       url = "github:nix-community/disko";
@@ -134,10 +126,6 @@
       url = "github:alexhulbert/Hyprchroma";
       inputs.hyprland.follows = "hyprland";
     };
-    # astal-shells = {
-    #   url = ./flakes/astal-shells;
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
 
     # Theming
     stylix.url = "github:danth/stylix";
@@ -155,14 +143,17 @@
       flake = false;
     };
 
+    # Package sets
+    nur.url = "github:nix-community/NUR";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
+
     # Community packages
     agenix.url = "github:ryantm/agenix";
-    nur.url = "github:nix-community/NUR";
     winboat.url = "github:TibixDev/winboat";
     ghostty.url = "github:ghostty-org/ghostty";
     lan-mouse.url = "github:feschber/lan-mouse";
     nix-alien.url = "github:thiagokokada/nix-alien";
-    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -180,50 +171,43 @@
     self,
     ...
   }:
-    with self.lib;
-      flake-parts.lib.mkFlake {inherit inputs;} {
-        imports = [
-          inputs.easy-hosts.flakeModule
-          inputs.flake-root.flakeModule
-        ];
-        systems = defaultSystems;
-        easy-hosts = import ./hosts {
-          inherit inputs;
-          outputs = self.outputs;
-        };
-      }
-      // {
-        lib = import ./lib {inherit inputs;};
+    with self.lib; let
+      inherit (self) outputs;
+    in {
+      lib = import ./lib {inherit inputs;};
 
-        # Formatter for your nix files, available through 'nix fmt'
-        # Other options beside 'alejandra' include 'nixpkgs-fmt'
-        formatter = pkgFromSystem "alejandra";
+      # Formatter for your nix files, available through 'nix fmt'
+      # Other options beside 'alejandra' include 'nixpkgs-fmt'
+      formatter = pkgFromSystem "alejandra";
 
-        # Your custom dev shells
-        devShells = genSystems (system:
-          import ./dev-shells {
-            inherit inputs system;
-            pkgs = pkgsFor system;
-          });
+      # Your custom dev shells
+      devShells = genSystems (system:
+        import ./dev-shells {
+          inherit inputs system;
+          pkgs = pkgsFor system;
+        });
 
-        # Your custom packages
-        # Accessible through 'nix build', 'nix shell', etc
-        packages = genSystems (system:
-          packagesFromDirectoryRecursive {
-            inherit (pkgsFor system) callPackage;
-            directory = ./packages/by-name;
-          });
+      # Your custom packages
+      # Accessible through 'nix build', 'nix shell', etc
+      packages = genSystems (system:
+        packagesFromDirectoryRecursive {
+          callPackage = callPackageForSystem system;
+          directory = ./packages/by-name;
+        });
 
-        # Your custom packages and modifications, exported as overlays
-        overlays = import ./overlays {inherit inputs;};
+      # Your custom packages and modifications, exported as overlays
+      overlays = import ./overlays {inherit inputs;};
 
-        # Reusable nixos modules you might want to export
-        # These are usually stuff you would upstream into nixpkgs
-        # Flake-parts does some weird stuff with the output of flake.nixosModules
-        nixosModules = import ./modules/nixos;
+      # Reusable nixos modules you might want to export
+      # These are usually stuff you would upstream into nixpkgs
+      # Flake-parts does some weird stuff with the output of flake.nixosModules
+      nixosModules = import ./modules/nixos;
 
-        # Reusable home-manager modules you might want to export
-        # These are usually stuff you would upstream into home-manager
-        homeManagerModules = import ./modules/home-manager;
-      };
+      # Reusable home-manager modules you might want to export
+      # These are usually stuff you would upstream into home-manager
+      homeManagerModules = import ./modules/home-manager;
+
+      # NixOS configurations for all your hosts
+      nixosConfigurations = mkNixosConfigurations (import ./hosts {inherit inputs outputs;});
+    };
 }

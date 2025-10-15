@@ -10,13 +10,17 @@ with lib; {
     inputs.vscode-server.nixosModules.default
   ];
 
-  system.stateVersion = "25.05";
   nixpkgs.hostPlatform = "x86_64-linux";
   home-manager.sharedModules = [./home.nix];
+
+  # WSL Specific Configuration
+  virtualisation.docker.enable = mkForce false;
+  programs.git.config.programs.core.sshCommand = "ssh.exe";
 
   networking = {
     hostName = "wsl";
     firewall.enable = mkForce false;
+    nameservers = mkForce [];
   };
 
   wsl = {
@@ -62,19 +66,19 @@ with lib; {
       jetbrains.webstorm
       jetbrains.phpstorm
       jetbrains.jdk
+      uv
     ];
   };
 
-  programs = {
-    nix-ld.enable = true;
-    git.config.programs.core.sshCommand = "ssh.exe";
+  services.vscode-server = {
+    enable = true;
+    enableFHS = true;
+    installPath = "$HOME/.local/share/vscode-server";
   };
-
-  services.vscode-server.enable = true;
-  virtualisation.docker.enable = mkForce false;
 
   modules = {
     functionality.theming.enable = true;
+    programs.ld.enable = true;
 
     presets = {
       base.enable = true;

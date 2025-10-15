@@ -17,7 +17,6 @@ with lib; {
     ./hardware.nix
   ];
 
-  system.stateVersion = "25.05";
   home-manager.sharedModules = [./home.nix];
 
   boot = {

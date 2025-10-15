@@ -9,11 +9,6 @@
     ./hardware.nix
   ];
 
-  ########################
-  # System State Version #
-  ########################
-  system.stateVersion = "25.05";
-
   ####################
   # Boot & Kernel    #
   ####################
