@@ -102,11 +102,7 @@ with lib; {
     # Use helix as the default editor
     variables.EDITOR = "hx";
 
-    systemPackages = with pkgs; let
-      gitBin = getExe git;
-      gumBin = getExe gum;
-      gsettingsBin = getExe' glib "gsettings";
-    in [
+    systemPackages = with pkgs; [
       helix
       vim
       curl
@@ -118,46 +114,7 @@ with lib; {
       ntfs3g
       networkmanager
       git
-      (writeShellScriptBin "disko-install" ''
-        #!/usr/bin/env bash
-
-        set -euo pipefail
-
-        ${gsettingsBin} set org.gnome.desktop.session idle-delay 0
-        ${gsettingsBin} set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
-
-        if [ "$(id -u)" -eq 0 ]; then
-          echo "ERROR! $(basename "$0") should be run as a regular user"
-          exit 1
-        fi
-
-        if [ ! -d "$HOME/nixos/.git" ]; then
-          ${gitBin} clone https://github.com/viicslen/nixos.git "$HOME/nixos"
-        fi
-
-        TARGET_HOST=$(ls -1 ~/nixos/hosts/*/default.nix | cut -d'/' -f6 | grep -v iso | ${gumBin} choose)
-
-        if [ ! -e "$HOME/nixos/hosts/$TARGET_HOST/disko.nix" ]; then
-          echo "ERROR! $(basename "$0") could not find the required $HOME/nixos/hosts/$TARGET_HOST/disko.nix"
-          exit 1
-        fi
-
-        TARGET_DISK=$(lsblk -o NAME,SIZE,TYPE,TRAN,MODEL | grep disk | ${gumBin} choose | awk '{print $1}')
-
-        ${gumBin} confirm  --default=false \
-        "🔥 🔥 🔥 WARNING!!!! This will ERASE ALL DATA on the disk $TARGET_HOST. Are you sure you want to continue?"
-
-        echo "Partitioning Disks"
-        sudo nix run github:nix-community/disko \
-        --extra-experimental-features "nix-command flakes" \
-        --no-write-lock-file \
-        -- \
-        --mode disko \
-        "$HOME/nixos/hosts/$TARGET_HOST/disko.nix" \
-        --arg device '"/dev/$TARGET_DISK"'
-
-        sudo nixos-install --flake "$HOME/nixos#$TARGET_HOST"
-      '')
+      local.scripts.system-install
     ];
   };
 

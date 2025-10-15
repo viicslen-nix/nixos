@@ -27,6 +27,10 @@
     };
   };
 
+  environment.systemPackages = [
+    pkgs.local.scripts.system-install
+  ];
+
   hardware.amdgpu.initrd.enable = false;
   jovian.hardware.has.amd.gpu = true;
 }
