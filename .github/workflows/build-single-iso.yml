@@ -3,16 +3,8 @@ name: Build Single ISO
 on:
   workflow_call:
     inputs:
-      package-name:
-        description: 'The name of the ISO package to build (e.g., iso.steam-handheld)'
-        required: true
-        type: string
-      display-name:
-        description: 'Display name for the ISO (e.g., Steam Handheld ISO)'
-        required: true
-        type: string
-      artifact-name:
-        description: 'Name for the uploaded artifact (e.g., iso.steam-handheld-iso)'
+      iso-type:
+        description: 'The type of ISO to build (e.g., steam-handheld, common)'
         required: true
         type: string
     secrets:
@@ -23,7 +15,7 @@ on:
 jobs:
   build-iso:
     runs-on: ubuntu-latest
-    name: Build ${{ inputs.display-name }}
+    name: Build ${{ inputs.iso-type }} ISO
     
     steps:
       - name: Checkout repository
@@ -36,10 +28,10 @@ jobs:
         with:
           cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Build ${{ inputs.display-name }}
+      - name: Build ${{ inputs.iso-type }} ISO
         run: |
-          echo "Building ISO: ${{ inputs.package-name }}"
-          nix build .#${{ inputs.package-name }} \
+          echo "Building ISO: iso.${{ inputs.iso-type }}"
+          nix build .#iso.${{ inputs.iso-type }} \
             --option cores 0 \
             --option max-jobs auto \
             --option keep-going true \
@@ -58,14 +50,14 @@ jobs:
       - name: Upload ISO artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.artifact-name }}
+          name: iso.${{ inputs.iso-type }}-iso
           path: ${{ steps.iso_info.outputs.path }}
           retention-days: 7
           compression-level: 0  # ISOs are already compressed
 
       - name: Create release notes
         run: |
-          echo "## ${{ inputs.display-name }}" >> release_notes.md
+          echo "## ${{ inputs.iso-type }} ISO" >> release_notes.md
           echo "- **File**: ${{ steps.iso_info.outputs.name }}" >> release_notes.md
           echo "- **Size**: ${{ steps.iso_info.outputs.size }}" >> release_notes.md
           echo "- **Built from**: ${{ github.sha }}" >> release_notes.md
@@ -75,5 +67,5 @@ jobs:
       - name: Upload release notes
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.artifact-name }}-release-notes
+          name: iso.${{ inputs.iso-type }}-release-notes
           path: release_notes.md

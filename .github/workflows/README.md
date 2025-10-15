@@ -17,7 +17,8 @@ A manually triggered workflow that orchestrates building of ISO installation ima
   - Reusable across different build jobs
 
 - **Reusable Workflow**: `.github/workflows/build-single-iso.yml`
-  - Builds a single ISO package
+  - Builds a single ISO package based on `iso-type` input
+  - Automatically derives package names, display names, and artifact names
   - Handles artifact upload and release note generation
   - Called by the main workflow for each ISO type
 
@@ -66,12 +67,15 @@ build-new-iso:
   if: ${{ github.event.inputs.build_target == 'both' || github.event.inputs.build_target == 'new-iso' }}
   uses: ./.github/workflows/build-single-iso.yml
   with:
-    package-name: iso.new-iso
-    display-name: New ISO
-    artifact-name: iso.new-iso-iso
+    iso-type: new-iso
   secrets:
     CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
 ```
+
+The reusable workflow will automatically:
+- Build the package `iso.{iso-type}`
+- Generate appropriate display names for known types (steam-handheld → "Steam Handheld ISO")
+- Create artifacts named `iso.{iso-type}-iso` and `iso.{iso-type}-release-notes`
 
 And update the input options in the `workflow_dispatch` section.
 

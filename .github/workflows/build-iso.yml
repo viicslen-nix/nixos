@@ -18,9 +18,7 @@ jobs:
     if: ${{ github.event.inputs.build_target == 'both' || github.event.inputs.build_target == 'steam-handheld' }}
     uses: ./.github/workflows/build-single-iso.yml
     with:
-      package-name: iso.steam-handheld
-      display-name: Steam Handheld ISO
-      artifact-name: iso.steam-handheld-iso
+      iso-type: steam-handheld
     secrets:
       CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
@@ -28,9 +26,7 @@ jobs:
     if: ${{ github.event.inputs.build_target == 'both' || github.event.inputs.build_target == 'common' }}
     uses: ./.github/workflows/build-single-iso.yml
     with:
-      package-name: iso.common
-      display-name: Common ISO
-      artifact-name: iso.common-iso
+      iso-type: common
     secrets:
       CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
