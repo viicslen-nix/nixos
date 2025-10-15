@@ -3,11 +3,6 @@
   lib,
   ...
 }: {
-  imports = [
-    inputs.chaotic.nixosModules.default
-    inputs.jovian.nixosModules.default
-  ];
-
   documentation = {
     enable = false;
     nixos.options.warningsAreErrors = false;
