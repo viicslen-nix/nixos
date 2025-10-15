@@ -37,15 +37,52 @@ jobs:
             --option keep-going true \
             --print-build-logs
 
+      - name: Inspect build result
+        run: |
+          echo "=== Build result inspection ==="
+          ls -la result*
+          echo ""
+          echo "=== Result symlink target ==="
+          readlink -f result || echo "No result symlink found"
+          echo ""
+          echo "=== Contents of result directory ==="
+          ls -la result/
+          echo ""
+          echo "=== Contents of result/iso directory ==="
+          ls -la result/iso/
+
       - name: Get ISO info
         id: iso_info
         run: |
-          ISO_PATH=$(readlink -f result)
-          ISO_NAME=$(basename "$ISO_PATH")
-          ISO_SIZE=$(du -h "$ISO_PATH" | cut -f1)
-          echo "path=$ISO_PATH" >> $GITHUB_OUTPUT
-          echo "name=$ISO_NAME" >> $GITHUB_OUTPUT
-          echo "size=$ISO_SIZE" >> $GITHUB_OUTPUT
+          # The result is a directory containing iso/ subdirectory with the actual ISO file
+          if [ ! -d result/iso ]; then
+            echo "Error: result/iso directory not found"
+            exit 1
+          fi
+          
+          # Find the ISO file in the iso/ directory
+          ISO_FILE=$(find result/iso/ -name "*.iso" -type f | head -1)
+          
+          if [ -z "$ISO_FILE" ]; then
+            echo "Error: No ISO file found in result/iso/"
+            exit 1
+          fi
+          
+          ISO_PATH=$(realpath "$ISO_FILE")
+          ISO_NAME=$(basename "$ISO_FILE")
+          ISO_SIZE=$(du -h "$ISO_FILE" | cut -f1 | tr -d ' ')
+          
+          echo "ISO_FILE: $ISO_FILE"
+          echo "ISO_PATH: $ISO_PATH"
+          echo "ISO_NAME: $ISO_NAME"
+          echo "ISO_SIZE: $ISO_SIZE"
+          
+          # Use proper escaping for GitHub outputs
+          {
+            echo "path=$ISO_PATH"
+            echo "name=$ISO_NAME"
+            echo "size=$ISO_SIZE"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Upload ISO artifact
         uses: actions/upload-artifact@v4
