@@ -7,12 +7,7 @@ inputs:
     default: ''
 runs:
   using: 'composite'
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
+  steps: 
     - name: Install Nix
       uses: cachix/install-nix-action@v27
       with:
@@ -27,34 +22,5 @@ runs:
         name: nix-community
         authToken: ${{ inputs.cachix-auth-token }}
 
-    - name: Free up disk space
-      shell: bash
-      run: |
-        # Remove unnecessary packages to free up space
-        sudo apt-get purge -y \
-          '^dotnet-.*' \
-          '^llvm-.*' \
-          'php.*' \
-          '^mongodb-.*' \
-          '^mysql-.*' \
-          azure-cli \
-          google-cloud-* \
-          hhvm \
-          google-chrome-stable \
-          firefox \
-          powershell \
-          mono-devel \
-          libgl1-mesa-dri
-        sudo apt-get autoremove -y
-        sudo apt-get clean
-        
-        # Remove large directories
-        sudo rm -rf \
-          /usr/share/dotnet \
-          /usr/local/lib/android \
-          /opt/ghc \
-          /opt/hostedtoolcache/CodeQL \
-          /usr/local/share/boost \
-          /usr/lib/jvm
-        
-        df -h
+    - name: Free Disk Space (Ubuntu)
+      uses: jlumbroso/free-disk-space@main
