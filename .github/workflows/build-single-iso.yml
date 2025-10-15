@@ -1,0 +1,74 @@
+name: Build Single ISO
+
+on:
+  workflow_call:
+    inputs:
+      package-name:
+        description: 'The name of the ISO package to build (e.g., iso.steam-handheld)'
+        required: true
+        type: string
+      display-name:
+        description: 'Display name for the ISO (e.g., Steam Handheld ISO)'
+        required: true
+        type: string
+      artifact-name:
+        description: 'Name for the uploaded artifact (e.g., iso.steam-handheld-iso)'
+        required: true
+        type: string
+    secrets:
+      CACHIX_AUTH_TOKEN:
+        description: 'Cachix authentication token'
+        required: false
+
+jobs:
+  build-iso:
+    runs-on: ubuntu-latest
+    name: Build ${{ inputs.display-name }}
+    
+    steps:
+      - name: Setup Nix Build Environment
+        uses: ./.github/actions/setup-nix-build
+        with:
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Build ${{ inputs.display-name }}
+        run: |
+          echo "Building ISO: ${{ inputs.package-name }}"
+          nix build .#${{ inputs.package-name }} \
+            --option cores 0 \
+            --option max-jobs auto \
+            --option keep-going true \
+            --print-build-logs
+
+      - name: Get ISO info
+        id: iso_info
+        run: |
+          ISO_PATH=$(readlink -f result)
+          ISO_NAME=$(basename "$ISO_PATH")
+          ISO_SIZE=$(du -h "$ISO_PATH" | cut -f1)
+          echo "path=$ISO_PATH" >> $GITHUB_OUTPUT
+          echo "name=$ISO_NAME" >> $GITHUB_OUTPUT
+          echo "size=$ISO_SIZE" >> $GITHUB_OUTPUT
+
+      - name: Upload ISO artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ${{ steps.iso_info.outputs.path }}
+          retention-days: 7
+          compression-level: 0  # ISOs are already compressed
+
+      - name: Create release notes
+        run: |
+          echo "## ${{ inputs.display-name }}" >> release_notes.md
+          echo "- **File**: ${{ steps.iso_info.outputs.name }}" >> release_notes.md
+          echo "- **Size**: ${{ steps.iso_info.outputs.size }}" >> release_notes.md
+          echo "- **Built from**: ${{ github.sha }}" >> release_notes.md
+          echo "- **Build time**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> release_notes.md
+          echo "" >> release_notes.md
+
+      - name: Upload release notes
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}-release-notes
+          path: release_notes.md
