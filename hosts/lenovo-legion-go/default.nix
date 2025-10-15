@@ -27,7 +27,6 @@
 
     initrd = {
       systemd.enable = true;
-      kernelModules = [];
       verbose = false;
     };
 
@@ -49,7 +48,6 @@
     plymouth.enable = true;
   };
 
-  hardware.amdgpu.initrd.enable = false;
   systemd.settings.Manager = {DefaultTimeoutStopSec = "5s";};
 
   ################
@@ -73,13 +71,18 @@
   };
 
   #################
-  # Bluetooth     #
+  # Hardware      #
   #################
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.settings = {
-    General = {
-      MultiProfile = "multiple";
-      FastConnectable = true;
+  hardware = {
+    amdgpu.initrd.enable = false;
+    bluetooth = {
+      enable = true;
+      settings = {
+        General = {
+          MultiProfile = "multiple";
+          FastConnectable = true;
+        };
+      };
     };
   };
 
@@ -101,22 +104,7 @@
   };
 
   ########################
-  # Graphical & Jovian   #
-  ########################
-  jovian = {
-    steam = {
-      enable = true;
-      autoStart = true;
-      user = "steamos";
-      desktopSession = "gnome";
-    };
-    decky-loader.enable = true;
-    hardware.has.amd.gpu = true;
-    steamos.useSteamOSConfig = true;
-  };
-
-  ########################
-  # Programs & Services    #
+  # Programs & Services  #
   ########################
   environment.sessionVariables = {
     PROTON_USE_NTSYNC = "1";
@@ -129,11 +117,15 @@
   };
 
   services = {
-    desktopManager.gnome.enable = false;
-    displayManager.gdm.enable = false;
-    flatpak.enable = true;
-    openssh.enable = true;
     seatd.enable = true;
+    openssh.enable = true;
+    flatpak.enable = true;
+    desktopManager.gnome.enable = true;
+
+    gnome = {
+      games.enable = false;
+      core-developer-tools.enable = false;
+    };
   };
 
   modules = {
@@ -157,6 +149,21 @@
     };
   };
 
+  ########################
+  # Graphical & Jovian   #
+  ########################
+  jovian = {
+    steam = {
+      enable = true;
+      autoStart = true;
+      user = "neoscode";
+      desktopSession = "gnome";
+    };
+    decky-loader.enable = true;
+    hardware.has.amd.gpu = true;
+    steamos.useSteamOSConfig = true;
+  };
+
   ###############
   # Users       #
   ###############
@@ -166,6 +173,5 @@
     "seat"
     "audio"
     "libvirtd"
-    "code-server"
   ];
 }
