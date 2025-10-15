@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   users,
   pkgs,
@@ -6,6 +7,8 @@
   ...
 }: {
   imports = [
+    inputs.chaotic.nixosModules.default
+    inputs.jovian.nixosModules.default
     ./hardware.nix
   ];
 
@@ -13,28 +16,30 @@
   # Boot & Kernel    #
   ####################
   boot = {
+    kernelPackages = pkgs.linuxPackages_cachyos;
+
+    # kernelParams = ["quiet"];
+    # kernel.sysctl = {
+    #   "kernel.split_lock_mitigate" = 0;
+    #   "kernel.nmi_watchdog" = 0;
+    #   "kernel.sched_bore" = "1";
+    # };
+
+    # initrd = {
+    #   systemd.enable = true;
+    #   kernelModules = [];
+    #   verbose = false;
+    # };
+
     loader = {
+      timeout = 0;
       systemd-boot = {
         enable = true;
         configurationLimit = 5;
       };
       efi.canTouchEfiVariables = true;
-      timeout = 0;
     };
 
-    kernelParams = ["quiet"];
-    kernelPackages = pkgs.linuxPackages_cachyos;
-    kernel.sysctl = {
-      "kernel.split_lock_mitigate" = 0;
-      "kernel.nmi_watchdog" = 0;
-      "kernel.sched_bore" = "1";
-    };
-
-    initrd = {
-      systemd.enable = true;
-      kernelModules = [];
-      verbose = false;
-    };
     plymouth.enable = true;
     consoleLogLevel = 0;
   };
