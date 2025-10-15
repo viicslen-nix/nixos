@@ -5,7 +5,7 @@
   pkgs,
   lib,
   ...
-}: {
+}: with lib; {
   imports = [
     inputs.chaotic.nixosModules.default
     inputs.jovian.nixosModules.default
@@ -25,11 +25,11 @@
     #   "kernel.sched_bore" = "1";
     # };
 
-    # initrd = {
-    #   systemd.enable = true;
-    #   kernelModules = [];
-    #   verbose = false;
-    # };
+    initrd = {
+      systemd.enable = true;
+      kernelModules = [];
+      verbose = false;
+    };
 
     loader = {
       timeout = 0;
@@ -45,12 +45,12 @@
       systemd-boot.enable = false;
     };
 
-    plymouth.enable = true;
     consoleLogLevel = 0;
+    plymouth.enable = true;
   };
 
-  systemd.settings.Manager = {DefaultTimeoutStopSec = "5s";};
   hardware.amdgpu.initrd.enable = false;
+  systemd.settings.Manager = {DefaultTimeoutStopSec = "5s";};
 
   ################
   # FileSystems  #
@@ -129,13 +129,11 @@
   };
 
   services = {
-    xserver.enable = false;
-    automatic-timezoned.enable = true;
-    desktopManager.cosmic.enable = true;
-    code-server.enable = true;
+    desktopManager.gnome.enable = false;
+    displayManager.gdm.enable = false;
     flatpak.enable = true;
-    seatd.enable = true;
     openssh.enable = true;
+    seatd.enable = true;
   };
 
   modules = {
