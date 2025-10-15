@@ -25,10 +25,10 @@
     #   "kernel.sched_bore" = "1";
     # };
 
-    initrd = {
-      systemd.enable = true;
-      verbose = false;
-    };
+    # initrd = {
+    #   systemd.enable = true;
+    #   verbose = false;
+    # };
 
     loader = {
       timeout = 0;
@@ -120,12 +120,7 @@
     seatd.enable = true;
     openssh.enable = true;
     flatpak.enable = true;
-    desktopManager.gnome.enable = true;
-
-    gnome = {
-      games.enable = false;
-      core-developer-tools.enable = false;
-    };
+    desktopManager.plasma6.enable = true;
   };
 
   modules = {
@@ -157,7 +152,7 @@
       enable = true;
       autoStart = true;
       user = "neoscode";
-      desktopSession = "gnome";
+      desktopSession = "plasma";
     };
     decky-loader.enable = true;
     hardware.has.amd.gpu = true;
