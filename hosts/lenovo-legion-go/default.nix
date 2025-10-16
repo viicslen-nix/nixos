@@ -162,7 +162,15 @@
     };
     decky-loader.enable = true;
     hardware.has.amd.gpu = true;
-    devices.steamdeck.enable = true;
+    devices.steamdeck = {
+      enable = true;
+      enableOsFanControl = false;
+#       enableControllerUdevRules = true;
+      enableFwupdBiosUpdates = false;
+      enableDefaultCmdlineConfig = false;
+#       enableGyroDsuService = true;
+#       enableKernelPatches = true;
+    };
     steamos = {
       useSteamOSConfig = true;
       enableEarlyOOM = false;
