@@ -1,6 +1,5 @@
 {
   inputs,
-  config,
   users,
   pkgs,
   lib,
@@ -38,6 +37,7 @@ with lib; {
         efiSysMountPoint = "/boot/efi";
       };
       grub = {
+        enable = true;
         device = "nodev";
         efiSupport = true;
         configurationLimit = 5;
@@ -127,6 +127,14 @@ with lib; {
       enable = true;
       user = "neoscode";
       ui.enable = true;
+    };
+  };
+
+  programs = {
+    vscode = {
+      enable = true;
+      defaultEditor = true;
+      package = pkgs.vscode-fhs;
     };
   };
 
