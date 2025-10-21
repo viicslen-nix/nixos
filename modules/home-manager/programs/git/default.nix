@@ -31,30 +31,33 @@ in {
     };
   };
 
-  config.programs.git = mkIf cfg.enable {
-    enable = true;
-    delta.enable = true;
-    userName = mkIf (cfg.user != null) cfg.user;
-    userEmail = mkIf (cfg.email != null) cfg.email;
-    aliases = {
-      st = "status";
-      su = "submodule foreach 'git checkout main && git pull'";
-      nah = ''!f(){ git reset --hard; git clean -df; if [ -d ".git/rebase-apply" ] || [ -d ".git/rebase-merge" ]; then git rebase --abort; fi; }; f'';
-      forget = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D";
-      forgetlist = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}'";
-      uncommit = "reset --soft HEAD~0";
+  config.programs = mkIf cfg.enable {
+    delta = {
+      enable = true;
+      enableGitIntegration = true;
     };
-    extraConfig = {
-      pull.rebase = true;
-      init.defaultBranch = cfg.defaultBranch;
-      user.signingkey = mkIf (cfg.signingKey != null) cfg.signingKey;
 
-      submodule.recurse = true;
-      # status.submoduleSummary = true;
+    git = {
+      enable = true;
+      settings = {
+        user = {
+          name = mkIf (cfg.user != null) cfg.user;
+          email = mkIf (cfg.email != null) cfg.email;
+          signingkey = mkIf (cfg.signingKey != null) cfg.signingKey;
+        };
+        alias = {
+          st = "status";
+          su = "submodule foreach 'git checkout main && git pull'";
+          nah = ''!f(){ git reset --hard; git clean -df; if [ -d ".git/rebase-apply" ] || [ -d ".git/rebase-merge" ]; then git rebase --abort; fi; }; f'';
+          forget = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D";
+          forgetlist = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}'";
+          uncommit = "reset --soft HEAD~0";
+        };
+        init.defaultBranch = cfg.defaultBranch;
+        push.autoSetupRemote = true;
+        pull.rebase = true;
 
-      push = {
-        autoSetupRemote = true;
-        # recurseSubmodules = "on-demand";
+        submodule.recurse = true;
       };
     };
   };
