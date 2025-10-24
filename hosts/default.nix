@@ -6,7 +6,7 @@
     modules = [
       outputs.nixosModules.all
       outputs.homeManagerModules.all
-      { system.stateVersion = "25.11"; }
+      {system.stateVersion = "25.11";}
     ];
     specialArgs = {
       inherit inputs outputs;

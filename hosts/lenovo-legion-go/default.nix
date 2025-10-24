@@ -5,7 +5,8 @@
   pkgs,
   lib,
   ...
-}: with lib; {
+}:
+with lib; {
   imports = [
     inputs.chaotic.nixosModules.default
     inputs.jovian.nixosModules.default
@@ -165,11 +166,11 @@
     devices.steamdeck = {
       enable = true;
       enableOsFanControl = false;
-#       enableControllerUdevRules = true;
+      #       enableControllerUdevRules = true;
       enableFwupdBiosUpdates = false;
       enableDefaultCmdlineConfig = false;
-#       enableGyroDsuService = true;
-#       enableKernelPatches = true;
+      #       enableGyroDsuService = true;
+      #       enableKernelPatches = true;
     };
     steamos = {
       useSteamOSConfig = true;

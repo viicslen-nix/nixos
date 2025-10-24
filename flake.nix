@@ -86,9 +86,18 @@
     };
     one-password-shell-plugins.url = "github:1Password/shell-plugins";
 
+    # Niri
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Hyprland
     hyprland.url = "github:hyprwm/Hyprland";
-    waybar.url = "github:Alexays/Waybar/master";
+    waybar = {
+      url = "github:Alexays/Waybar/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     pyprland.url = "github:hyprland-community/pyprland";
     hyprland-contrib = {
       url = "github:hyprwm/contrib";

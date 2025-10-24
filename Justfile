@@ -70,6 +70,7 @@ lint FILE='.':
 
 # remove all generations older than 7 days
 clean:
+  ng clean all -K 7d
   sudo nix profile wipe-history --profile /nix/var/nix/profiles/system  --older-than 7d
 
 # Garbage collect all unused nix store entries

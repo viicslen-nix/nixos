@@ -35,6 +35,20 @@ in {
         environment variable.
       '';
     };
+    fileManager = mkOption {
+      type = types.nullOr types.package;
+      default = null;
+      description = ''
+        The default file manager to use.
+      '';
+    };
+    passwordManager = mkOption {
+      type = types.nullOr types.package;
+      default = null;
+      description = ''
+        The default password manager to use.
+      '';
+    };
   };
 
   config = mkMerge [
@@ -51,21 +65,28 @@ in {
           text/html=${cfg.browser.pname}.desktop
         '';
       };
-      wayland.windowManager.hyprland.settings."$browser" = mkDefault (getExe cfg.browser);
     })
     (mkIf (cfg.editor != null) {
       home = {
         sessionVariables.EDITOR = mkDefault (getExe cfg.editor);
         packages = [cfg.editor];
       };
-      wayland.windowManager.hyprland.settings."$editor" = mkDefault (getExe cfg.editor);
     })
     (mkIf (cfg.terminal != null) {
       home = {
         sessionVariables.TERMINAL = mkDefault (getExe cfg.terminal);
         packages = [cfg.terminal];
       };
-      wayland.windowManager.hyprland.settings."$terminal" = mkDefault (getExe cfg.terminal);
+    })
+    (mkIf (cfg.fileManager != null) {
+      home = {
+        packages = [cfg.fileManager];
+      };
+    })
+    (mkIf (cfg.passwordManager != null) {
+      home = {
+        packages = [cfg.passwordManager];
+      };
     })
   ];
 }

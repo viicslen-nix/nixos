@@ -32,7 +32,7 @@ in {
   programs.waybar = {
     enable = true;
     systemd.enable = true;
-    package = pkgs.inputs.waybar.waybar;
+    # package = pkgs.inputs.waybar.waybar;
     settings = [
       {
         layer = "top";

@@ -159,8 +159,8 @@ with lib; {
 
       hyprland = {
         enable = true;
-        package = pkgs.inputs.hyprland.hyprland;
-        portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
+        # package = pkgs.inputs.hyprland.hyprland;
+        # portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
         gnomeCompatibility = true;
         extraGlobalVariables = {
           NVD_BACKEND = "direct";

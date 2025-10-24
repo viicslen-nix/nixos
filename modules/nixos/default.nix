@@ -26,6 +26,7 @@
   # Desktop
   desktop = {
     kde = import ./desktop/kde;
+    niri = import ./desktop/niri;
     gnome = import ./desktop/gnome;
     hyprland = import ./desktop/hyprland;
   };
