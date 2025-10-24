@@ -2,26 +2,30 @@
   config,
   lib,
   ...
-}:
-{
+}: {
   wayland.windowManager.hyprland = {
     settings = let
       # Get defaults if they exist
-      terminal = if (config.modules.functionality.defaults.terminal or null) != null
-                then lib.getExe config.modules.functionality.defaults.terminal
-                else "kitty";
-      browser = if (config.modules.functionality.defaults.browser or null) != null
-               then lib.getExe config.modules.functionality.defaults.browser
-               else "firefox";
-      fileManager = if (config.modules.functionality.defaults.fileManager or null) != null
-                   then lib.getExe config.modules.functionality.defaults.fileManager
-                   else "nautilus";
-      editor = if (config.modules.functionality.defaults.editor or null) != null
-              then lib.getExe config.modules.functionality.defaults.editor
-              else null;
-      passwordManager = if (config.modules.functionality.defaults.passwordManager or null) != null
-                       then "${lib.getExe config.modules.functionality.defaults.passwordManager} --quick-access"
-                       else "1password --quick-access";
+      terminal =
+        if (config.modules.functionality.defaults.terminal or null) != null
+        then lib.getExe config.modules.functionality.defaults.terminal
+        else "kitty";
+      browser =
+        if (config.modules.functionality.defaults.browser or null) != null
+        then lib.getExe config.modules.functionality.defaults.browser
+        else "firefox";
+      fileManager =
+        if (config.modules.functionality.defaults.fileManager or null) != null
+        then lib.getExe config.modules.functionality.defaults.fileManager
+        else "nautilus";
+      editor =
+        if (config.modules.functionality.defaults.editor or null) != null
+        then lib.getExe config.modules.functionality.defaults.editor
+        else null;
+      passwordManager =
+        if (config.modules.functionality.defaults.passwordManager or null) != null
+        then "${lib.getExe config.modules.functionality.defaults.passwordManager} --quick-access"
+        else "1password --quick-access";
     in {
       # modifier key
       "$mod" = "SUPER";
