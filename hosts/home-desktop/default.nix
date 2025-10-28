@@ -86,7 +86,7 @@ with lib; {
 
     desktop = {
       gnome.enable = true;
-      niri.enable = false;
+      niri.enable = true;
 
       hyprland = {
         enable = true;
@@ -110,6 +110,7 @@ with lib; {
       oom.enable = true;
       theming.enable = true;
       appImages.enable = true;
+      powerManagement.enable = true;
 
       network.hosts = {
         # Docker
@@ -145,13 +146,11 @@ with lib; {
 
     presets = {
       base.enable = true;
-      # work.enable = true;
+      work.enable = true;
       personal.enable = true;
     };
 
     programs = {
-      mullvad.enable = true;
-
       docker = {
         enable = true;
         nvidiaSupport = true;
