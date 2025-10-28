@@ -31,6 +31,11 @@
       path = ./dostov-dev;
     };
 
+    home-desktop = {
+      system = "x86_64-linux";
+      path = ./home-desktop;
+    };
+
     asus-zephyrus-gu603 = {
       system = "x86_64-linux";
       path = ./asus-zephyrus-gu603;
