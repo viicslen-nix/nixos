@@ -100,6 +100,8 @@ in {
       # workspace cycling
       "Mod+Up".action = focus-workspace-up;
       "Mod+Down".action = focus-workspace-down;
+      "Mod+Left".action = focus-column-left;
+      "Mod+Right".action = focus-column-right;
 
       # monitor cycling
       "Mod+Shift+Left".action = focus-monitor-left;
