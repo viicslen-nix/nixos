@@ -78,17 +78,6 @@ with lib; {
 
   environment.systemPackages = with pkgs; [
     # Browsers
-    (pkgs.inputs.zen-browser.default.override {
-      nativeMessagingHosts = [
-        pkgs.firefoxpwa
-      ];
-      extraPrefsFiles = [
-        (builtins.fetchurl {
-          url = "https://raw.githubusercontent.com/MrOtherGuy/fx-autoconfig/master/program/config.js";
-          sha256 = "1mx679fbc4d9x4bnqajqx5a95y1lfasvf90pbqkh9sm3ch945p40";
-        })
-      ];
-    })
     google-chrome
     microsoft-edge
     brave
@@ -96,7 +85,7 @@ with lib; {
     # IDEs & Editors
     jetbrains-toolbox
     zed-editor-fhs
-    vscode
+    vscode-fhs
 
     # Development Tools
     ghostty
@@ -252,6 +241,7 @@ with lib; {
 
       onePassword = {
         enable = true;
+        autostart = true;
         gitSignCommits = true;
         users = attrNames users;
         allowedCustomBrowsers = [

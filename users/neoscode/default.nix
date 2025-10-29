@@ -25,6 +25,20 @@ in {
     };
   };
 
+  xdg = {
+    configFile = {
+      "gh/hosts.yml".source = (pkgs.formats.yaml {}).generate "hosts.yml" {
+        "github.com" = {
+          user = "viicslen";
+          git_protocol = "https";
+          users = {
+            viicslen = "";
+          };
+        };
+      };
+    };
+  };
+
   programs = {
     carapace.enable = true;
     zoxide.enable = true;
