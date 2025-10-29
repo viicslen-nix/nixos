@@ -13,6 +13,19 @@
         clip-to-geometry = true;
         draw-border-with-background = false;
       }
+      {
+        matches = [{app-id = "ferdium";}];
+        default-column-width = {proportion = 0.5;};
+        open-floating = true;
+        open-focused = true;
+        tiled-state = true;
+        block-out-from = "screencast";
+        default-floating-position = {
+          relative-to = "right";
+          x = 16;
+          y = 0;
+        };
+      }
     ];
 
     layer-rules = [

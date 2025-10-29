@@ -138,6 +138,9 @@ in {
       "XF86AudioPrev".action = sh "playerctl previous";
       "XF86AudioNext".action = sh "playerctl next";
 
+      # apps
+      "Mod+S".action = spawn "ferdium";
+
       # launcher
       # "Mod+Space".action = spawn "fuzzel";
 
