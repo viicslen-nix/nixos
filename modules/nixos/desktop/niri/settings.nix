@@ -1,56 +1,9 @@
 {
   lib,
   pkgs,
-  config,
-  osConfig,
   ...
-}: let
-  cfg = osConfig.modules.desktop.niri;
-in {
-  xdg.configFile."DankMaterialShell/stylix.json".source = with config.lib.stylix.colors.withHashtag;
-    lib.mkIf config.stylix.enable (
-      pkgs.writers.writeJSON "custom-theme.json" {
-        "name" = "Stylix";
-        "primary" = base0C;
-        "primaryText" = base00;
-        "primaryContainer" = base0D;
-        "secondary" = base0E;
-        "surface" = base00;
-        "surfaceText" = base05;
-        "surfaceVariant" = base01;
-        "surfaceVariantText" = base04;
-        "surfaceTint" = base0C;
-        "background" = base00;
-        "backgroundText" = base07;
-        "outline" = base03;
-        "surfaceContainer" = base01;
-        "surfaceContainerHigh" = base02;
-        "error" = base08;
-        "warning" = base0A;
-        "info" = base0D;
-      }
-    );
-
-  programs.dankMaterialShell = {
-    enable = true;
-    niri = {
-      enableSpawn = true;
-      enableKeybinds = true;
-    };
-  };
-
-  programs.niri.settings = let
-    passwordManager = with lib;
-      if cfg.passwordManager != null
-      then (getExe cfg.passwordManager)
-      else if (config.modules.functionality.defaults.passwordManager or null) != null
-      then (getExe config.modules.functionality.defaults.passwordManager)
-      else null;
-  in {
-    spawn-at-startup = [
-      {argv = [passwordManager "--silent"];}
-    ];
-
+}: {
+  programs.niri.settings = {
     prefer-no-csd = true;
     screenshot-path = "~/Pictures/Screenshots/%Y-%m-%dT%H:%M:%S.png";
 

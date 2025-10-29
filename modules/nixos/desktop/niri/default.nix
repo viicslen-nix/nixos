@@ -71,11 +71,10 @@ in {
     {programs.niri.enable = true;}
     (mkIf homeManagerLoaded {
       home-manager.sharedModules = [
-        inputs.dankMaterialShell.homeModules.dankMaterialShell.default
-        inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
         ./rules.nix
         ./binds.nix
         ./settings.nix
+        ./shell.nix
       ];
     })
   ]);
