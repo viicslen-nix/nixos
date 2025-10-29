@@ -21,7 +21,6 @@ in {
       graphviz
       asciinema
       yazi
-      nextcloud-client
       inputs.neovim.default
     ];
 
