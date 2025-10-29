@@ -25,7 +25,11 @@ in {
       inputs.neovim.default
     ];
 
-    programs.adb.enable = mkDefault true;
+    programs = {
+      adb.enable = mkDefault true;
+      localsend.enable = mkDefault true;
+    };
+
     modules.programs.qmk.enable = mkDefault true;
   };
 }
