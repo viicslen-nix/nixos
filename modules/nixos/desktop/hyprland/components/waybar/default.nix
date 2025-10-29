@@ -31,7 +31,10 @@ in {
   # Configure & Theme Waybar
   programs.waybar = {
     enable = true;
-    systemd.enable = true;
+    systemd = {
+      enable = true;
+      target = "hyprland-session.target";
+    };
     # package = pkgs.inputs.waybar.waybar;
     settings = [
       {
