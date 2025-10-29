@@ -140,9 +140,12 @@ in {
             targets = lib.recursiveUpdate {
               qt.platform = "qtct";
               firefox.profileNames = ["default"];
+              zen-browser.profileNames = ["default"];
               nvf.transparentBackground = true;
             } (createDisabledTargets cfg.disabledTargets options.stylix.targets or {});
           };
+
+
 
           gtk = {
             gtk3.extraConfig = {
