@@ -178,6 +178,7 @@ with lib; {
 
       onePassword = {
         enable = true;
+        autostart = true;
         gitSignCommits = true;
         allowedCustomBrowsers = [
           ".zen-wrapped"
