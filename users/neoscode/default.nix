@@ -66,9 +66,12 @@ in {
   };
 
   modules = {
-    functionality.defaults = {
-      browser = pkgs.microsoft-edge;
-      terminal = pkgs.kitty;
+    functionality.defaults = with pkgs; {
+      terminal = kitty;
+      editor = vscode-fhs;
+      fileManager = nautilus;
+      browser = microsoft-edge;
+      passwordManager = _1password-gui;
     };
     programs = {
       zsh.enable = true;
