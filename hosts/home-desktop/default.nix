@@ -151,6 +151,7 @@ with lib; {
     };
 
     programs = {
+      steam.enable = true;
       docker = {
         enable = true;
         nvidiaSupport = true;
