@@ -28,16 +28,15 @@
       gaps = 16;
       border.width = 4;
       always-center-single-column = true;
-      center-focused-column = "on-overflow";
 
       preset-column-widths = [
         {proportion = 0.3;}
         {proportion = 0.45;}
-        {proportion = 0.9;}
+        {proportion = 0.95;}
         {proportion = 1.0;}
       ];
 
-      default-column-width = {proportion = 0.9;};
+      default-column-width = {proportion = 0.95;};
     };
 
     hotkey-overlay.skip-at-startup = true;

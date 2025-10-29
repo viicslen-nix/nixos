@@ -90,6 +90,7 @@ in {
       "Mod+Q".action = close-window;
       "Mod+F".action = maximize-column;
       "Mod+T".action = toggle-window-floating;
+      "Mod+W".action = switch-preset-window-width;
 
       # focus movement
       "Mod+H".action = focus-column-left;
