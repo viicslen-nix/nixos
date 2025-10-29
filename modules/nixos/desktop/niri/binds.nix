@@ -1,7 +1,13 @@
-{config, ...}: let
-  cfg = config.modules.desktop.niri;
+{
+  osConfig,
+  config,
+  lib,
+  ...
+}: let
+  cfg = osConfig.modules.desktop.niri;
 in {
-  programs.niri.settings.binds = with config.lib.niri.actions; let
+  programs.niri.settings.binds = with lib;
+  with config.lib.niri.actions; let
     sh = spawn "sh" "-c";
 
     # Determine which applications to use
@@ -78,14 +84,7 @@ in {
     workspaceBinds
     // appBinds
     // {
-      # hotkey overlay
       "Mod+O".action = show-hotkey-overlay;
-
-      # launcher
-      "Mod+Space".action = spawn "fuzzel";
-
-      # system
-      "Mod+Ctrl+L".action = spawn "blurred-locker";
 
       # window management
       "Mod+Q".action = close-window;
@@ -99,49 +98,25 @@ in {
       "Mod+J".action = focus-window-down;
 
       # workspace cycling
-      "Mod+Left".action = focus-workspace-previous;
-      "Mod+Right".action = focus-workspace-next;
+      "Mod+Up".action = focus-workspace-up;
+      "Mod+Down".action = focus-workspace-down;
 
       # monitor cycling
       "Mod+Shift+Left".action = focus-monitor-left;
       "Mod+Shift+Right".action = focus-monitor-right;
+      "Mod+Shift+Up".action = focus-monitor-up;
+      "Mod+Shift+Down".action = focus-monitor-down;
 
       # move workspace between monitors
       "Mod+Shift+Alt+Left".action = move-workspace-to-monitor-left;
       "Mod+Shift+Alt+Right".action = move-workspace-to-monitor-right;
-
-      # restart services
-      "Mod+Ctrl+Shift+R".action = sh (
-        builtins.concatStringsSep "; " [
-          "systemctl --user restart waybar.service"
-        ]
-      );
-
-      # screenshots
-      "Mod+Shift+S".action.screenshot = [];
-      "Print".action.screenshot = [];
-      "Mod+Print".action.screenshot-window = [];
-      "Mod+Shift+Alt+S".action = sh "grimblast --notify --cursor copysave screen";
+      "Mod+Shift+Alt+Up".action = move-workspace-to-monitor-up;
+      "Mod+Shift+Alt+Down".action = move-workspace-to-monitor-down;
 
       # dynamic cast
       "Mod+Insert".action = set-dynamic-cast-window;
       "Mod+Shift+Insert".action = set-dynamic-cast-monitor;
       "Mod+Delete".action = clear-dynamic-cast-target;
-
-      # media controls
-      "XF86AudioPlay".action = sh "playerctl play-pause";
-      "XF86AudioPrev".action = sh "playerctl previous";
-      "XF86AudioNext".action = sh "playerctl next";
-
-      # volume controls
-      "XF86AudioRaiseVolume".action = sh "wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 6%+";
-      "XF86AudioLowerVolume".action = sh "wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 6%-";
-      "XF86AudioMute".action = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-      "XF86AudioMicMute".action = sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
-
-      # brightness controls
-      "XF86MonBrightnessUp".action = sh "brillo -q -u 300000 -A 5";
-      "XF86MonBrightnessDown".action = sh "brillo -q -u 300000 -U 5";
 
       # column tabbed display
       "Mod+Ctrl+Space".action = toggle-column-tabbed-display;
@@ -149,5 +124,33 @@ in {
       # tab navigation
       "Mod+Tab".action = focus-window-down-or-column-right;
       "Mod+Shift+Tab".action = focus-window-up-or-column-left;
+
+      # screenshots
+      "Mod+Shift+S".action.screenshot = [];
+      "Mod+Ctrl+S".action.screenshot-window = [];
+      "Mod+Ctrl+Shift+S".action.screenshot-screen = [];
+
+      # media controls
+      "XF86AudioPlay".action = sh "playerctl play-pause";
+      "XF86AudioPrev".action = sh "playerctl previous";
+      "XF86AudioNext".action = sh "playerctl next";
+
+      # launcher
+      # "Mod+Space".action = spawn "fuzzel";
+
+      # system
+      # "Mod+Ctrl+L".action = spawn "blurred-locker";
+
+      # volume controls
+      # "XF86AudioRaiseVolume".action = sh "wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 6%+";
+      # "XF86AudioLowerVolume".action = sh "wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 6%-";
+      # "XF86AudioMute".action = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+      # "XF86AudioMicMute".action = sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+
+      # brightness controls
+      # "XF86MonBrightnessUp".action = sh "brillo -q -u 300000 -A 5";
+      # "XF86MonBrightnessDown".action = sh "brillo -q -u 300000 -U 5";
+
+      # hotkey overlay
     };
 }

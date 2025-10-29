@@ -17,8 +17,8 @@
 
     layer-rules = [
       {
-        matches = [{namespace = "^swaync-notification-window$";}];
-        block-out-from = "screencast";
+        matches = [{namespace = "dms:blurwallpaper";}];
+        place-within-backdrop = true;
       }
     ];
   };
