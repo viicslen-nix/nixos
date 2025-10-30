@@ -1,11 +1,24 @@
 {
   lib,
   pkgs,
+  config,
+  osConfig,
   ...
-}: {
+}: let
+  cfg = osConfig.modules.desktop.niri;
+
+  passwordManager =
+      if cfg.passwordManager != null
+      then (lib.getExe cfg.passwordManager)
+      else if (config.modules.functionality.defaults.passwordManager or null) != null
+      then (lib.getExe config.modules.functionality.defaults.passwordManager)
+      else null;
+in{
   programs.niri.settings = {
     prefer-no-csd = true;
-    screenshot-path = "~/Pictures/Screenshots/%Y-%m-%dT%H:%M:%S.png";
+    hotkey-overlay.skip-at-startup = true;
+    screenshot-path = "~/Pictures/Screenshots/%Y-%m-%dT%H%M%S.png";
+    xwayland-satellite.path = "${lib.getExe pkgs.xwayland-satellite}";
 
     cursor = {
       hide-when-typing = true;
@@ -39,7 +52,10 @@
       default-column-width = {proportion = 0.95;};
     };
 
-    hotkey-overlay.skip-at-startup = true;
-    xwayland-satellite.path = "${lib.getExe pkgs.xwayland-satellite}";
+    spawn-at-startup = [
+      { argv = ["${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"]; }
+      { argv = ["${pkgs.gnome-keyring}/bin/gnome-keyring-daemon" "--start" "--components=secrets"]; }
+      { argv = [passwordManager "--silent"]; }
+    ];
   };
 }
