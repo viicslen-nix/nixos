@@ -44,9 +44,9 @@ in{
 
       preset-column-widths = [
         {proportion = 0.3;}
-        {proportion = 0.45;}
+        {proportion = 0.48;}
+        {proportion = 0.65;}
         {proportion = 0.95;}
-        {proportion = 1.0;}
       ];
 
       default-column-width = {proportion = 0.95;};
