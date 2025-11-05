@@ -88,9 +88,11 @@ in {
 
       # window management
       "Mod+Q".action = close-window;
-      "Mod+F".action = maximize-column;
       "Mod+T".action = toggle-window-floating;
       "Mod+W".action = switch-preset-window-width;
+      "Mod+F".action = maximize-column;
+      "Mod+Shift+F".action = maximize-window;
+      "Mod+Ctrl+F".action = toggle-window-fullscreen;
 
       # focus movement
       "Mod+H".action = focus-column-left;
