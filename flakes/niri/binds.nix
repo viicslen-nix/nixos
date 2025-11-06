@@ -91,8 +91,9 @@ in {
       "Mod+T".action = toggle-window-floating;
       "Mod+W".action = switch-preset-window-width;
       "Mod+F".action = maximize-column;
-      "Mod+Shift+F".action = maximize-window;
-      "Mod+Ctrl+F".action = toggle-window-fullscreen;
+      "Mod+Shift+F".action.fullscreen-window = [];
+      "Mod+Ctrl+F".action.toggle-windowed-fullscreen = [];
+      "Mod+Alt+F".action.maximize-window-to-edges = [];
 
       # focus movement
       "Mod+H".action = focus-column-left;

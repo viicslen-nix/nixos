@@ -2,14 +2,8 @@
   lib,
   pkgs,
   config,
-  inputs,
   ...
 }: {
-  imports = [
-    inputs.dankMaterialShell.homeModules.dankMaterialShell.default
-    inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
-  ];
-
   xdg.configFile."DankMaterialShell/stylix.json".source = with config.lib.stylix.colors.withHashtag;
     lib.mkIf config.stylix.enable (
       pkgs.writers.writeJSON "custom-theme.json" {

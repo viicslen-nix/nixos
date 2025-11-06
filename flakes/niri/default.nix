@@ -68,9 +68,18 @@ in {
   ];
 
   config = mkIf cfg.enable (mkMerge [
-    {programs.niri.enable = true;}
+    {
+      nixpkgs.overlays = [ inputs.niri-flake.overlays.niri ];
+
+      programs.niri = {
+        enable = true;
+        package = pkgs.niri-unstable;
+      };
+    }
     (mkIf homeManagerLoaded {
       home-manager.sharedModules = [
+        inputs.dankMaterialShell.homeModules.dankMaterialShell.default
+        inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
         ./rules.nix
         ./binds.nix
         ./settings.nix
