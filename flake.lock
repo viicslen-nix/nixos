@@ -1851,11 +1851,11 @@
         ]
       },
       "locked": {
-        "path": "./flakes/niri",
+        "path": "flakes/niri",
         "type": "path"
       },
       "original": {
-        "path": "./flakes/niri",
+        "path": "flakes/niri",
         "type": "path"
       },
       "parent": []
