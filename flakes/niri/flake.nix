@@ -35,7 +35,13 @@
     ...
   }: {
     # Main NixOS module output - exposes the niri desktop environment configuration
-    nixosModules.default = {config, lib, pkgs, options, ...}:
+    nixosModules.default = {
+      config,
+      lib,
+      pkgs,
+      options,
+      ...
+    }:
       import ./default.nix {
         inherit config lib pkgs options inputs;
       };

@@ -69,7 +69,7 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     {
-      nixpkgs.overlays = [ inputs.niri-flake.overlays.niri ];
+      nixpkgs.overlays = [inputs.niri-flake.overlays.niri];
 
       programs.niri = {
         enable = true;

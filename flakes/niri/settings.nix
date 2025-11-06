@@ -8,12 +8,12 @@
   cfg = osConfig.modules.desktop.niri;
 
   passwordManager =
-      if cfg.passwordManager != null
-      then (lib.getExe cfg.passwordManager)
-      else if (config.modules.functionality.defaults.passwordManager or null) != null
-      then (lib.getExe config.modules.functionality.defaults.passwordManager)
-      else null;
-in{
+    if cfg.passwordManager != null
+    then (lib.getExe cfg.passwordManager)
+    else if (config.modules.functionality.defaults.passwordManager or null) != null
+    then (lib.getExe config.modules.functionality.defaults.passwordManager)
+    else null;
+in {
   programs.niri.settings = {
     prefer-no-csd = true;
     hotkey-overlay.skip-at-startup = true;
@@ -53,9 +53,9 @@ in{
     };
 
     spawn-at-startup = [
-      { argv = ["${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"]; }
-      { argv = ["${pkgs.gnome-keyring}/bin/gnome-keyring-daemon" "--start" "--components=secrets"]; }
-      { argv = [passwordManager "--silent"]; }
+      {argv = ["${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"];}
+      {argv = ["${pkgs.gnome-keyring}/bin/gnome-keyring-daemon" "--start" "--components=secrets"];}
+      {argv = [passwordManager "--silent"];}
     ];
   };
 }
