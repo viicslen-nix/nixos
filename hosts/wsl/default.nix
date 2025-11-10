@@ -10,6 +10,8 @@ with lib; {
     inputs.vscode-server.nixosModules.default
   ];
 
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+
   nixpkgs.hostPlatform = "x86_64-linux";
   home-manager.sharedModules = [./home.nix];
 
