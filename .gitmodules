@@ -1,3 +1,6 @@
 [submodule "flakes/nvf"]
 	path = flakes/neovim
 	url = https://github.com/viicslen/neovim
+[submodule "flakes/niri"]
+	path = flakes/niri
+	url = https://github.com/viicslen-nix/niri
