@@ -22,6 +22,7 @@ in {
       asciinema
       yazi
       inputs.neovim.default
+      local.scripts.git-carve-submodule
     ];
 
     programs = {
