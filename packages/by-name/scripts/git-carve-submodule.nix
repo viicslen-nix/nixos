@@ -184,8 +184,8 @@ writeShellScriptBin "git-carve-submodule" ''
         echo -e "  cd $extracted_repo_dir && git push -u origin $BRANCH"
       fi
     else
-      echo -e "''${YELLOW}[DRY RUN] Would clone repo to temp directory and extract '$SUBDIRECTORY'''${NC}"
-      echo -e "''${YELLOW}[DRY RUN] Would push to '$NEW_REPO_URL' on branch '$BRANCH'''${NC}"
+      echo -e "''${YELLOW}[DRY RUN] Would clone repo to temp directory and extract '$SUBDIRECTORY'.''${NC}"
+      echo -e "''${YELLOW}[DRY RUN] Would push to '$NEW_REPO_URL' on branch '$BRANCH'.''${NC}"
     fi
   }
 
@@ -204,7 +204,7 @@ writeShellScriptBin "git-carve-submodule" ''
       echo -e "''${GREEN}Successfully converted '$SUBDIRECTORY' to submodule''${NC}"
     else
       echo -e "''${YELLOW}[DRY RUN] Would remove '$SUBDIRECTORY' from current repo''${NC}"
-      echo -e "''${YELLOW}[DRY RUN] Would add '$NEW_REPO_URL' as submodule at '$SUBDIRECTORY'''${NC}"
+      echo -e "''${YELLOW}[DRY RUN] Would add '$NEW_REPO_URL' as submodule at '$SUBDIRECTORY'.''${NC}"
     fi
   }
 
