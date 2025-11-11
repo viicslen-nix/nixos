@@ -151,6 +151,7 @@ with lib; {
     };
 
     programs = {
+      ld.enable = true;
       steam.enable = true;
       docker = {
         enable = true;
