@@ -2,6 +2,7 @@
   writeShellScriptBin,
   stdenv,
   git,
+  git-filter-repo,
   gnugrep,
   gnused,
   coreutils,
@@ -155,19 +156,85 @@ writeShellScriptBin "git-carve-submodule" ''
 
       # Use git filter-repo to extract only the subdirectory
       # Note: This requires git filter-repo to be available
-      if ${git}/bin/git filter-repo --help > /dev/null 2>&1; then
-        ${git}/bin/git filter-repo --path "$SUBDIRECTORY" --path-rename "$SUBDIRECTORY/:"
-      else
-        # Fallback to git subtree if filter-repo is not available
-        echo -e "''${YELLOW}Warning: git filter-repo not found, using git subtree split instead''${NC}"
-        ${git}/bin/git subtree split --prefix="$SUBDIRECTORY" -b extracted-submodule
-        ${git}/bin/git reset --hard extracted-submodule
-        ${git}/bin/git branch -D extracted-submodule || true
+      local filter_repo_success=false
+
+      if ${git-filter-repo}/bin/git-filter-repo --help > /dev/null 2>&1; then
+        echo -e "''${BLUE}Attempting to use git-filter-repo...''${NC}"
+
+        # Try to clean up any problematic git config that might cause issues
+        ${git}/bin/git config --unset-all filter.repo.clean 2>/dev/null || true
+        ${git}/bin/git config --unset-all filter.repo.smudge 2>/dev/null || true
+
+        # Try git-filter-repo with force flag and error handling
+        if ${git-filter-repo}/bin/git-filter-repo --force --partial --path "$SUBDIRECTORY/" --path-rename "$SUBDIRECTORY/:" 2>/dev/null; then
+          # Verify that the filtering worked
+          local file_count=$(${git}/bin/git ls-tree --name-only HEAD | wc -l)
+          if [[ "$file_count" -gt 0 ]]; then
+            filter_repo_success=true
+            echo -e "''${GREEN}Successfully extracted using git-filter-repo ($file_count items)''${NC}"
+          else
+            echo -e "''${YELLOW}git-filter-repo completed but no files found, trying fallback...''${NC}"
+            ${git}/bin/git reset --hard HEAD 2>/dev/null || true
+            ${git}/bin/git clean -fd 2>/dev/null || true
+          fi
+        else
+          echo -e "''${YELLOW}git-filter-repo failed, trying alternative approach...''${NC}"
+          # Reset any partial changes from failed filter-repo
+          ${git}/bin/git reset --hard HEAD 2>/dev/null || true
+          ${git}/bin/git clean -fd 2>/dev/null || true
+        fi
       fi
 
+      # Use filter-branch if filter-repo is not available or failed
+      if [[ "$filter_repo_success" != "true" ]]; then
+        echo -e "''${YELLOW}Using git filter-branch as fallback...''${NC}"
+
+        # Set environment variable to suppress filter-branch warning
+        export FILTER_BRANCH_SQUELCH_WARNING=1
+
+        # Use filter-branch to keep only the subdirectory and rewrite paths
+        ${git}/bin/git filter-branch --force --prune-empty \
+          --subdirectory-filter "$SUBDIRECTORY" \
+          --tag-name-filter cat \
+          HEAD
+
+        # Verify that the filtering worked by checking if the subdirectory contents are now at root
+        if [[ ! -f "$(${git}/bin/git ls-tree --name-only HEAD | head -1)" ]] && [[ "$(${git}/bin/git rev-list --count HEAD)" -eq 0 ]]; then
+          echo -e "''${RED}Error: Filter-branch failed - no files found in filtered repository''${NC}" >&2
+          cd "$original_dir"
+          ${coreutils}/bin/rm -rf "$temp_dir"
+          exit 1
+        fi
+
+        echo -e "''${GREEN}Successfully extracted using git filter-branch''${NC}"
+      fi
+
+      # Final validation: ensure we only have the subdirectory contents
+      local file_count=$(${git}/bin/git ls-tree --name-only HEAD | wc -l)
+      if [[ "$file_count" -eq 0 ]]; then
+        echo -e "''${RED}Error: No files found after filtering - something went wrong''${NC}" >&2
+        cd "$original_dir"
+        ${coreutils}/bin/rm -rf "$temp_dir"
+        exit 1
+      fi
+
+      echo -e "''${BLUE}Filtered repository contains $file_count items''${NC}"
+
       if [[ "$NO_PUSH" == false ]]; then
-        # Add the new remote and push
+        # Remove existing origin remote and add the new one
+        ${git}/bin/git remote remove origin 2>/dev/null || true
         ${git}/bin/git remote add origin "$NEW_REPO_URL"
+
+        # Ensure we're on the correct branch for pushing
+        local current_branch="$(${git}/bin/git branch --show-current 2>/dev/null || echo "")"
+        if [[ "$current_branch" != "$BRANCH" ]]; then
+          echo -e "''${BLUE}Creating/switching to branch '$BRANCH'...''${NC}"
+          if ${git}/bin/git show-ref --verify --quiet "refs/heads/$BRANCH"; then
+            ${git}/bin/git checkout "$BRANCH"
+          else
+            ${git}/bin/git checkout -b "$BRANCH"
+          fi
+        fi
 
         echo -e "''${BLUE}Pushing extracted directory to new repository...''${NC}"
         ${git}/bin/git push -u origin "$BRANCH"

@@ -11,6 +11,7 @@ with lib; {
       inputs.nur.modules.nixos.default
       inputs.agenix.nixosModules.default
       inputs.niri.nixosModules.default
+      inputs.hyprland.nixosModules.default
       outputs.nixosModules.containers
     ]
     (attrsets.mapAttrsToList (_name: value: value) outputs.nixosModules.presets)

@@ -1,5 +1,0 @@
-@import "~/.config/rofi/config.rasi"
-
-element {
-  children: [ element-icon, element-text ];
-}

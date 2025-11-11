@@ -27,7 +27,6 @@
   desktop = {
     kde = import ./desktop/kde;
     gnome = import ./desktop/gnome;
-    hyprland = import ./desktop/hyprland;
   };
 
   # Functionality
