@@ -225,6 +225,17 @@ writeShellScriptBin "git-carve-submodule" ''
         ${git}/bin/git remote remove origin 2>/dev/null || true
         ${git}/bin/git remote add origin "$NEW_REPO_URL"
 
+        # Ensure we're on the correct branch for pushing
+        local current_branch="$(${git}/bin/git branch --show-current 2>/dev/null || echo "")"
+        if [[ "$current_branch" != "$BRANCH" ]]; then
+          echo -e "''${BLUE}Creating/switching to branch '$BRANCH'...''${NC}"
+          if ${git}/bin/git show-ref --verify --quiet "refs/heads/$BRANCH"; then
+            ${git}/bin/git checkout "$BRANCH"
+          else
+            ${git}/bin/git checkout -b "$BRANCH"
+          fi
+        fi
+
         echo -e "''${BLUE}Pushing extracted directory to new repository...''${NC}"
         ${git}/bin/git push -u origin "$BRANCH"
 
