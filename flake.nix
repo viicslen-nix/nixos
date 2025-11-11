@@ -93,47 +93,9 @@
     };
 
     # Hyprland
-    hyprland.url = "github:hyprwm/Hyprland";
-    waybar = {
-      url = "github:Alexays/Waybar/master";
+    hyprland-flake = {
+      url = "path:./flakes/hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    pyprland.url = "github:hyprland-community/pyprland";
-    hyprland-contrib = {
-      url = "github:hyprwm/contrib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
-    };
-    hyprpanel = {
-      url = "github:Jas-SinghFSU/HyprPanel";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hypridle = {
-      url = "github:hyprwm/hypridle";
-      inputs.hyprlang.follows = "hyprland/hyprlang";
-      inputs.nixpkgs.follows = "hyprland/nixpkgs";
-      inputs.systems.follows = "hyprland/systems";
-    };
-    hyprpaper = {
-      url = "github:hyprwm/hyprpaper";
-      inputs.hyprlang.follows = "hyprland/hyprlang";
-      inputs.nixpkgs.follows = "hyprland/nixpkgs";
-      inputs.systems.follows = "hyprland/systems";
-    };
-    hyprspace = {
-      url = "github:KZDKM/Hyprspace";
-      inputs.hyprland.follows = "hyprland";
-    };
-    hyprsplit = {
-      url = "github:shezdy/hyprsplit";
-      inputs.hyprland.follows = "hyprland";
-    };
-    hyprchroma = {
-      url = "github:alexhulbert/Hyprchroma";
-      inputs.hyprland.follows = "hyprland";
     };
 
     # Theming

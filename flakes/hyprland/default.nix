@@ -1,7 +1,6 @@
-{
+inputs: {
   lib,
   pkgs,
-  inputs,
   config,
   options,
   ...
@@ -23,13 +22,13 @@ in {
 
     package = mkOption {
       type = types.package;
-      default = pkgs.hyprland;
+      default = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
       description = "The hyprland package to use";
     };
 
     portalPackage = mkOption {
       type = types.package;
-      default = pkgs.xdg-desktop-portal-hyprland;
+      default = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       description = "The portal package to use";
     };
 
@@ -174,7 +173,7 @@ in {
           grim
           slurp
           flameshot
-          pkgs.inputs.hyprland-contrib.grimblast
+          inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
           satty
 
           # clipboard
@@ -183,7 +182,7 @@ in {
 
           # utils
           # networkmanagerapplet # needed for nm-applet icons
-          pkgs.inputs.pyprland.pyprland
+          inputs.pyprland.packages.${pkgs.stdenv.hostPlatform.system}.pyprland
           wl-screenrec
           wl-clipboard
           wlr-randr

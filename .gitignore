@@ -3,3 +3,23 @@
 .Trash-*
 result
 .direnv
+
+# Nix build artifacts
+result*
+.nix-profile
+.nix-defexpr
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env*
+
+# Log files
+*.log
