@@ -4,3 +4,6 @@
 [submodule "flakes/niri"]
 	path = flakes/niri
 	url = https://github.com/viicslen-nix/niri
+[submodule "flakes/hyprland"]
+	path = flakes/hyprland
+	url = https://github.com/viicslen-nix/hyprland
