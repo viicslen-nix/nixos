@@ -166,9 +166,17 @@ writeShellScriptBin "git-carve-submodule" ''
         ${git}/bin/git config --unset-all filter.repo.smudge 2>/dev/null || true
 
         # Try git-filter-repo with force flag and error handling
-        if ${git-filter-repo}/bin/git-filter-repo --force --partial --path "$SUBDIRECTORY" --path-rename "$SUBDIRECTORY/:" 2>/dev/null; then
-          filter_repo_success=true
-          echo -e "''${GREEN}Successfully extracted using git-filter-repo''${NC}"
+        if ${git-filter-repo}/bin/git-filter-repo --force --partial --path "$SUBDIRECTORY/" --path-rename "$SUBDIRECTORY/:" 2>/dev/null; then
+          # Verify that the filtering worked
+          local file_count=$(${git}/bin/git ls-tree --name-only HEAD | wc -l)
+          if [[ "$file_count" -gt 0 ]]; then
+            filter_repo_success=true
+            echo -e "''${GREEN}Successfully extracted using git-filter-repo ($file_count items)''${NC}"
+          else
+            echo -e "''${YELLOW}git-filter-repo completed but no files found, trying fallback...''${NC}"
+            ${git}/bin/git reset --hard HEAD 2>/dev/null || true
+            ${git}/bin/git clean -fd 2>/dev/null || true
+          fi
         else
           echo -e "''${YELLOW}git-filter-repo failed, trying alternative approach...''${NC}"
           # Reset any partial changes from failed filter-repo
@@ -181,22 +189,36 @@ writeShellScriptBin "git-carve-submodule" ''
       if [[ "$filter_repo_success" != "true" ]]; then
         echo -e "''${YELLOW}Using git filter-branch as fallback...''${NC}"
 
-        # Create a temporary branch for filtering
-        local filter_branch="temp-filter-$(${coreutils}/bin/date +%Y%m%d-%H%M%S)"
-        ${git}/bin/git checkout -b "$filter_branch"
+        # Set environment variable to suppress filter-branch warning
+        export FILTER_BRANCH_SQUELCH_WARNING=1
 
         # Use filter-branch to keep only the subdirectory and rewrite paths
         ${git}/bin/git filter-branch --force --prune-empty \
           --subdirectory-filter "$SUBDIRECTORY" \
           --tag-name-filter cat \
-          -- --all
+          HEAD
 
-        # Clean up the temporary branch name from history
-        ${git}/bin/git checkout "$BRANCH" 2>/dev/null || ${git}/bin/git checkout -b "$BRANCH"
-        ${git}/bin/git branch -D "$filter_branch" 2>/dev/null || true
+        # Verify that the filtering worked by checking if the subdirectory contents are now at root
+        if [[ ! -f "$(${git}/bin/git ls-tree --name-only HEAD | head -1)" ]] && [[ "$(${git}/bin/git rev-list --count HEAD)" -eq 0 ]]; then
+          echo -e "''${RED}Error: Filter-branch failed - no files found in filtered repository''${NC}" >&2
+          cd "$original_dir"
+          ${coreutils}/bin/rm -rf "$temp_dir"
+          exit 1
+        fi
 
         echo -e "''${GREEN}Successfully extracted using git filter-branch''${NC}"
       fi
+
+      # Final validation: ensure we only have the subdirectory contents
+      local file_count=$(${git}/bin/git ls-tree --name-only HEAD | wc -l)
+      if [[ "$file_count" -eq 0 ]]; then
+        echo -e "''${RED}Error: No files found after filtering - something went wrong''${NC}" >&2
+        cd "$original_dir"
+        ${coreutils}/bin/rm -rf "$temp_dir"
+        exit 1
+      fi
+
+      echo -e "''${BLUE}Filtered repository contains $file_count items''${NC}"
 
       if [[ "$NO_PUSH" == false ]]; then
         # Remove existing origin remote and add the new one
