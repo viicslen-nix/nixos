@@ -166,7 +166,7 @@ Current structure in modules/nixos/desktop/hyprland/:
 2. **Home manager integration breakage** - Mitigated by testing sharedModules pattern
 3. **Plugin compatibility issues** - Mitigated by maintaining exact input versions initially
 
-### Medium Risk Items  
+### Medium Risk Items
 1. **Performance regression** - Mitigated by benchmark testing
 2. **Build failures** - Mitigated by staged validation approach
 3. **Missing dependencies** - Mitigated by comprehensive input analysis

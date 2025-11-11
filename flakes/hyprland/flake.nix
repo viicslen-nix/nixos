@@ -13,7 +13,7 @@
     waybar.url = "github:Alexays/Waybar";
     waybar.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Hyprland utilities and extensions  
+    # Hyprland utilities and extensions
     pyprland.url = "github:hyprland-community/pyprland";
     pyprland.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -34,7 +34,7 @@
     hypridle.inputs.nixpkgs.follows = "nixpkgs";
 
     # Wallpaper management
-    hyprpaper.url = "github:hyprwm/hyprpaper";  
+    hyprpaper.url = "github:hyprwm/hyprpaper";
     hyprpaper.inputs.nixpkgs.follows = "nixpkgs";
 
     # Workspace management

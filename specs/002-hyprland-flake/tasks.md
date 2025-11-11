@@ -64,7 +64,7 @@ This is a NixOS configuration migration:
 - [x] T010 [P] [US1] Copy modules/nixos/desktop/hyprland/default.nix to flakes/hyprland/default.nix
 - [x] T011 [P] [US1] Copy modules/nixos/desktop/hyprland/config/binds.nix to flakes/hyprland/config/binds.nix
 - [x] T012 [P] [US1] Copy modules/nixos/desktop/hyprland/config/env.nix to flakes/hyprland/config/env.nix
-- [x] T013 [P] [US1] Copy modules/nixos/desktop/hyprland/config/rules.nix to flakes/hyprland/config/rules.nix  
+- [x] T013 [P] [US1] Copy modules/nixos/desktop/hyprland/config/rules.nix to flakes/hyprland/config/rules.nix
 - [x] T014 [P] [US1] Copy modules/nixos/desktop/hyprland/config/settings.nix to flakes/hyprland/config/settings.nix
 - [x] T015 [P] [US1] Copy modules/nixos/desktop/hyprland/config/plugins.nix to flakes/hyprland/config/plugins.nix
 - [x] T016 [P] [US1] Copy modules/nixos/desktop/hyprland/config/pyprland.nix to flakes/hyprland/config/pyprland.nix
@@ -85,7 +85,7 @@ This is a NixOS configuration migration:
 
 - [x] T026 [US1] Update flakes/hyprland/default.nix imports section to reference inputs.hyprland instead of nixpkgs.hyprland
 - [x] T027 [US1] Update flakes/hyprland/config/plugins.nix to use inputs.hyprland-plugins
-- [x] T028 [US1] Update flakes/hyprland/config/pyprland.nix to use inputs.pyprland  
+- [x] T028 [US1] Update flakes/hyprland/config/pyprland.nix to use inputs.pyprland
 - [x] T029 [US1] Update flakes/hyprland/components/waybar/ to use inputs.waybar
 - [x] T030 [US1] Update flakes/hyprland/components/hyprpaper.nix to use inputs.hyprpaper
 - [x] T031 [US1] Update flakes/hyprland/components/hypridle.nix to use inputs.hypridle
@@ -101,7 +101,7 @@ This is a NixOS configuration migration:
 
 ### Main Flake Integration for User Story 1
 
-- [x] T038 [US1] Update /etc/nixos/flake.nix inputs section to add hyprland-flake path input  
+- [x] T038 [US1] Update /etc/nixos/flake.nix inputs section to add hyprland-flake path input
 - [x] T039 [US1] Remove hyprland input from /etc/nixos/flake.nix inputs section
 - [x] T040 [US1] Remove waybar input from /etc/nixos/flake.nix inputs section
 - [x] T041 [US1] Remove pyprland input from /etc/nixos/flake.nix inputs section
@@ -136,7 +136,7 @@ This is a NixOS configuration migration:
 - [ ] T061 [US1] Test all keybindings (Super+Return, Super+Q, workspace switching, etc.)
 - [ ] T062 [US1] Test waybar displays correctly with all modules (workspaces, tray, clock, etc.)
 - [ ] T063 [US1] Test rofi launcher works with correct theme
-- [ ] T064 [US1] Test window rules apply correctly (floating windows, opacity, etc.)  
+- [ ] T064 [US1] Test window rules apply correctly (floating windows, opacity, etc.)
 - [ ] T065 [US1] Test notification daemon (swaync) displays notifications correctly
 - [ ] T066 [US1] Test hypridle triggers screen locking correctly
 - [ ] T067 [US1] Test hyprpaper sets wallpaper correctly
@@ -200,13 +200,13 @@ This is a NixOS configuration migration:
 **Purpose**: Improvements that affect multiple user stories and final validation
 
 - [ ] T089 [P] Run all quickstart.md pre-migration baseline tests
-- [ ] T090 [P] Run all quickstart.md post-migration validation tests  
+- [ ] T090 [P] Run all quickstart.md post-migration validation tests
 - [ ] T091 [P] Run all quickstart.md independent update tests
 - [ ] T092 [P] Verify performance requirements met (flake evaluation < 10s, updates < 60s)
 - [ ] T093 [P] Update /etc/nixos/README.md to reference flakes/hyprland/ instead of modules/nixos/desktop/hyprland/
 - [ ] T094 [P] Verify no references to old module path remain using grep -r "modules/nixos/desktop/hyprland" /etc/nixos/
 - [ ] T095 [P] Verify hyprland flake structure follows established pattern for consistency
-- [ ] T096 Add git commit with message "feat: extract hyprland to separate flake"  
+- [ ] T096 Add git commit with message "feat: extract hyprland to separate flake"
 - [ ] T097 Update any host-specific documentation that references hyprland configuration
 
 ---
@@ -216,7 +216,7 @@ This is a NixOS configuration migration:
 ### Phase Dependencies
 
 - **Setup (Phase 1)**: No dependencies - can start immediately
-- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories  
+- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
 - **User Stories (Phase 3+)**: All depend on Foundational phase completion
   - User Story 1 (P1) can start immediately after Phase 2 - This is the MVP
   - User Story 2 (P2) depends on User Story 1 being complete (needs working flake to test updates)
@@ -233,7 +233,7 @@ This is a NixOS configuration migration:
 
 **User Story 1 Flow**:
 1. Copy all modules in parallel (T010-T025)
-2. Update input references (T026-T033) 
+2. Update input references (T026-T033)
 3. Preserve patterns and options (T034-T037)
 4. Update main flake inputs sequentially (T038-T049)
 5. Update host configurations (T050-T053)
@@ -244,7 +244,7 @@ This is a NixOS configuration migration:
 **User Story 2 Flow**:
 1. Verify independent flake.lock (T071-T073)
 2. Test integration with updates (T074-T076)
-3. Test selective updates (T077-T078) 
+3. Test selective updates (T077-T078)
 4. Document procedures (T079)
 
 **User Story 3 Flow**:
@@ -256,7 +256,7 @@ This is a NixOS configuration migration:
 **Phase 1 (Setup)**:
 - T001-T004 sequential (create directories and track)
 
-**Phase 2 (Foundational)**:  
+**Phase 2 (Foundational)**:
 - All tasks must run sequentially (each depends on previous)
 
 **Phase 3 (User Story 1)**:

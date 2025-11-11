@@ -1,8 +1,8 @@
 # Feature Specification: Extract Hyprland Desktop Configuration to Separate Flake
 
-**Feature Branch**: `002-hyprland-flake`  
-**Created**: 2025-11-10  
-**Status**: Draft  
+**Feature Branch**: `002-hyprland-flake`
+**Created**: 2025-11-10
+**Status**: Draft
 **Input**: User description: "Move the hyprland desktop configuration to a separate flake in the flakes directories along with the required references and inputs"
 
 ## User Scenarios & Testing *(mandatory)*

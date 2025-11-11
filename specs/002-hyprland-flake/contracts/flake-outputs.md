@@ -1,6 +1,6 @@
 # flake.nix Output Contract
 
-**Contract Type**: Flake output specification  
+**Contract Type**: Flake output specification
 **Purpose**: Define the interface that the hyprland flake must expose for consumption by the main configuration
 
 ---
@@ -13,28 +13,28 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    
+
     # Hyprland ecosystem inputs
     hyprland.url = "github:hyprwm/Hyprland";
     waybar.url = "github:Alexays/Waybar";
-    pyprland.url = "github:hyprland-community/pyprland"; 
+    pyprland.url = "github:hyprland-community/pyprland";
     hyprland-contrib.url = "github:hyprwm/contrib";
     hyprland-plugins.url = "github:hyprwm/hyprland-plugins";
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     hypridle.url = "github:hyprwm/hypridle";
     hyprpaper.url = "github:hyprwm/hyprpaper";
     hyprspace.url = "github:KZDKM/Hyprspace";
-    hyprsplit.url = "github:shezdy/hyprsplit"; 
+    hyprsplit.url = "github:shezdy/hyprsplit";
     hyprchroma.url = "github:alexhulbert/Hyprchroma";
   };
 
   outputs = { nixpkgs, ... } @ inputs: {
     # REQUIRED: Main module output
     nixosModules.default = import ./default.nix inputs;
-    
-    # OPTIONAL: Development utilities  
+
+    # OPTIONAL: Development utilities
     devShells.x86_64-linux.default = /* development shell */;
-    
+
     # OPTIONAL: Formatter for flake development
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt;
   };
@@ -52,13 +52,13 @@
 {
   options.desktop.hyprland = {
     enable = lib.mkEnableOption "Hyprland desktop environment";
-    
+
     gnomeCompatibility = lib.mkOption {
       type = lib.types.bool;
       default = false;
       description = "Enable GNOME compatibility features";
     };
-    
+
     # Additional existing options must be preserved exactly
     # ... (all current options from modules/nixos/desktop/hyprland/default.nix)
   };
@@ -112,7 +112,7 @@ When `config.desktop.hyprland.enable = true`, the module must provide:
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  
+
   outputs = { nixpkgs, hyprland-flake, ... }: {
     nixosConfigurations.hostname = nixpkgs.lib.nixosSystem {
       modules = [
@@ -141,7 +141,7 @@ nix flake check ./flakes/hyprland  # Must pass without errors
 nix eval ./flakes/hyprland#nixosModules.default --json  # Must return module
 ```
 
-### 2. Integration Tests  
+### 2. Integration Tests
 ```bash
 # Must build successfully with flake integration
 nixos-rebuild build --flake .#asus-zephyrus-gu603
@@ -167,7 +167,7 @@ nix eval ./flakes/hyprland#nixosModules.default.options.desktop.hyprland --json
 
 **Guarantee**: After migration, these must work identically:
 
-1. **Host Configuration**: `desktop.hyprland.enable = true;` 
+1. **Host Configuration**: `desktop.hyprland.enable = true;`
 2. **Options**: All current hyprland options and their defaults
 3. **Keybindings**: Existing keybind configuration unchanged
 4. **Components**: Waybar, rofi, notification daemon functionality

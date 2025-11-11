@@ -93,7 +93,7 @@
     };
 
     # Hyprland
-    hyprland-flake = {
+    hyprland = {
       url = "path:./flakes/hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };

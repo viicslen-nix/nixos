@@ -13,7 +13,7 @@ Extract the Hyprland desktop environment configuration from `modules/nixos/deskt
 
 **Language/Version**: Nix 2.18+ with flakes enabled
 **Primary Dependencies**:
-- nixpkgs (nixos-unstable channel)  
+- nixpkgs (nixos-unstable channel)
 - hyprland (github:hyprwm/Hyprland) - main wayland compositor
 - home-manager - for per-user hyprland configuration
 - waybar (github:Alexays/Waybar) - wayland status bar
@@ -30,7 +30,7 @@ Extract the Hyprland desktop environment configuration from `modules/nixos/deskt
 **Storage**: Configuration files (.nix) stored in git, flake.lock for dependency pinning
 **Testing**:
 - `nix flake check` - Nix evaluation checks
-- `nix build ./flakes/hyprland` - Build verification  
+- `nix build ./flakes/hyprland` - Build verification
 - `nixos-rebuild build --flake .#<hostname>` - Integration testing
 - Manual testing of desktop environment functionality
 
@@ -38,19 +38,19 @@ Extract the Hyprland desktop environment configuration from `modules/nixos/deskt
 **Project Type**: NixOS configuration flake (declarative system configuration)
 **Performance Goals**:
 - Flake evaluation time < 10 seconds
-- Independent flake updates < 60 seconds  
+- Independent flake updates < 60 seconds
 - No performance regression in hyprland desktop environment
 
 **Constraints**:
 - Must maintain backward compatibility with existing host configurations
 - Must preserve all existing keybindings and window rules
-- Cannot break home-manager integration  
+- Cannot break home-manager integration
 - Must follow existing flake pattern from flakes/neovim/
 - Complex module structure (config/ and components/ subdirectories)
 
 **Scale/Scope**:
 - 30+ module files across config/ and components/ directories
-- ~2000 lines of Nix configuration  
+- ~2000 lines of Nix configuration
 - 10 external flake inputs to migrate
 - Multiple host configurations (asus-zephyrus-gu603, home-desktop)
 - Integration with 8+ component types (waybar, rofi, swaync, plugins, etc.)
@@ -184,7 +184,7 @@ Extract the Hyprland desktop environment configuration from `modules/nixos/deskt
 
 No constitution violations. This feature aligns with and enhances multiple principles:
 - Strengthens Principle I (Modular Configuration Design)
-- Strengthens Principle IV (Flake-Based Reproducibility)  
+- Strengthens Principle IV (Flake-Based Reproducibility)
 - Maintains all other principles without violations
 
 **Clearance**: Proceed to Phase 0 (Research)
@@ -223,7 +223,7 @@ modules/nixos/desktop/
 │   └── components/     # 20+ component modules (waybar, rofi, swaync, etc.)
 └── ...
 
-hosts/                  # Update module import paths  
+hosts/                  # Update module import paths
 ├── asus-zephyrus-gu603/
 │   └── default.nix     # Update to import from hyprland flake instead
 ├── home-desktop/
@@ -253,35 +253,35 @@ This section intentionally left minimal as no complexity justification is requir
 
 ## Phase 1: Design (COMPLETE)
 
-**Duration**: Complete  
+**Duration**: Complete
 **Deliverables**: ✅ All artifacts generated
 
 ### Completed Design Artifacts
 
 #### 1. `data-model.md` ✅
-**Purpose**: Module structure documentation  
-**Content**: 
+**Purpose**: Module structure documentation
+**Content**:
 - Flake output schema with nixosModules.default
 - Complete module hierarchy (30+ files mapped)
 - Integration patterns (home-manager, systemd services)
 - Data flow and dependency management
 - Migration path mapping from current structure
 
-#### 2. `contracts/flake-outputs.md` ✅  
+#### 2. `contracts/flake-outputs.md` ✅
 **Purpose**: Interface specification for flake consumption
 **Content**:
 - Required flake.nix output schema
 - NixOS module interface contract (options + behavior)
 - Consumption patterns for main flake integration
-- Testing contracts with validation procedures  
+- Testing contracts with validation procedures
 - Compatibility guarantees and versioning approach
 
 #### 3. `quickstart.md` ✅
-**Purpose**: Testing and validation procedures  
+**Purpose**: Testing and validation procedures
 **Content**:
 - Pre-migration baseline testing procedures
 - Progressive migration testing (3 phases)
-- Post-migration functional validation  
+- Post-migration functional validation
 - Independent update testing approach
 - Rollback procedures and troubleshooting guide
 - Success criteria with validation commands
@@ -295,7 +295,7 @@ This section intentionally left minimal as no complexity justification is requir
 
 **Migration Strategy**: Atomic migration with complete cutover
 - Preserve exact module API and functionality
-- Maintain home-manager sharedModules pattern  
+- Maintain home-manager sharedModules pattern
 - Move all 10 hyprland inputs to dedicated flake
 - Support rollback via git reset
 
@@ -311,7 +311,7 @@ This section intentionally left minimal as no complexity justification is requir
 
 ## Phase 2: Task Generation (COMPLETE)
 
-**Duration**: Complete  
+**Duration**: Complete
 **Deliverable**: `tasks.md` ✅
 
 **Objective**: Generate comprehensive implementation tasks broken down by user story and execution phase.
@@ -319,7 +319,7 @@ This section intentionally left minimal as no complexity justification is requir
 **Output**: Created comprehensive task breakdown with 97 tasks organized across:
 - **Phase 1-2**: Setup and foundational infrastructure (9 tasks)
 - **Phase 3**: User Story 1 - Isolated Management (61 tasks) - MVP priority
-- **Phase 4**: User Story 2 - Version Independence (9 tasks)  
+- **Phase 4**: User Story 2 - Version Independence (9 tasks)
 - **Phase 5**: User Story 3 - Reusable Modules (9 tasks)
 - **Phase 6**: Polish and validation (9 tasks)
 

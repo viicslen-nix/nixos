@@ -1,6 +1,6 @@
 # Quickstart Guide: Testing Hyprland Flake Migration
 
-**Feature**: 002-hyprland-flake  
+**Feature**: 002-hyprland-flake
 **Purpose**: Testing and validation procedures for the hyprland flake extraction
 
 ---
@@ -16,7 +16,7 @@ cd /etc/nixos
 git status
 git log --oneline -10
 
-# Test current hyprland desktop functionality  
+# Test current hyprland desktop functionality
 nixos-rebuild build --flake .#$(hostname)
 ```
 
@@ -25,7 +25,7 @@ nixos-rebuild build --flake .#$(hostname)
 - [ ] Hyprland starts successfully
 - [ ] Waybar displays correctly with all modules
 - [ ] Keybindings respond (Super+Return, Super+Q, etc.)
-- [ ] Window rules apply correctly  
+- [ ] Window rules apply correctly
 - [ ] Rofi launcher works
 - [ ] Notification daemon (swaync) functions
 - [ ] Multiple workspace navigation works
@@ -58,7 +58,7 @@ cd flakes/hyprland
 nix flake check  # Should pass with minimal flake.nix
 
 # 3. Test main flake still works
-cd /etc/nixos  
+cd /etc/nixos
 nixos-rebuild build --flake .#$(hostname)  # Should still work
 ```
 
@@ -71,7 +71,7 @@ nix flake check  # Must pass with all modules
 # 5. Test module evaluation
 nix eval .#nixosModules.default --json >/dev/null  # Must succeed
 
-# 6. Test input resolution  
+# 6. Test input resolution
 nix flake metadata  # Verify all 10 hyprland inputs resolve
 ```
 
@@ -117,7 +117,7 @@ journalctl -b | grep -i "error\|failed" | grep -i hyprland
 # Test build performance
 time nixos-rebuild build --flake .#$(hostname)
 
-# Test flake evaluation performance  
+# Test flake evaluation performance
 time nix eval .#nixosConfigurations.$(hostname).config.desktop.hyprland --json >/dev/null
 
 # Test hyprland flake evaluation
@@ -136,7 +136,7 @@ cd flakes/hyprland && time nix eval .#nixosModules.default --json >/dev/null
 cd /etc/nixos/flakes/hyprland
 nix flake update
 
-# Verify main configuration still builds  
+# Verify main configuration still builds
 cd /etc/nixos
 nixos-rebuild build --flake .#$(hostname)
 ```
@@ -161,7 +161,7 @@ nixos-rebuild build --flake /etc/nixos#$(hostname)
 ### Emergency Rollback
 ```bash
 # 1. Return to previous git state
-cd /etc/nixos  
+cd /etc/nixos
 git status
 git reset --hard HEAD~1  # Or specific commit before migration
 
@@ -175,7 +175,7 @@ sudo nixos-rebuild switch --flake .#$(hostname)
 ### Partial Rollback (Keep Flake, Revert Integration)
 ```bash
 # 1. Comment out hyprland flake input in main flake.nix
-# 2. Restore original module imports in modules/nixos/desktop/default.nix  
+# 2. Restore original module imports in modules/nixos/desktop/default.nix
 # 3. Test build
 nixos-rebuild build --flake .#$(hostname)
 ```
@@ -187,7 +187,7 @@ nixos-rebuild build --flake .#$(hostname)
 ### Common Issues
 
 #### 1. Flake Evaluation Errors
-**Symptoms**: `nix flake check` fails  
+**Symptoms**: `nix flake check` fails
 **Debug**:
 ```bash
 cd /etc/nixos/flakes/hyprland
@@ -195,8 +195,8 @@ nix flake check --show-trace  # Detailed error information
 nix eval .#nixosModules.default --show-trace  # Module evaluation errors
 ```
 
-#### 2. Missing Dependencies  
-**Symptoms**: Build fails with "package not found"  
+#### 2. Missing Dependencies
+**Symptoms**: Build fails with "package not found"
 **Debug**:
 ```bash
 # Check input resolution
@@ -207,8 +207,8 @@ nix search hyprland.packages.x86_64-linux hyprland
 ```
 
 #### 3. Module Import Errors
-**Symptoms**: Configuration evaluation fails  
-**Debug**:  
+**Symptoms**: Configuration evaluation fails
+**Debug**:
 ```bash
 # Test module loading in isolation
 nix eval --expr 'import /etc/nixos/flakes/hyprland/default.nix'
@@ -218,7 +218,7 @@ grep -r "modules/nixos/desktop/hyprland" /etc/nixos/hosts/
 ```
 
 #### 4. Home Manager Integration Issues
-**Symptoms**: User configuration not applied  
+**Symptoms**: User configuration not applied
 **Debug**:
 ```bash
 # Check home-manager service status
