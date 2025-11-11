@@ -5,6 +5,7 @@
   gnugrep,
   gnused,
   coreutils,
+  git-filter-repo,
   ...
 }:
 writeShellScriptBin "git-carve-submodule" ''
@@ -155,8 +156,8 @@ writeShellScriptBin "git-carve-submodule" ''
 
       # Use git filter-repo to extract only the subdirectory
       # Note: This requires git filter-repo to be available
-      if ${git}/bin/git filter-repo --help > /dev/null 2>&1; then
-        ${git}/bin/git filter-repo --path "$SUBDIRECTORY" --path-rename "$SUBDIRECTORY/:"
+      if ${git-filter-repo}/bin/git-filter-repo --help > /dev/null 2>&1; then
+        ${git-filter-repo}/bin/git-filter-repo --path "$SUBDIRECTORY" --path-rename "$SUBDIRECTORY/:"
       else
         # Fallback to git subtree if filter-repo is not available
         echo -e "''${YELLOW}Warning: git filter-repo not found, using git subtree split instead''${NC}"
