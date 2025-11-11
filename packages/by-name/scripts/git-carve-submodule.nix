@@ -199,7 +199,8 @@ writeShellScriptBin "git-carve-submodule" ''
       fi
 
       if [[ "$NO_PUSH" == false ]]; then
-        # Add the new remote and push
+        # Remove existing origin remote and add the new one
+        ${git}/bin/git remote remove origin 2>/dev/null || true
         ${git}/bin/git remote add origin "$NEW_REPO_URL"
 
         echo -e "''${BLUE}Pushing extracted directory to new repository...''${NC}"
