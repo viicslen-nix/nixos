@@ -145,8 +145,6 @@ in {
             } (createDisabledTargets cfg.disabledTargets options.stylix.targets or {});
           };
 
-
-
           gtk = {
             gtk3.extraConfig = {
               gtk-application-prefer-dark-theme = 1;
