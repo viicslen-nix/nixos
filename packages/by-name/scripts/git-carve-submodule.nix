@@ -2,10 +2,10 @@
   writeShellScriptBin,
   stdenv,
   git,
+  git-filter-repo,
   gnugrep,
   gnused,
   coreutils,
-  git-filter-repo,
   ...
 }:
 writeShellScriptBin "git-carve-submodule" ''
@@ -156,14 +156,46 @@ writeShellScriptBin "git-carve-submodule" ''
 
       # Use git filter-repo to extract only the subdirectory
       # Note: This requires git filter-repo to be available
+      local filter_repo_success=false
+
       if ${git-filter-repo}/bin/git-filter-repo --help > /dev/null 2>&1; then
-        ${git-filter-repo}/bin/git-filter-repo --path "$SUBDIRECTORY" --path-rename "$SUBDIRECTORY/:"
-      else
-        # Fallback to git subtree if filter-repo is not available
-        echo -e "''${YELLOW}Warning: git filter-repo not found, using git subtree split instead''${NC}"
-        ${git}/bin/git subtree split --prefix="$SUBDIRECTORY" -b extracted-submodule
-        ${git}/bin/git reset --hard extracted-submodule
-        ${git}/bin/git branch -D extracted-submodule || true
+        echo -e "''${BLUE}Attempting to use git-filter-repo...''${NC}"
+
+        # Try to clean up any problematic git config that might cause issues
+        ${git}/bin/git config --unset-all filter.repo.clean 2>/dev/null || true
+        ${git}/bin/git config --unset-all filter.repo.smudge 2>/dev/null || true
+
+        # Try git-filter-repo with force flag and error handling
+        if ${git-filter-repo}/bin/git-filter-repo --force --partial --path "$SUBDIRECTORY" --path-rename "$SUBDIRECTORY/:" 2>/dev/null; then
+          filter_repo_success=true
+          echo -e "''${GREEN}Successfully extracted using git-filter-repo''${NC}"
+        else
+          echo -e "''${YELLOW}git-filter-repo failed, trying alternative approach...''${NC}"
+          # Reset any partial changes from failed filter-repo
+          ${git}/bin/git reset --hard HEAD 2>/dev/null || true
+          ${git}/bin/git clean -fd 2>/dev/null || true
+        fi
+      fi
+
+      # Use filter-branch if filter-repo is not available or failed
+      if [[ "$filter_repo_success" != "true" ]]; then
+        echo -e "''${YELLOW}Using git filter-branch as fallback...''${NC}"
+
+        # Create a temporary branch for filtering
+        local filter_branch="temp-filter-$(${coreutils}/bin/date +%Y%m%d-%H%M%S)"
+        ${git}/bin/git checkout -b "$filter_branch"
+
+        # Use filter-branch to keep only the subdirectory and rewrite paths
+        ${git}/bin/git filter-branch --force --prune-empty \
+          --subdirectory-filter "$SUBDIRECTORY" \
+          --tag-name-filter cat \
+          -- --all
+
+        # Clean up the temporary branch name from history
+        ${git}/bin/git checkout "$BRANCH" 2>/dev/null || ${git}/bin/git checkout -b "$BRANCH"
+        ${git}/bin/git branch -D "$filter_branch" 2>/dev/null || true
+
+        echo -e "''${GREEN}Successfully extracted using git filter-branch''${NC}"
       fi
 
       if [[ "$NO_PUSH" == false ]]; then
