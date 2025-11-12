@@ -17,6 +17,7 @@ with lib; {
   ];
 
   home-manager.sharedModules = [./home.nix];
+  services.displayManager.defaultSession = "niri";
 
   boot = {
     plymouth.enable = true;
@@ -54,10 +55,6 @@ with lib; {
     extraUsers.root.hashedPassword = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
   };
 
-  services = {
-    displayManager.defaultSession = "hyprland-uwsm";
-  };
-
   environment.systemPackages = with pkgs; [
     jetbrains-toolbox
     vscode
@@ -73,6 +70,7 @@ with lib; {
     pkgs.inputs.zen-browser.default
     dbeaver-bin
     uv
+    rpi-imager
   ];
 
   modules = {
@@ -90,7 +88,7 @@ with lib; {
       niri.enable = true;
 
       hyprland = {
-        enable = true;
+        enable = false;
         gnomeCompatibility = true;
         hyprVariables = {
           XDG_CURRENT_DESKTOP = "Hyprland";
@@ -140,8 +138,6 @@ with lib; {
         "admin.mylisterhub.test" = "127.0.0.1";
         "*.mylisterhub.test" = "127.0.0.1";
         "time-tracker.test" = "127.0.0.1";
-        "labreu.test" = "127.0.0.1";
-        "store.labreu.test" = "127.0.0.1";
       };
     };
 
