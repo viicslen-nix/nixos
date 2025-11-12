@@ -32,7 +32,6 @@
     zellij = import ./programs/zellij;
     corepack = import ./programs/corepack;
     ghostty = import ./programs/ghostty;
-    nvf = import ./programs/nvf;
     sesh = import ./programs/sesh;
     btop = import ./programs/btop;
     vscode = import ./programs/vscode;

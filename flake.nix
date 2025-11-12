@@ -70,10 +70,6 @@
     zjstatus.url = "github:dj95/zjstatus";
 
     # Nvim
-    nvf = {
-      url = "github:notashelf/nvf";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     neovim = {
       url = ./flakes/neovim;
       inputs.nixpkgs.follows = "nixpkgs";
@@ -94,7 +90,7 @@
 
     # Hyprland
     hyprland = {
-      url = "path:./flakes/hyprland";
+      url = ./flakes/hyprland;
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
