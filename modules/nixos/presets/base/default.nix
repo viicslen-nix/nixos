@@ -223,6 +223,8 @@ in {
       nixPath = ["/etc/nix/path"];
 
       settings = {
+        trusted-users = attrNames users;
+
         # Enable flakes and new 'nix' command
         experimental-features = "nix-command flakes";
 
