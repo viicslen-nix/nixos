@@ -107,6 +107,7 @@ with lib; {
 
     desktop = {
       gnome.enable = true;
+      niri.enable = true;
 
       hyprland = {
         enable = true;
@@ -212,6 +213,7 @@ with lib; {
 
     programs = {
       mullvad.enable = true;
+      steam.enable = true;
 
       docker = {
         enable = true;
