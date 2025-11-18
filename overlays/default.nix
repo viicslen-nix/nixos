@@ -80,6 +80,12 @@
       '';
     };
 
+    # Patch openssh to ignore file permissions on ssh_config file
+    openssh = _prev.openssh.overrideAttrs (old: {
+      patches = (old.patches or [ ]) ++ [ ./openssh.patch ];
+      doCheck = false;
+    });
+
     # _1password-gui-wayland = _prev._1password-gui.overrideAttrs (oldAttrs: {
     #   preFixup = ''
     #     # makeWrapper defaults to makeBinaryWrapper due to wrapGAppsHook
