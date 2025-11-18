@@ -21,6 +21,7 @@ with lib; {
 
   boot = {
     plymouth.enable = true;
+    binfmt.emulatedSystems = ["aarch64-linux"];
 
     loader = {
       efi.canTouchEfiVariables = false;
@@ -54,7 +55,7 @@ with lib; {
   };
 
   services = {
-    displayManager.defaultSession = "hyprland-uwsm";
+    displayManager.defaultSession = "niri";
 
     # Disable the built-in keyboard
     udev.extraRules = lib.mkAfter ''
@@ -109,22 +110,22 @@ with lib; {
       gnome.enable = true;
       niri.enable = true;
 
-      hyprland = {
-        enable = true;
-        gnomeCompatibility = true;
-        hyprVariables = {
-          XDG_CURRENT_DESKTOP = "Hyprland";
-          XDG_SESSION_DESKTOP = "Hyprland";
-          XCURSOR_SIZE = builtins.toString config.stylix.cursor.size;
-
-          # NVidia
-          GBM_BACKEND = "nvidia-drm";
-          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-          LIBVA_DRIVER_NAME = "nvidia";
-          __GL_GSYNC_ALLOWED = "1";
-          __GL_VRR_ALLOWED = "0";
-        };
-      };
+      # hyprland = {
+      #   enable = true;
+      #   gnomeCompatibility = true;
+      #   hyprVariables = {
+      #     XDG_CURRENT_DESKTOP = "Hyprland";
+      #     XDG_SESSION_DESKTOP = "Hyprland";
+      #     XCURSOR_SIZE = builtins.toString config.stylix.cursor.size;
+      #
+      #     # NVidia
+      #     GBM_BACKEND = "nvidia-drm";
+      #     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      #     LIBVA_DRIVER_NAME = "nvidia";
+      #     __GL_GSYNC_ALLOWED = "1";
+      #     __GL_VRR_ALLOWED = "0";
+      #   };
+      # };
 
       # kde = {
       #   enable = true;
