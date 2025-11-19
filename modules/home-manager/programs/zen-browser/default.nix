@@ -12,7 +12,7 @@ with lib; let
   cfg = config.modules.${namespace}.${name};
 in {
   imports = [
-    inputs.zen-browser.homeModules.twilight
+    inputs.zen-browser.homeModules.beta
   ];
 
   options.modules.${namespace}.${name}.enable = mkEnableOption (mdDoc "zen-browser");
