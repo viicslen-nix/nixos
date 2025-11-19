@@ -86,7 +86,7 @@ with lib; {
     jetbrains-toolbox
     zed-editor-fhs
     vscode-fhs
-    local.antigravity
+    local.antigravity.default
 
     # Development Tools
     ghostty

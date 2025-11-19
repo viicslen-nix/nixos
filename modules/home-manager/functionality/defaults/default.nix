@@ -52,7 +52,7 @@ in {
   };
 
   config = mkMerge [
-    ({xdg.configFile."mimeapps.list".force = true;})
+    {xdg.configFile."mimeapps.list".force = true;}
     (mkIf (cfg.browser != null) {
       home = {
         sessionVariables.BROWSER = mkDefault (getExe cfg.browser);
