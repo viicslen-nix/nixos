@@ -54,7 +54,7 @@ with lib; {
   services = {
     blueman.enable = true;
     displayManager.gdm.enable = true;
-    displayManager.defaultSession = "hyprland-uwsm";
+    displayManager.defaultSession = "niri";
 
     openssh = {
       enable = true;
@@ -138,7 +138,7 @@ with lib; {
       niri.enable = true;
 
       hyprland = {
-        enable = true;
+        enable = false;
         # package = pkgs.inputs.hyprland.hyprland;
         # portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
         gnomeCompatibility = true;
