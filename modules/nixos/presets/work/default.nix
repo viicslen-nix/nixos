@@ -147,6 +147,7 @@ in {
       atlas
       devbox
       act
+      inputs.worktree-manager.default
     ];
   };
 }
