@@ -148,6 +148,7 @@ in {
       devbox
       act
       inputs.worktree-manager.default
+      percona-toolkit
     ];
   };
 }
