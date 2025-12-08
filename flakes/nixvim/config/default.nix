@@ -45,6 +45,27 @@
     maplocalleader = " ";
   };
 
+  # Autocommands
+  autoGroups = {
+    eslint_fix = {clear = true;};
+  };
+
+  autoCmd = [
+    {
+      group = "eslint_fix";
+      event = ["BufWritePre"];
+      pattern = ["*.js" "*.jsx" "*.ts" "*.tsx" "*.vue"];
+      callback.__raw = ''
+        function()
+          -- Only run EslintFixAll if the command exists (ESLint LSP is attached)
+          if vim.fn.exists(":EslintFixAll") > 0 then
+            vim.cmd("EslintFixAll")
+          end
+        end
+      '';
+    }
+  ];
+
   # Colorscheme - OneDark darker with transparency
   colorschemes.onedark = {
     enable = true;
@@ -101,6 +122,7 @@
         "typescript"
         "vim"
         "vimdoc"
+        "vue"
         "yaml"
         "zig"
       ];
@@ -145,6 +167,21 @@
       # TypeScript/JavaScript
       ts_ls = {
         enable = true;
+        filetypes = [
+          "javascript"
+          "javascriptreact"
+          "javascript.jsx"
+          "typescript"
+          "typescriptreact"
+          "typescript.tsx"
+        ];
+      };
+
+      # Vue (supports Vue 2.7+ and Vue 3)
+      vue_ls = {
+        enable = true;
+        tslsIntegration = true;
+        package = pkgs.vue-language-server;
       };
 
       # Python
@@ -191,6 +228,18 @@
       # Tailwind CSS
       tailwindcss = {
         enable = true;
+      };
+
+      # ESLint (diagnostics and autofix)
+      eslint = {
+        enable = true;
+        settings = {
+          workingDirectories = {mode = "auto";};
+          codeActionOnSave = {
+            enable = true;
+            mode = "all";
+          };
+        };
       };
 
       # Terraform/HCL
