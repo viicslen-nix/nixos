@@ -110,7 +110,7 @@ with lib; {
     freeoffice
 
     # Windows
-    pkgs.inputs.winboat.winboat
+    winboat
     freerdp
     iptables
 

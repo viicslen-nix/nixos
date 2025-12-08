@@ -117,7 +117,6 @@
 
     # Community packages
     agenix.url = "github:ryantm/agenix";
-    winboat.url = "github:TibixDev/winboat";
     ghostty.url = "github:ghostty-org/ghostty";
     lan-mouse.url = "github:feschber/lan-mouse";
     nix-alien.url = "github:thiagokokada/nix-alien";
