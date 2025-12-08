@@ -30,7 +30,7 @@ nix-upgrade-path COMMAND='switch':
 
 # Upgrade the system using the nix helper utility
 upgrade COMMAND='switch':
-  nh os {{COMMAND}}
+  nh os {{COMMAND}} --ask
 
 full-upgrade:
   just update
