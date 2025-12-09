@@ -74,6 +74,10 @@
       url = ./flakes/neovim;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixvim = {
+      url = ./flakes/nixvim;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # 1Password
     tmux-1password = {
