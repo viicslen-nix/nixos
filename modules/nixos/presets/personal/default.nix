@@ -21,7 +21,7 @@ in {
       graphviz
       asciinema
       yazi
-      inputs.neovim.default
+      inputs.nixvim.default
       local.scripts.git-carve-submodule
     ];
 
