@@ -120,6 +120,7 @@ with lib; {
     vial
     kooha
     uv
+    inkscape-with-extensions
   ];
 
   modules = {
