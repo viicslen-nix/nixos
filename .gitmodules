@@ -7,3 +7,6 @@
 [submodule "flakes/hyprland"]
 	path = flakes/hyprland
 	url = https://github.com/viicslen-nix/hyprland
+[submodule "flakes/nixvim"]
+	path = flakes/nixvim
+	url = https://github.com/viicslen-nix/nixvim
