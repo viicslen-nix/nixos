@@ -29,6 +29,7 @@
     kitty.enable = true;
     tinkerwell.enable = true;
     zen-browser.enable = true;
+    vivaldi.enable = true;
   };
 
   programs.niri.settings.outputs = {

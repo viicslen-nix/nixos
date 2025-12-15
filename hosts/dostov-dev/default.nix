@@ -78,8 +78,8 @@ with lib; {
 
   environment.systemPackages = with pkgs; [
     # Browsers
-    google-chrome
     microsoft-edge
+    google-chrome
     brave
 
     # IDEs & Editors
