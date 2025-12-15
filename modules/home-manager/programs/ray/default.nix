@@ -2,9 +2,11 @@
   lib,
   pkgs,
   config,
+  inputs,
   ...
 }:
-with lib; let
+with lib;
+with inputs.self.lib; let
   name = "ray";
   namespace = "programs";
   version = "2.8.1";
@@ -23,26 +25,31 @@ in {
     enable = mkEnableOption (mdDoc name);
   };
 
-  config = mkIf cfg.enable {
-    home.packages = [
-      appImage
-    ];
+  config = mkIf cfg.enable (mkMerge [
+    (mkPersistence config {
+      config = ["ray"];
+    })
+    {
+      home.packages = [
+        appImage
+      ];
 
-    xdg = {
-      enable = mkDefault true;
+      xdg = {
+        enable = mkDefault true;
 
-      desktopEntries.${name} = {
-        name = "Ray";
-        genericName = "Debugging Tool";
-        exec = "${appImage}/bin/${name} %U";
-        icon = name;
-        terminal = false;
-        comment = "Ray is a tool for debugging and profiling your PHP applications.";
-        categories = ["Development"];
-        settings = {
-          StartupWMClass = name;
+        desktopEntries.${name} = {
+          name = "Ray";
+          genericName = "Debugging Tool";
+          exec = "${appImage}/bin/${name} %U";
+          icon = name;
+          terminal = false;
+          comment = "Ray is a tool for debugging and profiling your PHP applications.";
+          categories = ["Development"];
+          settings = {
+            StartupWMClass = name;
+          };
         };
       };
-    };
-  };
+    }
+  ]);
 }

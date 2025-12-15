@@ -2,9 +2,11 @@
   lib,
   pkgs,
   config,
+  inputs,
   ...
 }:
-with lib; let
+with lib;
+with inputs.self.lib; let
   name = "tinkerwell";
   namespace = "programs";
   version = "4.19.0";
@@ -23,25 +25,30 @@ in {
     enable = mkEnableOption (mdDoc name);
   };
 
-  config = mkIf cfg.enable {
-    home.packages = [
-      appImage
-    ];
+  config = mkIf cfg.enable (mkMerge [
+    {
+      home.packages = [
+        appImage
+      ];
 
-    xdg = {
-      enable = mkDefault true;
+      xdg = {
+        enable = mkDefault true;
 
-      desktopEntries.${name} = {
-        name = "Tinkerwell";
-        genericName = "IDE";
-        exec = "${appImage}/bin/${name} %U";
-        icon = name;
-        terminal = false;
-        comment = "The magical code editor that runs your code within local and remote PHP applications.";
-        settings = {
-          StartupWMClass = name;
+        desktopEntries.${name} = {
+          name = "Tinkerwell";
+          genericName = "IDE";
+          exec = "${appImage}/bin/${name} %U";
+          icon = name;
+          terminal = false;
+          comment = "The magical code editor that runs your code within local and remote PHP applications.";
+          settings = {
+            StartupWMClass = name;
+          };
         };
       };
-    };
-  };
+    }
+    (mkPersistence config {
+      config = ["Tinkerwell" "tinkerwell"];
+    })
+  ]);
 }

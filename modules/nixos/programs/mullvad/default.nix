@@ -2,9 +2,13 @@
   lib,
   pkgs,
   config,
+  options,
+  users,
+  inputs,
   ...
 }:
-with lib; let
+with lib;
+with inputs.self.lib; let
   name = "mullvad";
   namespace = "programs";
 
@@ -24,40 +28,51 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      mullvad-browser
-      mullvad-vpn
-      mullvad
-    ];
+  config = mkIf cfg.enable (mkMerge [
+    {
+      environment.systemPackages = with pkgs; [
+        mullvad-browser
+        mullvad-vpn
+        mullvad
+      ];
 
-    services.mullvad-vpn = {
-      enable = true;
-      package = pkgs.mullvad-vpn;
-      enableExcludeWrapper = true;
-    };
-
-    networking = mkIf cfg.enableExludeIPs {
-      firewall.enable = true;
-
-      nftables = {
+      services.mullvad-vpn = {
         enable = true;
+        package = pkgs.mullvad-vpn;
+        enableExcludeWrapper = true;
+      };
 
-        tables.excludeTraffic = {
+      networking = mkIf cfg.enableExludeIPs {
+        firewall.enable = true;
+
+        nftables = {
           enable = true;
-          family = "inet";
-          content = ''
-            define EXCLUDED_IPS = {
-              ${concatMapStringsSep "\n" (ip: ip + ",") cfg.excludedIPs}
-            }
 
-            chain excludeOutgoing {
-              type route hook output priority 0; policy accept;
-              ip daddr $EXCLUDED_IPS ct mark set 0x00000f41  meta mark set 0x6d6f6c65;
-            }
-          '';
+          tables.excludeTraffic = {
+            enable = true;
+            family = "inet";
+            content = ''
+              define EXCLUDED_IPS = {
+                ${concatMapStringsSep "\n" (ip: ip + ",") cfg.excludedIPs}
+              }
+
+              chain excludeOutgoing {
+                type route hook output priority 0; policy accept;
+                ip daddr $EXCLUDED_IPS ct mark set 0x00000f41  meta mark set 0x6d6f6c65;
+              }
+            '';
+          };
         };
       };
-    };
-  };
+    }
+    (mkNixosPersistence {
+      inherit config options;
+      users = attrNames users;
+      configDirs = ["Mullvad VPN"];
+    })
+    (mkSystemPersistence {
+      inherit config;
+      directories = ["/etc/mullvad-vpn"];
+    })
+  ]);
 }

@@ -2,9 +2,11 @@
   lib,
   pkgs,
   config,
+  inputs,
   ...
 }:
-with lib; let
+with lib;
+with inputs.self.lib; let
   name = "vscode";
   namespace = "programs";
 
@@ -14,19 +16,25 @@ in {
     enable = mkEnableOption (mdDoc name);
   };
 
-  config = mkIf cfg.enable {
-    programs.vscode = {
-      enable = true;
-      package = pkgs.vscode.fhsWithPackages (ps:
-        with ps; [
-          php84
-          php84Packages.composer
-          nodePackages.nodejs
-          corepack
-          zlib
-          openssl.dev
-          pkg-config
-        ]);
-    };
-  };
+  config = mkIf cfg.enable (mkMerge [
+    {
+      programs.vscode = {
+        enable = true;
+        package = pkgs.vscode.fhsWithPackages (ps:
+          with ps; [
+            php84
+            php84Packages.composer
+            nodePackages.nodejs
+            corepack
+            zlib
+            openssl.dev
+            pkg-config
+          ]);
+      };
+    }
+    (mkPersistence config {
+      config = ["Code"];
+      directories = [".vscode"];
+    })
+  ]);
 }

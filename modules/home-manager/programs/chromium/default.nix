@@ -1,9 +1,11 @@
 {
   lib,
   config,
+  inputs,
   ...
 }:
-with lib; let
+with lib;
+with inputs.self.lib; let
   name = "chromium";
   namespace = "programs";
 
@@ -13,14 +15,19 @@ in {
     enable = mkEnableOption (mdDoc name);
   };
 
-  config = mkIf cfg.enable {
-    programs.chromium = {
-      enable = true;
+  config = mkIf cfg.enable (mkMerge [
+    {
+      programs.chromium = {
+        enable = true;
 
-      extensions = [
-        # Steps Recorder by Flonnect Capture
-        {id = "hloeehlfligalbcbajlkjjdfngienilp";}
-      ];
-    };
-  };
+        extensions = [
+          # Steps Recorder by Flonnect Capture
+          {id = "hloeehlfligalbcbajlkjjdfngienilp";}
+        ];
+      };
+    }
+    (mkPersistence config {
+      config = ["chromium"];
+    })
+  ]);
 }

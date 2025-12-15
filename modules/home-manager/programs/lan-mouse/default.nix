@@ -5,7 +5,8 @@
   inputs,
   ...
 }:
-with lib; let
+with lib;
+with inputs.self.lib; let
   name = "lan-mouse";
   namespace = "programs";
 
@@ -26,33 +27,38 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
-    programs.lan-mouse = {
-      enable = true;
-      systemd = true;
-    };
-
-    systemd.user.services.lan-mouse = mkIf cfg.autostart {
-      Unit = {
-        After = "graphical-session.target";
-        BindsTo = "graphical-session.target";
+  config = mkIf cfg.enable (mkMerge [
+    {
+      programs.lan-mouse = {
+        enable = true;
+        systemd = true;
       };
-      Install.WantedBy = ["graphical-session.target"];
-    };
 
-    xdg = mkIf cfg.autostart {
-      enable = lib.mkDefault true;
+      systemd.user.services.lan-mouse = mkIf cfg.autostart {
+        Unit = {
+          After = "graphical-session.target";
+          BindsTo = "graphical-session.target";
+        };
+        Install.WantedBy = ["graphical-session.target"];
+      };
 
-      desktopEntries.${name} = {
-        name = "Lan Mouse";
-        genericName = "KVM";
-        exec = "${inputs.lan-mouse.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/lan-mouse %U";
-        icon = "lan-mouse";
-        terminal = false;
-        settings = {
-          StartupWMClass = "lan-mouse";
+      xdg = mkIf cfg.autostart {
+        enable = lib.mkDefault true;
+
+        desktopEntries.${name} = {
+          name = "Lan Mouse";
+          genericName = "KVM";
+          exec = "${inputs.lan-mouse.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/lan-mouse %U";
+          icon = "lan-mouse";
+          terminal = false;
+          settings = {
+            StartupWMClass = "lan-mouse";
+          };
         };
       };
-    };
-  };
+    }
+    (mkPersistence config {
+      config = ["lan-mouse"];
+    })
+  ]);
 }

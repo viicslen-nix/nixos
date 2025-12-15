@@ -1,9 +1,11 @@
 {
   lib,
   config,
+  inputs,
   ...
 }:
-with lib; let
+with lib;
+with inputs.self.lib; let
   name = "starship";
   namespace = "programs";
 
@@ -13,13 +15,20 @@ in {
     enable = mkEnableOption (mdDoc "starship");
   };
 
-  config.programs.starship = mkIf cfg.enable {
-    enable = true;
+  config = mkIf cfg.enable (mkMerge [
+    {
+      programs.starship = {
+        enable = true;
 
-    settings =
-      builtins.fromTOML (builtins.unsafeDiscardStringContext (builtins.readFile ./config.toml))
-      // {
-        palette = mkForce "main";
+        settings =
+          builtins.fromTOML (builtins.unsafeDiscardStringContext (builtins.readFile ./config.toml))
+          // {
+            palette = mkForce "main";
+          };
       };
-  };
+    }
+    (mkPersistence config {
+      cache = ["starship"];
+    })
+  ]);
 }
