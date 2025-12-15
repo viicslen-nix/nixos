@@ -57,17 +57,65 @@
       '';
     };
 
-    # Make Vivaldi not be shit on Wayland
-    vivaldi-wayland = _prev.symlinkJoin {
-      name = "vivaldi-wayland";
-      paths = [_prev.vivaldi];
-      buildInputs = [_prev.makeWrapper];
-      postBuild = ''
-        wrapProgram $out/bin/vivaldi \
-        --add-flags "--ozone-platform=wayland" \
-        --add-flags "--enable-features=UseOzonePlatform"
+    # Vivaldi with custom JS UI mods support
+    # Based on https://github.com/budlabs/vivaldi-autoinject-custom-js-ui
+    # Usage: pkgs.vivaldi.override { customJsFiles = [ ./my-mod.js ]; }
+    vivaldi = _prev.callPackage ({
+      vivaldi,
+      customJsFiles ? [],
+      enableWayland ? true,
+      symlinkJoin,
+      makeWrapper,
+      writeTextFile,
+      runCommand,
+      lib,
+    }: let
+      # Create a patched Vivaldi with custom JS files injected
+      patchedVivaldi = runCommand "vivaldi-custom-ui-${vivaldi.version}" {
+        inherit (vivaldi) meta;
+        nativeBuildInputs = [makeWrapper];
+      } ''
+        # Create output directory structure
+        mkdir -p $out
+
+        # Copy the original Vivaldi, preserving symlinks
+        cp -rs ${vivaldi}/* $out/
+
+        # Make the resources/vivaldi directory writable
+        chmod -R u+w $out
+
+        # Remove the symlink to window.html and copy the actual file
+        rm -f $out/share/vivaldi/resources/vivaldi/window.html
+        cp ${vivaldi}/share/vivaldi/resources/vivaldi/window.html \
+           $out/share/vivaldi/resources/vivaldi/window.html
+        chmod u+w $out/share/vivaldi/resources/vivaldi/window.html
+
+        # Copy custom JS files to Vivaldi resources directory
+        ${lib.concatMapStringsSep "\n" (jsFile: ''
+          cp ${jsFile} $out/share/vivaldi/resources/vivaldi/${builtins.baseNameOf (toString jsFile)}
+        '') customJsFiles}
+
+        # Inject script tags into window.html before </body>
+        ${lib.concatMapStringsSep "\n" (jsFile: let
+          fileName = builtins.baseNameOf (toString jsFile);
+        in ''
+          if ! grep -q '<script src="${fileName}"></script>' $out/share/vivaldi/resources/vivaldi/window.html; then
+            sed -i 's|</body>|  <script src="${fileName}"></script>\n</body>|' \
+              $out/share/vivaldi/resources/vivaldi/window.html
+          fi
+        '') customJsFiles}
+
+        # Re-wrap the Vivaldi binary
+        rm -f $out/bin/vivaldi
+        makeWrapper ${vivaldi}/bin/vivaldi $out/bin/vivaldi \
+          ${lib.optionalString enableWayland ''
+          --add-flags "--ozone-platform=wayland" \
+          --add-flags "--enable-features=UseOzonePlatform"
+          ''}
       '';
-    };
+    in
+      patchedVivaldi
+    ) {};
 
     # Enable vencord patch for official discord client
     discord = _prev.discord.override {
