@@ -86,7 +86,6 @@ in {
       directories =
         [
           "/var/log"
-          "/var/lib/docker"
           "/var/lib/bluetooth"
           "/var/lib/nixos"
           "/var/lib/systemd/coredump"

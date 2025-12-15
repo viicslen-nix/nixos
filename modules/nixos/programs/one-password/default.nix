@@ -4,9 +4,11 @@
   config,
   inputs,
   options,
+  users,
   ...
 }:
-with lib; let
+with lib;
+with inputs.self.lib; let
   name = "onePassword";
   namespace = "programs";
 
@@ -141,6 +143,11 @@ in {
           };
         };
       });
+    })
+    (mkNixosPersistence {
+      inherit config options;
+      users = cfg.users;
+      configDirs = ["1Password" "op"];
     })
   ]);
 }

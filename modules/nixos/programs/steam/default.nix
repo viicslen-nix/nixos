@@ -1,9 +1,13 @@
 {
   lib,
   config,
+  options,
+  users,
+  inputs,
   ...
 }:
-with lib; let
+with lib;
+with inputs.self.lib; let
   name = "steam";
   namespace = "programs";
 
@@ -13,25 +17,26 @@ in {
     enable = mkEnableOption (mdDoc name);
   };
 
-  config = mkIf cfg.enable {
-    programs = {
-      steam = {
-        enable = true;
-        localNetworkGameTransfers.openFirewall = true;
-        gamescopeSession.enable = true;
-        # package = pkgs.steam.override {
-        #   withJava = true;
-        #   withPrimus = true;
-        #   extraPkgs = pkgs: [ bumblebee glxinfo ];
-        # };
-      };
+  config = mkIf cfg.enable (mkMerge [
+    {
+      programs = {
+        steam = {
+          enable = true;
+          localNetworkGameTransfers.openFirewall = true;
+          gamescopeSession.enable = true;
+        };
 
-      gamescope = {
-        enable = true;
-        capSysNice = true;
+        gamescope = {
+          enable = true;
+          capSysNice = true;
+        };
       };
-
-      # java.enable = true;
-    };
-  };
+    }
+    (mkNixosPersistence {
+      inherit config options;
+      users = attrNames users;
+      directories = [".steam"];
+      share = ["Steam"];
+    })
+  ]);
 }

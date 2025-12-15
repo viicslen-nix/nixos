@@ -3,9 +3,12 @@
   pkgs,
   users,
   config,
+  options,
+  inputs,
   ...
 }:
-with lib; let
+with lib;
+with inputs.self.lib; let
   name = "docker";
   namespace = "programs";
 
@@ -39,40 +42,53 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
-    environment = {
-      systemPackages = with pkgs; [
-        docker-credential-helpers
-        docker-buildx
-      ];
+  config = mkIf cfg.enable (mkMerge [
+    {
+      environment = {
+        systemPackages = with pkgs; [
+          docker-credential-helpers
+          docker-buildx
+        ];
 
-      sessionVariables = {
-        COMPOSE_BAKE = "true";
-      };
-    };
-
-    virtualisation = {
-      docker = {
-        enable = true;
-        autoPrune.enable = true;
-        storageDriver = cfg.storageDriver;
-        package = pkgs.docker.override {
-          buildxSupport = true;
+        sessionVariables = {
+          COMPOSE_BAKE = "true";
         };
       };
 
-      podman.enable = false;
+      virtualisation = {
+        docker = {
+          enable = true;
+          autoPrune.enable = true;
+          storageDriver = cfg.storageDriver;
+          package = pkgs.docker.override {
+            buildxSupport = true;
+          };
+        };
 
-      oci-containers.backend = "docker";
-    };
+        podman.enable = false;
 
-    users.users = lib.genAttrs (attrNames users) (_user: {
-      extraGroups = ["docker"];
-    });
+        oci-containers.backend = "docker";
+      };
 
-    networking.firewall.trustedInterfaces = [cfg.networkInterface];
-    networking.firewall.allowedTCPPorts = cfg.allowTcpPorts;
+      users.users = lib.genAttrs (attrNames users) (_user: {
+        extraGroups = ["docker"];
+      });
 
-    hardware.nvidia-container-toolkit.enable = cfg.nvidiaSupport;
-  };
+      networking.firewall.trustedInterfaces = [cfg.networkInterface];
+      networking.firewall.allowedTCPPorts = cfg.allowTcpPorts;
+
+      hardware.nvidia-container-toolkit.enable = cfg.nvidiaSupport;
+    }
+    (mkNixosPersistence {
+      inherit config options;
+      users = attrNames users;
+      directories = [".docker"];
+    })
+    (mkSystemPersistence {
+      inherit config;
+      directories = [
+        "/var/lib/docker"
+      ];
+    })
+  ]);
 }

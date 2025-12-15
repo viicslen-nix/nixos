@@ -5,7 +5,8 @@
   inputs,
   ...
 }:
-with lib; let
+with lib;
+with inputs.self.lib; let
   name = "zen-browser";
   namespace = "programs";
 
@@ -17,36 +18,41 @@ in {
 
   options.modules.${namespace}.${name}.enable = mkEnableOption (mdDoc "zen-browser");
 
-  config = mkIf cfg.enable {
-    programs.zen-browser = {
-      enable = true;
-      nativeMessagingHosts = [pkgs.firefoxpwa];
-      policies = {
-        AutofillAddressEnabled = true;
-        AutofillCreditCardEnabled = false;
-        DisableAppUpdate = true;
-        DisableFeedbackCommands = true;
-        DisableFirefoxStudies = true;
-        DisablePocket = true;
-        DisableTelemetry = true;
-        DontCheckDefaultBrowser = true;
-        NoDefaultBookmarks = true;
-        OfferToSaveLogins = false;
-        EnableTrackingProtection = {
-          Value = true;
-          Locked = true;
-          Cryptomining = true;
-          Fingerprinting = true;
+  config = mkIf cfg.enable (mkMerge [
+    {
+      programs.zen-browser = {
+        enable = true;
+        nativeMessagingHosts = [pkgs.firefoxpwa];
+        policies = {
+          AutofillAddressEnabled = true;
+          AutofillCreditCardEnabled = false;
+          DisableAppUpdate = true;
+          DisableFeedbackCommands = true;
+          DisableFirefoxStudies = true;
+          DisablePocket = true;
+          DisableTelemetry = true;
+          DontCheckDefaultBrowser = true;
+          NoDefaultBookmarks = true;
+          OfferToSaveLogins = false;
+          EnableTrackingProtection = {
+            Value = true;
+            Locked = true;
+            Cryptomining = true;
+            Fingerprinting = true;
+          };
+        };
+        profiles = {
+          default = {
+            isDefault = true;
+            search.default = "google";
+          };
         };
       };
-      profiles = {
-        default = {
-          isDefault = true;
-          search.default = "google";
-        };
-      };
-    };
 
-    home.file.".zen/default/search.json.mozlz4".force = mkForce true;
-  };
+      home.file.".zen/default/search.json.mozlz4".force = mkForce true;
+    }
+    (mkPersistence config {
+      directories = [".zen"];
+    })
+  ]);
 }

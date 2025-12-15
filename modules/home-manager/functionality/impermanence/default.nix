@@ -13,6 +13,12 @@ in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc "impermanence");
 
+    autoPersistence = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Allow program modules to automatically configure persistence via mkPersistence helper";
+    };
+
     persistencePath = mkOption {
       type = types.str;
       default = "/persist";

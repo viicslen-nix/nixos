@@ -11,67 +11,48 @@
     functionality.impermanence = {
       enable = true;
       share = [
-        "Steam"
         "JetBrains"
         "keyrings"
         "direnv"
         "zoxide"
-        "mkcert"
         "pnpm"
         "nvim"
-        "atuin"
       ];
       config = [
         "Lens"
-        "Code"
         "Slack"
         "Ferdium"
         "Insomnia"
         "JetBrains"
-        "1Password"
-        "Tinkerwell"
-        "Mullvad VPN"
         "GitHub Desktop"
         "microsoft-edge"
         "github-copilot"
         "warp-terminal"
-        "tinkerwell"
-        "lan-mouse"
         "composer"
         "discord"
         "legcord"
         "direnv"
         "gcloud"
         "helm"
-        "op"
       ];
       cache = [
         "JetBrains"
-        "starship"
         "carapace"
         "zoxide"
-        "atuin"
         "helm"
       ];
       directories = [
         ".pki"
         ".ssh"
-        ".zen"
         ".kube"
         ".java"
         ".gnupg"
-        ".steam"
         ".nixops"
-        ".vscode"
-        ".docker"
-        ".mozilla"
         ".thunderbird"
-        ".tmux/resurrect"
       ];
       files = [
         ".env.aider"
         ".gitconfig"
-        ".zsh_history"
         ".wakatime.cfg"
       ];
     };
