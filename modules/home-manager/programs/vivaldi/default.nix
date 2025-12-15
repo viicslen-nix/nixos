@@ -25,7 +25,7 @@ with inputs.self.lib; let
   defaultJsMods = [
     "tidyTitles.js"
     "tidyTabs.js"
-    "clearTabs.js"
+    "ClearTabs.js"
     "wrapToday.js"
     "immersiveAddressbar.js"
     "tabScroll.js"
@@ -81,11 +81,50 @@ with inputs.self.lib; let
   # Build custom JS files from mod pack
   customJsFiles = map (modName: "${awesomeVivaldiSrc}/${getModPath modName}") cfg.jsMods;
 
-  # Vivaldi with custom JS mods applied
-  vivaldiWithMods = pkgs.vivaldi.override {
-    inherit customJsFiles;
-    enableWayland = cfg.enableWayland;
-  };
+  # Create a patched Vivaldi with custom JS files injected
+  # Based on https://github.com/budlabs/vivaldi-autoinject-custom-js-ui
+  vivaldiWithMods = pkgs.runCommand "vivaldi-custom-ui-${pkgs.vivaldi.version}" {
+    inherit (pkgs.vivaldi) meta;
+    nativeBuildInputs = [pkgs.makeWrapper];
+  } ''
+    # Create output directory structure
+    mkdir -p $out
+
+    # Copy the original Vivaldi, preserving symlinks
+    cp -rs ${pkgs.vivaldi}/* $out/
+
+    # Make the resources/vivaldi directory writable
+    chmod -R u+w $out
+
+    # Remove the symlink to window.html and copy the actual file
+    rm -f $out/opt/vivaldi/resources/vivaldi/window.html
+    cp ${pkgs.vivaldi}/opt/vivaldi/resources/vivaldi/window.html \
+       $out/opt/vivaldi/resources/vivaldi/window.html
+    chmod u+w $out/opt/vivaldi/resources/vivaldi/window.html
+
+    # Copy custom JS files to Vivaldi resources directory
+    ${lib.concatMapStringsSep "\n" (jsFile: ''
+      cp ${jsFile} $out/opt/vivaldi/resources/vivaldi/${builtins.baseNameOf (toString jsFile)}
+    '') customJsFiles}
+
+    # Inject script tags into window.html before </body>
+    ${lib.concatMapStringsSep "\n" (jsFile: let
+      fileName = builtins.baseNameOf (toString jsFile);
+    in ''
+      if ! grep -q '<script src="${fileName}"></script>' $out/opt/vivaldi/resources/vivaldi/window.html; then
+        sed -i 's|</body>|  <script src="${fileName}"></script>\n</body>|' \
+          $out/opt/vivaldi/resources/vivaldi/window.html
+      fi
+    '') customJsFiles}
+
+    # Re-wrap the Vivaldi binary with Wayland flags if enabled
+    rm -f $out/bin/vivaldi
+    makeWrapper ${pkgs.vivaldi}/bin/vivaldi $out/bin/vivaldi \
+      ${lib.optionalString cfg.enableWayland ''
+      --add-flags "--ozone-platform=wayland" \
+      --add-flags "--enable-features=UseOzonePlatform"
+      ''}
+  '';
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc "Vivaldi browser with Awesome-Vivaldi mods");
@@ -164,10 +203,8 @@ in {
 
     # Persistence support
     (mkPersistence config {
-      directories = [
-        ".config/vivaldi"
-        ".cache/vivaldi"
-      ];
+      config = ["vivaldi"];
+      cache = ["vivaldi"];
     })
   ]);
 }
