@@ -7,48 +7,48 @@ You may manage and config all your css mods and config them as well all in this 
 */
 
 /* Import AutoHide folder CSS files */
-@import "AutoHide/adaptiveBF.css";
-@import "AutoHide/tabbar.css";
-@import "AutoHide/Bookmarkbar.css";
-/*@import "AutoHide/Panel.css";*/
-@import "AutoHide/StatusBar.css";
+@import "auto-hide/adaptive-bf.css";
+@import "auto-hide/tabbar.css";
+@import "auto-hide/bookmarkbar.css";
+/*@import "auto-hide/panel.css";*/
+@import "auto-hide/status-bar.css";
 
 /* Import Layout folder CSS files */
-@import "Layout/main.css";
-@import "Layout/NeatDial.css";
-@import "Layout/FavouriteTabs.css";
-@import "Layout/Addressbar.css";
-@import "Layout/FindInPage.css";
-@import "Layout/QuickCommand.css";
-@import "Layout/DownloadPanel.css";
-@import "Layout/ExtensionsPanel.css";
-/* @import "Layout/themePreviewer.css"; */
+@import "layout/main.css";
+@import "layout/neat-dial.css";
+@import "layout/favourite-tabs.css";
+@import "layout/addressbar.css";
+@import "layout/find-in-page.css";
+@import "layout/quick-command.css";
+@import "layout/download-panel.css";
+@import "layout/extensions-panel.css";
+/* @import "layout/theme-previewer.css"; */
 
 /* Import EnhancedUX folder CSS files */
-@import "EnhancedUX/BtnHoverAnime.css";
-@import "EnhancedUX/TabsTrail.css";
-@import "EnhancedUX/Quietify.css";
-/* @import "EnhancedUX/LonM-selectableTextEverywhere.css"; */
+@import "enhanced-ux/btn-hover-anime.css";
+@import "enhanced-ux/tabs-trail.css";
+@import "enhanced-ux/quietify.css";
+/* @import "enhanced-ux/selectable-text.css"; */
 
 /* Import JSIntegretion folder CSS files */
-@import "JSIntegration/ClearTabs.css";
-@import "JSIntegration/TidyTabs.css";
-@import "JSIntegration/ArcPeek.css";
-/* @import "JSIntegration/Accentmod.css"; */
+@import "js-integration/clear-tabs.css";
+@import "js-integration/tidy-tabs.css";
+@import "js-integration/arc-peek.css";
+/* @import "js-integration/accent-mod.css"; */
 
 /* Import under dev folder CSS files */
-/* @import "Dev/TabStack.css"; */
-/* @import "Dev/autoHidePanel.css"; */
-/* @import "Dev/Tabbar.css"; */
-/* @import "Dev/LineBreak.css"; */
-/* @import "Dev/TileExpand.css"; */
-/* @import "Layout/BraveStyleTabs.css"; */
-/* @import "Layout/EdgeCurve.css"; */
+/* @import "dev/tab-stack.css"; */
+/* @import "dev/auto-hide-panel.css"; */
+/* @import "dev/tabbar.css"; */
+/* @import "dev/line-break.css"; */
+/* @import "dev/tile-expand.css"; */
+/* @import "layout/brave-style-tabs.css"; */
+/* @import "layout/edge-curve.css"; */
 
 /* Adjust Configure In :root */
 :root {
     /* color, transparent, immersive */
-    /* immersive requires immersiveAddressbar.js installed */
+    /* immersive requires immersive-addressbar.js installed */
     --fluid-theme: color;
     /*on or off*/
     --fluid-compact-mode: off; /* Toggle on to Have a Thinner Main Tabbar */
@@ -122,7 +122,7 @@ You may manage and config all your css mods and config them as well all in this 
   --tabbar-border-color-expand: rgb(45, 123, 139); */
 
     /* ============================================ */
-    /* Config Quietify.css */
+    /* Config quietify.css */
     /* ============================================ */
 
     --tab-icon-size: 16px;
@@ -133,15 +133,15 @@ You may manage and config all your css mods and config them as well all in this 
     /* Config toviArc legacy */
     /* ============================================ */
 
-    --window-border: 4px;
-    /*--mac-header: calc(var(--window-border));*/
-    --mac-header: 0px;
-    --win-header: calc(var(--window-border) + 20px);
-    --linux-header: calc(var(--window-border) + 20px);
+    --mac-header: 0;
+    --win-header: 0;
+    --linux-header: 0;
+    --window-border: 1px;
+
     --addressbar-height: 36px;
     --window-button-scale: 0.8;
     --window-button-opacity: 0.3;
-    /*--tab-padding: calc(var(--window-border) / 2);*/
+
     --tab-padding: 0;
     --colorTransparent: transparent;
 
