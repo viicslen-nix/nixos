@@ -12,74 +12,79 @@ with inputs.self.lib; let
 
   cfg = config.modules.${namespace}.${name};
 
-  # Awesome-Vivaldi mod pack from GitHub
-  awesomeVivaldiSrc = pkgs.fetchFromGitHub {
-    owner = "PaRr0tBoY";
-    repo = "Awesome-Vivaldi";
-    rev = "14fccf3f2044b781383325255424541ba23de394";
-    hash = "sha256-3t4XQI+NFGbpmLO5dXSn7SDvOH2dzoWpHWebeuKSYow=";
-  };
+  # Local mods directory
+  modsDir = ./mods;
 
   # List of JavaScript mods to include
-  # Based on the recommended mods from Awesome-Vivaldi
   defaultJsMods = [
-    "tidyTitles.js"
-    "tidyTabs.js"
-    "ClearTabs.js"
-    "wrapToday.js"
-    "immersiveAddressbar.js"
-    "tabScroll.js"
-    "ybAddressBar.js"
-    "elementCapture.js"
-    "globalMediaControls.js"
-    "autoHidePanel.js"
-    "easyFiles.js"
-    "dialogTab.js"
-    "moonPhase.js"
-    "monochromeIcons.js"
+    "tidy-titles.js"
+    "tidy-tabs.js"
+    "clear-tabs.js"
+    "wrap-today.js"
+    "immersive-addressbar.js"
+    "tab-scroll.js"
+    "yb-address-bar.js"
+    "element-capture.js"
+    "global-media-controls.js"
+    "auto-hide-panel.js"
+    "easy-files.js"
+    "dialog-tab.js"
+    "moon-phase.js"
+    "monochrome-icons.js"
   ];
 
-  # Map mod names to their paths in the repo
+  # Map mod names to their paths in the local mods directory
   getModPath = modName: let
-    # Mods are organized in subdirectories by author
     modPaths = {
       # Root level mods
-      "tidyTitles.js" = "Javascripts/tidyTitles.js";
-      "tidyTabs.js" = "Javascripts/tidyTabs.js";
-      "clearTabs.js" = "Javascripts/clearTabs.js";
-      "wrapToday.js" = "Javascripts/wrapToday.js";
-      "immersiveAddressbar.js" = "Javascripts/immersiveAddressbar.js";
-      "mainbar.js" = "Javascripts/mainbar.js";
+      "tidy-titles.js" = "js/tidy-titles.js";
+      "tidy-tabs.js" = "js/tidy-tabs.js";
+      "clear-tabs.js" = "js/clear-tabs.js";
+      "wrap-today.js" = "js/wrap-today.js";
+      "immersive-addressbar.js" = "js/immersive-addressbar.js";
+      "mainbar.js" = "js/mainbar.js";
 
-      # Tam710562 mods
-      "ybAddressBar.js" = "Javascripts/aminought/ybAddressBar.js";
-      "elementCapture.js" = "Javascripts/Tam710562/elementCapture.js";
-      "globalMediaControls.js" = "Javascripts/Tam710562/globalMediaControls.js";
-      "easyFiles.js" = "Javascripts/Tam710562/easyFiles.js";
-      "dialogTab.js" = "Javascripts/Tam710562/dialogTab.js";
-      "mdNotes.js" = "Javascripts/Tam710562/mdNotes.js";
-      "importExportCommandChains.js" = "Javascripts/Tam710562/importExportCommandChains.js";
-      "feedIcon.js" = "Javascripts/Tam710562/feedIcon.js";
-      "adaptiveWebPanelHeaders.js" = "Javascripts/Tam710562/adaptiveWebPanelHeaders.js";
-      "clickAddBlockList.js" = "Javascripts/Tam710562/clickAddBlockList.js";
+      # aminought mods
+      "yb-address-bar.js" = "js/aminought/yb-address-bar.js";
+      "color-tabs.js" = "js/aminought/color-tabs.js";
 
-      # Luetage mods
-      "tabScroll.js" = "Javascripts/luetage/tabScroll.js";
-      "moonPhase.js" = "Javascripts/luetage/moonPhase.js";
-      "monochromeIcons.js" = "Javascripts/luetage/monochromeIcons.js";
-      "accentMod.js" = "Javascripts/luetage/accentMod.js";
-      "collapseKeyboardSettings.js" = "Javascripts/luetage/collapseKeyboardSettings.js";
-      "backupSearchEngines.js" = "Javascripts/luetage/backupSearchEngines.js";
-      "activateTabOnHover.js" = "Javascripts/luetage/activateTabOnHover.js";
+      # tam710562 mods
+      "element-capture.js" = "js/tam710562/element-capture.js";
+      "global-media-controls.js" = "js/tam710562/global-media-controls.js";
+      "easy-files.js" = "js/tam710562/easy-files.js";
+      "dialog-tab.js" = "js/tam710562/dialog-tab.js";
+      "md-notes.js" = "js/tam710562/md-notes.js";
+      "import-export-command-chains.js" = "js/tam710562/import-export-command-chains.js";
+      "feed-icon.js" = "js/tam710562/feed-icon.js";
+      "adaptive-web-panel-headers.js" = "js/tam710562/adaptive-web-panel-headers.js";
+      "click-add-block-list.js" = "js/tam710562/click-add-block-list.js";
+      "select-search.js" = "js/tam710562/select-search.js";
 
-      # Other mods
-      "autoHidePanel.js" = "Javascripts/Other/autoHidePanel.js";
+      # luetage mods
+      "tab-scroll.js" = "js/luetage/tab-scroll.js";
+      "moon-phase.js" = "js/luetage/moon-phase.js";
+      "monochrome-icons.js" = "js/luetage/monochrome-icons.js";
+      "accent-mod.js" = "js/luetage/accent-mod.js";
+      "collapse-keyboard-settings.js" = "js/luetage/collapse-keyboard-settings.js";
+      "backup-search-engines.js" = "js/luetage/backup-search-engines.js";
+      "activate-tab-on-hover.js" = "js/luetage/activate-tab-on-hover.js";
+      "theme-internal.js" = "js/luetage/theme-internal.js";
+
+      # other mods
+      "auto-hide-panel.js" = "js/other/auto-hide-panel.js";
+      "g-bartsch-hibernate-tabs.js" = "js/other/g-bartsch-hibernate-tabs.js";
+      "picture-in-picture.js" = "js/other/picture-in-picture.js";
+      "vivaldi-dashboard-camo.js" = "js/other/vivaldi-dashboard-camo.js";
+
+      # page-action mods
+      "follower-tabs.js" = "js/page-action/follower-tabs.js";
+      "tabs-lock.js" = "js/page-action/tabs-lock.js";
     };
   in
-    modPaths.${modName} or "Javascripts/${modName}";
+    modPaths.${modName} or "js/${modName}";
 
-  # Build custom JS files from mod pack
-  customJsFiles = map (modName: "${awesomeVivaldiSrc}/${getModPath modName}") cfg.jsMods;
+  # Build custom JS files from local mods
+  customJsFiles = map (modName: "${modsDir}/${getModPath modName}") cfg.jsMods;
 
   # Create a patched Vivaldi with custom JS files injected
   # Based on https://github.com/budlabs/vivaldi-autoinject-custom-js-ui
@@ -127,7 +132,7 @@ with inputs.self.lib; let
   '';
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "Vivaldi browser with Awesome-Vivaldi mods");
+    enable = mkEnableOption (mdDoc "Vivaldi browser with custom mods");
 
     enableWayland = mkOption {
       type = types.bool;
@@ -139,46 +144,54 @@ in {
       type = types.listOf types.str;
       default = defaultJsMods;
       description = ''
-        List of JavaScript mods to enable from the Awesome-Vivaldi mod pack.
+        List of JavaScript mods to enable from the local mods directory.
         Available mods:
-        - tidyTitles.js - AI-powered tab title optimization
-        - tidyTabs.js - AI-powered tab organization
-        - clearTabs.js - Clear/close tabs functionality
-        - wrapToday.js - Wrap today's date
-        - immersiveAddressbar.js - Immersive address bar
+        - tidy-titles.js - AI-powered tab title optimization
+        - tidy-tabs.js - AI-powered tab organization
+        - clear-tabs.js - Clear/close tabs functionality
+        - wrap-today.js - Wrap today's date
+        - immersive-addressbar.js - Immersive address bar
         - mainbar.js - Main bar modifications
-        - tabScroll.js - Tab scrolling functionality
-        - ybAddressBar.js - Enhanced address bar
-        - elementCapture.js - Element capture functionality
-        - globalMediaControls.js - Global media controls panel
-        - autoHidePanel.js - Auto-hide panel
-        - easyFiles.js - Easy file attachments
-        - dialogTab.js - Dialog tab functionality
-        - moonPhase.js - Moon phase display
-        - monochromeIcons.js - Monochrome icons
-        - accentMod.js - Accent color modifications
-        - mdNotes.js - Markdown notes editor
-        - importExportCommandChains.js - Import/export command chains
-        - feedIcon.js - RSS feed icon
-        - adaptiveWebPanelHeaders.js - Adaptive web panel headers
-        - clickAddBlockList.js - Click to add to block list
-        - collapseKeyboardSettings.js - Collapse keyboard settings
-        - backupSearchEngines.js - Backup search engines
-        - activateTabOnHover.js - Activate tab on hover
+        - tab-scroll.js - Tab scrolling functionality
+        - yb-address-bar.js - Enhanced address bar
+        - element-capture.js - Element capture functionality
+        - global-media-controls.js - Global media controls panel
+        - auto-hide-panel.js - Auto-hide panel
+        - easy-files.js - Easy file attachments
+        - dialog-tab.js - Dialog tab functionality
+        - moon-phase.js - Moon phase display
+        - monochrome-icons.js - Monochrome icons
+        - accent-mod.js - Accent color modifications
+        - md-notes.js - Markdown notes editor
+        - import-export-command-chains.js - Import/export command chains
+        - feed-icon.js - RSS feed icon
+        - adaptive-web-panel-headers.js - Adaptive web panel headers
+        - click-add-block-list.js - Click to add to block list
+        - collapse-keyboard-settings.js - Collapse keyboard settings
+        - backup-search-engines.js - Backup search engines
+        - activate-tab-on-hover.js - Activate tab on hover
+        - color-tabs.js - Color tabs
+        - theme-internal.js - Theme internal
+        - g-bartsch-hibernate-tabs.js - Hibernate tabs
+        - picture-in-picture.js - Picture in picture
+        - vivaldi-dashboard-camo.js - Dashboard camo
+        - follower-tabs.js - Follower tabs
+        - tabs-lock.js - Tabs lock
+        - select-search.js - Select search
       '';
     };
 
     enableCssMods = mkOption {
       type = types.bool;
       default = true;
-      description = "Enable CSS mods from Awesome-Vivaldi (requires enabling CSS mods in Vivaldi settings)";
+      description = "Enable CSS mods from local mods directory (requires enabling CSS mods in Vivaldi settings)";
     };
 
     cssModsPath = mkOption {
       type = types.nullOr types.path;
       default = null;
       description = ''
-        Custom path for CSS mods. If null, uses the Awesome-Vivaldi CSS directory.
+        Custom path for CSS mods. If null, uses the local CSS directory.
         Note: You need to manually set this path in Vivaldi settings under
         Appearance > Custom UI Modifications.
       '';
@@ -195,7 +208,7 @@ in {
           source =
             if cfg.cssModsPath != null
             then cfg.cssModsPath
-            else "${awesomeVivaldiSrc}/CSS";
+            else "${modsDir}/css";
           recursive = true;
         };
       };
