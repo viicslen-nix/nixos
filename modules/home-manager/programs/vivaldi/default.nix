@@ -86,24 +86,29 @@ with inputs.self.lib; let
   # Build custom JS files from local mods
   customJsFiles = map (modName: "${modsDir}/${getModPath modName}") cfg.jsMods;
 
+  vivaldiPackage = pkgs.vivaldi.override {
+    proprietaryCodecs = true;
+    enableWidevine = true;
+  };
+
   # Create a patched Vivaldi with custom JS files injected
   # Based on https://github.com/budlabs/vivaldi-autoinject-custom-js-ui
-  vivaldiWithMods = pkgs.runCommand "vivaldi-custom-ui-${pkgs.vivaldi.version}" {
-    inherit (pkgs.vivaldi) meta;
+  vivaldiWithMods = pkgs.runCommand "vivaldi-custom-ui-${vivaldiPackage.version}" {
+    inherit (vivaldiPackage) meta;
     nativeBuildInputs = [pkgs.makeWrapper];
   } ''
     # Create output directory structure
     mkdir -p $out
 
     # Copy the original Vivaldi, preserving symlinks
-    cp -rs ${pkgs.vivaldi}/* $out/
+    cp -rs ${vivaldiPackage}/* $out/
 
     # Make the resources/vivaldi directory writable
     chmod -R u+w $out
 
     # Remove the symlink to window.html and copy the actual file
     rm -f $out/opt/vivaldi/resources/vivaldi/window.html
-    cp ${pkgs.vivaldi}/opt/vivaldi/resources/vivaldi/window.html \
+    cp ${vivaldiPackage}/opt/vivaldi/resources/vivaldi/window.html \
        $out/opt/vivaldi/resources/vivaldi/window.html
     chmod u+w $out/opt/vivaldi/resources/vivaldi/window.html
 
@@ -124,7 +129,7 @@ with inputs.self.lib; let
 
     # Re-wrap the Vivaldi binary with Wayland flags if enabled
     rm -f $out/bin/vivaldi
-    makeWrapper ${pkgs.vivaldi}/bin/vivaldi $out/bin/vivaldi \
+    makeWrapper ${vivaldiPackage}/bin/vivaldi $out/bin/vivaldi \
       ${lib.optionalString cfg.enableWayland ''
       --add-flags "--ozone-platform=wayland" \
       --add-flags "--enable-features=UseOzonePlatform"
