@@ -41,6 +41,7 @@
     impermanence = import ./functionality/impermanence;
     power-management = import ./functionality/power-management;
     virtual-machines = import ./functionality/virtual-machines;
+    miami-bus-tracker = import ./functionality/miami-bus-tracker;
   };
 
   # Programs
