@@ -56,6 +56,17 @@ with lib; {
     displayManager.gdm.enable = true;
     displayManager.defaultSession = "niri";
 
+    miami-bus-tracker = {
+      enable = true;
+      stopId = "1340";
+      routeId = "836";
+      direction = "Westbound";
+      notification = true;
+      notifyMinutes = 10;
+      activeTimeStart = "16:00";
+      activeTimeEnd = "19:00";
+    };
+
     openssh = {
       enable = true;
       startWhenNeeded = true;
