@@ -149,6 +149,11 @@ in {
       act
       inputs.worktree-manager.default
       percona-toolkit
+
+      # AI
+      copilot-cli
+      claude-code
+      gemini-cli
     ];
   };
 }
