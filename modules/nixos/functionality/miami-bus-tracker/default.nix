@@ -365,63 +365,34 @@ in {
       findStopScript
     ];
 
-    # Systemd service
-    systemd.services.miami-bus-tracker = {
-      description = "Check for nearest ${cfg.routeId} ${cfg.direction} bus";
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${busTrackerScript}/bin/miami-bus-tracker";
-        User = "nobody";
-        Group = "nogroup";
-      };
-      path = with pkgs; [ curl xmlstarlet gnugrep gnused ];
+    systemd = {
+      # Notification service (only if notifications are enabled)
+      services.miami-bus-notify = mkIf cfg.notification {
+        description = "Send notification for approaching ${cfg.routeId} ${cfg.direction} bus";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${notificationScript}/bin/miami-bus-notify";
+        };
+        path = with pkgs; [ curl xmlstarlet gnugrep coreutils systemd sudo gawk libnotify gnused ];
 
-      # Add time-based conditions if activeTimeStart is set
-      unitConfig = mkIf (cfg.activeTimeStart != "") {
-        ConditionTime =
-          if cfg.activeTimeEnd != "" && cfg.activeTimeEnd < cfg.activeTimeStart
-          then "${cfg.activeTimeStart}..23:59,00:00..${cfg.activeTimeEnd}"  # Crosses midnight
-          else "${cfg.activeTimeStart}..${cfg.activeTimeEnd}";              # Normal range
+        # Add time-based conditions if activeTimeStart is set
+        unitConfig = mkIf (cfg.activeTimeStart != "") {
+          ConditionTime =
+            if cfg.activeTimeEnd != "" && cfg.activeTimeEnd < cfg.activeTimeStart
+            then "${cfg.activeTimeStart}..23:59,00:00..${cfg.activeTimeEnd}"  # Crosses midnight
+            else "${cfg.activeTimeStart}..${cfg.activeTimeEnd}";              # Normal range
+        };
       };
-    };
 
-    # Systemd timer
-    systemd.timers.miami-bus-tracker = {
-      description = "Timer for Miami Bus Tracker";
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnBootSec = "1min";
-        OnUnitActiveSec = cfg.interval;
-        Unit = "miami-bus-tracker.service";
-      };
-    };
-
-    # Notification service (only if notifications are enabled)
-    systemd.services.miami-bus-notify = mkIf cfg.notification {
-      description = "Send notification for approaching ${cfg.routeId} ${cfg.direction} bus";
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${notificationScript}/bin/miami-bus-notify";
-      };
-      path = with pkgs; [ curl xmlstarlet gnugrep coreutils systemd sudo gawk libnotify gnused ];
-
-      # Add time-based conditions if activeTimeStart is set
-      unitConfig = mkIf (cfg.activeTimeStart != "") {
-        ConditionTime =
-          if cfg.activeTimeEnd != "" && cfg.activeTimeEnd < cfg.activeTimeStart
-          then "${cfg.activeTimeStart}..23:59,00:00..${cfg.activeTimeEnd}"  # Crosses midnight
-          else "${cfg.activeTimeStart}..${cfg.activeTimeEnd}";              # Normal range
-      };
-    };
-
-    # Notification timer (only if notifications are enabled)
-    systemd.timers.miami-bus-notify = mkIf cfg.notification {
-      description = "Timer for Miami Bus Notification";
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnBootSec = "1min";
-        OnUnitActiveSec = cfg.interval;
-        Unit = "miami-bus-notify.service";
+      # Notification timer (only if notifications are enabled)
+      timers.miami-bus-notify = mkIf cfg.notification {
+        description = "Timer for Miami Bus Notification";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnBootSec = "1min";
+          OnUnitActiveSec = cfg.interval;
+          Unit = "miami-bus-notify.service";
+        };
       };
     };
   };
