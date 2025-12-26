@@ -1,8 +1,10 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.services.miami-bus-tracker;
 
   # Script to fetch and display bus tracker info
@@ -277,7 +279,6 @@ let
       -v "concat('StopID: ', StopID, ' | ', StopName, ' | Seq: ', Sequence)" -n \
       2>/dev/null | ${pkgs.gnugrep}/bin/grep -i "$SEARCH_TERM" || echo "No matching stops found"
   '';
-
 in {
   options.services.miami-bus-tracker = {
     enable = mkEnableOption "Miami-Dade Transit Bus Tracker";
@@ -373,21 +374,21 @@ in {
           Type = "oneshot";
           ExecStart = "${notificationScript}/bin/miami-bus-notify";
         };
-        path = with pkgs; [ curl xmlstarlet gnugrep coreutils systemd sudo gawk libnotify gnused ];
+        path = with pkgs; [curl xmlstarlet gnugrep coreutils systemd sudo gawk libnotify gnused];
 
         # Add time-based conditions if activeTimeStart is set
         unitConfig = mkIf (cfg.activeTimeStart != "") {
           ConditionTime =
             if cfg.activeTimeEnd != "" && cfg.activeTimeEnd < cfg.activeTimeStart
-            then "${cfg.activeTimeStart}..23:59,00:00..${cfg.activeTimeEnd}"  # Crosses midnight
-            else "${cfg.activeTimeStart}..${cfg.activeTimeEnd}";              # Normal range
+            then "${cfg.activeTimeStart}..23:59,00:00..${cfg.activeTimeEnd}" # Crosses midnight
+            else "${cfg.activeTimeStart}..${cfg.activeTimeEnd}"; # Normal range
         };
       };
 
       # Notification timer (only if notifications are enabled)
       timers.miami-bus-notify = mkIf cfg.notification {
         description = "Timer for Miami Bus Notification";
-        wantedBy = [ "timers.target" ];
+        wantedBy = ["timers.target"];
         timerConfig = {
           OnBootSec = "1min";
           OnUnitActiveSec = cfg.interval;

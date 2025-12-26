@@ -93,48 +93,51 @@ with inputs.self.lib; let
 
   # Create a patched Vivaldi with custom JS files injected
   # Based on https://github.com/budlabs/vivaldi-autoinject-custom-js-ui
-  vivaldiWithMods = pkgs.runCommand "vivaldi-custom-ui-${vivaldiPackage.version}" {
-    inherit (vivaldiPackage) meta;
-    nativeBuildInputs = [pkgs.makeWrapper];
-  } ''
-    # Create output directory structure
-    mkdir -p $out
+  vivaldiWithMods =
+    pkgs.runCommand "vivaldi-custom-ui-${vivaldiPackage.version}" {
+      inherit (vivaldiPackage) meta;
+      nativeBuildInputs = [pkgs.makeWrapper];
+    } ''
+      # Create output directory structure
+      mkdir -p $out
 
-    # Copy the original Vivaldi, preserving symlinks
-    cp -rs ${vivaldiPackage}/* $out/
+      # Copy the original Vivaldi, preserving symlinks
+      cp -rs ${vivaldiPackage}/* $out/
 
-    # Make the resources/vivaldi directory writable
-    chmod -R u+w $out
+      # Make the resources/vivaldi directory writable
+      chmod -R u+w $out
 
-    # Remove the symlink to window.html and copy the actual file
-    rm -f $out/opt/vivaldi/resources/vivaldi/window.html
-    cp ${vivaldiPackage}/opt/vivaldi/resources/vivaldi/window.html \
-       $out/opt/vivaldi/resources/vivaldi/window.html
-    chmod u+w $out/opt/vivaldi/resources/vivaldi/window.html
+      # Remove the symlink to window.html and copy the actual file
+      rm -f $out/opt/vivaldi/resources/vivaldi/window.html
+      cp ${vivaldiPackage}/opt/vivaldi/resources/vivaldi/window.html \
+         $out/opt/vivaldi/resources/vivaldi/window.html
+      chmod u+w $out/opt/vivaldi/resources/vivaldi/window.html
 
-    # Copy custom JS files to Vivaldi resources directory
-    ${lib.concatMapStringsSep "\n" (jsFile: ''
-      cp ${jsFile} $out/opt/vivaldi/resources/vivaldi/${builtins.baseNameOf (toString jsFile)}
-    '') customJsFiles}
+      # Copy custom JS files to Vivaldi resources directory
+      ${lib.concatMapStringsSep "\n" (jsFile: ''
+          cp ${jsFile} $out/opt/vivaldi/resources/vivaldi/${builtins.baseNameOf (toString jsFile)}
+        '')
+        customJsFiles}
 
-    # Inject script tags into window.html before </body>
-    ${lib.concatMapStringsSep "\n" (jsFile: let
-      fileName = builtins.baseNameOf (toString jsFile);
-    in ''
-      if ! grep -q '<script src="${fileName}"></script>' $out/opt/vivaldi/resources/vivaldi/window.html; then
-        sed -i 's|</body>|  <script src="${fileName}"></script>\n</body>|' \
-          $out/opt/vivaldi/resources/vivaldi/window.html
-      fi
-    '') customJsFiles}
+      # Inject script tags into window.html before </body>
+      ${lib.concatMapStringsSep "\n" (jsFile: let
+          fileName = builtins.baseNameOf (toString jsFile);
+        in ''
+          if ! grep -q '<script src="${fileName}"></script>' $out/opt/vivaldi/resources/vivaldi/window.html; then
+            sed -i 's|</body>|  <script src="${fileName}"></script>\n</body>|' \
+              $out/opt/vivaldi/resources/vivaldi/window.html
+          fi
+        '')
+        customJsFiles}
 
-    # Re-wrap the Vivaldi binary with Wayland flags if enabled
-    rm -f $out/bin/vivaldi
-    makeWrapper ${vivaldiPackage}/bin/vivaldi $out/bin/vivaldi \
-      ${lib.optionalString cfg.enableWayland ''
-      --add-flags "--ozone-platform=wayland" \
-      --add-flags "--enable-features=UseOzonePlatform"
+      # Re-wrap the Vivaldi binary with Wayland flags if enabled
+      rm -f $out/bin/vivaldi
+      makeWrapper ${vivaldiPackage}/bin/vivaldi $out/bin/vivaldi \
+        ${lib.optionalString cfg.enableWayland ''
+        --add-flags "--ozone-platform=wayland" \
+        --add-flags "--enable-features=UseOzonePlatform"
       ''}
-  '';
+    '';
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc "Vivaldi browser with custom mods");
