@@ -149,6 +149,7 @@ in {
       act
       inputs.worktree-manager.default
       percona-toolkit
+      local.app-images.responsively
 
       # AI
       copilot-cli
