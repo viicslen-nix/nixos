@@ -150,6 +150,7 @@ in {
       inputs.worktree-manager.default
       percona-toolkit
       local.app-images.responsively
+      local.mago
 
       # AI
       copilot-cli
