@@ -5,8 +5,8 @@
   pkg-config,
   openssl,
   versionCheckHook,
+  ...
 }:
-
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "mago";
   version = "1.0.3";
@@ -15,22 +15,22 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "carthage-software";
     repo = "mago";
     tag = finalAttrs.version;
-    hash = "";
+    hash = "sha256-ASv4Yg8uM3IruoEqvsYXIHGTImUz8NwrUBTdNFizuJ4=";
   };
 
-  cargoHash = "";
+  cargoHash = "sha256-ASv4Yg8uM3IruoEqvsYXIHGTImUz8NwrUBTdNFizuJ4=";
 
   env = {
     # Get openssl-sys to use pkg-config
     OPENSSL_NO_VENDOR = 1;
   };
 
-  nativeBuildInputs = [ pkg-config ];
+  nativeBuildInputs = [pkg-config];
 
-  buildInputs = [ openssl ];
+  buildInputs = [openssl];
 
   doInstallCheck = true;
-  nativeInstallCheckInputs = [ versionCheckHook ];
+  nativeInstallCheckInputs = [versionCheckHook];
   versionCheckProgramArg = "--version";
 
   meta = {
@@ -38,7 +38,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     description = "Toolchain for PHP that aims to provide a set of tools to help developers write better code";
     homepage = "https://github.com/carthage-software/mago";
     license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ gaelreyrol ];
+    maintainers = with lib.maintainers; [gaelreyrol];
     mainProgram = "mago";
   };
 })
