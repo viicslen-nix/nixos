@@ -82,10 +82,10 @@
     };
 
     binds = {
-      "Mod+F1".action.spawn = [ "zen-browser" ];
-      "Mod+F2".action.spawn = [ "phpstorm" ];
-      "Mod+F3".action.spawn = [ "legcode" "--split=top" "kitty" "--split=bottom" ];
-      "Mod+F4".action.spawn = [ "code" "--split=top" "kitty" "--split=bottom" ];
+      "Mod+F1".action.spawn = ["zen-browser"];
+      "Mod+F2".action.spawn = ["phpstorm"];
+      "Mod+F3".action.spawn = ["legcode" "--split=top" "kitty" "--split=bottom"];
+      "Mod+F4".action.spawn = ["code" "--split=top" "kitty" "--split=bottom"];
     };
   };
 }
