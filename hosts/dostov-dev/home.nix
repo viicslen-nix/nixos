@@ -32,32 +32,60 @@
     vivaldi.enable = true;
   };
 
-  programs.niri.settings.outputs = {
-    "DP-1" = {
-      scale = 1.0;
-      position = {
-        x = 0;
-        y = 0;
+  programs.niri.settings = {
+    outputs = {
+      "DP-1" = {
+        scale = 1.0;
+        position = {
+          x = 0;
+          y = 0;
+        };
+        mode = {
+          width = 1920;
+          height = 1080;
+          refresh = 59.997;
+        };
       };
-      mode = {
-        width = 1920;
-        height = 1080;
-        refresh = 59.997;
+      "DP-2" = {
+        scale = 1.0;
+        position = {
+          x = 1920;
+          y = 0;
+        };
+        mode = {
+          width = 1920;
+          height = 1080;
+          refresh = 59.997;
+        };
+        focus-at-startup = true;
+        transform.rotation = 270;
       };
     };
-    "DP-2" = {
-      scale = 1.0;
-      position = {
-        x = 1920;
-        y = 0;
+
+    workspaces = {
+      "browser" = {
+        name = "Browser";
+        open-on-output = "DP-1";
       };
-      mode = {
-        width = 1920;
-        height = 1080;
-        refresh = 59.997;
+      "editor" = {
+        name = "Editor";
+        open-on-output = "DP-1";
       };
-      focus-at-startup = true;
-      transform.rotation = 270;
+      "communication" = {
+        name = "Communication";
+        open-on-output = "DP-2";
+      };
+      "system" = {
+        name = "System";
+        open-on-output = "DP-2";
+      };
+    };
+
+    binds = {
+      "Mod+F1".action.spawn = [ "zen-browser" ];
+      "Mod+F2".action.spawn = [ "phpstorm" ];
+      "Mod+F3".action.spawn = [ "legcode" "--split=top" "kitty" "--split=bottom" ];
+      "Mod+F4".action.spawn = [ "code" "--split=top" "kitty" "--split=bottom" ];
     };
   };
 }
