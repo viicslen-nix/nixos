@@ -150,10 +150,10 @@ in {
       inputs.worktree-manager.default
       percona-toolkit
       local.app-images.responsively
-      local.mago
+      # local.mago
 
       # AI
-      copilot-cli
+      github-copilot-cli
       claude-code
       gemini-cli
     ];
