@@ -23,6 +23,7 @@ in {
       yazi
       inputs.nixvim.default
       local.scripts.git-carve-submodule
+      ytmdesktop
     ];
 
     programs = {
