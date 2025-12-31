@@ -11,6 +11,11 @@ set shell := ["zsh", "-c"]
 test:
   nix eval .#evalTests --show-trace --print-build-logs --verbose
 
+# Check the full configuration for a given host
+# Usage: just check-host home-desktop
+check-host HOST='dostov-dev':
+  nix build .#nixosConfigurations.{{HOST}}.config.system.build.toplevel --print-build-logs
+
 # update all the flake inputs
 update:
   nix flake update
