@@ -2,15 +2,17 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
-  pkgs,
   lib,
+  pkgs,
   users,
+  inputs,
   ...
 }:
 with lib; {
   imports = [
     # Include the results of the hardware scan.
     ./hardware.nix
+    inputs.ghost-backup.nixosModules.default
   ];
 
   home-manager.sharedModules = [./home.nix];
@@ -53,6 +55,7 @@ with lib; {
 
   services = {
     blueman.enable = true;
+    ghost-backup.enable = true;
     displayManager.gdm.enable = true;
     displayManager.defaultSession = "niri";
 

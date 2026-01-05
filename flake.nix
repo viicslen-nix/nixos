@@ -136,6 +136,10 @@
       url = "github:viicslen/worktree-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ghost-backup = {
+      url = "github:FmTod/ghost-backup";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {

@@ -138,6 +138,8 @@ in {
       gosec
 
       # Tools
+      gh
+      glab
       mysql80
       awscli
       meld
@@ -148,6 +150,7 @@ in {
       devbox
       act
       inputs.worktree-manager.default
+      inputs.ghost-backup.default
       percona-toolkit
       local.app-images.responsively
       # local.mago
