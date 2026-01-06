@@ -5,4 +5,5 @@ in {
   "secrets/restic/password.age".publicKeys = [sshKey];
   "secrets/github/runner.age".publicKeys = [sshKey];
   "secrets/intelephense/licence.age".publicKeys = [sshKey];
+  "secrets/avante/anthropic-api-key.age".publicKeys = [sshKey];
 }

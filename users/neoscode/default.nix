@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  config,
   osConfig,
   ...
 }: let
@@ -13,6 +14,10 @@ in {
       file = ../../secrets/intelephense/licence.age;
       path = "${osConfig.users.users.${user}.home}/intelephense/licence.txt";
     };
+
+    secrets.avante-anthropic-api-key = {
+      file = ../../secrets/avante/anthropic-api-key.age;
+    };
   };
 
   home = {
@@ -22,6 +27,7 @@ in {
     sessionVariables = {
       EDITOR = "nvim";
       NIXOS_OZONE_WL = "1";
+      AVANTE_ANTHROPIC_API_KEY = "$(${pkgs.coreutils}/bin/cat ${config.age.secrets.avante-anthropic-api-key.path})";
     };
   };
 
@@ -75,6 +81,12 @@ in {
       matchBlocks = {
         "*".controlPath = "/home/${user}/.ssh/controlmasters/%r@%h:%p";
         "work.neoscode.com".proxyCommand = "${lib.getExe pkgs.cloudflared} access ssh --hostname %h";
+      };
+    };
+
+    nushell = {
+      environmentVariables = {
+        AVANTE_ANTHROPIC_API_KEY = "$(${pkgs.coreutils}/bin/cat ${config.age.secrets.avante-anthropic-api-key.path})";
       };
     };
   };
