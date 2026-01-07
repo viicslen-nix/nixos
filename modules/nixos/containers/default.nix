@@ -69,12 +69,19 @@ in {
       # Create external container network
       systemd.services.init-container-network = {
         description = "Create local container network";
-        after = if cfg.settings.backend == "docker" then ["docker.service"] else ["podman.service"];
-        requires = if cfg.settings.backend == "docker" then ["docker.service"] else ["podman.service"];
+        after =
+          if cfg.settings.backend == "docker"
+          then ["docker.service"]
+          else ["podman.service"];
+        requires =
+          if cfg.settings.backend == "docker"
+          then ["docker.service"]
+          else ["podman.service"];
         wantedBy = ["multi-user.target"];
         serviceConfig.Type = "oneshot";
         script =
-          if cfg.settings.backend == "docker" then ''
+          if cfg.settings.backend == "docker"
+          then ''
             ${config.virtualisation.docker.package}/bin/docker network inspect local >/dev/null 2>&1 || \
             ${config.virtualisation.docker.package}/bin/docker network create local
           ''
@@ -91,6 +98,7 @@ in {
       # Generate SSL certificates for container hosts
       systemd.services.generate-container-certs = let
         containerHosts = unique (flatten [
+          (optional config.modules.containers.traefik.enable config.modules.containers.traefik.host)
           (optional config.modules.containers.buggregator.enable config.modules.containers.buggregator.host)
           (optional config.modules.containers.homarr.enable config.modules.containers.homarr.host)
           (optional config.modules.containers.local-ai.enable config.modules.containers.local-ai.host)

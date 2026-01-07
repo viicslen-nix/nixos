@@ -20,7 +20,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    networking.hosts."127.0.0.1" = [ cfg.host ];
+    networking.hosts."127.0.0.1" = [cfg.host];
 
     virtualisation.oci-containers.containers = {
       nginx-proxy-manager = {
