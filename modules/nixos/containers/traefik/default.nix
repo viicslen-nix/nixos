@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }:
@@ -12,6 +13,12 @@ with lib; let
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
+
+    host = mkOption {
+      type = types.str;
+      default = "traefik.local";
+      description = "Hostname for Traefik dashboard";
+    };
 
     customCerts = mkOption {
       type = types.attrsOf (types.submodule {
@@ -61,6 +68,8 @@ in {
   };
 
   config = mkIf cfg.enable {
+    networking.hosts."127.0.0.1" = [cfg.host];
+
     virtualisation.oci-containers.containers = {
       traefik = let
         sslEnabled = containerCfg.ssl.enable;
@@ -75,23 +84,33 @@ in {
         ];
         extraOptions = [
           "--network=local"
+          "--label=traefik.enable=true"
+          "--label=traefik.http.routers.traefik.rule=Host(`${cfg.host}`)"
+          "--label=traefik.http.routers.traefik.entrypoints=websecure"
+          "--label=traefik.http.routers.traefik.tls=true"
+          "--label=traefik.http.routers.traefik.service=api@internal"
         ];
-        volumes = [
-          "/var/run/docker.sock:/var/run/docker.sock:ro"
-          "traefik-data:/etc/traefik"
-          "${cfg.certDir}:/custom-certs:ro"
-        ] ++ optional sslEnabled "${certDir}:/certs:ro";
-        cmd = [
-          "--api.insecure=true"
-          "--providers.docker=true"
-          "--providers.docker.exposedbydefault=false"
-          "--entrypoints.web.address=:80"
-          "--entrypoints.websecure.address=:443"
-          "--providers.file.directory=/etc/traefik/dynamic"
-          "--providers.file.watch=true"
-        ] ++ optionals sslEnabled [
-          "--entrypoints.websecure.http.tls=true"
-        ];
+        volumes =
+          [
+            "/var/run/docker.sock:/var/run/docker.sock:ro"
+            "traefik-data:/etc/traefik"
+            "${cfg.certDir}:/custom-certs:ro"
+          ]
+          ++ optional sslEnabled "${certDir}:/certs:ro";
+        cmd =
+          [
+            "--api.insecure=true"
+            "--api.dashboard=true"
+            "--providers.docker=true"
+            "--providers.docker.exposedbydefault=false"
+            "--entrypoints.web.address=:80"
+            "--entrypoints.websecure.address=:443"
+            "--providers.file.directory=/etc/traefik/dynamic"
+            "--providers.file.watch=true"
+          ]
+          ++ optionals sslEnabled [
+            "--entrypoints.websecure.http.tls=true"
+          ];
         log-driver = containerCfg.log-driver;
       };
     };
@@ -110,15 +129,19 @@ in {
         keyFile = "/certs/containers.key";
       };
 
-      customCerts = mapAttrsToList (domain: cert: {
-        certFile = "/custom-certs/${baseNameOf cert.certFile}";
-        keyFile = "/custom-certs/${baseNameOf cert.keyFile}";
-      }) cfg.customCerts;
+      customCerts =
+        mapAttrsToList (domain: cert: {
+          certFile = "/custom-certs/${baseNameOf cert.certFile}";
+          keyFile = "/custom-certs/${baseNameOf cert.keyFile}";
+        })
+        cfg.customCerts;
 
-      autoCerts = map (domain: {
-        certFile = "/custom-certs/${replaceStrings ["*"] ["wildcard"] domain}.crt";
-        keyFile = "/custom-certs/${replaceStrings ["*"] ["wildcard"] domain}.key";
-      }) cfg.autoCerts;
+      autoCerts =
+        map (domain: {
+          certFile = "/custom-certs/${replaceStrings ["*"] ["wildcard"] domain}.crt";
+          keyFile = "/custom-certs/${replaceStrings ["*"] ["wildcard"] domain}.key";
+        })
+        cfg.autoCerts;
 
       allCerts = optional containerCfg.ssl.enable containerCert ++ customCerts ++ autoCerts;
     in {
@@ -132,32 +155,42 @@ in {
     # Generate auto certificates with mkcert
     systemd.services.traefik-auto-certs = mkIf (cfg.autoCerts != []) {
       description = "Generate auto certificates for Traefik";
-      wantedBy = [ "multi-user.target" ];
-      before = [ "${containerCfg.backend}-traefik.service" ];
-      path = [ config.environment.systemPackages ];
+      wantedBy = ["multi-user.target"];
+      before = ["${containerCfg.backend}-traefik.service"];
+      path = [pkgs.mkcert];
+      environment = {
+        CAROOT = "${cfg.certDir}/ca";
+      };
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
       };
       script = ''
         mkdir -p ${cfg.certDir}
+        mkdir -p ${cfg.certDir}/ca
         cd ${cfg.certDir}
 
+        # Initialize mkcert CA if it doesn't exist
+        if [ ! -f "${cfg.certDir}/ca/rootCA.pem" ]; then
+          mkcert -install
+        fi
+
         ${concatStringsSep "\n" (map (domain: let
-          safeName = replaceStrings ["*"] ["wildcard"] domain;
-        in ''
-          if [ ! -f "${safeName}.crt" ] || [ ! -f "${safeName}.key" ]; then
-            mkcert -key-file ${safeName}.key -cert-file ${safeName}.crt ${domain}
-          fi
-        '') cfg.autoCerts)}
+            safeName = replaceStrings ["*"] ["wildcard"] domain;
+          in ''
+            if [ ! -f "${safeName}.crt" ] || [ ! -f "${safeName}.key" ]; then
+              mkcert -key-file ${safeName}.key -cert-file ${safeName}.crt ${domain}
+            fi
+          '')
+          cfg.autoCerts)}
       '';
     };
 
     # Copy custom certificates to the cert directory
     systemd.services.traefik-custom-certs = mkIf (cfg.customCerts != {}) {
       description = "Copy custom certificates for Traefik";
-      wantedBy = [ "multi-user.target" ];
-      before = [ "${containerCfg.backend}-traefik.service" ];
+      wantedBy = ["multi-user.target"];
+      before = ["${containerCfg.backend}-traefik.service"];
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
@@ -166,7 +199,8 @@ in {
         mapAttrsToList (domain: cert: ''
           cp ${cert.certFile} ${cfg.certDir}/
           cp ${cert.keyFile} ${cfg.certDir}/
-        '') cfg.customCerts
+        '')
+        cfg.customCerts
       );
     };
   };
