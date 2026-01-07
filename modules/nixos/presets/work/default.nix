@@ -158,6 +158,7 @@ in {
       # AI
       github-copilot-cli
       claude-code
+      claude-code-acp
       gemini-cli
     ];
   };

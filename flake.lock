@@ -1100,11 +1100,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767651873,
-        "narHash": "sha256-Yi19LcoSMW8ag9a/ZbDd6Idm4S98fzz255vZJd9dmHg=",
+        "lastModified": 1767729704,
+        "narHash": "sha256-sL0H3Z/qMXDblD+w4mbVAQaVZrxCmJYEn/i3Qx7ljV4=",
         "owner": "FmTod",
         "repo": "ghost-backup",
-        "rev": "bd84fdd7a4131bcdffb8356a3a86bb1ef79cf1dd",
+        "rev": "cda31b63d29817c18196b7c7b73f759edc4c8f9b",
         "type": "github"
       },
       "original": {

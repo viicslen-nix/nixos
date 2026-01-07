@@ -85,9 +85,13 @@ in {
     };
 
     nushell = {
-      environmentVariables = {
-        AVANTE_ANTHROPIC_API_KEY = "$(${pkgs.coreutils}/bin/cat ${config.age.secrets.avante-anthropic-api-key.path})";
-      };
+      extraEnv = let
+        # Convert shell variable syntax to nushell interpolation syntax
+        # ${VAR_NAME} -> ($env.VAR_NAME)
+        secretPath = builtins.replaceStrings ["\${" "}"] ["($env." ")"] config.age.secrets.avante-anthropic-api-key.path;
+      in ''
+        $env.AVANTE_ANTHROPIC_API_KEY = (open --raw $"${secretPath}");
+      '';
     };
   };
 
