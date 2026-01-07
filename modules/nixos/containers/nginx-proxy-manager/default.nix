@@ -4,7 +4,7 @@
   ...
 }:
 with lib; let
-  name = "postgres";
+  name = "nginx-proxy-manager";
   namespace = "containers";
 
   cfg = config.modules.${namespace}.${name};
@@ -14,8 +14,8 @@ in {
 
     host = mkOption {
       type = types.str;
-      default = "postgres.local";
-      description = "Hostname for PostgreSQL";
+      default = "npm.local";
+      description = "Hostname for Nginx Proxy Manager";
     };
   };
 
@@ -23,21 +23,21 @@ in {
     networking.hosts."127.0.0.1" = [ cfg.host ];
 
     virtualisation.oci-containers.containers = {
-      postgres = {
-        hostname = "postgres";
-        image = "postgres:latest";
+      nginx-proxy-manager = {
+        hostname = "npm";
+        image = "jc21/nginx-proxy-manager:latest";
         ports = [
-          "127.0.0.1:5432:5432"
+          "127.0.0.1:80:80"
+          "127.0.0.1:443:443"
+          "127.0.0.1:81:81"
+        ];
+        volumes = [
+          "nginx-proxy-manager:/data"
+          "letsencrypt:/etc/letsencrypt"
         ];
         extraOptions = [
           "--network=local"
         ];
-        volumes = [
-          "pgdata:/var/lib/postgresql/data"
-        ];
-        environment = {
-          POSTGRES_PASSWORD = "secret";
-        };
         log-driver = config.modules.containers.settings.log-driver;
       };
     };

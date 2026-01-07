@@ -4,7 +4,7 @@
   ...
 }:
 with lib; let
-  name = "postgres";
+  name = "mysql";
   namespace = "containers";
 
   cfg = config.modules.${namespace}.${name};
@@ -14,8 +14,8 @@ in {
 
     host = mkOption {
       type = types.str;
-      default = "postgres.local";
-      description = "Hostname for PostgreSQL";
+      default = "mysql.local";
+      description = "Hostname for MySQL";
     };
   };
 
@@ -23,20 +23,24 @@ in {
     networking.hosts."127.0.0.1" = [ cfg.host ];
 
     virtualisation.oci-containers.containers = {
-      postgres = {
-        hostname = "postgres";
-        image = "postgres:latest";
+      mysql = {
+        hostname = "mysql";
+        image = "percona/percona-server:latest";
         ports = [
-          "127.0.0.1:5432:5432"
-        ];
-        extraOptions = [
-          "--network=local"
+          "127.0.0.1:3306:3306"
         ];
         volumes = [
-          "pgdata:/var/lib/postgresql/data"
+          "percona-mysql:/var/lib/mysql"
+          "percona-mysql-config:/etc/my.cnf.d"
+        ];
+        networks = [
+          "local"
+        ];
+        cmd = [
+          "--disable-log-bin"
         ];
         environment = {
-          POSTGRES_PASSWORD = "secret";
+          MYSQL_ROOT_PASSWORD = "secret";
         };
         log-driver = config.modules.containers.settings.log-driver;
       };

@@ -10,14 +10,6 @@ with lib; let
   cfg = config.${namespace}.${name};
 in {
   options.${namespace}.${name} = {
-    portainer = mkEnableOption (mdDoc "Portainer");
-    mysql = mkEnableOption (mdDoc "MySQL");
-    redis = mkEnableOption (mdDoc "Redis");
-    soketi = mkEnableOption (mdDoc "Soketi");
-    meilisearch = mkEnableOption (mdDoc "Meilisearch");
-    nginx-proxy-manager = mkEnableOption (mdDoc "Nginx Proxy Manager");
-    local-ai = mkEnableOption (mdDoc "Local AI");
-
     settings = {
       log-driver = mkOption {
         type = types.str;
@@ -36,145 +28,101 @@ in {
           The default backend to use for containers.
         '';
       };
+
+      ssl = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = ''
+            Enable SSL certificate generation for container hosts using mkcert.
+          '';
+        };
+
+        certDir = mkOption {
+          type = types.str;
+          default = "/var/lib/traefik/certs";
+          description = ''
+            Directory to store SSL certificates.
+          '';
+        };
+      };
     };
   };
 
   imports = [
     ./buggregator
+    ./homarr
+    ./local-ai
+    ./meilisearch
+    ./mysql
+    ./nginx-proxy-manager
+    ./portainer
     ./postgres
     ./qdrant
+    ./redis
+    ./soketi
+    ./traefik
   ];
 
-  config = {
-    virtualisation.oci-containers = {
-      backend = cfg.settings.backend;
-      containers = {
-        portainer = mkIf cfg.portainer {
-          hostname = "portainer";
-          image = "portainer/portainer-ee:latest";
-          ports = [
-            # "127.0.0.1:8000:8000"
-            "127.0.0.1:9443:9443"
-          ];
-          volumes = [
-            "portainer:/data"
-            "/var/run/docker.sock:/var/run/docker.sock"
-          ];
-          extraOptions = [
-            "--network=local"
-          ];
-          log-driver = cfg.settings.log-driver;
-        };
-
-        mysql = mkIf cfg.mysql {
-          hostname = "mysql";
-          image = "percona/percona-server:latest";
-          ports = [
-            "127.0.0.1:3306:3306"
-          ];
-          volumes = [
-            "percona-mysql:/var/lib/mysql"
-            "percona-mysql-config:/etc/my.cnf.d"
-          ];
-          networks = [
-            "local"
-          ];
-          cmd = [
-            "--disable-log-bin"
-          ];
-          environment = {
-            MYSQL_ROOT_PASSWORD = "secret";
-          };
-          log-driver = cfg.settings.log-driver;
-        };
-
-        redis = mkIf cfg.redis {
-          hostname = "redis";
-          image = "redis:alpine";
-          ports = [
-            "127.0.0.1:6379:6379"
-          ];
-          volumes = [
-            "redis:/data"
-          ];
-          extraOptions = [
-            "--network=local"
-          ];
-          log-driver = cfg.settings.log-driver;
-        };
-
-        meilisearch = mkIf cfg.meilisearch {
-          hostname = "meilisearch";
-          image = "getmeili/meilisearch:latest";
-          ports = [
-            "127.0.0.1:7700:7700"
-          ];
-          volumes = [
-            "meiliseach:/meili_data"
-          ];
-          extraOptions = [
-            "--network=local"
-          ];
-          environment = {
-            MEILI_NO_ANALYTICS = "true";
-          };
-          log-driver = cfg.settings.log-driver;
-        };
-
-        soketi = mkIf cfg.soketi {
-          hostname = "soketi";
-          image = "quay.io/soketi/soketi:latest-16-alpine";
-          ports = [
-            "127.0.0.1:6001:6001"
-            "127.0.0.1:9601:9601"
-          ];
-          extraOptions = [
-            "--network=local"
-          ];
-          environment = {
-            SOKETI_DEBUG = "1";
-            SOKETI_METRICS_SERVER_PORT = "9601";
-            SOKETI_DEFAULT_APP_ID = "soketi";
-            SOKETI_DEFAULT_APP_KEY = "soketi";
-            SOKETI_DEFAULT_APP_SECRET = "soketi";
-          };
-          log-driver = cfg.settings.log-driver;
-        };
-
-        nginx-proxy-manager = mkIf cfg.nginx-proxy-manager {
-          hostname = "npm";
-          image = "jc21/nginx-proxy-manager:latest";
-          ports = [
-            "127.0.0.1:80:80"
-            "127.0.0.1:443:443"
-            "127.0.0.1:81:81"
-          ];
-          volumes = [
-            "nginx-proxy-manager:/data"
-            "letsencrypt:/etc/letsencrypt"
-          ];
-          extraOptions = [
-            "--network=local"
-          ];
-          log-driver = cfg.settings.log-driver;
-        };
-
-        local-ai = mkIf cfg.local-ai {
-          hostname = "local-ai";
-          image = "localai/localai:latest-aio-gpu-nvidia-cuda-12";
-          volumes = [
-            "localai-models:/build/models"
-          ];
-          environment = {
-            DEBUG = "true";
-          };
-          extraOptions = [
-            "--network=local"
-            "--device=nvidia.com/gpu=all"
-          ];
-          log-driver = cfg.settings.log-driver;
-        };
+  config = mkMerge [
+    {
+      # Create external container network
+      systemd.services.init-container-network = {
+        description = "Create local container network";
+        after = if cfg.settings.backend == "docker" then ["docker.service"] else ["podman.service"];
+        requires = if cfg.settings.backend == "docker" then ["docker.service"] else ["podman.service"];
+        wantedBy = ["multi-user.target"];
+        serviceConfig.Type = "oneshot";
+        script =
+          if cfg.settings.backend == "docker" then ''
+            ${config.virtualisation.docker.package}/bin/docker network inspect local >/dev/null 2>&1 || \
+            ${config.virtualisation.docker.package}/bin/docker network create local
+          ''
+          else ''
+            ${config.virtualisation.podman.package}/bin/podman network inspect local >/dev/null 2>&1 || \
+            ${config.virtualisation.podman.package}/bin/podman network create local
+          '';
       };
-    };
-  };
+
+      virtualisation.oci-containers.backend = cfg.settings.backend;
+    }
+
+    (mkIf cfg.settings.ssl.enable {
+      # Generate SSL certificates for container hosts
+      systemd.services.generate-container-certs = let
+        containerHosts = unique (flatten [
+          (optional config.modules.containers.buggregator.enable config.modules.containers.buggregator.host)
+          (optional config.modules.containers.homarr.enable config.modules.containers.homarr.host)
+          (optional config.modules.containers.local-ai.enable config.modules.containers.local-ai.host)
+          (optional config.modules.containers.meilisearch.enable config.modules.containers.meilisearch.host)
+          (optional config.modules.containers.mysql.enable config.modules.containers.mysql.host)
+          (optional config.modules.containers.nginx-proxy-manager.enable config.modules.containers.nginx-proxy-manager.host)
+          (optional config.modules.containers.portainer.enable config.modules.containers.portainer.host)
+          (optional config.modules.containers.postgres.enable config.modules.containers.postgres.host)
+          (optional config.modules.containers.qdrant.enable config.modules.containers.qdrant.host)
+          (optional config.modules.containers.redis.enable config.modules.containers.redis.host)
+          (optional config.modules.containers.soketi.enable config.modules.containers.soketi.host)
+        ]);
+        hostsArg = concatStringsSep " " containerHosts;
+      in {
+        description = "Generate SSL certificates for container hosts";
+        wantedBy = ["multi-user.target"];
+        after = ["network.target"];
+        path = [config.environment.systemPackages];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+        };
+        script = ''
+          mkdir -p ${cfg.settings.ssl.certDir}
+          cd ${cfg.settings.ssl.certDir}
+
+          # Generate certificate for all container hosts
+          if [ ! -f "containers.crt" ] || [ ! -f "containers.key" ]; then
+            mkcert -key-file containers.key -cert-file containers.crt localhost ${hostsArg}
+          fi
+        '';
+      };
+    })
+  ];
 }

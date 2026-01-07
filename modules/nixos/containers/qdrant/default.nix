@@ -11,9 +11,17 @@ with lib; let
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
+
+    host = mkOption {
+      type = types.str;
+      default = "qdrant.local";
+      description = "Hostname for Qdrant";
+    };
   };
 
   config = mkIf cfg.enable {
+    networking.hosts."127.0.0.1" = [ cfg.host ];
+
     virtualisation.oci-containers.containers = {
       qdrant = {
         hostname = "qdrant";

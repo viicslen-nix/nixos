@@ -11,9 +11,17 @@ with lib; let
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
+
+    host = mkOption {
+      type = types.str;
+      default = "buggregator.local";
+      description = "Hostname for Buggregator";
+    };
   };
 
   config = mkIf cfg.enable {
+    networking.hosts."127.0.0.1" = [ cfg.host ];
+
     virtualisation.oci-containers.containers = {
       buggregator = {
         hostname = "buggregator";
@@ -26,6 +34,11 @@ in {
         ];
         extraOptions = [
           "--network=local"
+          "--label=traefik.enable=true"
+          "--label=traefik.http.routers.buggregator.rule=Host(`${cfg.host}`)"
+          "--label=traefik.http.routers.buggregator.entrypoints=websecure"
+          "--label=traefik.http.routers.buggregator.tls=true"
+          "--label=traefik.http.services.buggregator.loadbalancer.server.port=8000"
         ];
         volumes = [
           "${builtins.toString ./config}:/app/runtime/configs"

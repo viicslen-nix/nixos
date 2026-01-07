@@ -178,10 +178,6 @@ with lib; {
       };
 
       network.hosts = {
-        # Docker
-        "kubernetes.docker.internal" = "127.0.0.1";
-        "host.docker.internal" = "127.0.0.1";
-
         # Remote
         "webapps" = "50.116.36.170";
         "storesites" = "23.239.17.196";
@@ -190,25 +186,20 @@ with lib; {
         "db-staging-master" = "45.79.180.78";
         "db-staging-read" = "45.79.180.88";
 
-        # Development
-        "ai.local" = "127.0.0.1";
-        "npm.local" = "127.0.0.1";
-        "home.local" = "127.0.0.1";
-        "soketi.local" = "127.0.0.1";
-        "buggregator.local" = "127.0.0.1";
-        "portainer.local" = "127.0.0.1";
-        "phpmyadmin.local" = "127.0.0.1";
-
+        # Local Dev
         "selldiam.test" = "127.0.0.1";
         "mylisterhub.test" = "127.0.0.1";
         "vite.mylisterhub.test" = "127.0.0.1";
         "app.mylisterhub.test" = "127.0.0.1";
         "admin.mylisterhub.test" = "127.0.0.1";
         "*.mylisterhub.test" = "127.0.0.1";
-        "time-tracker.test" = "127.0.0.1";
-        "socket.time-tracker.test" = "127.0.0.1";
       };
     };
+
+    containers.traefik.autoCerts = [
+      "*.mylisterhub.test"
+      "selldiam.test"
+    ];
 
     presets = {
       base.enable = true;

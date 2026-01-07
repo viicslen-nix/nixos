@@ -4,7 +4,7 @@
   ...
 }:
 with lib; let
-  name = "postgres";
+  name = "redis";
   namespace = "containers";
 
   cfg = config.modules.${namespace}.${name};
@@ -14,8 +14,8 @@ in {
 
     host = mkOption {
       type = types.str;
-      default = "postgres.local";
-      description = "Hostname for PostgreSQL";
+      default = "redis.local";
+      description = "Hostname for Redis";
     };
   };
 
@@ -23,21 +23,18 @@ in {
     networking.hosts."127.0.0.1" = [ cfg.host ];
 
     virtualisation.oci-containers.containers = {
-      postgres = {
-        hostname = "postgres";
-        image = "postgres:latest";
+      redis = {
+        hostname = "redis";
+        image = "redis:alpine";
         ports = [
-          "127.0.0.1:5432:5432"
+          "127.0.0.1:6379:6379"
+        ];
+        volumes = [
+          "redis:/data"
         ];
         extraOptions = [
           "--network=local"
         ];
-        volumes = [
-          "pgdata:/var/lib/postgresql/data"
-        ];
-        environment = {
-          POSTGRES_PASSWORD = "secret";
-        };
         log-driver = config.modules.containers.settings.log-driver;
       };
     };

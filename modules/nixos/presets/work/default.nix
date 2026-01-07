@@ -83,13 +83,14 @@ in {
       };
 
       containers = {
-        mysql = true;
-        redis = true;
-        soketi = true;
-        meilisearch = true;
+        traefik.enable = true;
+        mysql.enable = true;
+        redis.enable = true;
+        soketi.enable = true;
         qdrant.enable = true;
+        meilisearch.enable = true;
         buggregator.enable = true;
-        nginx-proxy-manager = true;
+        # nginx-proxy-manager.enable = true;
       };
     };
 
@@ -156,6 +157,7 @@ in {
       # local.mago
 
       # AI
+      opencode
       github-copilot-cli
       claude-code
       claude-code-acp
