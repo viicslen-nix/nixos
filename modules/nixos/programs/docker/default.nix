@@ -74,8 +74,15 @@ in {
         extraGroups = ["docker"];
       });
 
-      networking.firewall.trustedInterfaces = [cfg.networkInterface];
-      networking.firewall.allowedTCPPorts = cfg.allowTcpPorts;
+      networking = {
+        firewall.trustedInterfaces = [cfg.networkInterface];
+        firewall.allowedTCPPorts = cfg.allowTcpPorts;
+
+        hosts."127.0.0.1" = [
+          "kubernetes.docker.internal"
+          "host.docker.internal"
+        ];
+      };
 
       hardware.nvidia-container-toolkit.enable = cfg.nvidiaSupport;
     }
