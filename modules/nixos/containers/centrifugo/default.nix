@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }:
@@ -8,6 +9,20 @@ with lib; let
   namespace = "containers";
 
   cfg = config.modules.${namespace}.${name};
+
+  centrifugoConfig = pkgs.writeText "centrifugo-config.json" (builtins.toJSON {
+    admin = {
+      enabled = true;
+      password = "secret";
+      secret = "secret";
+    };
+    client = {
+      token.hmac_secret_key = "secret-key";
+      allowed_origins = ["*"];
+    };
+    http_api.key = "api-key";
+    debug.enabled = true;
+  });
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
@@ -38,7 +53,7 @@ in {
         hostname = "centrifugo";
         image = "centrifugo/centrifugo:latest";
         ports = [
-          "127.0.0.1:8000:8000"
+          "127.0.0.1:8002:8000"
         ];
         extraOptions = [
           "--network=local"
@@ -54,15 +69,8 @@ in {
           "--label=traefik.http.services.centrifugo.loadbalancer.server.port=8000"
         ];
         volumes = [
-          "centrifugo-config:/centrifugo"
+          "${centrifugoConfig}:/centrifugo/config.json:ro"
         ];
-        environment = {
-          CENTRIFUGO_ADMIN = "true";
-          CENTRIFUGO_ADMIN_PASSWORD = "admin";
-          CENTRIFUGO_ADMIN_SECRET = "change-this-secret";
-          CENTRIFUGO_TOKEN_HMAC_SECRET_KEY = "change-this-token-secret";
-          CENTRIFUGO_API_KEY = "change-this-api-key";
-        };
         cmd = ["centrifugo" "--config=/centrifugo/config.json"];
         log-driver = config.modules.containers.settings.log-driver;
       };
