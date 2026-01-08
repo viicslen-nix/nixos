@@ -88,6 +88,7 @@ in {
         redis.enable = true;
         soketi.enable = true;
         qdrant.enable = true;
+        centrifugo.enable = true;
         meilisearch.enable = true;
         buggregator.enable = true;
       };
