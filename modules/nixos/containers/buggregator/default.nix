@@ -22,6 +22,17 @@ in {
   config = mkIf cfg.enable {
     networking.hosts."127.0.0.1" = [cfg.host];
 
+    # Auto-configure mkcert for this container's host
+    modules.programs.mkcert =
+      mkIf (
+        (hasAttr "modules" config)
+        && (hasAttr "programs" config.modules)
+        && (hasAttr "mkcert" config.modules.programs)
+        && config.modules.programs.mkcert.enable
+      ) {
+        domains = [cfg.host];
+      };
+
     virtualisation.oci-containers.containers = {
       buggregator = {
         hostname = "buggregator";
@@ -35,6 +46,11 @@ in {
         extraOptions = [
           "--network=local"
           "--label=traefik.enable=true"
+          "--label=traefik.http.middlewares.buggregator-https-redirect.redirectscheme.scheme=https"
+          "--label=traefik.http.middlewares.buggregator-https-redirect.redirectscheme.permanent=true"
+          "--label=traefik.http.routers.buggregator-http.rule=Host(`${cfg.host}`)"
+          "--label=traefik.http.routers.buggregator-http.entrypoints=web"
+          "--label=traefik.http.routers.buggregator-http.middlewares=buggregator-https-redirect"
           "--label=traefik.http.routers.buggregator.rule=Host(`${cfg.host}`)"
           "--label=traefik.http.routers.buggregator.entrypoints=websecure"
           "--label=traefik.http.routers.buggregator.tls=true"

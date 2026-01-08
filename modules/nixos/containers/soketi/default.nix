@@ -22,6 +22,17 @@ in {
   config = mkIf cfg.enable {
     networking.hosts."127.0.0.1" = [cfg.host];
 
+    # Auto-configure mkcert for this container's host
+    modules.programs.mkcert =
+      mkIf (
+        (hasAttr "modules" config)
+        && (hasAttr "programs" config.modules)
+        && (hasAttr "mkcert" config.modules.programs)
+        && config.modules.programs.mkcert.enable
+      ) {
+        domains = [cfg.host];
+      };
+
     virtualisation.oci-containers.containers = {
       soketi = {
         hostname = "soketi";
@@ -33,6 +44,11 @@ in {
         extraOptions = [
           "--network=local"
           "--label=traefik.enable=true"
+          "--label=traefik.http.middlewares.soketi-https-redirect.redirectscheme.scheme=https"
+          "--label=traefik.http.middlewares.soketi-https-redirect.redirectscheme.permanent=true"
+          "--label=traefik.http.routers.soketi-http.rule=Host(`${cfg.host}`)"
+          "--label=traefik.http.routers.soketi-http.entrypoints=web"
+          "--label=traefik.http.routers.soketi-http.middlewares=soketi-https-redirect"
           "--label=traefik.http.routers.soketi.rule=Host(`${cfg.host}`)"
           "--label=traefik.http.routers.soketi.entrypoints=websecure"
           "--label=traefik.http.routers.soketi.tls=true"

@@ -22,6 +22,17 @@ in {
   config = mkIf cfg.enable {
     networking.hosts."127.0.0.1" = [cfg.host];
 
+    # Auto-configure mkcert for this container's host
+    modules.programs.mkcert =
+      mkIf (
+        (hasAttr "modules" config)
+        && (hasAttr "programs" config.modules)
+        && (hasAttr "mkcert" config.modules.programs)
+        && config.modules.programs.mkcert.enable
+      ) {
+        domains = [cfg.host];
+      };
+
     virtualisation.oci-containers.containers = {
       nginx-proxy-manager = {
         hostname = "npm";
