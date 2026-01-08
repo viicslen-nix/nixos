@@ -34,6 +34,7 @@ in {
 
   imports = [
     ./buggregator
+    ./centrifugo
     ./homarr
     ./local-ai
     ./meilisearch
