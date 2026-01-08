@@ -26,6 +26,24 @@ in {
         '';
       };
     };
+
+    certDir = mkOption {
+      type = types.str;
+      default = "/var/lib/mkcert";
+      description = mdDoc "Directory to store generated certificates";
+    };
+
+    domains = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = mdDoc ''
+        List of domains to generate certificates for.
+        Supports wildcards (e.g., "*.example.com").
+      '';
+      example = literalExpression ''
+        [ "app.local" "*.example.test" "api.dev" ]
+      '';
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -49,6 +67,36 @@ in {
       ];
 
       security.pki.certificateFiles = mkIf cfg.rootCA.enable (map (user: "${config.users.users.${user}.home}/${user}/${cfg.rootCA.path}") (attrNames users));
+
+      systemd.tmpfiles.rules = mkIf (cfg.domains != []) [
+        "d ${cfg.certDir} 0755 root root -"
+        "d ${cfg.certDir}/ca 0755 root root -"
+      ];
+
+      systemd.services.mkcert-generate-certs = mkIf (cfg.domains != []) {
+        description = "Generate SSL certificates using mkcert";
+        wantedBy = ["multi-user.target"];
+        after = ["network.target"];
+        path = [pkgs.mkcert];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+        };
+        environment = {
+          CAROOT = "${cfg.certDir}/ca";
+        };
+        script = ''
+          mkdir -p ${cfg.certDir}/ca
+          cd ${cfg.certDir}
+
+          # Generate certificates for each domain
+          ${concatMapStringsSep "\n" (domain: ''
+              echo "Generating certificate for ${domain}..."
+              mkcert -key-file ${replaceStrings ["*"] ["wildcard"] domain}.key -cert-file ${replaceStrings ["*"] ["wildcard"] domain}.crt "${domain}"
+            '')
+            cfg.domains}
+        '';
+      };
     }
     (mkNixosPersistence {
       inherit config options;

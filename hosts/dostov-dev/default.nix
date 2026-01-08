@@ -196,11 +196,6 @@ with lib; {
       };
     };
 
-    containers.traefik.autoCerts = [
-      "*.mylisterhub.test"
-      "selldiam.test"
-    ];
-
     presets = {
       base.enable = true;
       work.enable = true;
@@ -210,6 +205,15 @@ with lib; {
     programs = {
       ld.enable = true;
       mullvad.enable = true;
+
+      mkcert = {
+        enable = true;
+        domains = [
+          "selldiam.test"
+          "mylisterhub.test"
+          "*.mylisterhub.test"
+        ];
+      };
 
       docker = {
         enable = true;

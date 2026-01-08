@@ -90,7 +90,6 @@ in {
         qdrant.enable = true;
         meilisearch.enable = true;
         buggregator.enable = true;
-        # nginx-proxy-manager.enable = true;
       };
     };
 
