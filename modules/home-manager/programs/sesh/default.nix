@@ -30,7 +30,7 @@ in {
 
       [[session]]
       name = "mylisterhub-main-app"
-      path = "~/Development/mylisterhub-main-app"
+      path = "~/Development/mylisterhub-app/workspace"
 
       [[session]]
       name = "mylisterhub-cloud-config"
@@ -54,7 +54,7 @@ in {
     programs = {
       tmux.extraConfig = mkIf cfg.enableTmuxIntegration (mkAfter ''
         bind-key "T" run-shell "sesh connect \"$(
-          sesh list --icons -ctHT | fzf-tmux -p 80%,70% \
+          sesh list --icons -ctT | fzf-tmux -p 80%,70% \
             --no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
             --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
             --bind 'tab:down,btab:up' \

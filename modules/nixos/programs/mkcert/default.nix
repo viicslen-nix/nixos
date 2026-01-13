@@ -50,6 +50,7 @@ in {
     {
       environment.systemPackages = [
         pkgs.mkcert
+        pkgs.nss
         (pkgs.writeShellScriptBin "mkcert-dev" ''
           domain=$1
 
@@ -66,7 +67,9 @@ in {
         '')
       ];
 
-      security.pki.certificateFiles = mkIf cfg.rootCA.enable (map (user: "${config.users.users.${user}.home}/${user}/${cfg.rootCA.path}") (attrNames users));
+      security.pki.certificateFiles = mkIf (cfg.domains != []) [
+        "${cfg.certDir}/ca/rootCA.pem"
+      ];
 
       systemd.tmpfiles.rules = mkIf (cfg.domains != []) [
         "d ${cfg.certDir} 0755 root root -"
@@ -77,7 +80,10 @@ in {
         description = "Generate SSL certificates using mkcert";
         wantedBy = ["multi-user.target"];
         after = ["network.target"];
-        path = [pkgs.mkcert];
+        path = with pkgs; [
+          mkcert
+          nss.tools
+        ];
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = true;

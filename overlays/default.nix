@@ -68,6 +68,43 @@
       '';
     };
 
+    vivaldi-snapshot = _prev.vivaldi.overrideAttrs (oldAttrs: let
+      version = "7.8.3916.3";
+    in {
+      inherit version;
+
+      src = _prev.fetchurl {
+        url = "https://downloads.vivaldi.com/snapshot/vivaldi-snapshot_${version}-1_amd64.deb";
+        hash = "sha256-SeZalEuE7cqLfbgyM5vhOkTLexdAh1ccBUbtG82L7PQ=";
+      };
+
+      buildPhase = builtins.replaceStrings
+        ["opt/vivaldi/"]
+        ["opt/vivaldi-snapshot/"]
+        oldAttrs.buildPhase;
+
+      installPhase = builtins.replaceStrings
+        [
+          ''"$out/opt/vivaldi/vivaldi" "$out/bin/vivaldi"''
+          ''wrapProgram "$out/bin/vivaldi"''
+          ''"$out"/bin/vivaldi''
+          ''--replace-fail /usr/bin/vivaldi''
+          ''"$out"/opt/vivaldi/product_logo_''
+          "vivaldi-stable vivaldi"
+          "vivaldi.png"
+        ]
+        [
+          ''"$out/opt/vivaldi-snapshot/vivaldi-snapshot" "$out/bin/vivaldi-snapshot"''
+          ''wrapProgram "$out/opt/vivaldi-snapshot/vivaldi-snapshot"''
+          ''"$out"/bin/vivaldi-snapshot''
+          ''--replace-fail /usr/bin/vivaldi-snapshot''
+          ''"$out"/opt/vivaldi-snapshot/product_logo_''
+          "vivaldi-snapshot vivaldi-snapshot"
+          "vivaldi-snapshot.png"
+        ]
+        oldAttrs.installPhase;
+    });
+
     # Patch openssh to ignore file permissions on ssh_config file
     # openssh = _prev.openssh.overrideAttrs (old: {
     #   patches = (old.patches or [ ]) ++ [ ./openssh.patch ];
