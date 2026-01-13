@@ -231,8 +231,8 @@ in {
 
           # Generate YAML with domains field for proper SNI matching
           certsYaml =
-            concatMapStringsSep "\n" (cert:
-              "    - certFile: ${cert.certFile}\n      keyFile: ${cert.keyFile}"
+            concatMapStringsSep "\n" (
+              cert: "    - certFile: ${cert.certFile}\n      keyFile: ${cert.keyFile}"
             )
             allCerts;
         in ''

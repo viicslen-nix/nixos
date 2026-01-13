@@ -32,5 +32,6 @@ in {
     };
 
     modules.programs.qmk.enable = mkDefault true;
+    modules.containers.homarr.enable = mkDefault true;
   };
 }

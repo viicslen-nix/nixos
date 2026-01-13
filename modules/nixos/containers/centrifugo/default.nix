@@ -11,6 +11,9 @@ with lib; let
   cfg = config.modules.${namespace}.${name};
 
   centrifugoConfig = pkgs.writeText "centrifugo-config.json" (builtins.toJSON {
+    log.level = "trace";
+    debug.enabled = true;
+    http_api.key = "api-key";
     admin = {
       enabled = true;
       password = "secret";
@@ -20,8 +23,24 @@ with lib; let
       token.hmac_secret_key = "secret-key";
       allowed_origins = ["*"];
     };
-    http_api.key = "api-key";
-    debug.enabled = true;
+    channel = {
+      without_namespace = {
+        presence = true;
+        join_leave = true;
+        allow_subscribe_for_client = true;
+        allow_history_for_subscriber = true;
+        allow_presence_for_subscriber = true;
+      };
+      namespaces = [
+        {
+          name = "private";
+          presence = true;
+          join_leave = true;
+          allow_history_for_subscriber = true;
+          allow_presence_for_subscriber = true;
+        }
+      ];
+    };
   });
 in {
   options.modules.${namespace}.${name} = {

@@ -29,6 +29,10 @@ in {
       NIXOS_OZONE_WL = "1";
       AVANTE_ANTHROPIC_API_KEY = "$(${pkgs.coreutils}/bin/cat ${config.age.secrets.avante-anthropic-api-key.path})";
     };
+
+    packages = [
+      pkgs.vivaldi-snapshot
+    ];
   };
 
   xdg = {
@@ -91,6 +95,67 @@ in {
         secretPath = builtins.replaceStrings ["\${" "}"] ["($env." ")"] config.age.secrets.avante-anthropic-api-key.path;
       in ''
         $env.AVANTE_ANTHROPIC_API_KEY = (open --raw $"${secretPath}");
+      '';
+    };
+
+    opencode = {
+      enable = true;
+      settings = {
+        autoshare = false;
+        provider.anthropic.options.setCacheKey = true;
+        model = "anthropic/claude-sonnet-4-5";
+        small_model = "anthropic/claude-haiku-4-5";
+        watcher.ignore = [
+          "**/node_modules/**"
+          "**/.git/**"
+          "**/.hg/**"
+          "**/.svn/**"
+          "**/.DS_Store"
+          "**/dist/**"
+          "**/build/**"
+          "**/.next/**"
+          "**/out/**"
+          "**/vendor/**"
+        ];
+        mcp = {
+          context7 = {
+            type = "remote";
+            url = "https://mcp.context7.com/mcp";
+          };
+          gh_grep = {
+            type = "remote";
+            url = "https://mcp.grep.app";
+          };
+          github = {
+            type = "remote";
+            url = "https://api.githubcopilot.com/mcp";
+          };
+        };
+        plugin = [
+          "opencode-pty@latest"
+          "opencode-gemini-auth@latest"
+          "@tarquinen/opencode-dcp@latest"
+          "opencode-websearch-cited@latest"
+          "@mohak34/opencode-notifier@latest"
+          "@zenobius/opencode-skillful@latest"
+          "@nick-vi/opencode-type-inject@latest"
+        ];
+      };
+      rules = ''
+        ## External File Loading
+
+        CRITICAL: When you encounter a file reference (e.g., @rules/general.md), use your Read tool to load it on a need-to-know basis. They're relevant to the SPECIFIC task at hand.
+
+        Instructions:
+
+        - Do NOT preemptively load all references - use lazy loading based on actual need
+        - When loaded, treat content as mandatory instructions that override defaults
+        - Follow references recursively when needed
+
+        ## Tools
+
+        - When you need to search docs, use `context7` tools.
+        - If you are unsure how to do something, use `gh_grep` to search code examples from GitHub.
       '';
     };
   };

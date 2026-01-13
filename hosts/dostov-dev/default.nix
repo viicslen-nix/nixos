@@ -100,6 +100,7 @@ with lib; {
     jetbrains-toolbox
     zed-editor-fhs
     vscode-fhs
+    code-cursor
     local.antigravity.default
 
     # Development Tools
