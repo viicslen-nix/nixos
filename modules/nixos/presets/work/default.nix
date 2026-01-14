@@ -75,11 +75,7 @@ in {
     modules = {
       programs = {
         corepack.enable = true;
-
-        mkcert = {
-          enable = true;
-          rootCA.enable = false;
-        };
+        mkcert.enable = true;
       };
 
       containers = {

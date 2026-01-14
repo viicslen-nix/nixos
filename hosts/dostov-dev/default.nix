@@ -5,6 +5,7 @@
   lib,
   pkgs,
   users,
+  config,
   inputs,
   ...
 }:
@@ -16,6 +17,18 @@ with lib; {
   ];
 
   home-manager.sharedModules = [./home.nix];
+
+  # Configure agenix secrets for mkcert
+  age.secrets = {
+    mkcert-rootCA = {
+      file = ../../secrets/mkcert/rootCA.age;
+      mode = "0644";
+    };
+    mkcert-rootCA-key = {
+      file = ../../secrets/mkcert/rootCA-key.age;
+      mode = "0600";
+    };
+  };
 
   boot = {
     plymouth.enable = true;
@@ -208,7 +221,11 @@ with lib; {
       mullvad.enable = true;
 
       mkcert = {
-        enable = true;
+        rootCA = {
+          enable = false;
+          certPath = config.age.secrets.mkcert-rootCA.path;
+          keyPath = config.age.secrets.mkcert-rootCA-key.path;
+        };
         domains = [
           "selldiam.test"
           "mylisterhub.test"
@@ -247,6 +264,9 @@ with lib; {
         allowedCustomBrowsers = [
           ".zen-wrapped"
           "zen"
+          "vivaldi"
+          "vivaldi-bin"
+          "vivaldi-snapshot"
         ];
       };
     };

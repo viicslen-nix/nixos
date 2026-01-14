@@ -6,4 +6,6 @@ in {
   "secrets/github/runner.age".publicKeys = [sshKey];
   "secrets/intelephense/licence.age".publicKeys = [sshKey];
   "secrets/avante/anthropic-api-key.age".publicKeys = [sshKey];
+  "secrets/mkcert/rootCA.age".publicKeys = [sshKey];
+  "secrets/mkcert/rootCA-key.age".publicKeys = [sshKey];
 }
