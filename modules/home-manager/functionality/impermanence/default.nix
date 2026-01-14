@@ -52,10 +52,6 @@ in {
     };
   };
 
-  imports = [
-    inputs.impermanence.nixosModules.home-manager.impermanence
-  ];
-
   config = mkIf cfg.enable {
     home.persistence."${cfg.persistencePath}/${config.home.homeDirectory}" = {
       directories = concatLists [

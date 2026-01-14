@@ -24,10 +24,10 @@ in {
       inputs.nixvim.default
       local.scripts.git-carve-submodule
       ytmdesktop
+      android-tools
     ];
 
     programs = {
-      adb.enable = mkDefault true;
       localsend.enable = mkDefault true;
     };
 
