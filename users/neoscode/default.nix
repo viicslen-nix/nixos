@@ -165,7 +165,7 @@ in {
       terminal = kitty;
       editor = vscode-fhs;
       fileManager = nautilus;
-      browser = microsoft-edge;
+      browser = vivaldi-snapshot;
       passwordManager = _1password-gui;
     };
     programs = {

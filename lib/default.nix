@@ -130,15 +130,15 @@ with inputs.self.lib;
       nixpkgs = inputs.nixpkgs;
 
       # Build a single nixos configuration
-      mkHostConfig = hostName: hostConfig: let
-        system = "${hostConfig.system}";
-      in
+      mkHostConfig = hostName: hostConfig:
         nixpkgs.lib.nixosSystem {
-          inherit system;
           modules =
             (shared.modules or [])
             ++ [
               hostConfig.path
+              {
+                nixpkgs.hostPlatform.system = hostConfig.system;
+              }
             ];
           specialArgs =
             (shared.specialArgs or {})
