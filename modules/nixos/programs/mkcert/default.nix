@@ -18,11 +18,30 @@ in {
     enable = mkEnableOption (mdDoc name);
     rootCA = {
       enable = mkEnableOption "Enable mkcert root CA certificate.";
-      path = mkOption {
-        type = types.str;
-        default = ".local/share/mkcert/rootCA.pem";
-        description = ''
-          Location of the root CA relative to the user's home directory.
+
+      certPath = mkOption {
+        type = types.nullOr types.path;
+        default = null;
+        description = mdDoc ''
+          Path to a pre-generated mkcert root CA certificate (rootCA.pem).
+          This should point to a file in your repository (can be age/sops encrypted).
+          If null, the CA must already exist in certDir/ca/rootCA.pem.
+        '';
+        example = literalExpression ''
+          ./secrets/mkcert-rootCA.pem
+        '';
+      };
+
+      keyPath = mkOption {
+        type = types.nullOr types.path;
+        default = null;
+        description = mdDoc ''
+          Path to a pre-generated mkcert root CA key (rootCA-key.pem).
+          This should point to a file in your repository (can be age/sops encrypted).
+          If null, the key must already exist in certDir/ca/rootCA-key.pem.
+        '';
+        example = literalExpression ''
+          ./secrets/mkcert-rootCA-key.pem
         '';
       };
     };
@@ -50,7 +69,6 @@ in {
     {
       environment.systemPackages = [
         pkgs.mkcert
-        pkgs.nss
         (pkgs.writeShellScriptBin "mkcert-dev" ''
           domain=$1
 
@@ -67,13 +85,13 @@ in {
         '')
       ];
 
-      security.pki.certificateFiles = mkIf (cfg.domains != []) [
-        "${cfg.certDir}/ca/rootCA.pem"
+      # Only add to system trust store if rootCA is enabled and cert path is provided
+      security.pki.certificateFiles = mkIf (cfg.rootCA.enable && cfg.rootCA.certPath != null) [
+        cfg.rootCA.certPath
       ];
 
       systemd.tmpfiles.rules = mkIf (cfg.domains != []) [
         "d ${cfg.certDir} 0755 root root -"
-        "d ${cfg.certDir}/ca 0755 root root -"
       ];
 
       systemd.services.mkcert-generate-certs = mkIf (cfg.domains != []) {
@@ -82,17 +100,21 @@ in {
         after = ["network.target"];
         path = with pkgs; [
           mkcert
-          nss.tools
         ];
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = true;
         };
-        environment = {
-          CAROOT = "${cfg.certDir}/ca";
-        };
+        environment = mkMerge [
+          (mkIf (cfg.rootCA.enable && cfg.rootCA.certPath != null) {
+            CAROOT = dirOf cfg.rootCA.certPath;
+          })
+          (mkIf (!cfg.rootCA.enable || cfg.rootCA.certPath == null) {
+            CAROOT = "${cfg.certDir}/ca";
+          })
+        ];
         script = ''
-          mkdir -p ${cfg.certDir}/ca
+          mkdir -p ${cfg.certDir}
           cd ${cfg.certDir}
 
           # Generate certificates for each domain
