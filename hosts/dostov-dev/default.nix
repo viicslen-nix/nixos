@@ -128,6 +128,7 @@ with lib; {
     # Communication
     legcord
     discordo
+    discord
 
     # Drawing
     drawing

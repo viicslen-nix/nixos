@@ -37,7 +37,7 @@
   ...
 }: let
   pname = "antigravity";
-  version = "1.11.3-6583016683339776";
+  version = "1.14.2-6046590149459968";
 
   src = fetchurl {
     url = "https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/${version}/linux-x64/Antigravity.tar.gz";
