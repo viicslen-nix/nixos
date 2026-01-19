@@ -40,5 +40,6 @@
     k9s = import ./programs/k9s;
     zen-browser = import ./programs/zen-browser;
     vivaldi = import ./programs/vivaldi;
+    opencode = import ./programs/opencode;
   };
 }
