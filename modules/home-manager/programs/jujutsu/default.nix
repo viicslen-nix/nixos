@@ -37,10 +37,7 @@ in {
     programs.jujutsu = {
       enable = true;
       settings = {
-        git = {
-          auto-local-bookmark = true;
-          push-new-bookmarks = true;
-        };
+        remotes.origin.auto-track-bookmarks = "*";
         user = {
           name = cfg.userName;
           email = cfg.userEmail;
