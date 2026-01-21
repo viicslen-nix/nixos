@@ -29,10 +29,6 @@ in {
       NIXOS_OZONE_WL = "1";
       AVANTE_ANTHROPIC_API_KEY = "$(${pkgs.coreutils}/bin/cat ${config.age.secrets.avante-anthropic-api-key.path})";
     };
-
-    packages = [
-      pkgs.vivaldi-snapshot
-    ];
   };
 
   xdg = {
@@ -104,7 +100,7 @@ in {
       terminal = kitty;
       editor = vscode-fhs;
       fileManager = nautilus;
-      browser = vivaldi-snapshot;
+      browser = vivaldi;
       passwordManager = _1password-gui;
     };
     programs = {

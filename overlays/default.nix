@@ -68,40 +68,30 @@
       '';
     };
 
-    vivaldi-snapshot = _prev.vivaldi.overrideAttrs (oldAttrs: let
-      version = "7.8.3916.3";
+    vivaldi = _prev.vivaldi.overrideAttrs (oldAttrs: let
+      version = "7.8.3925.29";
     in {
       inherit version;
 
       src = _prev.fetchurl {
         url = "https://downloads.vivaldi.com/snapshot/vivaldi-snapshot_${version}-1_amd64.deb";
-        hash = "sha256-SeZalEuE7cqLfbgyM5vhOkTLexdAh1ccBUbtG82L7PQ=";
+        hash = "sha256-OOH1fQW/sVXvMcHeayAMcvgQIbmdYNPHpBVb/xPbLdI=";
       };
 
-      buildPhase = builtins.replaceStrings
+      passthru = (oldAttrs.passthru or {}) // {
+        isSnapshot = true;
+      };
+
+      buildPhase =
+        builtins.replaceStrings
         ["opt/vivaldi/"]
         ["opt/vivaldi-snapshot/"]
         oldAttrs.buildPhase;
 
-      installPhase = builtins.replaceStrings
-        [
-          ''"$out/opt/vivaldi/vivaldi" "$out/bin/vivaldi"''
-          ''wrapProgram "$out/bin/vivaldi"''
-          ''"$out"/bin/vivaldi''
-          ''--replace-fail /usr/bin/vivaldi''
-          ''"$out"/opt/vivaldi/product_logo_''
-          "vivaldi-stable vivaldi"
-          "vivaldi.png"
-        ]
-        [
-          ''"$out/opt/vivaldi-snapshot/vivaldi-snapshot" "$out/bin/vivaldi-snapshot"''
-          ''wrapProgram "$out/opt/vivaldi-snapshot/vivaldi-snapshot"''
-          ''"$out"/bin/vivaldi-snapshot''
-          ''--replace-fail /usr/bin/vivaldi-snapshot''
-          ''"$out"/opt/vivaldi-snapshot/product_logo_''
-          "vivaldi-snapshot vivaldi-snapshot"
-          "vivaldi-snapshot.png"
-        ]
+      installPhase =
+        builtins.replaceStrings
+        ["opt/vivaldi/vivaldi" "vivaldi-stable" "opt/vivaldi/product" "opt/vivaldi/WidevineCdm" "opt/vivaldi/resources"]
+        ["opt/vivaldi-snapshot/vivaldi-snapshot" "vivaldi-snapshot" "opt/vivaldi-snapshot/product" "opt/vivaldi-snapshot/WidevineCdm" "opt/vivaldi-snapshot/resources"]
         oldAttrs.installPhase;
     });
 
