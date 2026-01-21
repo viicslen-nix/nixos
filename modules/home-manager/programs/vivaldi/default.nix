@@ -84,19 +84,29 @@ with inputs.self.lib; let
     modPaths.${modName} or "js/${modName}";
 
   # Build custom JS files from local mods
-  customJsFiles = map (modName: "${modsDir}/${getModPath modName}") cfg.jsMods;
+  customJsFiles =
+    if cfg.enableMods
+    then map (modName: "${modsDir}/${getModPath modName}") cfg.jsMods
+    else [];
 
-  vivaldiPackage = pkgs.vivaldi.override {
+  vivaldiPackage = cfg.package.override {
     proprietaryCodecs = true;
     enableWidevine = true;
   };
 
-  # Create a patched Vivaldi with custom JS files injected
+  # Detect if this is a snapshot version and set the correct base path
+  isSnapshot = vivaldiPackage.isSnapshot or false;
+  vivaldiBasePath = if isSnapshot then "opt/vivaldi-snapshot" else "opt/vivaldi";
+  vivaldiBinaryName = "vivaldi"; # Binary is always named 'vivaldi' regardless of snapshot/stable
   # Based on https://github.com/budlabs/vivaldi-autoinject-custom-js-ui
-  vivaldiWithMods =
+  vivaldiWithMods = let
+    basePath = vivaldiBasePath;
+    binaryName = vivaldiBinaryName;
+  in
     pkgs.runCommand "vivaldi-custom-ui-${vivaldiPackage.version}" {
-      inherit (vivaldiPackage) meta;
       nativeBuildInputs = [pkgs.makeWrapper];
+      # Lower priority number = higher precedence (resolves buildEnv conflicts)
+      meta = (vivaldiPackage.meta or {}) // { priority = 4; };
     } ''
       # Create output directory structure
       mkdir -p $out
@@ -108,14 +118,14 @@ with inputs.self.lib; let
       chmod -R u+w $out
 
       # Remove the symlink to window.html and copy the actual file
-      rm -f $out/opt/vivaldi/resources/vivaldi/window.html
-      cp ${vivaldiPackage}/opt/vivaldi/resources/vivaldi/window.html \
-         $out/opt/vivaldi/resources/vivaldi/window.html
-      chmod u+w $out/opt/vivaldi/resources/vivaldi/window.html
+      rm -f $out/${basePath}/resources/vivaldi/window.html
+      cp ${vivaldiPackage}/${basePath}/resources/vivaldi/window.html \
+         $out/${basePath}/resources/vivaldi/window.html
+      chmod u+w $out/${basePath}/resources/vivaldi/window.html
 
       # Copy custom JS files to Vivaldi resources directory
       ${lib.concatMapStringsSep "\n" (jsFile: ''
-          cp ${jsFile} $out/opt/vivaldi/resources/vivaldi/${builtins.baseNameOf (toString jsFile)}
+          cp ${jsFile} $out/${basePath}/resources/vivaldi/${builtins.baseNameOf (toString jsFile)}
         '')
         customJsFiles}
 
@@ -123,16 +133,17 @@ with inputs.self.lib; let
       ${lib.concatMapStringsSep "\n" (jsFile: let
           fileName = builtins.baseNameOf (toString jsFile);
         in ''
-          if ! grep -q '<script src="${fileName}"></script>' $out/opt/vivaldi/resources/vivaldi/window.html; then
+          if ! grep -q '<script src="${fileName}"></script>' $out/${basePath}/resources/vivaldi/window.html; then
             sed -i 's|</body>|  <script src="${fileName}"></script>\n</body>|' \
-              $out/opt/vivaldi/resources/vivaldi/window.html
+              $out/${basePath}/resources/vivaldi/window.html
           fi
         '')
         customJsFiles}
 
       # Re-wrap the Vivaldi binary with Wayland flags if enabled
-      rm -f $out/bin/vivaldi
-      makeWrapper ${vivaldiPackage}/bin/vivaldi $out/bin/vivaldi \
+      rm -rf $out/bin
+      mkdir -p $out/bin
+      makeWrapper ${vivaldiPackage}/bin/${binaryName} $out/bin/${binaryName} \
         ${lib.optionalString cfg.enableWayland ''
         --add-flags "--ozone-platform=wayland" \
         --add-flags "--enable-features=UseOzonePlatform"
@@ -142,10 +153,28 @@ in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc "Vivaldi browser with custom mods");
 
+    package = mkOption {
+      type = types.package;
+      default = pkgs.vivaldi;
+      description = ''
+        The Vivaldi package to use as the base.
+        This package will be overridden with proprietaryCodecs and enableWidevine.
+      '';
+    };
+
     enableWayland = mkOption {
       type = types.bool;
       default = true;
       description = "Enable Wayland-specific flags for Vivaldi";
+    };
+
+    enableMods = mkOption {
+      type = types.bool;
+      default = true;
+      description = ''
+        Enable all mods for Vivaldi.
+        When disabled, all JS and CSS mods are disabled and vanilla Vivaldi is used.
+      '';
     };
 
     jsMods = mkOption {
@@ -211,7 +240,7 @@ in {
       home.packages = [vivaldiWithMods];
 
       # Symlink CSS mods to a predictable location
-      home.file = mkIf cfg.enableCssMods {
+      home.file = mkIf (cfg.enableCssMods && cfg.enableMods) {
         ".config/vivaldi/custom-css" = {
           source =
             if cfg.cssModsPath != null
