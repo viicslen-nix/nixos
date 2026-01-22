@@ -15,6 +15,14 @@ in {
 
   config.programs.opencode = mkIf cfg.enable {
     enable = true;
+    enableMcpIntegration = true;
+    agents = {
+      ask = ./agents/ask.md;
+      debug = ./agents/debug.md;
+      review = ./agents/review.md;
+      security = ./agents/security.md;
+      documentation = ./agents/documentation.md;
+    };
     settings = {
       autoshare = false;
       provider = {
@@ -222,6 +230,7 @@ in {
 
       - When you need to search docs, use `context7` tools.
       - If you are unsure how to do something, use `gh_grep` to search code examples from GitHub.
+      - When you need to ask questions to the user, use the `question` tool.
     '';
   };
 }
