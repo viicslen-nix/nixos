@@ -2,8 +2,11 @@
   lib,
   pkgs,
   inputs,
+  config,
+  osConfig,
   ...
-}: {
+}:
+with lib; {
   modules = {
     programs = {
       kitty.enable = true;
@@ -11,15 +14,17 @@
     };
   };
 
-  wayland.windowManager.hyprland.settings = {
-    cursor = {
-      no_hardware_cursors = 1;
-      use_cpu_buffer = 0;
+  wayland.windowManager.hyprland = mkIf (osConfig.modules.desktop.hyprland.enable or false){
+    settings = {
+      cursor = {
+        no_hardware_cursors = 1;
+        use_cpu_buffer = 0;
+      };
     };
   };
 
-  programs = {
-    niri.settings.outputs = {
+  programs.niri = mkIf (osConfig.modules.desktop.niri.enable or false) {
+    settings.outputs = {
       "DP-2" = {
         scale = 1.5;
         position = {

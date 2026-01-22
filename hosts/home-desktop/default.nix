@@ -8,20 +8,19 @@
 }:
 with lib; {
   imports = [
+    inputs.chaotic.nixosModules.default
     inputs.disko.nixosModules.disko
-    (import ./disko.nix {
-      inherit inputs;
-      device = "/dev/disk/by-uuid/2da72401-b2b8-4a0d-8324-fd474124f51e";
-    })
+    (import ./disko.nix { device = "/dev/disk/by-uuid/2da72401-b2b8-4a0d-8324-fd474124f51e"; })
     ./hardware.nix
   ];
 
   home-manager.sharedModules = [./home.nix];
-  services.displayManager.defaultSession = "niri";
+  services.displayManager.defaultSession = "gnome";
 
   boot = {
     plymouth.enable = true;
     binfmt.emulatedSystems = ["aarch64-linux"];
+    kernelPackages = pkgs.linuxPackages_cachyos;
 
     loader = {
       efi.canTouchEfiVariables = false;
@@ -33,13 +32,6 @@ with lib; {
         efiSupport = true;
         configurationLimit = 10;
       };
-    };
-  };
-
-  hardware = {
-    openrazer = {
-      enable = true;
-      users = attrNames users;
     };
   };
 
@@ -65,9 +57,8 @@ with lib; {
     obsidian
     drawio
     legcord
+    discord
     fish
-    windsurf
-    pkgs.inputs.zen-browser.default
     dbeaver-bin
     uv
     rpi-imager
@@ -80,12 +71,13 @@ with lib; {
       nvidia = {
         enable = true;
         modern = true;
+        latest = true;
       };
     };
 
     desktop = {
       gnome.enable = true;
-      niri.enable = true;
+      niri.enable = false;
 
       hyprland = {
         enable = false;
