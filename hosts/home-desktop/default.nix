@@ -16,6 +16,7 @@ with lib; {
 
   home-manager.sharedModules = [./home.nix];
   services.displayManager.defaultSession = "gnome";
+  hardware.nvidia.package = pkgs.linuxPackages_cachyos.nvidiaPackages.latest;
 
   boot = {
     plymouth.enable = true;

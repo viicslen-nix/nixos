@@ -40,8 +40,6 @@ in {
         powerManagement.enable = mkIf cfg.modern true;
         powerManagement.finegrained = mkIf (cfg.modern && cfg.prime) true;
         prime.offload.enable = mkIf (cfg.modern && cfg.prime) true;
-
-        package = mkIf cfg.latest config.boot.kernelPackages.nvidiaPackages.latest;
       };
     };
 
