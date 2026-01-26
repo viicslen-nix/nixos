@@ -98,6 +98,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    opencode = {
+      url = ./flakes/opencode;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Theming
     stylix.url = "github:danth/stylix";
     base16.url = "github:SenchoPens/base16.nix";

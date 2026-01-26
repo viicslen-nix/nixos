@@ -12,6 +12,7 @@ with lib; {
   home-manager.sharedModules = builtins.concatLists [
     [
       inputs.agenix.homeManagerModules.default
+      inputs.opencode.homeManagerModules.default
       outputs.homeManagerModules.defaults
     ]
     (attrsets.mapAttrsToList (_name: value: value) outputs.homeManagerModules.functionality)
