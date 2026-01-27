@@ -33,7 +33,7 @@ in {
       };
 
       nvidia = {
-        open = true;
+        open = false;
         nvidiaSettings = true;
         modesetting.enable = true;
         dynamicBoost.enable = mkIf cfg.modern true;
