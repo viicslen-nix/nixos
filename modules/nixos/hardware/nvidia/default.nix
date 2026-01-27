@@ -14,6 +14,7 @@ in {
     enable = mkEnableOption (mdDoc name);
     modern = mkEnableOption (mdDoc "Enable modern NVIDIA power management");
     prime = mkEnableOption (mdDoc "Enable PRIME offloading");
+    latest = mkEnableOption (mdDoc "Use the latest NVIDIA drivers");
   };
 
   config = mkIf cfg.enable {
@@ -32,14 +33,13 @@ in {
       };
 
       nvidia = {
-        open = true;
+        open = false;
+        nvidiaSettings = true;
         modesetting.enable = true;
         dynamicBoost.enable = mkIf cfg.modern true;
         powerManagement.enable = mkIf cfg.modern true;
         powerManagement.finegrained = mkIf (cfg.modern && cfg.prime) true;
         prime.offload.enable = mkIf (cfg.modern && cfg.prime) true;
-
-        nvidiaSettings = true;
       };
     };
 
