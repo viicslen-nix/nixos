@@ -19,25 +19,30 @@ in {
       enable = true;
       installVimSyntax = true;
       installBatSyntax = true;
+      enableZshIntegration = true;
+      enableFishIntegration = true;
+      enableBashIntegration = true;
       package = pkgs.inputs.ghostty.default;
       settings = {
         auto-update = "off";
 
-        adjust-cell-height = "35%";
-        adjust-cell-width = "5%";
+        adjust-cell-height = "60%";
+
         window-padding-y = 0;
         window-padding-color = "extend";
         window-padding-balance = true;
-        confirm-close-surface = "always";
+
+        window-theme = "auto";
         window-inherit-working-directory = false;
-        window-theme = "ghostty";
+
+        confirm-close-surface = "always";
+
+        background-opacity = 0.85;
+        background-opacity-cells = 0.75;
+        background-blur = true;
 
         gtk-adwaita = true;
         adw-toolbar-style = "raised-border";
-
-        font-family = lib.mkForce [
-          config.stylix.fonts.monospace.name
-        ];
 
         keybind = [
           "ctrl+shift+q=close_surface"
