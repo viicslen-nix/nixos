@@ -168,12 +168,16 @@ with lib; {
       niri.enable = true;
 
       hyprland = {
-        enable = false;
-        # package = pkgs.inputs.hyprland.hyprland;
-        # portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
-        gnomeCompatibility = true;
-        extraGlobalVariables = {
+        enable = true;
+        nvidia = true;
+        hyprsplit.enable = false;
+        portals = {
+          enable = true;
+          backend = "gnome";
+        };
+        globalVariables = {
           NVD_BACKEND = "direct";
+          GBM_BACKEND = "nvidia-drm";
           LIBVA_DRIVER_NAME = "nvidia";
           __GLX_VENDOR_LIBRARY_NAME = "nvidia";
           __GL_GSYNC_ALLOWED = "0";
