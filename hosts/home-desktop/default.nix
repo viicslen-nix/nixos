@@ -71,18 +71,20 @@ with lib; {
 
       nvidia = {
         enable = true;
-        modern = true;
         latest = true;
       };
     };
 
     desktop = {
       gnome.enable = true;
-      niri.enable = false;
 
       hyprland = {
-        enable = false;
-        gnomeCompatibility = true;
+        enable = true;
+        portals = {
+          enable = true;
+          backend = "gnome";
+        };
+        hyprsplit.enable = false;
         hyprVariables = {
           XDG_CURRENT_DESKTOP = "Hyprland";
           XDG_SESSION_DESKTOP = "Hyprland";
@@ -174,6 +176,9 @@ with lib; {
         allowedCustomBrowsers = [
           ".zen-wrapped"
           "zen"
+          "vivaldi"
+          "vivaldi-stable"
+          "vivaldi-snapshot"
         ];
         users = attrNames users;
       };
