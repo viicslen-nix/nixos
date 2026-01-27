@@ -4,6 +4,7 @@
   options,
   users,
   inputs,
+  pkgs,
   ...
 }:
 with lib;
@@ -17,19 +18,40 @@ in {
     enable = mkEnableOption (mdDoc name);
   };
 
+  imports = [
+    inputs.jovian.nixosModules.default
+  ];
+
   config = mkIf cfg.enable (mkMerge [
     {
       programs = {
         steam = {
           enable = true;
-          localNetworkGameTransfers.openFirewall = true;
           gamescopeSession.enable = true;
+          localNetworkGameTransfers.openFirewall = true;
         };
 
-        gamescope = {
-          enable = true;
-          capSysNice = true;
+        gamemode.enable = true;
+        gamescope.enable = true;
+      };
+
+      environment = {
+        systemPackages = with pkgs; [
+          mangohud
+          lutris
+          bottles
+          heroic
+          protonup-ng
+        ];
+        sessionVariables = {
+          STEAM_EXTRA_COMPAT_TOOLS_PATHS =
+            "\${HOME}/.steam/root/compatibilitytools.d";
         };
+      };
+
+      jovian = {
+        steam.enable = true;
+        decky-loader.enable = true;
       };
     }
     (mkNixosPersistence {
