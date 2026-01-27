@@ -69,30 +69,39 @@
     };
 
     vivaldi = _prev.vivaldi.overrideAttrs (oldAttrs: let
-      version = "7.8.3925.29";
+      version = "7.8.3925.44";
+      channel = "stable";
     in {
       inherit version;
 
       src = _prev.fetchurl {
-        url = "https://downloads.vivaldi.com/snapshot/vivaldi-snapshot_${version}-1_amd64.deb";
-        hash = "sha256-OOH1fQW/sVXvMcHeayAMcvgQIbmdYNPHpBVb/xPbLdI=";
+        url = "https://downloads.vivaldi.com/${channel}/vivaldi-${channel}_${version}-1_amd64.deb";
+        hash = "sha256-RK9bWHNcrTsIWsHNMxO8Nr9K/pjjggb2rc3GFWftTso=";
       };
 
-      passthru = (oldAttrs.passthru or {}) // {
-        isSnapshot = true;
-      };
+      passthru =
+        (oldAttrs.passthru or {})
+        // {
+          isSnapshot = channel != "stable";
+        };
 
       buildPhase =
-        builtins.replaceStrings
-        ["opt/vivaldi/"]
-        ["opt/vivaldi-snapshot/"]
-        oldAttrs.buildPhase;
+        if channel == "snapshot"
+        then
+          (builtins.replaceStrings
+            ["opt/vivaldi/"]
+            ["opt/vivaldi-snapshot/"]
+            oldAttrs.buildPhase)
+        else oldAttrs.buildPhase;
 
       installPhase =
-        builtins.replaceStrings
-        ["opt/vivaldi/vivaldi" "vivaldi-stable" "opt/vivaldi/product" "opt/vivaldi/WidevineCdm" "opt/vivaldi/resources"]
-        ["opt/vivaldi-snapshot/vivaldi-snapshot" "vivaldi-snapshot" "opt/vivaldi-snapshot/product" "opt/vivaldi-snapshot/WidevineCdm" "opt/vivaldi-snapshot/resources"]
-        oldAttrs.installPhase;
+        if channel == "snapshot"
+        then
+          (builtins.replaceStrings
+            ["opt/vivaldi/vivaldi" "vivaldi-stable" "opt/vivaldi/product" "opt/vivaldi/WidevineCdm" "opt/vivaldi/resources"]
+            ["opt/vivaldi-snapshot/vivaldi-snapshot" "vivaldi-snapshot" "opt/vivaldi-snapshot/product" "opt/vivaldi-snapshot/WidevineCdm" "opt/vivaldi-snapshot/resources"]
+            oldAttrs.installPhase)
+        else oldAttrs.installPhase;
     });
 
     # Patch openssh to ignore file permissions on ssh_config file

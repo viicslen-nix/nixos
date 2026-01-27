@@ -96,7 +96,10 @@ with inputs.self.lib; let
 
   # Detect if this is a snapshot version and set the correct base path
   isSnapshot = vivaldiPackage.isSnapshot or false;
-  vivaldiBasePath = if isSnapshot then "opt/vivaldi-snapshot" else "opt/vivaldi";
+  vivaldiBasePath =
+    if isSnapshot
+    then "opt/vivaldi-snapshot"
+    else "opt/vivaldi";
   vivaldiBinaryName = "vivaldi"; # Binary is always named 'vivaldi' regardless of snapshot/stable
   # Based on https://github.com/budlabs/vivaldi-autoinject-custom-js-ui
   vivaldiWithMods = let
@@ -106,7 +109,7 @@ with inputs.self.lib; let
     pkgs.runCommand "vivaldi-custom-ui-${vivaldiPackage.version}" {
       nativeBuildInputs = [pkgs.makeWrapper];
       # Lower priority number = higher precedence (resolves buildEnv conflicts)
-      meta = (vivaldiPackage.meta or {}) // { priority = 4; };
+      meta = (vivaldiPackage.meta or {}) // {priority = 4;};
     } ''
       # Create output directory structure
       mkdir -p $out
