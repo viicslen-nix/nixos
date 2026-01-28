@@ -29,16 +29,16 @@ This document explains the structure and organization of this NixOS configuratio
 │   │   ├── core/          # Core system features (sound, network, theming)
 │   │   ├── services/      # System services (impermanence, backups, power)
 │   │   ├── features/      # Optional features (app-images, VMs, etc.)
-│   │   ├── presets/       # Configuration bundles (base, work, personal)
 │   │   └── containers/    # Container configurations
 │   │
 │   └── home-manager/      # Home Manager user modules (auto-discovered)
 │       ├── programs/      # User programs (git, firefox, alacritty, etc.)
 │       └── functionality/ # User features (impermanence, autostart)
-│
+
 ├── hosts/                 # Host-specific configurations
 │   ├── default.nix        # Host registry and shared config
 │   ├── _shared/           # Shared host configurations
+│   │   └── presets/       # Host configuration presets (base, work, personal)
 │   ├── home-desktop/      # Desktop workstation
 │   ├── asus-zephyrus-gu603/  # Gaming laptop
 │   ├── dostov-dev/        # Development server
@@ -99,13 +99,36 @@ Each module:
 - Uses `enable` option pattern
 - Configures when enabled
 
-### 4. Hosts (`hosts/`)
+### Hosts (`hosts/`)
 
 Each host directory contains:
 - `default.nix` - Main configuration
 - `hardware.nix` - Hardware-specific settings (optional)
 - `disko.nix` - Disk partitioning (optional)
 - `home.nix` - User-specific overrides (optional)
+
+The `_shared/` directory contains:
+- `presets/` - Reusable host configuration bundles (base, work, personal)
+- Other shared host-level configurations
+
+**Using Presets:**
+Presets are NixOS modules that group common configurations:
+
+```nix
+{
+  imports = [
+    ../_shared/presets/base      # Essential system setup
+    ../_shared/presets/work      # Work-related tools & containers
+    ../_shared/presets/personal  # Personal apps & settings
+  ];
+
+  modules.presets = {
+    base.enable = true;
+    work.enable = true;
+    personal.enable = true;
+  };
+}
+```
 
 Hosts are registered in `hosts/default.nix` and built via `mkNixosConfigurations`.
 
@@ -140,12 +163,19 @@ Modules are organized into logical categories:
 - `core/` - Essential features like sound, network, theming (`modules.core.*`)
 - `services/` - System services like impermanence, backups (`modules.services.*`)
 - `features/` - Optional features like VMs, app-images (`modules.features.*`)
-- `presets/` - Configuration bundles (`modules.presets.*`)
 - `containers/` - Container definitions (`modules.containers.*`)
 
 **Home Manager Modules (`modules/home-manager/`):**
 - `programs/` - User programs (`modules.programs.*`)
 - `functionality/` - User features (`modules.functionality.*`)
+
+**Host Presets (`hosts/_shared/presets/`):**
+- `base/` - Essential system setup (users, fonts, Home Manager, etc.)
+- `work/` - Work-related tools, containers, and development packages
+- `personal/` - Personal apps and settings
+- `linode/` - Linode-specific configurations
+
+Presets are imported directly in host configs and enabled via `modules.presets.*`.
 
 #### Unlimited Nesting
 

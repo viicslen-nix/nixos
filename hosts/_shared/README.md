@@ -10,51 +10,65 @@ Instead of duplicating configuration in every host, place common configurations 
 
 ```
 _shared/
-├── base.nix          # Essential base configuration for all hosts
-├── desktop.nix       # Common desktop environment settings
-├── work.nix          # Work-related shared configuration
-└── gaming.nix        # Gaming-related shared configuration
+├── presets/          # Configuration bundles for common host setups
+│   ├── base/         # Essential base configuration (users, fonts, Home Manager, etc.)
+│   ├── work/         # Work-related tools, containers, development packages
+│   ├── personal/     # Personal apps and settings
+│   └── linode/       # Linode-specific server configurations
+└── README.md         # This file
 ```
 
-## Usage
+## Using Presets
 
-Import shared configs in host `default.nix`:
+Presets are NixOS modules that bundle common configurations. Import them in your host's `default.nix`:
 
 ```nix
 {
   imports = [
-    ../_ shared/base.nix
-    ../_shared/desktop.nix
+    ../_shared/presets/base
+    ../_shared/presets/work
+    ../_shared/presets/personal
     ./hardware.nix
   ];
+
+  modules.presets = {
+    base.enable = true;
+    work.enable = true;
+    personal.enable = true;
+  };
 
   # Host-specific configuration...
 }
 ```
 
-## Examples
+## Available Presets
 
-### Base Configuration (base.nix)
-Common settings for all hosts:
-- Boot configuration
-- Network defaults
-- Base system packages
-- Common services
+### Base (`presets/base/`)
+Essential configuration for all hosts:
+- User setup with nushell shell
+- Common system packages (git, jq, ripgrep, curl, etc.)
+- Fonts (Noto Fonts, Nerd Fonts)
+- Home Manager integration
+- Nix settings with flakes enabled
+- System services (printing, gvfs, avahi)
 
-### Desktop Configuration (desktop.nix)
-Shared desktop settings:
-- Display manager configuration
-- Common desktop apps
-- Fonts
-- Theme settings
+### Work (`presets/work/`)
+Development and work tools:
+- Development packages (PHP, Node.js, Go, Bun, kubectl, gh)
+- Work containers (Traefik, MySQL, Redis, Soketi, etc.)
+- SSH configurations for work servers
+- Development tools (mkcert, corepack)
 
-### Work Configuration (work.nix)
-Development tools:
-- IDEs
-- Docker
-- Development shells
-- SSH/VPN configuration
+### Personal (`presets/personal/`)
+Personal apps and utilities:
+- nix-alien for running unpatched binaries
+- QMK firmware tools
+- Personal containers (Homarr dashboard)
+- Additional utilities (graphviz, yazi)
+
+### Linode (`presets/linode/`)
+Server-specific configurations for Linode VPS hosts.
 
 ---
 
-*Note: Prefer using modules in `modules/` for feature configuration. Use `_shared/` for host-level configuration patterns.*
+*Note: Presets are for **host-level** configuration bundles. Use `modules/` for individual reusable feature modules.*

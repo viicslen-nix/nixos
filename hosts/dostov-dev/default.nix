@@ -14,6 +14,9 @@ with lib; {
     # Include the results of the hardware scan.
     ./hardware.nix
     inputs.ghost-backup.nixosModules.default
+    ../_shared/presets/base
+    ../_shared/presets/work
+    ../_shared/presets/personal
   ];
 
   home-manager.sharedModules = [./home.nix];
