@@ -1,7 +1,14 @@
-{inputs, ...}:
-with inputs.self.lib;
-  {
-    defaultSystems = import inputs.systems;
+{inputs, ...}: let
+  # Import our custom helpers
+  moduleHelpers = import ./modules.nix {lib = inputs.nixpkgs.lib;};
+  hostsHelpers = import ./hosts.nix {inherit inputs;};
+  persistenceHelpers = import ./persistence.nix {inherit inputs;};
+  
+  defaultSystems = import inputs.systems;
+in
+  # Merge nixpkgs.lib first, then override with our custom helpers
+  inputs.nixpkgs.lib // {
+    inherit defaultSystems;
     genSystems = inputs.nixpkgs.lib.genAttrs defaultSystems;
 
     pkgsFor = system:
@@ -9,11 +16,13 @@ with inputs.self.lib;
         inherit system;
         config.allowUnfree = true;
       };
-    pkgFromSystem = pkg: genSystems (system: (pkgsFor system).${pkg});
-    callPackageForSystem = system: path: overrides: ((pkgsFor system).callPackage path ({inherit inputs;} // overrides));
+    pkgFromSystem = pkg: inputs.nixpkgs.lib.genAttrs defaultSystems (system: ((import inputs.nixpkgs {inherit system; config.allowUnfree = true;}).${pkg}));
+    callPackageForSystem = system: path: overrides: let
+      pkgs = import inputs.nixpkgs {inherit system; config.allowUnfree = true;};
+    in pkgs.callPackage path ({inherit inputs;} // overrides);
 
-    hosts = import ./hosts.nix {inherit inputs;};
-    modules = import ./modules.nix {lib = inputs.nixpkgs.lib;};
-    persistence = import ./persistence.nix {inherit inputs;};
+    # Custom helpers - these override nixpkgs.lib.{hosts,modules,persistence} if they exist
+    hosts = hostsHelpers;
+    modules = moduleHelpers;
+    persistence = persistenceHelpers;
   }
-  // inputs.nixpkgs.lib

@@ -3,9 +3,6 @@
   outputs,
 }: {
   shared = {
-    modules = [
-      {system.stateVersion = "26.05";}
-    ];
     specialArgs = {
       inherit inputs outputs;
 

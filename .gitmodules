@@ -12,4 +12,4 @@
 	url = https://github.com/viicslen-nix/nixvim
 [submodule "flakes/opencode"]
 	path = flakes/opencode
-	url = https://github.com/viicslen/opencode-flake
+	url = https://github.com/viicslen-nix/opencode

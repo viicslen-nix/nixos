@@ -1,15 +1,11 @@
 {...}: {
   # Generate nixosConfigurations from host definitions
-  mkNixosConfigurations = {
-    hostsPath, # Base path to hosts directory (e.g., ./hosts)
-    inputs, # Flake inputs (for passing to hosts/default.nix)
-    outputs, # Flake outputs (for passing to hosts/default.nix)
-  }: let
+  mkNixosConfigurations = hostsPath: specialArgs: let
     nixpkgs = inputs.nixpkgs;
     lib = nixpkgs.lib;
 
     # Import hosts configuration (shared and hosts definitions)
-    hostsConfig = import hostsPath {inherit inputs outputs;};
+    hostsConfig = import hostsPath {};
     shared = hostsConfig.shared or {};
     hosts = hostsConfig.hosts or {};
 
@@ -94,10 +90,9 @@
             }
           ];
         specialArgs =
-          (shared.specialArgs or {})
-          // {
-            hostName = hostName;
-          };
+          specialArgs
+          // (shared.specialArgs or {})
+          // {hostName = hostName;};
       };
 
     # Build configurations for all hosts
