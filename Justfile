@@ -7,24 +7,20 @@ set shell := ["zsh", "-c"]
 #
 ############################################################################
 
-[group('development')]
 # Generate a new NixOS or Home Manager module
 # Usage: just new-module nixos programs my-program
 new-module TYPE CATEGORY NAME:
   #!/usr/bin/env bash
   ./tools/generate-module.sh {{TYPE}} {{CATEGORY}} {{NAME}}
 
-[group('development')]
 # Validate configuration syntax and host builds
 validate:
   ./tools/validate-config.sh
 
-[group('development')]
 # Update auto-generated documentation
 update-docs:
   ./tools/update-docs.sh
 
-[group('development')]
 # Run validation and update docs
 check: validate update-docs
   #!/usr/bin/env bash
@@ -32,25 +28,21 @@ check: validate update-docs
     echo "⚠️  Documentation changes detected. Review and commit."
   fi
 
-[group('development')]
 # Open a nix shell with the flake
 repl:
   nixos-rebuild repl --flake .
 
-[group('development')]
 # Check the syntax of a nix file
 check-file FILE:
   nix-instantiate --parse-only {{FILE}}
 
-[group('development')]
 # Lint for dead code
 lint FILE='.':
   nix run github:astro/deadnix -- -eq {{FILE}}
 
-[group('development')]
 # Format the nix files in this repo
-fmt:
-  nix fmt .
+fmt PATH='.':
+  nix fmt {{PATH}}
 
 ############################################################################
 #
@@ -58,13 +50,11 @@ fmt:
 #
 ############################################################################
 
-[group('build')]
 # Build a specific host configuration
 # Usage: just build home-desktop
 build HOST:
   nix build .#nixosConfigurations.{{HOST}}.config.system.build.toplevel --print-build-logs
 
-[group('build')]
 # Build all host configurations
 build-all:
   #!/usr/bin/env bash
@@ -75,7 +65,6 @@ build-all:
     fi
   done
 
-[group('build')]
 # Run eval tests
 test:
   nix eval .#evalTests --show-trace --print-build-logs --verbose
@@ -86,18 +75,15 @@ test:
 #
 ############################################################################
 
-[group('update')]
 # Update all flake inputs
 update:
   nix flake update
 
-[group('update')]
 # Update specific flake input
 # Usage: just update-input nixpkgs
 update-input INPUT:
   nix flake lock --update-input {{INPUT}}
 
-[group('update')]
 # Full system update (flake + rebuild)
 full-upgrade:
   just update
@@ -109,23 +95,19 @@ full-upgrade:
 #
 ############################################################################
 
-[group('deploy')]
 # Rebuild and switch to new configuration
 # Usage: just switch
-switch COMMAND='switch':
+rebuild COMMAND='switch':
   sudo nixos-rebuild {{COMMAND}} --flake .
 
-[group('deploy')]
 # Rebuild using path: prefix (for dirty trees)
-switch-path COMMAND='switch':
+rebuild-path COMMAND='switch':
   sudo nixos-rebuild {{COMMAND}} --flake path:.
 
-[group('deploy')]
 # Rebuild using nh helper utility
 upgrade COMMAND='switch':
   nh os {{COMMAND}} --ask
 
-[group('deploy')]
 # Commit changes and upgrade system
 commit-and-upgrade MESSAGE COMMAND='switch':
   git add .
@@ -138,24 +120,20 @@ commit-and-upgrade MESSAGE COMMAND='switch':
 #
 ############################################################################
 
-[group('maintenance')]
 # Remove all generations older than 7 days
 clean:
   ng clean all -K 7d
   sudo nix profile wipe-history --profile /nix/var/nix/profiles/system  --older-than 7d
 
-[group('maintenance')]
 # Garbage collect all unused nix store entries
 gc:
   sudo nix store gc --debug
   sudo nix-collect-garbage --delete-old
 
-[group('maintenance')]
 # Optimize nix store (deduplicate)
 optimize:
   nix-store --optimise
 
-[group('maintenance')]
 # List all generations of the system profile
 history:
   nix profile history --profile /nix/var/nix/profiles/system
@@ -166,25 +144,13 @@ history:
 #
 ############################################################################
 
-[group('git')]
 # Commit pending changes
 commit MESSAGE:
   git add .
   git commit -m "{{MESSAGE}}"
 
-[group('git')]
 # Commit and push changes
 push MESSAGE:
   git add .
   git commit -m "{{MESSAGE}}"
   git push
-
-############################################################################
-#
-#  Misc Commands
-#
-############################################################################
-
-# Show PATH entries
-path:
-   $env.PATH | split row ":"

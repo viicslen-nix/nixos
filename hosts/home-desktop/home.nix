@@ -14,13 +14,13 @@ with lib; {
     };
   };
 
-    home.file.".config/hypr/pyprland.toml".text = lib.mkAfter ''
-      [monitors.placement."Acer CB281HK"]
-      topOf = "G274F"
-      scale = 1.875000
-    '';
+  home.file.".config/hypr/pyprland.toml".text = lib.mkAfter ''
+    [monitors.placement."Acer CB281HK"]
+    topOf = "G274F"
+    scale = 1.875000
+  '';
 
-  wayland.windowManager.hyprland = mkIf (osConfig.modules.desktop.hyprland.enable or false){
+  wayland.windowManager.hyprland = mkIf (osConfig.modules.desktop.hyprland.enable or false) {
     settings = {
       cursor = {
         no_hardware_cursors = 1;

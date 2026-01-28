@@ -1,5 +1,6 @@
 {inputs, ...}:
-with inputs.self.lib; {
+with inputs.self.lib;
+  {
     defaultSystems = import inputs.systems;
     genSystems = inputs.nixpkgs.lib.genAttrs defaultSystems;
 
@@ -10,7 +11,6 @@ with inputs.self.lib; {
       };
     pkgFromSystem = pkg: genSystems (system: (pkgsFor system).${pkg});
     callPackageForSystem = system: path: overrides: ((pkgsFor system).callPackage path ({inherit inputs;} // overrides));
-
 
     hosts = import ./hosts.nix {inherit inputs;};
     modules = import ./modules.nix {lib = inputs.nixpkgs.lib;};
