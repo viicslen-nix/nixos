@@ -181,10 +181,10 @@
       overlays = import ./overlays {inherit inputs;};
 
       # Reusable nixos modules you might want to export
-      nixosModules = import ./modules/nixos;
+      nixosModules = modules.autoImportRecursive ./modules/nixos;
 
       # Reusable home-manager modules you might want to export
-      homeManagerModules = import ./modules/home-manager;
+      homeManagerModules = modules.autoImportRecursive ./modules/home-manager;
 
       # NixOS configurations for all your hosts
       nixosConfigurations = hosts.mkNixosConfigurations {

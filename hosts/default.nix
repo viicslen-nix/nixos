@@ -4,8 +4,6 @@
 }: {
   shared = {
     modules = [
-      outputs.nixosModules.all
-      outputs.homeManagerModules.all
       {system.stateVersion = "26.05";}
     ];
     specialArgs = {
