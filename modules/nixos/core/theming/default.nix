@@ -8,7 +8,7 @@
 }:
 with lib; let
   name = "theming";
-  namespace = "functionality";
+  namespace = "core";
 
   cfg = config.modules.${namespace}.${name};
 

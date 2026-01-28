@@ -5,7 +5,7 @@
 }:
 with lib; let
   name = "sound";
-  namespace = "functionality";
+  namespace = "core";
 
   cfg = config.modules.${namespace}.${name};
 in {

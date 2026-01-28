@@ -5,7 +5,7 @@
 }:
 with lib; let
   name = "localization";
-  namespace = "functionality";
+  namespace = "core";
 
   cfg = config.modules.${namespace}.${name};
 in {

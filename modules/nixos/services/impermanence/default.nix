@@ -8,7 +8,7 @@
 }:
 with lib; let
   name = "impermanence";
-  namespace = "functionality";
+  namespace = "services";
 
   cfg = config.modules.${namespace}.${name};
 in {
