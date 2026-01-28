@@ -2,7 +2,6 @@
   lib,
   pkgs,
   config,
-  inputs,
   ...
 }:
 with lib; {
@@ -13,10 +12,10 @@ with lib; {
       graphviz
       asciinema
       yazi
-      inputs.nixvim.default
-      local.scripts.git-carve-submodule
       ytmdesktop
       android-tools
+      inputs.nixvim.default
+      local.scripts.git-carve-submodule
     ];
 
     programs = {

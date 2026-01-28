@@ -3,7 +3,6 @@
   pkgs,
   users,
   config,
-  inputs,
   ...
 }:
 with lib; {

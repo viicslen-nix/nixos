@@ -32,6 +32,8 @@ in {
   ];
 
   config = {
+    system.stateVersion = "26.05";
+
     users.users =
       lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
         isNormalUser = true;
@@ -106,8 +108,7 @@ in {
       };
 
       sharedModules = [
-        inputs.agenix.homeManagerModules.default
-        inputs.opencode.homeManagerModules.default
+        ./home.nix
       ];
 
       users = genAttrs (filter (user: (pathExists ../../../../users/${user})) (attrNames users)) (name: import ../../../../users/${name});

@@ -187,9 +187,6 @@
       homeManagerModules = modules.autoImportRecursive ./modules/home-manager;
 
       # NixOS configurations for all your hosts
-      nixosConfigurations = hosts.mkNixosConfigurations {
-        hostsPath = ./hosts;
-        inherit inputs outputs;
-      };
+      nixosConfigurations = hosts.mkNixosConfigurations ./hosts {inherit inputs outputs;};
     };
 }
