@@ -138,6 +138,9 @@ with inputs.self.lib;
       
       # Base path to presets directory
       presetsPath = ../hosts/_shared/presets;
+      
+      # Base path to hosts directory
+      hostsBasePath = ../hosts;
 
       # Convert preset list to module imports
       # Dynamically resolve preset names to their paths
@@ -147,13 +150,16 @@ with inputs.self.lib;
         else map (name: import (presetsPath + "/${name}")) presets;
 
       # Build a single nixos configuration
-      mkHostConfig = hostName: hostConfig:
+      mkHostConfig = hostName: hostConfig: let
+        # Use provided path or default to hostsBasePath/<hostName>
+        hostPath = hostConfig.path or (hostsBasePath + "/${hostName}");
+      in
         nixpkgs.lib.nixosSystem {
           modules =
             (shared.modules or [])
             ++ (presetsToModules (hostConfig.presets or []))
             ++ [
-              hostConfig.path
+              hostPath
               {
                 nixpkgs.hostPlatform.system = hostConfig.system;
               }
