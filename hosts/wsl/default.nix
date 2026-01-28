@@ -79,7 +79,7 @@ with lib; {
   };
 
   modules = {
-    functionality.theming.enable = true;
+    core.theming.enable = true;
     programs.ld.enable = true;
 
     presets = {

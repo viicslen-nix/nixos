@@ -8,7 +8,6 @@
 }:
 with lib; {
   imports = [
-    inputs.chaotic.nixosModules.default
     inputs.disko.nixosModules.disko
     (import ./disko.nix { device = "/dev/disk/by-uuid/2da72401-b2b8-4a0d-8324-fd474124f51e"; })
     ./hardware.nix
@@ -16,12 +15,11 @@ with lib; {
 
   home-manager.sharedModules = [./home.nix];
   services.displayManager.defaultSession = "gnome";
-  hardware.nvidia.package = pkgs.linuxPackages_cachyos.nvidiaPackages.latest;
 
   boot = {
     plymouth.enable = true;
     binfmt.emulatedSystems = ["aarch64-linux"];
-    kernelPackages = pkgs.linuxPackages_cachyos;
+    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
     loader = {
       efi.canTouchEfiVariables = false;
@@ -100,11 +98,15 @@ with lib; {
       };
     };
 
-    functionality = {
+    services = {
       oom.enable = true;
+      power-management.enable = true;
+    };
+
+    features.app-images.enable = true;
+
+    core = {
       theming.enable = true;
-      appImages.enable = true;
-      powerManagement.enable = true;
 
       network.hosts = {
         # Docker

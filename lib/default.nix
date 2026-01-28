@@ -1,8 +1,15 @@
 {inputs, ...}:
 with inputs.self.lib;
+  let
+    # Import module helpers
+    moduleHelpers = import ./modules.nix { lib = inputs.nixpkgs.lib; };
+  in
   {
     defaultSystems = import inputs.systems;
     genSystems = inputs.nixpkgs.lib.genAttrs defaultSystems;
+
+    # Export module helpers
+    modules = moduleHelpers;
 
     # Impermanence helpers for home-manager modules
     # These allow other modules to conditionally add persistent dirs/files
@@ -10,42 +17,42 @@ with inputs.self.lib;
 
     # Add directories to persist (general directories)
     mkPersistentDirs = config: dirs: let
-      cfg = config.modules.functionality.impermanence;
+      cfg = config.modules.services.impermanence;
     in
       inputs.nixpkgs.lib.mkIf (cfg.enable && cfg.autoPersistence) {
-        modules.functionality.impermanence.directories = dirs;
+        modules.services.impermanence.directories = dirs;
       };
 
     # Add files to persist
     mkPersistentFiles = config: files: let
-      cfg = config.modules.functionality.impermanence;
+      cfg = config.modules.services.impermanence;
     in
       inputs.nixpkgs.lib.mkIf (cfg.enable && cfg.autoPersistence) {
-        modules.functionality.impermanence.files = files;
+        modules.services.impermanence.files = files;
       };
 
     # Add .config directories to persist
     mkPersistentConfig = config: dirs: let
-      cfg = config.modules.functionality.impermanence;
+      cfg = config.modules.services.impermanence;
     in
       inputs.nixpkgs.lib.mkIf (cfg.enable && cfg.autoPersistence) {
-        modules.functionality.impermanence.config = dirs;
+        modules.services.impermanence.config = dirs;
       };
 
     # Add .local/share directories to persist
     mkPersistentShare = config: dirs: let
-      cfg = config.modules.functionality.impermanence;
+      cfg = config.modules.services.impermanence;
     in
       inputs.nixpkgs.lib.mkIf (cfg.enable && cfg.autoPersistence) {
-        modules.functionality.impermanence.share = dirs;
+        modules.services.impermanence.share = dirs;
       };
 
     # Add .cache directories to persist
     mkPersistentCache = config: dirs: let
-      cfg = config.modules.functionality.impermanence;
+      cfg = config.modules.services.impermanence;
     in
       inputs.nixpkgs.lib.mkIf (cfg.enable && cfg.autoPersistence) {
-        modules.functionality.impermanence.cache = dirs;
+        modules.services.impermanence.cache = dirs;
       };
 
     # Combined helper to add multiple types at once
@@ -56,10 +63,10 @@ with inputs.self.lib;
       share ? [],
       cache ? [],
     }: let
-      cfg = config.modules.functionality.impermanence;
+      cfg = config.modules.services.impermanence;
     in
       inputs.nixpkgs.lib.mkIf (cfg.enable && cfg.autoPersistence) {
-        modules.functionality.impermanence = {
+        modules.services.impermanence = {
           directories = directories;
           files = files;
           config = config;
@@ -84,7 +91,7 @@ with inputs.self.lib;
       lib = inputs.nixpkgs.lib;
       homeManagerLoaded = builtins.hasAttr "home-manager" options;
       mkUserPersistence = _user: {
-        modules.functionality.impermanence = {
+        modules.services.impermanence = {
           directories = directories;
           files = files;
           config = configDirs;
@@ -106,10 +113,10 @@ with inputs.self.lib;
       files ? [],
     }: let
       lib = inputs.nixpkgs.lib;
-      cfg = config.modules.functionality.impermanence;
+      cfg = config.modules.services.impermanence;
     in
       lib.mkIf cfg.enable {
-        modules.functionality.impermanence = {
+        modules.services.impermanence = {
           inherit directories files;
         };
       };

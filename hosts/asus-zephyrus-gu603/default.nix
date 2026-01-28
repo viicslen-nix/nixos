@@ -133,11 +133,9 @@ with lib; {
       # };
     };
 
-    functionality = {
+    services = {
       oom.enable = true;
-      theming.enable = true;
-      appImages.enable = true;
-      powerManagement.enable = true;
+      power-management.enable = true;
 
       backups = {
         enable = false;
@@ -173,6 +171,12 @@ with lib; {
           "/etc/gdm"
         ];
       };
+    };
+
+    features.app-images.enable = true;
+
+    core = {
+      theming.enable = true;
 
       network.hosts = {
         # Docker
