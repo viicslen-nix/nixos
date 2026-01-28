@@ -26,7 +26,7 @@ in {
   };
 
   config = mkIf cfg.enable (mkMerge [
-    (mkPersistence config {
+    (persistence.mkPersistence config {
       config = ["ray"];
     })
     {

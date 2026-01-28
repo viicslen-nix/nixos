@@ -65,12 +65,12 @@ in {
         };
       };
     }
-    (mkNixosPersistence {
+    (persistence.mkHmPersistence {
       inherit config options;
       users = attrNames users;
       configDirs = ["Mullvad VPN"];
     })
-    (mkSystemPersistence {
+    (persistence.mkNixosPersistence {
       inherit config;
       directories = ["/etc/mullvad-vpn"];
     })

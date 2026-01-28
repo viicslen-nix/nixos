@@ -32,7 +32,7 @@ in {
           ]);
       };
     }
-    (mkPersistence config {
+    (persistence.mkPersistence config {
       config = ["Code"];
       directories = [".vscode"];
     })

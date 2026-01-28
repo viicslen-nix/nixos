@@ -27,7 +27,7 @@ in {
           };
       };
     }
-    (mkPersistence config {
+    (persistence.mkPersistence config {
       cache = ["starship"];
     })
   ]);

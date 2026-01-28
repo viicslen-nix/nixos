@@ -144,7 +144,7 @@ in {
         };
       });
     })
-    (mkNixosPersistence {
+    (persistence.mkHmPersistence {
       inherit config options;
       users = cfg.users;
       configDirs = ["1Password" "op"];

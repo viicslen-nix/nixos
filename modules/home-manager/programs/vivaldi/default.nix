@@ -255,7 +255,7 @@ in {
     }
 
     # Persistence support
-    (mkPersistence config {
+    (persistence.mkPersistence config {
       config = ["vivaldi"];
       cache = ["vivaldi"];
     })

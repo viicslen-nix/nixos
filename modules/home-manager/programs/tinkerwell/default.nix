@@ -47,7 +47,7 @@ in {
         };
       };
     }
-    (mkPersistence config {
+    (persistence.mkPersistence config {
       config = ["Tinkerwell" "tinkerwell"];
     })
   ]);
