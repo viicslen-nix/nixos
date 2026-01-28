@@ -130,7 +130,7 @@ Or create manually:
 
 Edit `hosts/default.nix` and add your host to the `hosts` attribute set.
 
-**Specify presets** (optional) to automatically import shared configuration:
+**The path defaults to the attribute name**, so you only need to specify `system` and optional `presets`:
 
 ```nix
 {
@@ -146,8 +146,9 @@ Edit `hosts/default.nix` and add your host to the `hosts` attribute set.
     
     my-host = {
       system = "x86_64-linux";  # or "aarch64-linux"
-      path = ./my-host;
       presets = ["base" "work" "personal"];  # Optional preset list
+      # path = ./custom-path;  # Optional: defaults to ./my-host
+    };
     };
     };
   };
@@ -179,8 +180,8 @@ Example configuration in `hosts/default.nix`:
 ```nix
 my-host = {
   system = "x86_64-linux";
-  path = ./my-host;
   presets = ["base" "work" "personal"];  # List presets to apply
+  # path defaults to ./my-host based on attribute name
 };
 ```
 
@@ -278,8 +279,7 @@ In `hosts/default.nix`:
 ```nix
 my-desktop = {
   system = "x86_64-linux";
-  path = ./my-desktop;
-  presets = ["base" "personal"];  # Centralized preset configuration
+  presets = ["base" "personal"];  # Path defaults to ./my-desktop
 };
 ```
 
@@ -313,8 +313,7 @@ In `hosts/default.nix`:
 ```nix
 my-server = {
   system = "x86_64-linux";
-  path = ./my-server;
-  presets = ["base"];  # Just base preset for servers
+  presets = ["base"];  # Path defaults to ./my-server
 };
 ```
 
