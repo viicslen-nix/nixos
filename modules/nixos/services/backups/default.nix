@@ -6,7 +6,7 @@
 }:
 with lib; let
   name = "backups";
-  namespace = "functionality";
+  namespace = "services";
 
   cfg = config.modules.${namespace}.${name};
 

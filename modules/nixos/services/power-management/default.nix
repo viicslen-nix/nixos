@@ -5,7 +5,7 @@
 }:
 with lib; let
   name = "powerManagement";
-  namespace = "functionality";
+  namespace = "services";
 
   cfg = config.modules.${namespace}.${name};
 in {

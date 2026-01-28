@@ -8,7 +8,7 @@
 with lib; let
   homeManagerLoaded = builtins.hasAttr "home-manager" options;
   name = "virtual-machines";
-  namespace = "functionality";
+  namespace = "features";
 
   cfg = config.modules.${namespace}.${name};
 in {

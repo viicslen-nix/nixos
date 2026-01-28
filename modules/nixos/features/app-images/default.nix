@@ -6,7 +6,7 @@
 }:
 with lib; let
   name = "appImages";
-  namespace = "functionality";
+  namespace = "features";
 
   cfg = config.modules.${namespace}.${name};
 in {

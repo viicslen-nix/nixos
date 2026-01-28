@@ -100,10 +100,10 @@ with lib; {
 
     services = {
       oom.enable = true;
-      power-management.enable = true;
+      powerManagement.enable = true;
     };
 
-    features.app-images.enable = true;
+    features.appImages.enable = true;
 
     core = {
       theming.enable = true;
