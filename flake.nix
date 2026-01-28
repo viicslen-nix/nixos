@@ -99,7 +99,10 @@
     };
 
     # OpenCode
-    opencode.url = ./flakes/opencode;
+    opencode = {
+      url = ./flakes/opencode;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Theming
     stylix.url = "github:danth/stylix";
