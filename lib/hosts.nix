@@ -1,6 +1,6 @@
-{...}: {
+{inputs, outputs, ...}: {
   # Generate nixosConfigurations from host definitions
-  mkNixosConfigurations = hostsPath: specialArgs: let
+  mkNixosConfigurations = hostsPath: let
     nixpkgs = inputs.nixpkgs;
     lib = nixpkgs.lib;
 
@@ -89,10 +89,10 @@
               nixpkgs.hostPlatform.system = hostConfig.system;
             }
           ];
-        specialArgs =
-          specialArgs
-          // (shared.specialArgs or {})
-          // {hostName = hostName;};
+        specialArgs = {
+          inherit inputs outputs hostName;
+          users = shared.users or {};
+        };
       };
 
     # Build configurations for all hosts
