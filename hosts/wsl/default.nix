@@ -75,25 +75,8 @@ with lib; {
     ];
   };
 
-  services.vscode-server = {
-    enable = true;
-    enableFHS = true;
-    installPath = "$HOME/.local/share/vscode-server";
-  };
-
-  modules = {
-    core.theming.enable = true;
-    programs.ld.enable = true;
-
-    presets = {
-      base.enable = true;
-      work.enable = true;
-      personal.enable = true;
-    };
-
-    containers.settings = {
-      backend = "docker";
-      log-driver = "local";
-    };
+  modules.containers.settings = {
+    backend = "docker";
+    log-driver = "local";
   };
 }

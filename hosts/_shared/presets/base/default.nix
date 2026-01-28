@@ -8,46 +8,22 @@
   ...
 }:
 with lib; let
-  name = "base";
-  namespace = "presets";
-
-  cfg = config.modules.${namespace}.${name};
+  flakeLocation = "/etc/nixos";
+  fonts = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-color-emoji
+    victor-mono
+    nerd-fonts.noto
+    nerd-fonts.hack
+    nerd-fonts.fira-code
+    nerd-fonts.fira-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.droid-sans-mono
+    nerd-fonts.victor-mono
+  ];
 in {
-  options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name);
-
-    defaultShell = mkPackageOption pkgs "zsh" {};
-
-    flakeLocation = mkOption {
-      type = types.path;
-      default = "/etc/nixos";
-      description = ''
-        The location of the flake.
-      '';
-    };
-
-    fonts = mkOption {
-      type = types.listOf types.package;
-      default = with pkgs; [
-        noto-fonts
-        noto-fonts-cjk-sans
-        noto-fonts-color-emoji
-        victor-mono
-        nerd-fonts.noto
-        nerd-fonts.hack
-        nerd-fonts.fira-code
-        nerd-fonts.fira-mono
-        nerd-fonts.jetbrains-mono
-        nerd-fonts.droid-sans-mono
-        nerd-fonts.victor-mono
-      ];
-      description = ''
-        The list of fonts to install.
-      '';
-    };
-  };
-
-  config = mkIf cfg.enable {
+  config = {
     users.users =
       lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
         isNormalUser = true;
@@ -66,7 +42,7 @@ in {
         enable = true;
         clean.enable = true;
         clean.extraArgs = "--keep-since 4d --keep 3";
-        flake = lib.mkDefault cfg.flakeLocation;
+        flake = lib.mkDefault flakeLocation;
       };
 
       # Enable direnv
@@ -106,7 +82,7 @@ in {
     };
 
     # Install fonts
-    fonts.packages = cfg.fonts;
+    fonts.packages = fonts;
 
     # Set default shell
     users.defaultUserShell = pkgs.zsh;
@@ -166,7 +142,7 @@ in {
         ]
         ++ import ./scripts.nix {
           inherit pkgs;
-          flake = cfg.flakeLocation;
+          flake = flakeLocation;
         };
 
       # This will additionally add your inputs to the system's legacy channels
@@ -180,7 +156,7 @@ in {
 
       # Set flake path in environment
       sessionVariables = {
-        NH_FLAKE = lib.mkDefault cfg.flakeLocation;
+        NH_FLAKE = lib.mkDefault flakeLocation;
         NIXOS_OZONE_WL = "1";
       };
 

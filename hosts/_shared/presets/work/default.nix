@@ -3,19 +3,11 @@
   pkgs,
   users,
   config,
+  inputs,
   ...
 }:
-with lib; let
-  name = "work";
-  namespace = "presets";
-
-  cfg = config.modules.${namespace}.${name};
-in {
-  options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name);
-  };
-
-  config = mkIf cfg.enable {
+with lib; {
+  config = {
     home-manager.users =
       lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
         programs.ssh.matchBlocks = {

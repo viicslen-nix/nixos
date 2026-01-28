@@ -132,8 +132,6 @@ with lib; {
   };
 
   modules = {
-    presets.base.enable = true;
-
     core.theming.enable = true;
     features.app-images.enable = true;
 
