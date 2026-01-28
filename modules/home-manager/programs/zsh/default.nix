@@ -93,7 +93,7 @@ in {
         yazi.enableZshIntegration = true;
       };
     }
-    (mkPersistence config {
+    (persistence.mkPersistence config {
       files = [".zsh_history"];
     })
   ]);

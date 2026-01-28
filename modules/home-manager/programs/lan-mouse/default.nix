@@ -57,7 +57,7 @@ in {
         };
       };
     }
-    (mkPersistence config {
+    (persistence.mkPersistence config {
       config = ["lan-mouse"];
     })
   ]);

@@ -28,7 +28,7 @@ in {
         };
       };
     }
-    (mkPersistence config {
+    (persistence.mkPersistence config {
       share = ["atuin"];
       cache = ["atuin"];
     })

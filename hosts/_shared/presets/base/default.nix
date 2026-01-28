@@ -23,6 +23,14 @@ with lib; let
     nerd-fonts.victor-mono
   ];
 in {
+  imports = [
+    inputs.home-manager.nixosModules.default
+    inputs.nur.modules.nixos.default
+    inputs.agenix.nixosModules.default
+    inputs.niri.nixosModules.default
+    inputs.hyprland.nixosModules.default
+  ];
+
   config = {
     users.users =
       lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
@@ -96,6 +104,11 @@ in {
         inherit inputs outputs;
         stateVersion = config.system.stateVersion;
       };
+
+      sharedModules = [
+        inputs.agenix.homeManagerModules.default
+        inputs.opencode.homeManagerModules.default
+      ];
 
       users = genAttrs (filter (user: (pathExists ../../../../users/${user})) (attrNames users)) (name: import ../../../../users/${name});
     };

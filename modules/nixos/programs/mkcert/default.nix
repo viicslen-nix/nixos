@@ -126,7 +126,7 @@ in {
         '';
       };
     }
-    (mkNixosPersistence {
+    (persistence.mkHmPersistence {
       inherit config options;
       users = attrNames users;
       share = ["mkcert"];

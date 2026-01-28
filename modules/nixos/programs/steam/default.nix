@@ -54,7 +54,7 @@ in {
         decky-loader.enable = true;
       };
     }
-    (mkNixosPersistence {
+    (persistence.mkHmPersistence {
       inherit config options;
       users = attrNames users;
       directories = [".steam"];

@@ -86,12 +86,12 @@ in {
 
       hardware.nvidia-container-toolkit.enable = cfg.nvidiaSupport;
     }
-    (mkNixosPersistence {
+    (persistence.mkHmPersistence {
       inherit config options;
       users = attrNames users;
       directories = [".docker"];
     })
-    (mkSystemPersistence {
+    (persistence.mkNixosPersistence {
       inherit config;
       directories = [
         "/var/lib/docker"

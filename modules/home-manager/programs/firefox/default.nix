@@ -76,7 +76,7 @@ with inputs.self.lib; {
         };
       };
     }
-    (mkPersistence config {
+    (persistence.mkPersistence config {
       directories = [".mozilla"];
     })
   ];
