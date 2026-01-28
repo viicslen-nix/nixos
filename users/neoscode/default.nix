@@ -54,7 +54,7 @@ in {
     gh = {
       enable = true;
       gitCredentialHelper.enable = true;
-      extensions = [pkgs.gh-copilot];
+      extensions = [pkgs.github-copilot-cli];
       settings.prompts = "disabled";
     };
 

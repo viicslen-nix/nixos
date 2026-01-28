@@ -8,7 +8,7 @@
   # ];
 
   modules = {
-    functionality.impermanence = {
+    services.impermanence = {
       enable = true;
       share = [
         "JetBrains"

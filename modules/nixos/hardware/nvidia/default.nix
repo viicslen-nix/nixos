@@ -33,13 +33,14 @@ in {
       };
 
       nvidia = {
-        open = false;
+        open = true;
         nvidiaSettings = true;
         modesetting.enable = true;
         dynamicBoost.enable = mkIf cfg.modern true;
         powerManagement.enable = mkIf cfg.modern true;
         powerManagement.finegrained = mkIf (cfg.modern && cfg.prime) true;
         prime.offload.enable = mkIf (cfg.modern && cfg.prime) true;
+        package = mkDefault config.boot.kernelPackages.nvidiaPackages.latest;
       };
     };
 

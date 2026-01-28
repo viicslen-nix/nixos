@@ -121,7 +121,7 @@
 
     # Package sets
     nur.url = "github:nix-community/NUR";
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel";
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
 
     # Community packages

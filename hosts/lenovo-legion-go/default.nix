@@ -133,10 +133,8 @@ with lib; {
   modules = {
     presets.base.enable = true;
 
-    functionality = {
-      theming.enable = true;
-      appImages.enable = true;
-    };
+    core.theming.enable = true;
+    features.app-images.enable = true;
 
     programs = {
       onePassword = {

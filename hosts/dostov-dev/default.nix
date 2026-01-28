@@ -182,11 +182,14 @@ with lib; {
       };
     };
 
-    functionality = {
+    services = {
       oom.enable = true;
-      appImages.enable = true;
-      powerManagement.enable = true;
+      power-management.enable = true;
+    };
 
+    features.app-images.enable = true;
+
+    core = {
       theming = {
         enable = true;
         disabledTargets = ["chromium"];
