@@ -112,23 +112,22 @@ The `_shared/` directory contains:
 - Other shared host-level configurations
 
 **Using Presets:**
-Presets are NixOS modules that group common configurations:
+Presets are specified centrally in `hosts/default.nix`:
 
 ```nix
+# hosts/default.nix
 {
-  imports = [
-    ../_shared/presets/base      # Essential system setup
-    ../_shared/presets/work      # Work-related tools & containers
-    ../_shared/presets/personal  # Personal apps & settings
-  ];
-
-  modules.presets = {
-    base.enable = true;
-    work.enable = true;
-    personal.enable = true;
+  hosts = {
+    my-host = {
+      system = "x86_64-linux";
+      path = ./my-host;
+      presets = ["base" "work" "personal"];  # Centralized preset configuration
+    };
   };
 }
 ```
+
+No need to import presets in individual host files! Just list them in the host definition, and they'll be automatically imported by `mkNixosConfigurations`.
 
 Hosts are registered in `hosts/default.nix` and built via `mkNixosConfigurations`.
 

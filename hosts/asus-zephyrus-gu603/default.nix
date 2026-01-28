@@ -15,9 +15,6 @@ with lib; {
       device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_223766801969";
     })
     ./hardware.nix
-    ../_shared/presets/base
-    ../_shared/presets/work
-    ../_shared/presets/personal
   ];
 
   home-manager.sharedModules = [./home.nix];
