@@ -187,6 +187,8 @@
       homeManagerModules = import ./modules/home-manager;
 
       # NixOS configurations for all your hosts
-      nixosConfigurations = mkNixosConfigurations (import ./hosts {inherit inputs outputs;});
+      nixosConfigurations = mkNixosConfigurations ({
+        hostsPath = ./hosts;
+      } // (import ./hosts {inherit inputs outputs;}));
     };
 }
