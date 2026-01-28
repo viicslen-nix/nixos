@@ -156,7 +156,7 @@
     with self.lib; let
       inherit (self) outputs;
     in {
-      lib = import ./lib {inherit inputs;};
+      lib = import ./lib {inherit inputs outputs;};
 
       # Formatter for your nix files, available through 'nix fmt'
       # Other options beside 'alejandra' include 'nixpkgs-fmt'
@@ -187,6 +187,6 @@
       homeManagerModules = modules.autoImportRecursive ./modules/home-manager;
 
       # NixOS configurations for all your hosts
-      nixosConfigurations = hosts.mkNixosConfigurations ./hosts {inherit inputs outputs;};
+      nixosConfigurations = hosts.mkNixosConfigurations ./hosts;
     };
 }

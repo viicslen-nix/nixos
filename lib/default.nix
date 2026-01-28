@@ -1,9 +1,9 @@
-{inputs, ...}: let
+{inputs, outputs, ...}: let
   # Import our custom helpers
   moduleHelpers = import ./modules.nix {lib = inputs.nixpkgs.lib;};
-  hostsHelpers = import ./hosts.nix {inherit inputs;};
+  hostsHelpers = import ./hosts.nix {inherit inputs outputs;};
   persistenceHelpers = import ./persistence.nix {inherit inputs;};
-  
+
   defaultSystems = import inputs.systems;
 in
   # Merge nixpkgs.lib first, then override with our custom helpers
