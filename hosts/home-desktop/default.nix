@@ -141,12 +141,6 @@ with lib; {
       };
     };
 
-    presets = {
-      base.enable = true;
-      work.enable = true;
-      personal.enable = true;
-    };
-
     programs = {
       ld.enable = true;
       steam.enable = true;

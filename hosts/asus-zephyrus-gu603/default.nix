@@ -213,12 +213,6 @@ with lib; {
       };
     };
 
-    presets = {
-      base.enable = true;
-      work.enable = true;
-      personal.enable = true;
-    };
-
     programs = {
       mullvad.enable = true;
       steam.enable = true;

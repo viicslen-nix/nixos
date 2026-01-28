@@ -5,13 +5,9 @@
   ...
 }:
 with lib; let
-  name = "linode";
-  namespace = "presets";
-
-  cfg = config.modules.${namespace}.${name};
+  cfg = config.modules.presets.linode;
 in {
-  options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name);
+  options.modules.presets.linode = {
     useNetworkd = mkOption {
       type = types.bool;
       default = false;
@@ -21,7 +17,7 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
+  config = {
     # Configure networking
     networking = {
       # Disable DHCP globally as we will not need it.
