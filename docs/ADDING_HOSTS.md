@@ -101,8 +101,6 @@ Or create manually:
 
   # Enable modules
   modules = {
-    presets.base.enable = true;
-    
     hardware = {
       # Enable as needed
       # intel.enable = true;
@@ -130,7 +128,9 @@ Or create manually:
 
 ### 4. Register Host
 
-Edit `hosts/default.nix`:
+Edit `hosts/default.nix` and add your host to the `hosts` attribute set.
+
+**Specify presets** (optional) to automatically import shared configuration:
 
 ```nix
 {
@@ -147,6 +147,8 @@ Edit `hosts/default.nix`:
     my-host = {
       system = "x86_64-linux";  # or "aarch64-linux"
       path = ./my-host;
+      presets = ["base" "work" "personal"];  # Optional preset list
+    };
     };
   };
 }
@@ -163,6 +165,26 @@ just switch my-host  # if on the target machine
 # or
 nixos-rebuild switch --flake /etc/nixos#my-host
 ```
+
+## Available Presets
+
+Presets are specified in `hosts/default.nix` for each host. Available presets:
+
+- **`base`** - Essential system setup (users, fonts, Home Manager, common packages, Nix settings)
+- **`work`** - Development tools (PHP, Node.js, Go, containers, SSH configs)
+- **`personal`** - Personal apps (nix-alien, QMK, personal containers)
+- **`linode`** - Linode VPS server configuration
+
+Example configuration in `hosts/default.nix`:
+```nix
+my-host = {
+  system = "x86_64-linux";
+  path = ./my-host;
+  presets = ["base" "work" "personal"];  # List presets to apply
+};
+```
+
+**No need to import** presets in individual host files - just list them in `hosts/default.nix`!
 
 ## Optional Configurations
 
@@ -252,13 +274,18 @@ Import in `default.nix`:
 
 ### Desktop/Laptop
 
+In `hosts/default.nix`:
+```nix
+my-desktop = {
+  system = "x86_64-linux";
+  path = ./my-desktop;
+  presets = ["base" "personal"];  # Centralized preset configuration
+};
+```
+
+In host configuration:
 ```nix
 modules = {
-  presets = {
-    base.enable = true;
-    personal.enable = true;
-  };
-  
   hardware = {
     intel.enable = true;
     bluetooth.enable = true;
@@ -271,20 +298,29 @@ modules = {
     docker.enable = true;
   };
   
-  functionality = {
+  core = {
     sound.enable = true;
     theming.enable = true;
-    powerManagement.enable = true;
   };
+  
+  services.powerManagement.enable = true;
 };
 ```
 
 ### Server
 
+In `hosts/default.nix`:
+```nix
+my-server = {
+  system = "x86_64-linux";
+  path = ./my-server;
+  presets = ["base"];  # Just base preset for servers
+};
+```
+
+In host configuration:
 ```nix
 modules = {
-  presets.base.enable = true;
-  
   programs.docker.enable = true;
   
   functionality = {

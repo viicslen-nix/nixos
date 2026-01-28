@@ -11,7 +11,6 @@ with lib; {
     inputs.chaotic.nixosModules.default
     inputs.jovian.nixosModules.default
     ./hardware.nix
-    ../_shared/presets/base
   ];
 
   ####################
