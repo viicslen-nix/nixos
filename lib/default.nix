@@ -132,10 +132,15 @@ with inputs.self.lib;
     # Generate nixosConfigurations from host definitions
     mkNixosConfigurations = {
       hostsPath,      # Base path to hosts directory (e.g., ./hosts)
-      shared ? {},
-      hosts ? {},
+      inputs,         # Flake inputs (for passing to hosts/default.nix)
+      outputs,        # Flake outputs (for passing to hosts/default.nix)
     }: let
       nixpkgs = inputs.nixpkgs;
+      
+      # Import hosts configuration (shared and hosts definitions)
+      hostsConfig = import hostsPath {inherit inputs outputs;};
+      shared = hostsConfig.shared or {};
+      hosts = hostsConfig.hosts or {};
       
       # Derive presets path from hosts path
       presetsPath = hostsPath + "/_shared/presets";
