@@ -8,6 +8,9 @@ with lib; {
   imports = [
     inputs.nixos-wsl.nixosModules.default
     inputs.vscode-server.nixosModules.default
+    ../_shared/presets/base
+    ../_shared/presets/work
+    ../_shared/presets/personal
   ];
 
   boot.binfmt.emulatedSystems = ["aarch64-linux"];

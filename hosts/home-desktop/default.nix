@@ -11,6 +11,9 @@ with lib; {
     inputs.disko.nixosModules.disko
     (import ./disko.nix { device = "/dev/disk/by-uuid/2da72401-b2b8-4a0d-8324-fd474124f51e"; })
     ./hardware.nix
+    ../_shared/presets/base
+    ../_shared/presets/work
+    ../_shared/presets/personal
   ];
 
   home-manager.sharedModules = [./home.nix];
