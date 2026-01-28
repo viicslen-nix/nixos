@@ -135,20 +135,16 @@ with inputs.self.lib;
       hosts ? {},
     }: let
       nixpkgs = inputs.nixpkgs;
-
-      # Map preset names to their import paths
-      presetMap = {
-        base = ../hosts/_shared/presets/base;
-        work = ../hosts/_shared/presets/work;
-        personal = ../hosts/_shared/presets/personal;
-        linode = ../hosts/_shared/presets/linode;
-      };
+      
+      # Base path to presets directory
+      presetsPath = ../hosts/_shared/presets;
 
       # Convert preset list to module imports
+      # Dynamically resolve preset names to their paths
       presetsToModules = presets:
         if presets == null || presets == []
         then []
-        else map (name: import presetMap.${name}) presets;
+        else map (name: import (presetsPath + "/${name}")) presets;
 
       # Build a single nixos configuration
       mkHostConfig = hostName: hostConfig:
