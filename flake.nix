@@ -98,6 +98,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # OpenCode
     opencode = {
       url = ./flakes/opencode;
       inputs.nixpkgs.follows = "nixpkgs";
