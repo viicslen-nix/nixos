@@ -97,7 +97,7 @@ in {
 
   modules = {
     functionality.defaults = with pkgs; {
-      terminal = kitty;
+      terminal = pkgs.inputs.ghostty.default;
       editor = vscode-fhs;
       fileManager = nautilus;
       browser = vivaldi;
@@ -110,6 +110,7 @@ in {
       aider.enable = true;
       tmate.enable = true;
       atuin.enable = true;
+      ghostty.enable = true;
       ideavim.enable = true;
       nushell.enable = true;
       starship.enable = true;

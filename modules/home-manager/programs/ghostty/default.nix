@@ -26,7 +26,7 @@ in {
       settings = {
         auto-update = "off";
 
-        adjust-cell-height = "60%";
+        adjust-cell-height = "40%";
 
         window-padding-y = 0;
         window-padding-color = "extend";
@@ -37,11 +37,8 @@ in {
 
         confirm-close-surface = "always";
 
-        background-opacity = 0.85;
-        background-opacity-cells = 0.75;
         background-blur = true;
 
-        gtk-adwaita = true;
         adw-toolbar-style = "raised-border";
 
         keybind = [
