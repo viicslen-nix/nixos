@@ -91,6 +91,8 @@ in {
       };
     };
 
+    modules.features.appImages.enable = true;
+
     # Install fonts
     fonts.packages = fonts;
 

@@ -22,7 +22,10 @@ with lib; {
       localsend.enable = mkDefault true;
     };
 
-    modules.programs.qmk.enable = mkDefault true;
-    modules.containers.homarr.enable = mkDefault true;
+    modules = {
+      core.theming.enable = true;
+      programs.qmk.enable = mkDefault true;
+      containers.homarr.enable = mkDefault true;
+    };
   };
 }

@@ -111,10 +111,10 @@ with lib; {
 
     # IDEs & Editors
     jetbrains-toolbox
-    zed-editor-fhs
     vscode-fhs
-    code-cursor
-    local.antigravity.default
+    zed-editor-fhs
+    code-cursor-fhs
+    antigravity-fhs
 
     # Development Tools
     ghostty
@@ -170,10 +170,10 @@ with lib; {
       hyprland = {
         enable = true;
         nvidia = true;
-        hyprsplit.enable = false;
         portals = {
           enable = true;
-          backend = "gnome";
+          backend = "gtk";
+          extraBackends = ["gnome"];
         };
         globalVariables = {
           NVD_BACKEND = "direct";
@@ -188,10 +188,8 @@ with lib; {
 
     services = {
       oom.enable = true;
-      power-management.enable = true;
+      powerManagement.enable = true;
     };
-
-    features.app-images.enable = true;
 
     core = {
       theming = {

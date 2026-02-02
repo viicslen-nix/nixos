@@ -173,8 +173,6 @@ with lib; {
       };
     };
 
-    features.app-images.enable = true;
-
     core = {
       theming.enable = true;
 

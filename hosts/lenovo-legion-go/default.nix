@@ -132,7 +132,6 @@ with lib; {
 
   modules = {
     core.theming.enable = true;
-    features.app-images.enable = true;
 
     programs = {
       onePassword = {
