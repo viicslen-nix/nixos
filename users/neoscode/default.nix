@@ -45,6 +45,10 @@ in {
     };
   };
 
+  stylix.targets.gtk.enable = false;
+  gtk.theme.name = "Adwaita-dark";
+  gtk.theme.package = pkgs.gnome-themes-extra;
+
   programs = {
     carapace.enable = true;
     zoxide.enable = true;
