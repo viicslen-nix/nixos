@@ -44,6 +44,7 @@ in {
         keybind = [
           "ctrl+shift+q=close_surface"
           "ctrl+shift+w=toggle_window_decorations"
+          "shift+enter=text:\x1b\r"
         ];
       };
     };
