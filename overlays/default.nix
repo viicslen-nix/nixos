@@ -83,6 +83,7 @@
         (oldAttrs.passthru or {})
         // {
           isSnapshot = channel != "stable";
+          desktopFileName = if channel == "stable" then "vivaldi-stable" else "vivaldi-snapshot";
         };
 
       buildPhase =
