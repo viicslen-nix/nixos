@@ -13,7 +13,9 @@ let
 
   # Helper to get the desktop file name from a package
   getDesktopFileName = pkg: (
-    if pkg ? desktopItem && pkg.desktopItem ? name
+    if pkg ? desktopFileName
+    then "${pkg.desktopFileName}.desktop"
+    else if pkg ? desktopItem && pkg.desktopItem ? name
     then "${pkg.desktopItem.name}.desktop"
     else if pkg ? pname
     then "${pkg.pname}.desktop"
@@ -77,6 +79,7 @@ in {
       in {
         "x-scheme-handler/http" = [desktopFile];
         "x-scheme-handler/https" = [desktopFile];
+        "application/xhtml+xml" = [desktopFile];
         "text/html" = [desktopFile];
       };
     })
