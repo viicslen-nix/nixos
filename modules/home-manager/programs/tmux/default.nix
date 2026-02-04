@@ -42,18 +42,21 @@ in {
         plugin = tmuxPlugins.mkTmuxPlugin {
           pluginName = "tokyo-night";
           rtpFilePath = "tokyo-night.tmux";
-          version = "v1.5.5";
+          version = "v1.7.0";
           src = inputs.tmux-tokyo-night;
         };
         extraConfig = ''
           set -g @tokyo-night-tmux_theme "storm" # options: night, storm, day
+          set -g @tokyo-night-tmux_transparent 1
           set -g @tokyo-night-tmux_window_id_style fsquare
           set -g @tokyo-night-tmux_pane_id_style hide
           set -g @tokyo-night-tmux_zoom_id_style hide
           set -g @tokyo-night-tmux_show_datetime 0
+          set -g @tokyo-night-tmux_show_hostname 0
+          set -g @tokyo-night-tmux_show_path 0
           set -g @tokyo-night-tmux_path_format "relative"
-          set -g @tokyo-night-tmux_show_git 1
-          set -g @tokyo-night-tmux_show_wbg 1
+          set -g @tokyo-night-tmux_show_git 0
+          set -g @tokyo-night-tmux_show_wbg 0
           set -g status-justify left
         '';
       }
