@@ -20,8 +20,6 @@
       "DP-2, 1920x1080@59.99, 1920x0, 1, transform, 3, vrr, 0"
       ", preferred, auto, 1"
     ];
-
-    cursor.no_hardware_cursors = 1;
   };
 
   modules.programs = {
