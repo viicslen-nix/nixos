@@ -39,12 +39,25 @@ in {
 
         background-blur = true;
 
-        adw-toolbar-style = "raised-border";
+        gtk-toolbar-style = "raised-border";
+        gtk-titlebar-style = "tabs";
+        gtk-tabs-location = "bottom";
 
         keybind = [
           "ctrl+shift+q=close_surface"
           "ctrl+shift+w=toggle_window_decorations"
-          "shift+enter=text:\x1b\r"
+          "shift+enter=text:\\x1b\\r"
+        ];
+
+        custom-shader-animation = "always";
+
+        custom-shader = [
+          (pkgs.fetchFromGitHub {
+            owner = "sahaj-b";
+            repo = "ghostty-cursor-shaders";
+            rev = "4faa83e4b9306750fc8de64b38c6f53c57862db8";
+            sha256 = "sha256-ruhEqXnWRCYdX5mRczpY3rj1DTdxyY3BoN9pdlDOKrE=";
+          } + "/cursor_warp.glsl")
         ];
       };
     };
