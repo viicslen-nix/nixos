@@ -20,15 +20,6 @@ with lib; {
     scale = 1.875000
   '';
 
-  wayland.windowManager.hyprland = mkIf (osConfig.modules.desktop.hyprland.enable or false) {
-    settings = {
-      cursor = {
-        no_hardware_cursors = 1;
-        use_cpu_buffer = 0;
-      };
-    };
-  };
-
   # Niri configuration - currently disabled
   # programs.niri = mkIf (osConfig.modules.desktop.niri.enable or false) {
   #   settings.outputs = {
