@@ -1,4 +1,8 @@
-{inputs, outputs, ...}: {
+{
+  inputs,
+  outputs,
+  ...
+}: {
   # Generate nixosConfigurations from host definitions
   mkNixosConfigurations = hostsPath: let
     nixpkgs = inputs.nixpkgs;
