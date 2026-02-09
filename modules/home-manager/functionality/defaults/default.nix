@@ -4,8 +4,7 @@
   osConfig,
   ...
 }:
-with lib;
-let
+with lib; let
   name = "defaults";
   namespace = "functionality";
 
@@ -89,12 +88,12 @@ in {
         packages = [cfg.editor];
       };
       xdg.mimeApps.defaultApplications = let
-          desktopFile = getDesktopFileName cfg.editor;
-        in {
-          "text/plain" = [desktopFile];
-          "text/x-log" = [desktopFile];
-          "text/x-script" = [desktopFile];
-        };
+        desktopFile = getDesktopFileName cfg.editor;
+      in {
+        "text/plain" = [desktopFile];
+        "text/x-log" = [desktopFile];
+        "text/x-script" = [desktopFile];
+      };
     })
     (mkIf (cfg.terminal != null) {
       home = {
@@ -102,21 +101,21 @@ in {
         packages = [cfg.terminal];
       };
       xdg.mimeApps.defaultApplications = let
-          desktopFile = getDesktopFileName cfg.terminal;
-        in {
-          "application/x-gnome-terminal" = [desktopFile];
-          "application/x-terminal-emulator" = [desktopFile];
-        };
+        desktopFile = getDesktopFileName cfg.terminal;
+      in {
+        "application/x-gnome-terminal" = [desktopFile];
+        "application/x-terminal-emulator" = [desktopFile];
+      };
     })
     (mkIf (cfg.fileManager != null) {
       home = {
         packages = [cfg.fileManager];
       };
       xdg.mimeApps.defaultApplications = let
-          desktopFile = getDesktopFileName cfg.fileManager;
-        in {
-          "inode/directory" = [desktopFile];
-        };
+        desktopFile = getDesktopFileName cfg.fileManager;
+      in {
+        "inode/directory" = [desktopFile];
+      };
     })
     (mkIf (cfg.passwordManager != null) {
       home = {

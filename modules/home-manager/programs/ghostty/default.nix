@@ -53,11 +53,12 @@ in {
 
         custom-shader = [
           (pkgs.fetchFromGitHub {
-            owner = "sahaj-b";
-            repo = "ghostty-cursor-shaders";
-            rev = "4faa83e4b9306750fc8de64b38c6f53c57862db8";
-            sha256 = "sha256-ruhEqXnWRCYdX5mRczpY3rj1DTdxyY3BoN9pdlDOKrE=";
-          } + "/cursor_warp.glsl")
+              owner = "sahaj-b";
+              repo = "ghostty-cursor-shaders";
+              rev = "4faa83e4b9306750fc8de64b38c6f53c57862db8";
+              sha256 = "sha256-ruhEqXnWRCYdX5mRczpY3rj1DTdxyY3BoN9pdlDOKrE=";
+            }
+            + "/cursor_warp.glsl")
         ];
       };
     };
