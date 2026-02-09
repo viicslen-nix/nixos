@@ -69,16 +69,6 @@
     };
     zjstatus.url = "github:dj95/zjstatus";
 
-    # Nvim
-    neovim = {
-      url = ./flakes/neovim;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixvim = {
-      url = ./flakes/nixvim;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # 1Password
     tmux-1password = {
       url = "github:yardnsm/tmux-1password";
@@ -86,23 +76,24 @@
     };
     one-password-shell-plugins.url = "github:1Password/shell-plugins";
 
-    # Niri
-    niri = {
-      url = ./flakes/niri;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Hyprland
     hyprland = {
       url = ./flakes/hyprland;
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # OpenCode
-    opencode = {
-      url = ./flakes/opencode;
+    # Niri
+    niri = {
+      url = ./flakes/niri;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # OpenCode
+    opencode.url = ./flakes/opencode;
+
+    # Nvim
+    neovim.url = ./flakes/neovim;
+    nixvim.url = ./flakes/nixvim;
 
     # Theming
     stylix.url = "github:danth/stylix";
