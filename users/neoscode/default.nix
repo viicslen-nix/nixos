@@ -48,7 +48,6 @@ in {
   programs = {
     carapace.enable = true;
     zoxide.enable = true;
-    btop.enable = true;
     helix.enable = true;
 
     gh = {
@@ -107,6 +106,7 @@ in {
       zsh.enable = true;
       k9s.enable = true;
       tmux.enable = true;
+      btop.enable = true;
       aider.enable = true;
       tmate.enable = true;
       atuin.enable = true;

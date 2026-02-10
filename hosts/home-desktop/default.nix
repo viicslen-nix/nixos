@@ -140,7 +140,7 @@ with lib; {
 
     programs = {
       ld.enable = true;
-      steam.enable = true;
+      steam.enable = false;
       docker = {
         enable = true;
         nvidiaSupport = true;
@@ -173,6 +173,7 @@ with lib; {
           ".zen-wrapped"
           "zen"
           "vivaldi"
+          "vivaldi-bin"
           "vivaldi-stable"
           "vivaldi-snapshot"
         ];
