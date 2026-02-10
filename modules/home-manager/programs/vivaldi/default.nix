@@ -242,6 +242,16 @@ in {
     {
       home.packages = [vivaldiWithMods];
 
+      programs.chromium = {
+        enable = true;
+        package = vivaldiWithMods;
+        extensions = [
+          { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; }
+          { id = "edibdbjcniadpccecjdfdjjppcpchdlm"; }
+          { id = "gfbliohnnapiefjpjlpjnehglfpaknnc"; }
+        ];
+      };
+
       # Symlink CSS mods to a predictable location
       home.file = mkIf (cfg.enableCssMods && cfg.enableMods) {
         ".config/vivaldi/custom-css" = {

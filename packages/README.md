@@ -2,33 +2,22 @@
 
 This directory contains custom package definitions that are not available in nixpkgs or need custom configurations.
 
-## Structure
-
-```
-packages/
-└── by-name/          # Package definitions organized by name
-    ├── antigravity/
-    ├── app-images/
-    ├── iso/
-    ├── mago/
-    ├── openwork/
-    └── scripts/
-```
-
 ## Using Packages
 
 Packages are automatically exported and can be used in multiple ways:
 
 ### In Your Configuration
+
 ```nix
 environment.systemPackages = with pkgs; [
   # Custom packages from this flake
-  antigravity
-  mago
+  local.antigravity
+  local.mago
 ];
 ```
 
 ### Directly with Nix
+
 ```bash
 # Run a package
 nix run .#antigravity

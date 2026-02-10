@@ -17,9 +17,9 @@ in {
     programs.btop = {
       enable = true;
       settings = {
-        theme_background = false;
         vim_keys = true;
-        shown_boxes = "cpu mem net proc";
+        theme_background = false;
+        shown_boxes = "cpu mem proc";
         proc_sorting = "memory";
       };
     };
