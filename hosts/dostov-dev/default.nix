@@ -58,19 +58,22 @@ with lib; {
     dostov = {
       isNormalUser = true;
       description = "dostov";
-      extraGroups = ["networkmanager" "wheel"];
+      extraGroups = ["networkmanager" "wheel" "wireshark"];
     };
 
-    neoscode.openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOaNSsNMlFN0+bSryhAdcS38d0Egk/M3SvzP4Yb4Wf4H dostov@dostov-dev"
-    ];
+    neoscode = {
+      extraGroups = ["wireshark"];
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOaNSsNMlFN0+bSryhAdcS38d0Egk/M3SvzP4Yb4Wf4H dostov@dostov-dev"
+      ];
+    };
   };
 
   services = {
     blueman.enable = true;
     ghost-backup.enable = true;
     displayManager.gdm.enable = true;
-    displayManager.defaultSession = "niri";
+    displayManager.defaultSession = "hyprland";
 
     miami-bus-tracker = {
       enable = true;
@@ -102,6 +105,8 @@ with lib; {
       };
     };
   };
+
+  programs.wireshark.enable = true;
 
   environment.systemPackages = with pkgs; [
     # Browsers
@@ -150,6 +155,7 @@ with lib; {
     kooha
     uv
     inkscape-with-extensions
+    wireshark
   ];
 
   modules = {
@@ -164,8 +170,6 @@ with lib; {
         enable = true;
         remoteDesktop = true;
       };
-
-      niri.enable = true;
 
       hyprland = {
         enable = true;
