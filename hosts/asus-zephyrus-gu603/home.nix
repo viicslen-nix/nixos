@@ -3,12 +3,8 @@
   pkgs,
   ...
 }: {
-  # home.packages = with pkgs; [
-  #   legcord
-  # ];
-
   modules = {
-    services.impermanence = {
+    functionality.impermanence = {
       enable = true;
       share = [
         "JetBrains"
@@ -72,40 +68,6 @@
           };
         };
       };
-
-      "lan-mouse/config.toml".source = (pkgs.formats.toml {}).generate "config.toml" {
-        authorized_fingerprints = {
-          "f1:40:12:eb:e0:e1:5d:4c:0e:45:61:e1:9f:7d:1c:9b:59:0b:91:ac:96:ea:a0:38:d3:8b:c9:f7:4e:9d:ad:46" = "dostov-dev";
-        };
-        clients = [
-          {
-            position = "top";
-            hostname = "dostov-dev";
-            ips = ["192.168.5.61"];
-            port = 4242;
-          }
-        ];
-      };
-    };
-
-    mimeApps = {
-      # enable = true;
-      associations.added = {
-        "text/html" = "org.gnome.Epiphany.desktop;zen.desktop";
-        "application/xhtml+xml" = "org.gnome.Epiphany.desktop;zen.desktop";
-        "x-scheme-handler/sms" = "org.gnome.Shell.Extensions.GSConnect.desktop";
-        "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
-        "x-scheme-handler/http" = "org.gnome.Epiphany.desktop;zen.desktop";
-        "x-scheme-handler/https" = "org.gnome.Epiphany.desktop;zen.desktop";
-        "x-scheme-handler/mailto" = "org.gnome.Geary.desktop";
-      };
-      defaultApplications = {
-        "text/html" = "zen.desktop";
-        "application/xhtml+xml" = "zen.desktop";
-        "x-scheme-handler/http" = "zen.desktop";
-        "x-scheme-handler/https" = "zen.desktop";
-        "x-scheme-handler/mailto" = "org.gnome.Geary.desktop";
-      };
     };
   };
 
@@ -145,35 +107,4 @@
     topOf = "G274F"
     scale = 1.875000
   '';
-
-  # programs.hyprpanel.settings.layout = {
-  #   "bar.layouts" = {
-  #     "0" = {
-  #       left = [
-  #         "dashboard"
-  #         "workspaces"
-  #         "windowtitle"
-  #         "hypridle"
-  #         "submap"
-  #       ];
-  #       middle = [
-  #         "cpu"
-  #         "ram"
-  #         "storage"
-  #       ];
-  #       right = [
-  #         "systray"
-  #         "volume"
-  #         "bluetooth"
-  #         "network"
-  #         "battery"
-  #         "clock"
-  #         "notifications"
-  #         "power"
-  #       ];
-  #     };
-  #   };
-  # };
-
-  # home.file."/home/neoscode/.config/mimeapps.list".force = lib.mkForce true;
 }

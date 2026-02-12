@@ -21,7 +21,6 @@ with lib; {
 
   boot = {
     plymouth.enable = true;
-    binfmt.emulatedSystems = ["aarch64-linux"];
 
     loader = {
       efi.canTouchEfiVariables = false;
@@ -55,7 +54,7 @@ with lib; {
   };
 
   services = {
-    displayManager.defaultSession = "niri";
+    displayManager.defaultSession = "hyprland";
 
     # Disable the built-in keyboard
     udev.extraRules = lib.mkAfter ''
@@ -85,9 +84,6 @@ with lib; {
     uv
   ];
 
-  # programs.ssh.askPassword = mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
-  # programs.ssh.askPassword = mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
-
   modules = {
     hardware = {
       asus.enable = true;
@@ -96,6 +92,8 @@ with lib; {
       nvidia = {
         enable = true;
         modern = true;
+        prime = true;
+        latest = true;
       };
 
       display = {
@@ -108,34 +106,29 @@ with lib; {
 
     desktop = {
       gnome.enable = true;
-      niri.enable = true;
 
-      # hyprland = {
-      #   enable = true;
-      #   gnomeCompatibility = true;
-      #   hyprVariables = {
-      #     XDG_CURRENT_DESKTOP = "Hyprland";
-      #     XDG_SESSION_DESKTOP = "Hyprland";
-      #     XCURSOR_SIZE = builtins.toString config.stylix.cursor.size;
-      #
-      #     # NVidia
-      #     GBM_BACKEND = "nvidia-drm";
-      #     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      #     LIBVA_DRIVER_NAME = "nvidia";
-      #     __GL_GSYNC_ALLOWED = "1";
-      #     __GL_VRR_ALLOWED = "0";
-      #   };
-      # };
-
-      # kde = {
-      #   enable = true;
-      #   enableSddm = false;
-      # };
+      hyprland = {
+        enable = true;
+        nvidia = true;
+        portals = {
+          enable = true;
+          backend = "gtk";
+          extraBackends = ["gnome"];
+        };
+        globalVariables = {
+          NVD_BACKEND = "direct";
+          GBM_BACKEND = "nvidia-drm";
+          LIBVA_DRIVER_NAME = "nvidia";
+          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+          __GL_GSYNC_ALLOWED = "1";
+          __GL_VRR_ALLOWED = "0";
+        };
+      };
     };
 
     services = {
       oom.enable = true;
-      power-management.enable = true;
+      powerManagement.enable = true;
 
       backups = {
         enable = false;
@@ -167,7 +160,6 @@ with lib; {
       impermanence = {
         enable = true;
         directories = [
-          "/etc/mullvad-vpn"
           "/etc/gdm"
         ];
       };
@@ -210,7 +202,6 @@ with lib; {
 
     programs = {
       mullvad.enable = true;
-      steam.enable = true;
 
       docker = {
         enable = true;
@@ -246,7 +237,5 @@ with lib; {
         users = attrNames users;
       };
     };
-
-    containers.postgres.enable = true;
   };
 }
