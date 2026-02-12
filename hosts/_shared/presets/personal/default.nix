@@ -14,6 +14,8 @@ with lib; {
       yazi
       ytmdesktop
       android-tools
+      scrcpy
+      qtscrcpy
       inputs.nixvim.default
       local.scripts.git-carve-submodule
     ];
