@@ -77,9 +77,7 @@ in {
         ]
       ];
 
-      files = [] ++ cfg.files;
-
-      allowOther = true;
+      files = cfg.files;
     };
   };
 }
