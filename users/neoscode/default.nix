@@ -24,6 +24,11 @@ in {
     username = osConfig.users.users.${user}.name;
     homeDirectory = osConfig.users.users.${user}.home;
 
+    packages = with pkgs; [
+      inputs.opencode.default
+      inputs.opencode.oh-my-opencode
+    ];
+
     sessionVariables = {
       EDITOR = "nvim";
       NIXOS_OZONE_WL = "1";
@@ -114,7 +119,6 @@ in {
       ideavim.enable = true;
       nushell.enable = true;
       starship.enable = true;
-      opencode.enable = true;
       git = {
         enable = true;
         user = osConfig.users.users.${user}.description;
