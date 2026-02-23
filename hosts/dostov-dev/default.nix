@@ -54,6 +54,8 @@ with lib; {
     firewall.enable = mkForce false;
   };
 
+  nix.settings.max-jobs = lib.mkDefault 16;
+
   users.users = {
     dostov = {
       isNormalUser = true;
@@ -110,7 +112,6 @@ with lib; {
 
   environment.systemPackages = with pkgs; [
     # Browsers
-    microsoft-edge
     google-chrome
     brave
 
