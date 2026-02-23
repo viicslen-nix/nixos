@@ -49,7 +49,7 @@ in {
         };
       };
 
-      home.file.".zen/default/search.json.mozlz4".force = mkForce true;
+      # home.file.".zen/default/search.json.mozlz4".force = mkForce true;
     }
     (persistence.mkPersistence config {
       directories = [".zen"];

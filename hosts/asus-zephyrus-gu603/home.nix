@@ -25,7 +25,6 @@
         "Insomnia"
         "JetBrains"
         "GitHub Desktop"
-        "microsoft-edge"
         "github-copilot"
         "warp-terminal"
         "composer"
