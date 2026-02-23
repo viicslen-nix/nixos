@@ -78,22 +78,22 @@
 
     # Hyprland
     hyprland = {
-      url = ./flakes/hyprland;
+      url = "path:./flakes/hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Niri
     niri = {
-      url = ./flakes/niri;
+      url = "path:./flakes/niri";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # OpenCode
-    opencode.url = ./flakes/opencode;
+    opencode.url = "path:./flakes/opencode";
 
     # Nvim
-    neovim.url = ./flakes/neovim;
-    nixvim.url = ./flakes/nixvim;
+    neovim.url = "path:./flakes/neovim";
+    nixvim.url = "path:./flakes/nixvim";
 
     # Theming
     stylix.url = "github:danth/stylix";
