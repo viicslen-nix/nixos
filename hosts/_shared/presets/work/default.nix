@@ -144,11 +144,10 @@ with lib; {
       # local.mago
 
       # AI
-      opencode
-      github-copilot-cli
-      claude-code
-      claude-code-acp
-      gemini-cli
+      unstable.github-copilot-cli
+      unstable.claude-code
+      unstable.claude-code-acp
+      unstable.gemini-cli
       local.openwork
     ];
   };
