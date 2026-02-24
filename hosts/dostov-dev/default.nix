@@ -117,10 +117,10 @@ with lib; {
 
     # IDEs & Editors
     jetbrains-toolbox
-    vscode-fhs
-    zed-editor-fhs
-    code-cursor-fhs
-    antigravity-fhs
+    unstable.vscode-fhs
+    unstable.zed-editor-fhs
+    unstable.code-cursor-fhs
+    unstable.antigravity-fhs
 
     # Development Tools
     ghostty
