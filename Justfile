@@ -82,7 +82,7 @@ update:
 # Update specific flake input
 # Usage: just update-input nixpkgs
 update-input INPUT:
-  nix flake lock --update-input {{INPUT}}
+  nix flake update {{INPUT}}
 
 # Full system update (flake + rebuild)
 full-upgrade:
@@ -106,7 +106,7 @@ rebuild-path COMMAND='switch':
 
 # Rebuild using nh helper utility
 upgrade COMMAND='switch':
-  nh os {{COMMAND}} --ask
+  nh os {{COMMAND}} --ask "path:."
 
 # Commit changes and upgrade system
 commit-and-upgrade MESSAGE COMMAND='switch':
