@@ -49,6 +49,7 @@ in {
         ];
         cmd = [
           "--disable-log-bin"
+          "--max-connections=1000"
         ];
         environment = {
           MYSQL_ROOT_PASSWORD = "secret";
