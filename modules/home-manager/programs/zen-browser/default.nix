@@ -23,6 +23,7 @@ in {
       programs.zen-browser = {
         enable = true;
         nativeMessagingHosts = [pkgs.firefoxpwa];
+        suppressXdgMigrationWarning = true;
         policies = {
           AutofillAddressEnabled = true;
           AutofillCreditCardEnabled = false;
