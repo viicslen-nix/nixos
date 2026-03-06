@@ -72,6 +72,15 @@ in {
   };
 
   config = mkIf cfg.enable {
+    # Enable dnsmasq for .test TLD to avoid /etc/hosts modifications
+    services.dnsmasq = {
+      enable = true;
+      settings = {
+        address = [ "/.test/127.0.0.1" ];
+      };
+    };
+
+    # Keep hosts entry for .local domains (managed by user)
     networking.hosts."127.0.0.1" = [cfg.host] ++ optional cfg.admin.enable cfg.admin.host;
 
     # Auto-configure mkcert for this container's host
