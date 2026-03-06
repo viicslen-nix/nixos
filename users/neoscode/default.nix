@@ -119,6 +119,7 @@ in {
       ideavim.enable = true;
       nushell.enable = true;
       starship.enable = true;
+      worktrunk.enable = true;
       git = {
         enable = true;
         user = osConfig.users.users.${user}.description;
