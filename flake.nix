@@ -118,6 +118,7 @@
 
     # Community packages
     agenix.url = "github:ryantm/agenix";
+    worktrunk.url = "github:max-sixty/worktrunk";
     ghostty.url = "github:ghostty-org/ghostty";
     lan-mouse.url = "github:feschber/lan-mouse";
     nix-alien.url = "github:thiagokokada/nix-alien";
