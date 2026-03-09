@@ -80,6 +80,11 @@ in {
       };
     };
 
+    # Prevent port-53 conflict between dnsmasq and systemd-resolved
+    services.resolved.extraConfig = ''
+      DNSStubListener=no
+    '';
+
     # Keep hosts entry for .local domains (managed by user)
     networking.hosts."127.0.0.1" = [cfg.host] ++ optional cfg.admin.enable cfg.admin.host;
 
