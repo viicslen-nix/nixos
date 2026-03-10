@@ -60,20 +60,14 @@ in {
         (lists.forEach cfg.cache (dir: ".cache/${dir}"))
         cfg.directories
         [
-          {
-            directory = "Development";
-            method = "symlink";
-          }
-          {
-            directory = ".nix";
-            method = "symlink";
-          }
+          "Development"
           "Documents"
           "Downloads"
           "Pictures"
           "Desktop"
           "Videos"
           "Music"
+          ".nix"
         ]
       ];
     } // (if (length cfg.files) > 0 then { files = cfg.files; } else {});
