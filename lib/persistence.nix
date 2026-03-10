@@ -44,19 +44,21 @@
     };
 
   # Combined helper to add multiple types at once
-  mkPersistence = config: {
+  mkPersistence = moduleConfig: {
     directories ? [],
     files ? [],
     config ? [],
+    configDirs ? [],
     share ? [],
     cache ? [],
   }: let
-    cfg = config.modules.functionality.impermanence;
+    cfg = moduleConfig.modules.functionality.impermanence;
+    mergedConfigDirs = config ++ configDirs;
   in
     inputs.nixpkgs.lib.mkIf (cfg.enable && cfg.autoPersistence) {
       modules.functionality.impermanence.directories = directories;
       modules.functionality.impermanence.files = files;
-      modules.functionality.impermanence.config = config;
+      modules.functionality.impermanence.config = mergedConfigDirs;
       modules.functionality.impermanence.share = share;
       modules.functionality.impermanence.cache = cache;
     };
