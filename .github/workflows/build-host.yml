@@ -1,0 +1,97 @@
+name: Build NixOS Host
+
+on:
+  workflow_dispatch:
+    inputs:
+      host:
+        description: "Host in nixosConfigurations to build"
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - asus-zephyrus-gu603
+          - dostov-dev
+          - home-desktop
+          - lenovo-legion-go
+          - wsl
+      artifact_retention_days:
+        description: "How many days to keep artifact"
+        required: false
+        default: "7"
+        type: string
+
+jobs:
+  prepare-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Set build matrix
+        id: set-matrix
+        run: |
+          if [ "${{ inputs.host }}" = "all" ]; then
+            echo 'matrix={"host":["asus-zephyrus-gu603","dostov-dev","home-desktop","lenovo-legion-go","wsl"]}' >> "$GITHUB_OUTPUT"
+          else
+            echo 'matrix={"host":["${{ inputs.host }}"]}' >> "$GITHUB_OUTPUT"
+          fi
+
+  build-host:
+    needs: prepare-matrix
+    runs-on: ubuntu-latest
+    name: Build ${{ matrix.host }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare-matrix.outputs.matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - name: Setup Nix Build Environment
+        uses: ./.github/actions/setup-nix-build
+
+      - name: Validate host exists
+        run: |
+          nix eval --json .#nixosConfigurations.${{ matrix.host }}.config.networking.hostName >/dev/null
+
+      - name: Build host system closure
+        run: |
+          echo "Building nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel"
+          nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel \
+            --option cores 0 \
+            --option max-jobs auto \
+            --option keep-going true \
+            --print-build-logs
+
+      - name: Pack build output
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          STORE_PATH="$(readlink -f result)"
+          echo "$STORE_PATH" > artifacts/store-path.txt
+          nix-store --query --requisites "$STORE_PATH" > artifacts/closure-paths.txt
+          nix-store --export $(cat artifacts/closure-paths.txt) > artifacts/${{ matrix.host }}-closure.nar
+
+      - name: Upload host build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nixos-host-${{ matrix.host }}
+          path: artifacts/
+          retention-days: ${{ fromJSON(inputs.artifact_retention_days) }}
+          compression-level: 0
+
+      - name: Build summary
+        run: |
+          echo "## Host Build: ${{ matrix.host }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Host: \`${{ matrix.host }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Built attribute: \`nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Artifact: \`nixos-host-${{ matrix.host }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "The artifact contains:" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`${{ matrix.host }}-closure.nar\`: exported Nix store closure" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`store-path.txt\`: built toplevel store path" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`closure-paths.txt\`: full list of requisites" >> "$GITHUB_STEP_SUMMARY"
