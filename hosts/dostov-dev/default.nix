@@ -127,7 +127,6 @@ with lib; {
     insomnia
     postman
     lens
-    local.worktrunk
 
     # Notes
     obsidian
