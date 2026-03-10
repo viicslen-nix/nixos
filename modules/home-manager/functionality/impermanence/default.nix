@@ -53,7 +53,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.persistence."${cfg.persistencePath}/${config.home.homeDirectory}" = {
+    home.persistence."${cfg.persistencePath}" = {
       directories = concatLists [
         (lists.forEach cfg.share (dir: ".local/share/${dir}"))
         (lists.forEach cfg.config (dir: ".config/${dir}"))
@@ -76,8 +76,6 @@ in {
           "Music"
         ]
       ];
-
-      files = cfg.files;
-    };
+    } // (if (length cfg.files) > 0 then { files = cfg.files; } else {});
   };
 }
