@@ -69,14 +69,14 @@
     };
 
     vivaldi = _prev.vivaldi.overrideAttrs (oldAttrs: let
-      version = "7.8.3925.44";
-      channel = "stable";
+      version = "7.9.3969.3";
+      channel = "snapshot";
     in {
       inherit version;
 
       src = _prev.fetchurl {
         url = "https://downloads.vivaldi.com/${channel}/vivaldi-${channel}_${version}-1_amd64.deb";
-        hash = "sha256-RK9bWHNcrTsIWsHNMxO8Nr9K/pjjggb2rc3GFWftTso=";
+        hash = "sha256-gTZfAtLCxcoKJZ/pEh4ErduJPsRo1KlVvCCJoNtNAKc=";
       };
 
       passthru =

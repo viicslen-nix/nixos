@@ -172,6 +172,8 @@ with lib; {
         remoteDesktop = true;
       };
 
+      niri.enable = true;
+
       hyprland = {
         enable = true;
         nvidia = true;
