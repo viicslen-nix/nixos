@@ -54,13 +54,11 @@
     cfg = config.modules.functionality.impermanence;
   in
     inputs.nixpkgs.lib.mkIf (cfg.enable && cfg.autoPersistence) {
-      modules.functionality.impermanence = {
-        directories = directories;
-        files = files;
-        config = config;
-        share = share;
-        cache = cache;
-      };
+      modules.functionality.impermanence.directories = directories;
+      modules.functionality.impermanence.files = files;
+      modules.functionality.impermanence.config = config;
+      modules.functionality.impermanence.share = share;
+      modules.functionality.impermanence.cache = cache;
     };
 
   # Home-manager persistence helper for NixOS
@@ -79,13 +77,11 @@
     lib = inputs.nixpkgs.lib;
     homeManagerLoaded = builtins.hasAttr "home-manager" options;
     mkUserPersistence = _user: {
-      modules.functionality.impermanence = {
-        directories = directories;
-        files = files;
-        config = configDirs;
-        share = share;
-        cache = cache;
-      };
+      modules.functionality.impermanence.directories = directories;
+      modules.functionality.impermanence.files = files;
+      modules.functionality.impermanence.config = configDirs;
+      modules.functionality.impermanence.share = share;
+      modules.functionality.impermanence.cache = cache;
     };
   in
     lib.mkIf homeManagerLoaded {
@@ -104,8 +100,7 @@
     cfg = config.modules.services.impermanence;
   in
     lib.mkIf cfg.enable {
-      modules.services.impermanence = {
-        inherit directories files;
-      };
+      modules.services.impermanence.directories = directories;
+      modules.services.impermanence.files = files;
     };
 }
