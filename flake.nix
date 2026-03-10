@@ -87,6 +87,10 @@
       url = "path:./flakes/niri";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    dms = {
+      url = "path:./flakes/dms";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # OpenCode
     opencode.url = "path:./flakes/opencode";

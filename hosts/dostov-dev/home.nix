@@ -5,6 +5,10 @@
   osConfig,
   ...
 }: {
+  imports = [
+    inputs.dms.homeManagerModules.default
+  ];
+
   home.autostart = [
     pkgs.jetbrains-toolbox
   ];
@@ -16,7 +20,6 @@
     zen-browser.enable = true;
     vivaldi.enable = true;
   };
-
 
   home.file.".config/hypr/pyprland.toml".text = lib.mkAfter ''
     [monitors.placement."LW9AA0048525"]

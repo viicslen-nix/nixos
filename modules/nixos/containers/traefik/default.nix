@@ -76,7 +76,7 @@ in {
     services.dnsmasq = {
       enable = true;
       settings = {
-        address = [ "/.test/127.0.0.1" ];
+        address = ["/.test/127.0.0.1"];
       };
     };
 

@@ -246,9 +246,9 @@ in {
         enable = true;
         package = vivaldiWithMods;
         extensions = [
-          { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; }
-          { id = "edibdbjcniadpccecjdfdjjppcpchdlm"; }
-          { id = "gfbliohnnapiefjpjlpjnehglfpaknnc"; }
+          {id = "cjpalhdlnbpafiamejdnhcphjbkeiagm";}
+          {id = "edibdbjcniadpccecjdfdjjppcpchdlm";}
+          {id = "gfbliohnnapiefjpjlpjnehglfpaknnc";}
         ];
       };
 

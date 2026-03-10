@@ -53,23 +53,29 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.persistence."${cfg.persistencePath}" = {
-      directories = concatLists [
-        (lists.forEach cfg.share (dir: ".local/share/${dir}"))
-        (lists.forEach cfg.config (dir: ".config/${dir}"))
-        (lists.forEach cfg.cache (dir: ".cache/${dir}"))
-        cfg.directories
-        [
-          "Development"
-          "Documents"
-          "Downloads"
-          "Pictures"
-          "Desktop"
-          "Videos"
-          "Music"
-          ".nix"
-        ]
-      ];
-    } // (if (length cfg.files) > 0 then { files = cfg.files; } else {});
+    home.persistence."${cfg.persistencePath}" =
+      {
+        directories = concatLists [
+          (lists.forEach cfg.share (dir: ".local/share/${dir}"))
+          (lists.forEach cfg.config (dir: ".config/${dir}"))
+          (lists.forEach cfg.cache (dir: ".cache/${dir}"))
+          cfg.directories
+          [
+            "Development"
+            "Documents"
+            "Downloads"
+            "Pictures"
+            "Desktop"
+            "Videos"
+            "Music"
+            ".nix"
+          ]
+        ];
+      }
+      // (
+        if (length cfg.files) > 0
+        then {files = cfg.files;}
+        else {}
+      );
   };
 }

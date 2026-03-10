@@ -13,3 +13,6 @@
 [submodule "flakes/opencode"]
 	path = flakes/opencode
 	url = https://github.com/viicslen-nix/opencode
+[submodule "flakes/dms"]
+	path = flakes/dms
+	url = https://github.com/viicslen-nix/dms
