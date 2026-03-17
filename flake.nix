@@ -10,11 +10,16 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    # Lib
+    viicslen-lib = {
+      url = "path:./flakes/lib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Hardware
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    # Systems
-    systems.url = "github:nix-systems/default";
+    # Registry
     flake-registry = {
       url = "github:NixOS/flake-registry";
       flake = false;
@@ -86,6 +91,7 @@
     niri = {
       url = "path:./flakes/niri";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.viicslen-lib.follows = "viicslen-lib";
     };
     dms = {
       url = "path:./flakes/dms";
@@ -148,7 +154,6 @@
   };
 
   outputs = inputs @ {
-    systems,
     nixpkgs,
     self,
     ...
@@ -156,7 +161,7 @@
     with self.lib; let
       inherit (self) outputs;
     in {
-      lib = import ./lib {inherit inputs outputs;};
+      lib = inputs.viicslen-lib.mkLib {inherit inputs outputs;};
 
       # Formatter for your nix files, available through 'nix fmt'
       # Other options beside 'alejandra' include 'nixpkgs-fmt'
