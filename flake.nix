@@ -159,7 +159,6 @@
     ...
   }: let
     vlib = inputs.viicslen-lib.lib;
-    hosts = inputs.viicslen-lib.mkLib {inherit inputs; outputs = self.outputs;};
   in {
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
@@ -190,6 +189,6 @@
     homeManagerModules = vlib.modules.autoImportRecursive ./modules/home-manager;
 
     # NixOS configurations for all your hosts
-    nixosConfigurations = hosts.mkNixosConfigurations ./hosts;
+    nixosConfigurations = vlib.hosts.mkNixosConfigurations {inherit inputs; outputs = self.outputs;} ./hosts;
   };
 }
