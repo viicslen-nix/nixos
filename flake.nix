@@ -157,41 +157,39 @@
     nixpkgs,
     self,
     ...
-  }:
-    with self.lib; let
-      inherit (self) outputs;
-    in {
-      lib = inputs.viicslen-lib.mkLib {inherit inputs outputs;};
+  }: let
+    vlib = inputs.viicslen-lib.lib;
+    hosts = inputs.viicslen-lib.mkLib {inherit inputs; outputs = self.outputs;};
+  in {
+    # Formatter for your nix files, available through 'nix fmt'
+    # Other options beside 'alejandra' include 'nixpkgs-fmt'
+    formatter = vlib.pkgFromSystem "alejandra";
 
-      # Formatter for your nix files, available through 'nix fmt'
-      # Other options beside 'alejandra' include 'nixpkgs-fmt'
-      formatter = pkgFromSystem "alejandra";
+    # Your custom dev shells
+    devShells = vlib.genSystems (system:
+      import ./dev-shells {
+        inherit inputs system;
+        pkgs = vlib.pkgsFor system;
+      });
 
-      # Your custom dev shells
-      devShells = genSystems (system:
-        import ./dev-shells {
-          inherit inputs system;
-          pkgs = pkgsFor system;
-        });
+    # Your custom packages
+    # Accessible through 'nix build', 'nix shell', etc
+    packages = vlib.genSystems (system:
+      nixpkgs.lib.packagesFromDirectoryRecursive {
+        callPackage = vlib.callPackageForSystem system;
+        directory = ./packages/by-name;
+      });
 
-      # Your custom packages
-      # Accessible through 'nix build', 'nix shell', etc
-      packages = genSystems (system:
-        packagesFromDirectoryRecursive {
-          callPackage = callPackageForSystem system;
-          directory = ./packages/by-name;
-        });
+    # Your custom packages and modifications, exported as overlays
+    overlays = import ./overlays {inherit inputs;};
 
-      # Your custom packages and modifications, exported as overlays
-      overlays = import ./overlays {inherit inputs;};
+    # Reusable nixos modules you might want to export
+    nixosModules = vlib.modules.autoImportRecursive ./modules/nixos;
 
-      # Reusable nixos modules you might want to export
-      nixosModules = modules.autoImportRecursive ./modules/nixos;
+    # Reusable home-manager modules you might want to export
+    homeManagerModules = vlib.modules.autoImportRecursive ./modules/home-manager;
 
-      # Reusable home-manager modules you might want to export
-      homeManagerModules = modules.autoImportRecursive ./modules/home-manager;
-
-      # NixOS configurations for all your hosts
-      nixosConfigurations = hosts.mkNixosConfigurations ./hosts;
-    };
+    # NixOS configurations for all your hosts
+    nixosConfigurations = hosts.mkNixosConfigurations ./hosts;
+  };
 }
