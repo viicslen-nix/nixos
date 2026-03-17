@@ -85,6 +85,7 @@
     hyprland = {
       url = "path:./flakes/hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.viicslen-lib.follows = "viicslen-lib";
     };
 
     # Niri
