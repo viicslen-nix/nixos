@@ -16,3 +16,6 @@
 [submodule "flakes/dms"]
 	path = flakes/dms
 	url = https://github.com/viicslen-nix/dms
+[submodule "lib"]
+	path = lib
+	url = https://github.com/viicslen-nix/lib.git
