@@ -161,6 +161,9 @@
   }: let
     vlib = inputs.viicslen-lib.lib;
   in {
+    # Re-export viicslen-lib so modules can use `inputs.self.lib`
+    lib = vlib;
+
     # Formatter for your nix files, available through 'nix fmt'
     # Other options beside 'alejandra' include 'nixpkgs-fmt'
     formatter = vlib.pkgFromSystem "alejandra";
