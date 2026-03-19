@@ -75,7 +75,7 @@ with lib; {
     blueman.enable = true;
     ghost-backup.enable = true;
     displayManager.gdm.enable = true;
-    displayManager.defaultSession = "hyprland";
+    displayManager.defaultSession = "niri";
 
     miami-bus-tracker = {
       enable = true;
