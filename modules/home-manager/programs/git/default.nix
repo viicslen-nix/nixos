@@ -54,10 +54,13 @@ in {
           uncommit = "reset --soft HEAD~0";
         };
         init.defaultBranch = cfg.defaultBranch;
-        push.autoSetupRemote = true;
         pull.rebase = true;
+        push = {
+          autoSetupRemote = true;
+          # recurseSubmodules = "on-demand";
+        };
 
-        submodule.recurse = true;
+        # submodule.recurse = true;
       };
     };
   };
