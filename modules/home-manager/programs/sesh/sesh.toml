@@ -1,0 +1,22 @@
+[default_session]
+preview_command = "eza --all --git --icons --color=always {}"
+disable_startup_command = true
+
+[[session]]
+name = "mylisterhub-app:master"
+path = "~/Development/mylisterhub-app/tree/master"
+startup_command = "php artisan solo"
+
+[[session]]
+name = "mylisterhub-cloud-config"
+path = "~/Development/mylisterhub-cloud-config"
+startup_command = "k9s"
+
+[[session]]
+name = "NixOS Config ⚙️"
+path = "/etc/nixos"
+
+[[session]]
+name = "Downloads 📥"
+path = "~/Downloads"
+startup_command = "ls"
