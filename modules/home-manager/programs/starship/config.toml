@@ -4,9 +4,7 @@ $os\
 [](fg:#ffffff bg:c2)\
 $directory\
 [](fg:c2 bg:#303030)\
-$git_branch\
-$git_status\
-$git_metrics\
+${custom.jj}\
 $fill\
 $nodejs\
 $php\
@@ -84,18 +82,25 @@ fish_style_pwd_dir_length = 1
 
 [git_branch]
 format = '[ 󰘬 $branch ](fg:#808080 bg:c4)'
+disabled = true
 
 [git_metrics]
 format = '([+$added ]($added_style))([-$deleted ]($deleted_style))'
 added_style = 'fg:#808080 bg:c4'
 deleted_style = 'fg:#808080 bg:c4'
-disabled = false
+disabled = true
 
 [git_status]
 format = '([$all_status$ahead_behind ](fg:#808080 bg:c4))'
 diverged = '⇕⇡${ahead_count}⇣${behind_count}'
 behind = '⇣${count}'
 ahead = '⇡${count}'
+disabled = true
+
+[custom.jj]
+when = "jj-starship detect"
+shell = ["jj-starship", "--no-color", "--no-symbol", "--no-jj-prefix", "--no-git-prefix"]
+format = '([ $output ](fg:#808080 bg:c4))'
 
 [direnv]
 disabled = false
