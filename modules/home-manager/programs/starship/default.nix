@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   inputs,
   ...
@@ -17,6 +18,10 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     {
+      home.packages = [
+        inputs.jj-starship.packages.${pkgs.system}.default
+      ];
+
       programs.starship = {
         enable = true;
 

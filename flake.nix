@@ -148,6 +148,10 @@
       url = "github:viicslen/worktree-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    jj-starship = {
+      url = "github:dmmulroy/jj-starship";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ghost-backup = {
       url = "github:FmTod/ghost-backup";
       inputs.nixpkgs.follows = "nixpkgs";
