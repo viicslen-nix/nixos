@@ -21,11 +21,19 @@ with lib; let
     grep -v '^#' "$f"
   '';
 
-  postCreateScript = pkgs.writeShellScript "worktrunk-post-create" ''
+  postSwitchScript = pkgs.writeShellScript "worktrunk-post-switch" ''
     S=$1
     W=$2
-    tmux new-session -d -s "$S" -c "$W"
-    echo "✓ Session '$S' — attach with: tmux attach -t $S"
+
+    if ! tmux has-session -t "$S" 2>/dev/null; then
+      tmux new-session -d -s "$S" -c "$W"
+    fi
+
+    if [ -n "$TMUX" ]; then
+      tmux switch-client -t "$S"
+    else
+      tmux attach-session -t "$S"
+    fi
   '';
 in {
   imports = [
@@ -72,7 +80,7 @@ in {
     xdg.configFile."worktrunk/config.toml" = let
       tmuxSettings = optionalAttrs cfg.tmux.enable {
         switch.no-cd = true;
-        post-create.tmux = "${postCreateScript} {{ branch | sanitize }} {{ worktree_path }}";
+        post-switch.tmux = "${postSwitchScript} {{ branch | sanitize }} {{ worktree_path }}";
         pre-remove.tmux = "tmux kill-session -t {{ branch | sanitize }} 2>/dev/null || true";
       };
       mergedSettings = cfg.settings // tmuxSettings;
