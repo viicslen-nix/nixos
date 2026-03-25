@@ -121,7 +121,7 @@ in {
       starship.enable = true;
       worktrunk = {
         enable = true;
-        tmux.enable = false;
+        tmux.enable = true;
       };
       git = {
         enable = true;
