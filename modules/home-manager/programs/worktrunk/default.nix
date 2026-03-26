@@ -80,8 +80,8 @@ in {
     xdg.configFile."worktrunk/config.toml" = let
       tmuxSettings = optionalAttrs cfg.tmux.enable {
         switch.no-cd = true;
-        post-switch.tmux = "${postSwitchScript} {{ branch | sanitize }} {{ worktree_path }}";
-        pre-remove.tmux = "tmux kill-session -t {{ branch | sanitize }} 2>/dev/null || true";
+        post-switch.tmux = "${postSwitchScript} \"{{ repo }}@{{ branch | sanitize }}\" {{ worktree_path }}";
+        pre-remove.tmux = "tmux kill-session -t {{ repo }}@{{ branch | sanitize }} 2>/dev/null || true";
       };
       mergedSettings = cfg.settings // tmuxSettings;
     in
