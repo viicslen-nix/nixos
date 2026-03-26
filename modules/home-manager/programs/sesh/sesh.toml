@@ -3,7 +3,7 @@ preview_command = "eza --all --git --icons --color=always {}"
 disable_startup_command = true
 
 [[session]]
-name = "mylisterhub-app:master"
+name = "mylisterhub-app@master"
 path = "~/Development/mylisterhub-app/tree/master"
 startup_command = "php artisan solo"
 
