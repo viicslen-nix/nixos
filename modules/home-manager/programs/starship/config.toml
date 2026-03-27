@@ -2,7 +2,7 @@ format = """
 [](fg:#ffffff)\
 $os\
 [](fg:#ffffff bg:c2)\
-$directory\
+${custom.smart_dir}\
 [](fg:c2 bg:#303030)\
 ${custom.jj}\
 $fill\
@@ -76,9 +76,15 @@ Windows = ''
 format = '[ 󰷏 $path ](fg:c3 bg:c2 italic)'
 truncation_length = 3
 fish_style_pwd_dir_length = 1
+disabled = true
 
 [directory.substitutions]
 'Development' = 'dev'
+
+[custom.smart_dir]
+when = true
+command = 'starship-smart-dir'
+format = '[ 󰷏 $output ](fg:c3 bg:c2 italic)'
 
 [git_branch]
 format = '[ 󰘬 $branch ](fg:#808080 bg:c4)'
