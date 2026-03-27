@@ -20,6 +20,7 @@ in {
     {
       home.packages = [
         inputs.jj-starship.packages.${pkgs.system}.default
+        pkgs.local.scripts.starship-smart-dir
       ];
 
       programs.starship = {
