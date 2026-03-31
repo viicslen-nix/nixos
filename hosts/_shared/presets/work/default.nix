@@ -137,6 +137,8 @@ with lib; {
       atlas
       devbox
       act
+      github-desktop
+      gh-dash
       inputs.worktree-manager.default
       inputs.ghost-backup.default
       percona-toolkit
