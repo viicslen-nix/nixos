@@ -56,7 +56,7 @@ with lib; {
   };
 
   services = {
-    displayManager.defaultSession = "hyprland";
+    displayManager.defaultSession = "gnome";
 
     # Disable the built-in keyboard
     udev.extraRules = lib.mkAfter ''
@@ -80,7 +80,6 @@ with lib; {
     drawio
     legcord
     fish
-    windsurf
     pkgs.inputs.zen-browser.default
     dbeaver-bin
     uv
@@ -108,24 +107,25 @@ with lib; {
 
     desktop = {
       gnome.enable = true;
+      niri.enable = true;
 
-      hyprland = {
-        enable = true;
-        nvidia = true;
-        portals = {
-          enable = true;
-          backend = "gtk";
-          extraBackends = ["gnome"];
-        };
-        globalVariables = {
-          NVD_BACKEND = "direct";
-          GBM_BACKEND = "nvidia-drm";
-          LIBVA_DRIVER_NAME = "nvidia";
-          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-          __GL_GSYNC_ALLOWED = "1";
-          __GL_VRR_ALLOWED = "0";
-        };
-      };
+      #hyprland = {
+      #  enable = false;
+      #  nvidia = true;
+      #  portals = {
+      #    enable = true;
+      #    backend = "gtk";
+      #    extraBackends = ["gnome"];
+      #  };
+      #  globalVariables = {
+      #    NVD_BACKEND = "direct";
+      #    GBM_BACKEND = "nvidia-drm";
+      #    LIBVA_DRIVER_NAME = "nvidia";
+      #    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      #    __GL_GSYNC_ALLOWED = "1";
+      #    __GL_VRR_ALLOWED = "0";
+      #  };
+      #};
     };
 
     services = {
@@ -133,7 +133,7 @@ with lib; {
       powerManagement.enable = true;
 
       backups = {
-        enable = false;
+        enable = true;
         repository = "b2:viicslen-asus-zephyrus-gu603";
 
         secrets = {
@@ -160,7 +160,7 @@ with lib; {
       };
 
       impermanence = {
-        enable = true;
+        enable = false;
         directories = [
           "/etc/gdm"
         ];

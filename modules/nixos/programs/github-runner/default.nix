@@ -31,7 +31,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    age.secrets."github-runners/nixos.token".file = cfg.secrets.token;
+    # age.secrets."github-runners/nixos.token".file = cfg.secrets.token;
 
     services.github-runners.${config.networking.hostName} = {
       enable = true;
@@ -39,7 +39,7 @@ in {
       ephemeral = true;
       user = "root";
       url = cfg.url;
-      tokenFile = config.age.secrets."github-runners/nixos.token".path;
+      # tokenFile = config.age.secrets."github-runners/nixos.token".path;
       extraPackages = with pkgs; [
         sudo
         bash

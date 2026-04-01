@@ -5,7 +5,7 @@
 }: {
   modules = {
     functionality.impermanence = {
-      enable = true;
+      enable = false;
       share = [
         "JetBrains"
         "keyrings"

@@ -83,10 +83,10 @@ in {
 
   config = mkIf cfg.enable {
     # configure agenix secrets
-    age.secrets = {
-      "restic/env".file = cfg.secrets.env;
-      "restic/password".file = cfg.secrets.password;
-    };
+    # age.secrets = {
+    #   "restic/env".file = cfg.secrets.env;
+    #   "restic/password".file = cfg.secrets.password;
+    # };
 
     # configure restic backup services
     services.restic.backups = {
@@ -94,8 +94,8 @@ in {
         initialize = true;
         repository = cfg.repository;
 
-        environmentFile = config.age.secrets."restic/env".path;
-        passwordFile = config.age.secrets."restic/password".path;
+        # environmentFile = config.age.secrets."restic/env".path;
+        # passwordFile = config.age.secrets."restic/password".path;
 
         timerConfig = {
           OnCalendar = "16:00";
