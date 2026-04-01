@@ -24,12 +24,14 @@ with lib; {
 
     loader = {
       efi.canTouchEfiVariables = false;
+      efi.efiSysMountPoint = "/boot/efi";
 
       grub = {
         enable = true;
         device = "nodev";
         efiSupport = true;
         configurationLimit = 10;
+        efiInstallAsRemovable = true;
       };
     };
   };

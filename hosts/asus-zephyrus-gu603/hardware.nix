@@ -16,6 +16,12 @@
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
+  fileSystems."/boot/efi" = {
+    device = "/dev/disk/by-uuid/E4FF-29F1";
+    fsType = "vfat";
+    options = ["fmask=0022" "dmask=0022"];
+  };
+
   swapDevices = [
     {
       device = "/var/lib/swapfile";
