@@ -20,6 +20,18 @@ with lib; {
     scale = 1.875000
   '';
 
+  home.autostart = [
+    {
+      package = pkgs.mullvad-vpn;
+      args = ["--silent"];
+      delay = 4;
+    }
+    {
+      package = pkgs.jetbrains-toolbox;
+      delay = 5;
+    }
+  ];
+
   # Niri configuration - currently disabled
   # programs.niri = mkIf (osConfig.modules.desktop.niri.enable or false) {
   #   settings.outputs = {

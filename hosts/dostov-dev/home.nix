@@ -23,6 +23,18 @@
     transform = 3
   '';
 
+  home.autostart = [
+    {
+      package = pkgs.mullvad-vpn;
+      args = ["--silent"];
+      delay = 4;
+    }
+    {
+      package = pkgs.jetbrains-toolbox;
+      delay = 5;
+    }
+  ];
+
   wayland.windowManager.hyprland.settings = lib.mkIf osConfig.programs.hyprland.enable {
     monitor = [
       "DP-1, 1920x1080@59.99, 0x0, 1, vrr, 0"

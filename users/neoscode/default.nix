@@ -33,12 +33,8 @@ in {
       {
         package = pkgs._1password-gui;
         args = ["--silent"];
+        delay = 3;
       }
-      {
-        package = pkgs.mullvad-vpn;
-        args = ["--silent"];
-      }
-      pkgs.jetbrains-toolbox
     ];
 
     sessionVariables = {
