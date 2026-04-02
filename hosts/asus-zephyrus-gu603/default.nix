@@ -10,6 +10,7 @@ with lib; {
   imports = [
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
     inputs.disko.nixosModules.disko
+    inputs.dms.nixosModules.default
     (import ./disko.nix {
       inherit inputs;
       device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_223766801969";
@@ -133,7 +134,7 @@ with lib; {
       powerManagement.enable = true;
 
       backups = {
-        enable = true;
+        enable = false;
         repository = "b2:viicslen-asus-zephyrus-gu603";
 
         secrets = {
