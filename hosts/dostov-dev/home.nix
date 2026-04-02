@@ -9,10 +9,6 @@
     inputs.dms.homeManagerModules.default
   ];
 
-  home.autostart = [
-    pkgs.jetbrains-toolbox
-  ];
-
   modules.programs = {
     ray.enable = true;
     kitty.enable = true;
