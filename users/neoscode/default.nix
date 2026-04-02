@@ -29,6 +29,18 @@ in {
       inputs.opencode.oh-my-opencode
     ];
 
+    autostart = [
+      {
+        package = pkgs._1password-gui;
+        args = ["--silent"];
+      }
+      {
+        package = pkgs.mullvad-vpn;
+        args = ["--silent"];
+      }
+      pkgs.jetbrains-toolbox
+    ];
+
     sessionVariables = {
       EDITOR = "nvim";
       NIXOS_OZONE_WL = "1";
