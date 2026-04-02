@@ -21,6 +21,11 @@ with lib; let
         default = [];
         description = "Arguments to pass to the application";
       };
+      delay = mkOption {
+        type = types.int;
+        default = 0;
+        description = "Delay in seconds before starting the application";
+      };
     };
   });
 
@@ -28,14 +33,20 @@ with lib; let
     if isDerivation app then {
       package = app;
       args = [];
+      delay = 0;
     } else app;
 
   genDesktopEntryPath = app: let
     normalized = normalizeApp app;
     pkg = normalized.package;
     args = normalized.args;
+    delay = normalized.delay;
     exePath = lib.getExe pkg;
-    execLine = lib.escapeShellArgs ([exePath] ++ args);
+    command = lib.escapeShellArgs ([exePath] ++ args);
+    execLine =
+      if delay > 0
+      then lib.escapeShellArgs ["${pkgs.bash}/bin/bash" "-lc" "${pkgs.coreutils}/bin/sleep ${toString delay}; exec ${command}"]
+      else command;
     content =
       if pkg ? desktopItem
       then
@@ -65,6 +76,7 @@ in {
         {
           package = pkgs._1password-gui;
           args = ["--silent"];
+          delay = 3;
         }
       ]
     '';
