@@ -242,11 +242,14 @@ with lib; {
       onePassword = {
         enable = true;
         gitSignCommits = true;
+        users = attrNames users;
         allowedCustomBrowsers = [
           ".zen-wrapped"
           "zen"
+          "vivaldi"
+          "vivaldi-bin"
+          "vivaldi-snapshot"
         ];
-        users = attrNames users;
       };
     };
   };
