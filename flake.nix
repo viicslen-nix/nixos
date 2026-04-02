@@ -5,8 +5,11 @@
     # Enable submodules
     self.submodules = true;
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
     # Nixpkgs
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    systems.url = "github:nix-systems/default";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -158,45 +161,66 @@
     };
   };
 
-  outputs = inputs @ {
-    nixpkgs,
-    self,
-    ...
-  }: let
-    vlib = inputs.viicslen-lib.lib;
-  in {
-    # Re-export viicslen-lib so modules can use `inputs.self.lib`
-    lib = vlib;
+  outputs = inputs @ {flake-parts, nixpkgs, self, ...}:
+    flake-parts.lib.mkFlake {inherit inputs;} ({...}: let
+      vlib = inputs.viicslen-lib.lib;
 
-    # Formatter for your nix files, available through 'nix fmt'
-    # Other options beside 'alejandra' include 'nixpkgs-fmt'
-    formatter = vlib.pkgFromSystem "alejandra";
+      flattenPackages = attrs: let
+        isDrv = value:
+          (inputs.nixpkgs.lib.isDerivation value)
+          || ((builtins.typeOf value == "set") && (value ? type) && value.type == "derivation");
 
-    # Your custom dev shells
-    devShells = vlib.genSystems (system:
-      import ./dev-shells {
-        inherit inputs system;
-        pkgs = vlib.pkgsFor system;
-      });
+        recurse = prefix: set:
+          builtins.concatLists (map (name: let
+              value = set.${name};
+              key =
+                if prefix == ""
+                then name
+                else "${prefix}-${name}";
+            in
+              if (builtins.typeOf value == "set") && !(isDrv value)
+              then recurse key value
+              else [
+                {
+                  name = key;
+                  value = value;
+                }
+              ])
+            (builtins.attrNames set));
+      in
+        builtins.listToAttrs (recurse "" attrs);
 
-    # Your custom packages
-    # Accessible through 'nix build', 'nix shell', etc
-    packages = vlib.genSystems (system:
-      nixpkgs.lib.packagesFromDirectoryRecursive {
-        callPackage = vlib.callPackageForSystem system;
-        directory = ./packages/by-name;
-      });
+      nestedPackages = vlib.genSystems (system:
+        nixpkgs.lib.packagesFromDirectoryRecursive {
+          callPackage = vlib.callPackageForSystem system;
+          directory = ./packages/by-name;
+        });
+    in {
+      systems = import inputs.systems;
 
-    # Your custom packages and modifications, exported as overlays
-    overlays = import ./overlays {inherit inputs;};
+      flake = {
+        lib = vlib;
 
-    # Reusable nixos modules you might want to export
-    nixosModules = vlib.modules.autoImportRecursive ./modules/nixos;
+        formatter = vlib.pkgFromSystem "alejandra";
 
-    # Reusable home-manager modules you might want to export
-    homeManagerModules = vlib.modules.autoImportRecursive ./modules/home-manager;
+        devShells = vlib.genSystems (system:
+          import ./dev-shells {
+            inherit inputs system;
+            pkgs = vlib.pkgsFor system;
+          });
 
-    # NixOS configurations for all your hosts
-    nixosConfigurations = vlib.hosts.mkNixosConfigurations {inherit inputs; outputs = self.outputs;} ./hosts;
-  };
+        packages = vlib.genSystems (system: flattenPackages nestedPackages.${system});
+
+        legacyPackages = nestedPackages;
+
+        overlays = import ./overlays {inherit inputs;};
+
+        nixosModules = vlib.modules.autoImportRecursive ./modules/nixos;
+
+        homeManagerModules = vlib.modules.autoImportRecursive ./modules/home-manager;
+
+        nixosConfigurations =
+          vlib.hosts.mkNixosConfigurations {inherit inputs; outputs = self.outputs;} ./hosts;
+      };
+    });
 }

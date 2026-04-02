@@ -6,6 +6,12 @@
 
 This repository contains my complete NixOS configuration using Nix Flakes, featuring a modular architecture with support for multiple hosts, desktop environments, and development workflows.
 
+## 📜 Engineering Constitution
+
+Engineering standards for code quality, testing, UX consistency, and performance are
+defined in `.specify/memory/constitution.md` and apply to planning, implementation, and
+review workflows.
+
 ## 🏗️ Architecture
 
 The configuration is built using a modular flake-based architecture with the following key components:
