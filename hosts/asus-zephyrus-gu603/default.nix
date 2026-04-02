@@ -11,6 +11,7 @@ with lib; {
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
     inputs.disko.nixosModules.disko
     inputs.dms.nixosModules.default
+    inputs.dms.nixosModules.greeter
     (import ./disko.nix {
       inherit inputs;
       device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_223766801969";
@@ -65,6 +66,12 @@ with lib; {
     '';
   };
 
+  programs.dank-material-shell.greeter = {
+    enable = true;
+    compositor.name = "niri";
+    configHome = "/home/neoscode";
+  };
+
   environment.systemPackages = with pkgs; [
     # jetbrains.idea-ultimate
     # jetbrains.phpstorm
@@ -108,6 +115,8 @@ with lib; {
 
     desktop = {
       gnome.enable = true;
+      gnome.enableGdm = false;
+
       niri.enable = true;
 
       #hyprland = {
