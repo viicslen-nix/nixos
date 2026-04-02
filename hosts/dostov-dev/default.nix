@@ -265,7 +265,6 @@ with lib; {
 
       onePassword = {
         enable = true;
-        autostart = true;
         gitSignCommits = true;
         users = attrNames users;
         allowedCustomBrowsers = [
