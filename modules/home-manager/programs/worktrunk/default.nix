@@ -52,8 +52,8 @@ in {
       default = {
         list.summary = false;
         merge.squash = false;
-        worktree-path = "{{ repo_path }}/tree/{{ branch | sanitize }}";
         commit.generation.command = "${commitScript}";
+        projects."github.com/FmTod/mylisterhub-main-app".worktree-path = "{{ repo_path }}/tree/{{ branch | sanitize }}";
       };
       description = ''
         Configuration written to {file}`$XDG_CONFIG_HOME/worktrunk/config.toml`.
