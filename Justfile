@@ -84,6 +84,12 @@ update:
 update-input INPUT:
   nix flake update {{INPUT}}
 
+# Update flake lock file of a specific subflake and refresh the root flake input
+# Usage: just update-subflake nixvim
+update-subflake NAME:
+  nix flake update --flake "path:flakes/{{NAME}}"
+  nix flake update "$input"
+
 # Full system update (flake + rebuild)
 full-upgrade:
   just update

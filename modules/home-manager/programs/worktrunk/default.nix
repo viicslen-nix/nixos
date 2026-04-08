@@ -79,7 +79,7 @@ in {
 
     xdg.configFile."worktrunk/config.toml" = let
       tmuxSettings = optionalAttrs cfg.tmux.enable {
-        switch.no-cd = true;
+        switch.cd = false;
         post-switch.tmux = "${postSwitchScript} \"{{ repo }}@{{ branch | sanitize }}\" {{ worktree_path }}";
         pre-remove.tmux = "tmux kill-session -t {{ repo }}@{{ branch | sanitize }} 2>/dev/null || true";
       };

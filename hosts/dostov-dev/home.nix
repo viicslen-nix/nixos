@@ -5,10 +5,6 @@
   osConfig,
   ...
 }: {
-  imports = [
-    inputs.dms.homeManagerModules.default
-  ];
-
   modules.programs = {
     ray.enable = true;
     kitty.enable = true;

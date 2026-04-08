@@ -28,12 +28,13 @@ with lib; let
   sesh-list = pkgs.writeShellScriptBin "sesh-list" ''
     ${pkgs.sesh}/bin/sesh list ${displayFlagsStr} "$@" || true
     ${lib.concatMapStringsSep "\n" (dir: ''
-      _dir="${dir}"
-      _dir="''${_dir/#\~/$HOME}"
-      if [ -d "$_dir" ]; then
-        find "$_dir" -maxdepth 1 -mindepth 1 -type d | sed "s|$HOME|~|"
-      fi
-    '') cfg.list.extraDirs}
+        _dir="${dir}"
+        _dir="''${_dir/#\~/$HOME}"
+        if [ -d "$_dir" ]; then
+          find "$_dir" -maxdepth 1 -mindepth 1 -type d | sed "s|$HOME|~|"
+        fi
+      '')
+      cfg.list.extraDirs}
   '';
 in {
   options.modules.${namespace}.${name} = {
@@ -43,12 +44,12 @@ in {
     enableTmuxIntegration = mkEnableOption "Enable tmux integration";
 
     list = {
-      config = (mkEnableOption "Show sesh configs") // { default = true; };
-      tmux = (mkEnableOption "Show tmux sessions") // { default = true; };
-      tmuxinator = (mkEnableOption "Show tmuxinator configs") // { default = true; };
+      config = (mkEnableOption "Show sesh configs") // {default = true;};
+      tmux = (mkEnableOption "Show tmux sessions") // {default = true;};
+      tmuxinator = (mkEnableOption "Show tmuxinator configs") // {default = true;};
       zoxide = mkEnableOption "Show zoxide results";
 
-      icons = (mkEnableOption "Show icons.") // { default = true; };
+      icons = (mkEnableOption "Show icons.") // {default = true;};
       hideAttached = mkEnableOption "Don't show currently attached sessions";
       hideDuplicates = mkEnableOption "Hide duplicate entries";
 

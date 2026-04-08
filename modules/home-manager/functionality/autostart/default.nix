@@ -30,11 +30,13 @@ with lib; let
   });
 
   normalizeApp = app:
-    if isDerivation app then {
+    if isDerivation app
+    then {
       package = app;
       args = [];
       delay = 0;
-    } else app;
+    }
+    else app;
 
   genDesktopEntryPath = app: let
     normalized = normalizeApp app;
@@ -49,16 +51,17 @@ with lib; let
       else command;
     content =
       if pkg ? desktopItem
-      then
-        pkg.desktopItem.text
-      else
-        builtins.readFile (pkg + "/share/applications/" + pkg.pname + ".desktop");
+      then pkg.desktopItem.text
+      else builtins.readFile (pkg + "/share/applications/" + pkg.pname + ".desktop");
     lines = lib.splitString "\n" content;
-    modifiedLines = map (line:
-      if lib.hasPrefix "Exec=" line
-      then "Exec=${execLine}"
-      else line
-    ) lines;
+    modifiedLines =
+      map (
+        line:
+          if lib.hasPrefix "Exec=" line
+          then "Exec=${execLine}"
+          else line
+      )
+      lines;
     modifiedContent = lib.concatStringsSep "\n" modifiedLines;
   in
     pkgs.writeText "autostart-${pkg.pname}.desktop" modifiedContent;

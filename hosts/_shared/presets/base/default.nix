@@ -33,6 +33,7 @@ in {
 
   config = {
     system.stateVersion = "26.05";
+    systemd.settings.Manager.DefaultTimeoutStopSec = "20s";
 
     users.users =
       lib.attrsets.mapAttrs' (name: value: (nameValuePair name {

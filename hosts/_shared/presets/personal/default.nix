@@ -6,6 +6,11 @@
 }:
 with lib; {
   config = {
+    # Optimization: Prevent systemd from waiting for network online
+    # (Optional but recommended for faster boot with VPNs)
+    systemd.network.wait-online.enable = false;
+    boot.initrd.systemd.network.wait-online.enable = false;
+
     environment.systemPackages = with pkgs; [
       nix-alien
       nix-init

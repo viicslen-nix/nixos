@@ -58,7 +58,7 @@ in {
         plugins = with pkgs.nushellPlugins; [
           query
           formats
-          highlight
+          # highlight
         ];
 
         extraConfig = ''

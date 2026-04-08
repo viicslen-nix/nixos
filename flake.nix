@@ -197,6 +197,11 @@
     homeManagerModules = vlib.modules.autoImportRecursive ./modules/home-manager;
 
     # NixOS configurations for all your hosts
-    nixosConfigurations = vlib.hosts.mkNixosConfigurations {inherit inputs; outputs = self.outputs;} ./hosts;
+    nixosConfigurations =
+      vlib.hosts.mkNixosConfigurations {
+        inherit inputs;
+        outputs = self.outputs;
+      }
+      ./hosts;
   };
 }

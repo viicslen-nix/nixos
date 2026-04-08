@@ -13,22 +13,12 @@ with lib; {
   imports = [
     # Include the results of the hardware scan.
     ./hardware.nix
+    inputs.dms.nixosModules.default
+    inputs.dms.nixosModules.greeter
     inputs.ghost-backup.nixosModules.default
   ];
 
   home-manager.sharedModules = [./home.nix];
-
-  # Configure agenix secrets for mkcert
-  # age.secrets = {
-  #   mkcert-rootCA = {
-  #     file = ../../secrets/mkcert/rootCA.age;
-  #     mode = "0644";
-  #   };
-  #   mkcert-rootCA-key = {
-  #     file = ../../secrets/mkcert/rootCA-key.age;
-  #     mode = "0600";
-  #   };
-  # };
 
   boot = {
     plymouth.enable = true;
@@ -73,9 +63,10 @@ with lib; {
 
   services = {
     blueman.enable = true;
+    tailscale.enable = true;
     ghost-backup.enable = true;
-    displayManager.gdm.enable = true;
     displayManager.defaultSession = "niri";
+    # displayManager.gdm.enable = true;
 
     miami-bus-tracker = {
       enable = true;
@@ -108,7 +99,14 @@ with lib; {
     };
   };
 
-  programs.wireshark.enable = true;
+  programs = {
+    wireshark.enable = true;
+    dank-material-shell.greeter = {
+      enable = true;
+      compositor.name = "niri";
+      configHome = "/home/neoscode";
+    };
+  };
 
   environment.systemPackages = with pkgs; [
     # Browsers
@@ -168,14 +166,14 @@ with lib; {
 
     desktop = {
       gnome = {
-        enable = true;
-        remoteDesktop = true;
+        enable = false;
+        remoteDesktop = false;
       };
 
       niri.enable = true;
 
       hyprland = {
-        enable = true;
+        enable = false;
         nvidia = true;
         portals = {
           enable = true;

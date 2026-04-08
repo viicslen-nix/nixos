@@ -15,7 +15,7 @@ in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc name);
   };
-   
+
   config = mkMerge [
     {
       home = {
@@ -89,5 +89,4 @@ in {
       directories = [".mozilla"];
     })
   ];
-   
 }
