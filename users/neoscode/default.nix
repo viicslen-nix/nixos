@@ -120,7 +120,6 @@ in {
       k9s.enable = true;
       tmux.enable = true;
       btop.enable = true;
-      aider.enable = true;
       tmate.enable = true;
       atuin.enable = true;
       ghostty.enable = true;
