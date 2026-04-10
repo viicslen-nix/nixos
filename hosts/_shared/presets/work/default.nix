@@ -3,10 +3,13 @@
   pkgs,
   users,
   config,
+  inputs,
   ...
 }:
 with lib; {
+  imports = [inputs.opencode.nixosModules.opencode-web];
   config = {
+
     home-manager.users =
       lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
         programs.ssh.matchBlocks = {
@@ -64,6 +67,8 @@ with lib; {
       users;
 
     modules = {
+      services.opencode-web.enable = true;
+
       programs = {
         corepack.enable = true;
         mkcert.enable = true;
@@ -139,8 +144,8 @@ with lib; {
       act
       github-desktop
       gh-dash
-      inputs.worktree-manager.default
-      inputs.ghost-backup.default
+      pkgs.inputs.worktree-manager.default
+      pkgs.inputs.ghost-backup.default
       percona-toolkit
       local.app-images.responsively
       # local.mago
