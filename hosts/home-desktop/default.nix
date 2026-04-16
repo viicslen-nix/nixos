@@ -11,10 +11,23 @@ with lib; {
     inputs.disko.nixosModules.disko
     (import ./disko.nix {device = "/dev/disk/by-uuid/2da72401-b2b8-4a0d-8324-fd474124f51e";})
     ./hardware.nix
+    inputs.dms.nixosModules.default
+    inputs.dms.nixosModules.greeter
   ];
 
   home-manager.sharedModules = [./home.nix];
-  services.displayManager.defaultSession = "gnome";
+  services.displayManager.defaultSession = "niri";
+
+  programs.dank-material-shell.greeter = {
+    enable = true;
+    compositor.name = "niri";
+    configHome = "/home/neoscode";
+  };
+
+  hardware.openrazer = {
+    enable = true;
+    users = attrNames users;
+  };
 
   boot = {
     plymouth.enable = true;
@@ -40,7 +53,6 @@ with lib; {
     firewall.enable = mkForce false;
   };
 
-  # Add root user for troubleshooting
   users = {
     mutableUsers = false;
     extraUsers.root.hashedPassword = "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
