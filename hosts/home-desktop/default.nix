@@ -74,13 +74,14 @@ with lib; {
     };
 
     desktop = {
-      gnome.enable = true;
+      niri.enable = true;
 
       hyprland = {
         enable = true;
         portals = {
           enable = true;
-          backend = "gnome";
+          backend = "gtk";
+          extraBackends = ["gnome"];
         };
         hyprsplit.enable = true;
         hyprVariables = {
