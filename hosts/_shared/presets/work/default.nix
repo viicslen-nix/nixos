@@ -129,6 +129,10 @@ with lib; {
       bun
       go
       gosec
+      pkg-config
+      opusTools
+      opusfile
+      opustags
 
       # Tools
       gh
