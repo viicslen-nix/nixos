@@ -88,7 +88,7 @@ update-input INPUT:
 # Usage: just update-subflake nixvim
 update-subflake NAME:
   nix flake update --flake "path:flakes/{{NAME}}"
-  nix flake update "$input"
+  nix flake update "{{NAME}}"
 
 # Full system update (flake + rebuild)
 full-upgrade:

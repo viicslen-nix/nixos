@@ -98,6 +98,7 @@
       url = "path:./flakes/dms";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ambxst.url = "github:Axenide/Ambxst";
 
     # OpenCode
     opencode.url = "path:./flakes/opencode";
@@ -130,7 +131,11 @@
     # Community packages
     agenix.url = "github:ryantm/agenix";
     worktrunk = {
-      url = "github:max-sixty/worktrunk";
+      url = "github:max-sixty/worktrunk/4074e30d4d9a8ec32e894e9aa6184bfd5b4184d3";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    gitura = {
+      url = "github:viicslen/gitura";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ghostty.url = "github:ghostty-org/ghostty";
@@ -142,10 +147,6 @@
     };
     jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    worktree-manager = {
-      url = "github:viicslen/worktree-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     jj-starship = {
