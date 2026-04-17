@@ -73,6 +73,7 @@ with lib; {
     dbeaver-bin
     uv
     rpi-imager
+    pkgs.inputs.ambxst.default
   ];
 
   modules = {
@@ -153,7 +154,7 @@ with lib; {
 
     programs = {
       ld.enable = true;
-      steam.enable = false;
+      steam.enable = true;
       docker = {
         enable = true;
         nvidiaSupport = true;
