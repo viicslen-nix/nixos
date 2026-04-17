@@ -2,29 +2,45 @@
   lib,
   fetchurl,
   appimageTools,
+  makeDesktopItem,
+  copyDesktopItems,
   ...
 }: let
-  version = "1.17.1";
+  version = "1.18.0";
   pname = "responsively";
 
   src = fetchurl {
     url = "https://github.com/responsively-org/responsively-app-releases/releases/download/v${version}/ResponsivelyApp-${version}.AppImage";
-    hash = "sha256-GiHwWSP/iQ9AOosOor6vUoKr/ztbTfFbjytEHJjNoz4=";
+    hash = "sha256-FxGlt9Ame63pwEp+6x2WLOlRVITb/QVKhr/34mKCO6c=";
   };
 
   appimageContents = appimageTools.extractType2 {inherit pname version src;};
+
+  desktopItem = makeDesktopItem {
+    name = pname;
+    exec = pname;
+    icon = pname;
+    desktopName = "ResponsivelyApp";
+    comment = "A browser for responsive web development";
+    categories = ["Development" "WebBrowser"];
+    startupWMClass = "ResponsivelyApp";
+  };
 in
   appimageTools.wrapType2 {
     inherit pname version src;
 
+    nativeBuildInputs = [copyDesktopItems];
+
+    desktopItems = [desktopItem];
+
     extraInstallCommands = ''
-      # If a .desktop file or icons are present in the AppImage, install them here
-      if [ -f ${appimageContents}/responsively.desktop ]; then
-        install -m 444 -D ${appimageContents}/responsively.desktop -t $out/share/applications
-      fi
-      if [ -d ${appimageContents}/usr/share/icons ]; then
-        cp -r ${appimageContents}/usr/share/icons $out/share
-      fi
+      # Install icons
+      for size in 16 32 48 64 128 256 512; do
+        if [ -f ${appimageContents}/usr/share/icons/hicolor/''${size}x''${size}/apps/responsively.png ]; then
+          install -m 444 -D ${appimageContents}/usr/share/icons/hicolor/''${size}x''${size}/apps/responsively.png \
+            $out/share/icons/hicolor/''${size}x''${size}/apps/responsively.png
+        fi
+      done
     '';
 
     meta = {
