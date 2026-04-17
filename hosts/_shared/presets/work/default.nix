@@ -137,7 +137,6 @@ with lib; {
       # Tools
       gh
       glab
-      mysql80
       awscli
       meld
       kubectl
@@ -148,7 +147,7 @@ with lib; {
       act
       github-desktop
       gh-dash
-      pkgs.inputs.worktree-manager.default
+      # pkgs.inputs.gitura.default
       pkgs.inputs.ghost-backup.default
       percona-toolkit
       local.app-images.responsively
