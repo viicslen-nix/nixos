@@ -69,14 +69,14 @@
     };
 
     vivaldi = _prev.vivaldi.overrideAttrs (oldAttrs: let
-      version = "7.9.3969.3";
+      version = "7.10.4007.3";
       channel = "snapshot";
     in {
       inherit version;
 
       src = _prev.fetchurl {
         url = "https://downloads.vivaldi.com/${channel}/vivaldi-${channel}_${version}-1_amd64.deb";
-        hash = "sha256-gTZfAtLCxcoKJZ/pEh4ErduJPsRo1KlVvCCJoNtNAKc=";
+        hash = "sha256-s6jW9zL6MXXyNc2U9h1N8c7aE0bZ0GQOZ5SFUBLqZtQ=";
       };
 
       passthru =
@@ -102,8 +102,8 @@
         if channel == "snapshot"
         then
           (builtins.replaceStrings
-            ["opt/vivaldi/vivaldi" "vivaldi-stable" "opt/vivaldi/product" "opt/vivaldi/WidevineCdm" "opt/vivaldi/resources"]
-            ["opt/vivaldi-snapshot/vivaldi-snapshot" "vivaldi-snapshot" "opt/vivaldi-snapshot/product" "opt/vivaldi-snapshot/WidevineCdm" "opt/vivaldi-snapshot/resources"]
+            ["opt/vivaldi/vivaldi" "vivaldi-stable" "opt/vivaldi/"]
+            ["opt/vivaldi-snapshot/vivaldi-snapshot" "vivaldi-snapshot" "opt/vivaldi-snapshot/"]
             oldAttrs.installPhase)
         else oldAttrs.installPhase;
     });
