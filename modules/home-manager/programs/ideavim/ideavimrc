@@ -53,8 +53,10 @@ map <Leader>gcP <Action>(Git.Commit.And.Push.Executor)
 map <Leader>ff <Action>(GotoFile)
 map <Leader>fc <Action>(GotoClass)
 map <Leader>fa <Action>(GotoAction)
-map <Leader>fw <Action>(FindInPath)
+map <Leader>fg <Action>(FindInPath)
 map <Leader>fb <Action>(ShowBookmarks)
+map <Leader>fif <Action>(Find)
+map <Leader>fir <Action>(Replace)
 
 " Config file shortcuts
 map <Leader>rc :e ~/.ideavimrc<CR>
