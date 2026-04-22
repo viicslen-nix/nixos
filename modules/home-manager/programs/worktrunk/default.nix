@@ -53,6 +53,7 @@ in {
         list.summary = false;
         merge.squash = false;
         commit.generation.command = "${commitScript}";
+        worktree-path = "../{{ repo }}@{{ branch | sanitize }}";
       };
       description = ''
         Configuration written to {file}`$XDG_CONFIG_HOME/worktrunk/config.toml`.
@@ -60,7 +61,7 @@ in {
       '';
       example = literalExpression ''
         {
-          worktree-path = "../{{ repo }}.{{ branch | sanitize }}";
+          worktree-path = "../{{ repo }}@{{ branch | sanitize }}";
           commit.generation.command = "llm -m claude-haiku-4.5";
         }
       '';

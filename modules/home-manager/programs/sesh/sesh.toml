@@ -4,7 +4,7 @@ disable_startup_command = true
 
 [[session]]
 name = "mylisterhub-app@master"
-path = "~/Development/mylisterhub-app/tree/master"
+path = "~/Development/mylisterhub-main-app"
 startup_command = "php artisan solo"
 
 [[session]]
