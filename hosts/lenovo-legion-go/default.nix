@@ -108,14 +108,23 @@ with lib; {
   ########################
   # Programs & Services  #
   ########################
-  environment.sessionVariables = {
-    PROTON_USE_NTSYNC = "1";
-    ENABLE_HDR_WSI = "1";
-    DXVK_HDR = "1";
-    PROTON_ENABLE_AMD_AGS = "1";
-    PROTON_ENABLE_NVAPI = "1";
-    ENABLE_GAMESCOPE_WSI = "1";
-    STEAM_MULTIPLE_XWAYLANDS = "1";
+  environment = {
+    sessionVariables = {
+      PROTON_USE_NTSYNC = "1";
+      ENABLE_HDR_WSI = "1";
+      DXVK_HDR = "1";
+      PROTON_ENABLE_AMD_AGS = "1";
+      PROTON_ENABLE_NVAPI = "1";
+      ENABLE_GAMESCOPE_WSI = "1";
+      STEAM_MULTIPLE_XWAYLANDS = "1";
+    };
+    systemPackages = with pkgs; [
+      wvkbd
+      maliit-keyboard
+      maliit-framework
+      kdePackages.qtvirtualkeyboard
+      protonplus
+    ];
   };
 
   services = {
@@ -158,16 +167,16 @@ with lib; {
   # Graphical & Jovian   #
   ########################
   jovian = {
+    hardware.has.amd.gpu = true;
     steam = {
       enable = true;
       autoStart = true;
       user = "neoscode";
       desktopSession = "plasma";
     };
-    decky-loader.enable = true;
-    hardware.has.amd.gpu = true;
-    devices.steamdeck = {
+    decky-loader = {
       enable = true;
+      user = "neoscode";
       enableOsFanControl = false;
       #       enableControllerUdevRules = true;
       enableFwupdBiosUpdates = false;
@@ -178,6 +187,12 @@ with lib; {
     steamos = {
       useSteamOSConfig = true;
       enableEarlyOOM = false;
+    };
+    devices.steamdeck = {
+      enable = true;
+      enableOsFanControl = false;
+      enableFwupdBiosUpdates = false;
+      enableDefaultCmdlineConfig = false;
     };
   };
 
