@@ -67,15 +67,7 @@ with lib; {
       users;
 
     modules = {
-      services.opencode-web = {
-        enable = true;
-        package = pkgs.opencode.overrideAttrs (old: {
-          postPatch = (old.postPatch or "") + ''
-            substituteInPlace packages/script/src/index.ts \
-              --replace-fail 'const expectedBunVersionRange = `^''${expectedBunVersion}`' 'const expectedBunVersionRange = ">=1.3.11"'
-          '';
-        });
-      };
+      services.opencode-web.enable = true;
 
       programs = {
         corepack.enable = true;
