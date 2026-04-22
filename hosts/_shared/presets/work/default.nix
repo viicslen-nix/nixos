@@ -151,6 +151,7 @@ with lib; {
       pkgs.inputs.ghost-backup.default
       percona-toolkit
       local.app-images.responsively
+      local.coderabbit
       # local.mago
 
       # AI
