@@ -118,7 +118,6 @@ with lib; {
     unstable.vscode-fhs
     unstable.zed-editor-fhs
     unstable.code-cursor-fhs
-    unstable.antigravity-fhs
 
     # Development Tools
     ghostty
