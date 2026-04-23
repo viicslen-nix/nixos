@@ -19,3 +19,6 @@
 [submodule "lib"]
 	path = flakes/lib
 	url = https://github.com/viicslen-nix/lib.git
+[submodule "flakes/packages"]
+	path = flakes/packages
+	url = https://github.com/viicslen-nix/packages
