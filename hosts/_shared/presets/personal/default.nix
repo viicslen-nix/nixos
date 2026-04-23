@@ -21,6 +21,7 @@ with lib; {
       android-tools
       scrcpy
       qtscrcpy
+      ferdium
       inputs.nixvim.default
       local.scripts.git-carve-submodule
     ];
