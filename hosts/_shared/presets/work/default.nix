@@ -150,14 +150,14 @@ with lib; {
       # pkgs.inputs.gitura.default
       pkgs.inputs.ghost-backup.default
       percona-toolkit
-      local.app-images.responsively
-      local.coderabbit
-      # local.mago
+      pkgs.inputs.packages.app-images.responsively
+      pkgs.inputs.packages.coderabbit
+      # pkgs.inputs.packages.mago
 
       # AI
       unstable.github-copilot-cli
       unstable.gemini-cli
-      local.openwork
+      pkgs.inputs.packages.openwork
     ];
   };
 }

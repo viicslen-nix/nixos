@@ -154,8 +154,8 @@ in {
           hunspellDicts.en_US
           bluez
           bluez-tools
-          local.scripts.system-update
-          local.scripts.system-upgrade
+          pkgs.inputs.packages.scripts.system-update
+          pkgs.inputs.packages.scripts.system-upgrade
         ]
         ++ import ./scripts.nix {
           inherit pkgs;

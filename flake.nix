@@ -101,11 +101,24 @@
     ambxst.url = "github:Axenide/Ambxst";
 
     # OpenCode
-    opencode.url = "path:./flakes/opencode";
+    opencode = {
+      url = "path:./flakes/opencode";
+      inputs.packages.follows = "packages";
+    };
 
     # Nvim
-    neovim.url = "path:./flakes/neovim";
-    nixvim.url = "path:./flakes/nixvim";
+    neovim = {
+      url = "path:./flakes/neovim";
+      inputs.packages.follows = "packages";
+    };
+    nixvim = {
+      url = "path:./flakes/nixvim";
+      inputs.packages.follows = "packages";
+    };
+    packages = {
+      url = "path:./flakes/packages";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Theming
     stylix.url = "github:danth/stylix";
@@ -178,14 +191,6 @@
       import ./dev-shells {
         inherit inputs system;
         pkgs = vlib.pkgsFor system;
-      });
-
-    # Your custom packages
-    # Accessible through 'nix build', 'nix shell', etc
-    packages = vlib.genSystems (system:
-      nixpkgs.lib.packagesFromDirectoryRecursive {
-        callPackage = vlib.callPackageForSystem system;
-        directory = ./packages/by-name;
       });
 
     # Your custom packages and modifications, exported as overlays

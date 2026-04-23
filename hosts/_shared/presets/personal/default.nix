@@ -23,7 +23,7 @@ with lib; {
       qtscrcpy
       ferdium
       inputs.nixvim.default
-      local.scripts.git-carve-submodule
+      inputs.packages.scripts.git-carve-submodule
     ];
 
     programs = {
