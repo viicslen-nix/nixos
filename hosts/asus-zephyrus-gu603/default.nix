@@ -8,14 +8,11 @@
 }:
 with lib; {
   imports = [
-    inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
-    inputs.disko.nixosModules.disko
     inputs.dms.nixosModules.default
     inputs.dms.nixosModules.greeter
-    (import ./disko.nix {
-      inherit inputs;
-      device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_223766801969";
-    })
+    inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
+    inputs.disko.nixosModules.disko
+    (import ./disko.nix {device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_223766801969";})
     ./hardware.nix
   ];
 
@@ -73,11 +70,6 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
-    # jetbrains.idea-ultimate
-    # jetbrains.phpstorm
-    # jetbrains.datagrip
-    # jetbrains.webstorm
-    # jetbrains.goland
     jetbrains-toolbox
     vscode
     lens
@@ -214,6 +206,7 @@ with lib; {
 
     programs = {
       mullvad.enable = true;
+      steam.enable = true;
 
       docker = {
         enable = true;
