@@ -24,7 +24,7 @@ in {
           with ps; [
             php84
             php84Packages.composer
-            nodePackages.nodejs
+            nodejs
             corepack
             zlib
             openssl.dev
