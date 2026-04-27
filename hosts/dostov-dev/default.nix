@@ -273,5 +273,7 @@ with lib; {
         ];
       };
     };
+
+    containers.vitess.enable = true;
   };
 }

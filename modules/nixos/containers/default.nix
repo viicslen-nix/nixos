@@ -46,6 +46,7 @@ in {
     ./redis
     ./soketi
     ./traefik
+    ./vitess
   ];
 
   config = mkMerge [
