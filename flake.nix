@@ -144,7 +144,7 @@
     # Community packages
     agenix.url = "github:ryantm/agenix";
     worktrunk = {
-      url = "github:max-sixty/worktrunk/4074e30d4d9a8ec32e894e9aa6184bfd5b4184d3";
+      url = "github:max-sixty/worktrunk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     gitura = {
