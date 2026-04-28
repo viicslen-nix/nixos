@@ -18,7 +18,7 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     {
-      programs.zed = {
+      programs.zed-editor = {
         enable = true;
         enableMcpIntegration = true;
         mutableUserKeymaps = false;
