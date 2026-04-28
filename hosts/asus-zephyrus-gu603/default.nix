@@ -71,7 +71,8 @@ with lib; {
 
   environment.systemPackages = with pkgs; [
     jetbrains-toolbox
-    vscode
+    vscode-fhs
+    zed-editor
     lens
     insomnia
     drawing
@@ -80,7 +81,6 @@ with lib; {
     drawio
     legcord
     fish
-    pkgs.inputs.zen-browser.default
     dbeaver-bin
     uv
   ];
@@ -106,9 +106,6 @@ with lib; {
     };
 
     desktop = {
-      gnome.enable = true;
-      gnome.enableGdm = false;
-
       niri.enable = true;
 
       #hyprland = {
