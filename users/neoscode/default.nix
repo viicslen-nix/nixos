@@ -107,7 +107,6 @@ in {
     };
     programs = {
       zsh.enable = true;
-      k9s.enable = true;
       tmux.enable = true;
       btop.enable = true;
       tmate.enable = true;
