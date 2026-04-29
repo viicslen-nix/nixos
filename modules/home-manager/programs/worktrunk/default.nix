@@ -54,6 +54,29 @@ in {
         merge.squash = false;
         commit.generation.command = "${commitScript}";
         worktree-path = "../{{ repo }}@{{ branch | sanitize }}";
+        aliases = {
+          create = "wt switch --create {{ args }}";
+          delete = "wt remove --force -D  {{ args }}";
+          workspace = "wt switch --base=@ --create  {{ args }}";
+          since-main = "git log --oneline {{ default_branch }}..HEAD";
+          move-changes = ''
+            if git diff --quiet HEAD && test -z "$(git ls-files --others --exclude-standard)"; then
+              wt switch --create {{ to }} --execute="{{ args }}"
+            else
+              git stash push --include-untracked --quiet
+              wt switch --create {{ to }} --execute="git stash pop --index; {{ args }}"
+            fi
+          '';
+          copy-changes = ''
+            if git diff --quiet HEAD && test -z "$(git ls-files --others --exclude-standard)"; then
+              wt switch --create {{ to }} --execute="{{ args }}"
+            else
+              git stash push --include-untracked --quiet
+              git stash apply --index --quiet
+              wt switch --create {{ to }} --execute="git stash pop --index; {{ args }}"
+            fi
+          '';
+        };
       };
       description = ''
         Configuration written to {file}`$XDG_CONFIG_HOME/worktrunk/config.toml`.
