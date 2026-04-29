@@ -27,13 +27,14 @@ in {
     packages = with pkgs; [
       inputs.opencode.default
       inputs.opencode.oh-my-opencode
+      inputs.packages.python.mempalace
     ];
 
     autostart = [
       {
         package = pkgs._1password-gui;
         args = ["--silent"];
-        delay = 3;
+        delay = 5;
       }
     ];
 
