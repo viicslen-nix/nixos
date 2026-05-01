@@ -53,6 +53,7 @@
 
   modules.programs = {
     k9s.enable = true;
+    zed.enable = true;
     krr = {
       enable = true;
       enableK9sIntegration = true;
