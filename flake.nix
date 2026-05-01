@@ -119,6 +119,10 @@
       url = "path:./flakes/packages";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    phpantom-lsp-src = {
+      url = "github:AJenbo/phpantom_lsp";
+      flake = false;
+    };
 
     # Theming
     stylix.url = "github:danth/stylix";
