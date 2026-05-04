@@ -116,7 +116,6 @@ with lib; {
     # IDEs & Editors
     jetbrains-toolbox
     unstable.vscode-fhs
-    unstable.zed-editor-fhs
     unstable.code-cursor-fhs
 
     # Development Tools

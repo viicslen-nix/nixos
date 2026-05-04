@@ -20,6 +20,7 @@ in {
     {
       programs.zed-editor = {
         enable = true;
+        package = pkgs.zed-editor-fhs;
         enableMcpIntegration = true;
         mutableUserKeymaps = false;
         mutableUserSettings = false;
