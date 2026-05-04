@@ -72,7 +72,6 @@ with lib; {
   environment.systemPackages = with pkgs; [
     jetbrains-toolbox
     vscode-fhs
-    zed-editor
     lens
     insomnia
     drawing

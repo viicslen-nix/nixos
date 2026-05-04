@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  inputs,
   osConfig,
   ...
 }: {
@@ -23,7 +22,7 @@
     {
       package = pkgs.mullvad-vpn;
       args = ["--silent"];
-      delay = 4;
+      delay = 5;
     }
     {
       package = pkgs.jetbrains-toolbox;
@@ -95,4 +94,8 @@
       "Mod+F4".action.spawn = ["code" "--split=top" "kitty" "--split=bottom"];
     };
   };
+
+  programs.dank-material-shell.niri.includes.filesToInclude = [
+    "custom"
+  ];
 }
