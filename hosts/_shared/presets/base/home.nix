@@ -8,6 +8,7 @@
   imports = [
     inputs.agenix.homeManagerModules.default
     inputs.opencode.homeManagerModules.default
+    inputs.zed.homeManagerModules.default
   ];
 
   config = with lib; {

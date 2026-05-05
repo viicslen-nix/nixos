@@ -22,3 +22,6 @@
 [submodule "flakes/packages"]
 	path = flakes/packages
 	url = https://github.com/viicslen-nix/packages
+[submodule "flakes/zed"]
+	path = flakes/zed
+	url = https://github.com/viicslen-nix/zed
