@@ -106,6 +106,13 @@
       inputs.packages.follows = "packages";
     };
 
+    zed = {
+      url = "path:./flakes/zed";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+      inputs.packages.follows = "packages";
+    };
+
     # Nvim
     neovim = {
       url = "path:./flakes/neovim";
@@ -119,11 +126,6 @@
       url = "path:./flakes/packages";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    phpantom-lsp-src = {
-      url = "github:AJenbo/phpantom_lsp";
-      flake = false;
-    };
-
     # Theming
     stylix.url = "github:danth/stylix";
     base16.url = "github:SenchoPens/base16.nix";

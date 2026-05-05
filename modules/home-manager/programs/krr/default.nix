@@ -21,12 +21,12 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ cfg.package ];
+    home.packages = [cfg.package];
     programs.k9s.plugins = mkIf cfg.enableK9sIntegration {
       krr = {
         shortCut = "Shift-K";
         description = "Get krr";
-        scopes = [ "deployments" "daemonsets" "statefulsets" "cronjobs" ];
+        scopes = ["deployments" "daemonsets" "statefulsets" "cronjobs"];
         command = "bash";
         background = false;
         confirm = false;
@@ -48,7 +48,7 @@ in {
       krr-ns = {
         shortCut = "Shift-K";
         description = "Get krr";
-        scopes = [ "namespaces" ];
+        scopes = ["namespaces"];
         command = "bash";
         background = false;
         confirm = false;

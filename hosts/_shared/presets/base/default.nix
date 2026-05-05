@@ -79,6 +79,9 @@ in {
       # Enable Avahi for network discovery
       avahi.enable = true;
 
+      # Enable fuse filesystem to provides common FHS-style paths like /bin/bash, so scripts with #!/bin/bash work unchanged.
+      envfs.enable = true;
+
       # Configure keymap in X11
       xserver.xkb = {
         layout = "us";
