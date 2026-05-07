@@ -93,16 +93,16 @@ with lib; {
       github-desktop
       gh-dash
       # pkgs.inputs.gitura.default
-      pkgs.inputs.ghost-backup.default
       percona-toolkit
+      pkgs.inputs.ghost-backup.default
       pkgs.inputs.packages.app-images.responsively
       pkgs.inputs.packages.coderabbit
-      # pkgs.inputs.packages.mago
 
       # AI
-      unstable.github-copilot-cli
       unstable.gemini-cli
+      unstable.github-copilot-cli
       pkgs.inputs.packages.openwork
+      pkgs.inputs.packages.app-images.t3code
     ];
   };
 }
