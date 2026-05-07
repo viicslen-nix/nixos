@@ -59,7 +59,7 @@ in {
           delete = "wt remove --force -D  {{ args }}";
           workspace = "wt switch --base=@ --create  {{ args }}";
           since-main = "git log --oneline {{ default_branch }}..HEAD";
-          move-changes = ''
+          mv = ''
             if git diff --quiet HEAD && test -z "$(git ls-files --others --exclude-standard)"; then
               wt switch --create {{ to }} --execute="{{ args }}"
             else
@@ -67,7 +67,7 @@ in {
               wt switch --create {{ to }} --execute="git stash pop --index; {{ args }}"
             fi
           '';
-          copy-changes = ''
+          cp = ''
             if git diff --quiet HEAD && test -z "$(git ls-files --others --exclude-standard)"; then
               wt switch --create {{ to }} --execute="{{ args }}"
             else
@@ -76,6 +76,7 @@ in {
               wt switch --create {{ to }} --execute="git stash pop --index; {{ args }}"
             fi
           '';
+          tmux = "wt switch {{ args }} --no-cd --execute='${postSwitchScript} \"{{ repo }}@{{ branch | sanitize }}\" {{ worktree_path }}'";
         };
       };
       description = ''
@@ -102,11 +103,9 @@ in {
 
     xdg.configFile."worktrunk/config.toml" = let
       tmuxSettings = optionalAttrs cfg.tmux.enable {
-        switch.cd = false;
-        post-switch.tmux = "${postSwitchScript} \"{{ repo }}@{{ branch | sanitize }}\" {{ worktree_path }}";
         pre-remove.tmux = "tmux kill-session -t {{ repo }}@{{ branch | sanitize }} 2>/dev/null || true";
       };
-      mergedSettings = cfg.settings // tmuxSettings;
+      mergedSettings = recursiveUpdate cfg.settings tmuxSettings;
     in
       mkIf (cfg.settings != {}) {
         source = tomlFormat.generate "worktrunk-config" mergedSettings;
