@@ -1,11 +1,12 @@
 {
   lib,
   pkgs,
-  config,
   ...
 }:
 with lib; {
   config = {
+    home-manager.sharedModules = [./home.nix];
+
     # Optimization: Prevent systemd from waiting for network online
     # (Optional but recommended for faster boot with VPNs)
     systemd.network.wait-online.enable = false;
@@ -32,8 +33,8 @@ with lib; {
 
     modules = {
       core.theming.enable = true;
-      programs.qmk.enable = mkDefault true;
       containers.homarr.enable = mkDefault true;
+      programs.qmk.enable = mkDefault true;
     };
   };
 }
