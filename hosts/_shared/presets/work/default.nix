@@ -1,8 +1,6 @@
 {
   lib,
   pkgs,
-  users,
-  config,
   inputs,
   ...
 }:
@@ -92,16 +90,17 @@ with lib; {
       act
       github-desktop
       gh-dash
-      # pkgs.inputs.gitura.default
       percona-toolkit
+      # pkgs.inputs.gitura.default
       pkgs.inputs.ghost-backup.default
       pkgs.inputs.packages.app-images.responsively
-      pkgs.inputs.packages.coderabbit
+      pkgs.inputs.packages.hunk
 
       # AI
       unstable.gemini-cli
       unstable.github-copilot-cli
       pkgs.inputs.packages.openwork
+      pkgs.inputs.packages.coderabbit
       pkgs.inputs.packages.app-images.t3code
     ];
   };
