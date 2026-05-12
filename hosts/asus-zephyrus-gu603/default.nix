@@ -201,6 +201,7 @@ with lib; {
     };
 
     programs = {
+      ld.enable = true;
       mullvad.enable = true;
       steam.enable = true;
 
