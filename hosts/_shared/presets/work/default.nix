@@ -91,6 +91,7 @@ with lib; {
       github-desktop
       gh-dash
       percona-toolkit
+      ferdium
       # pkgs.inputs.gitura.default
       pkgs.inputs.ghost-backup.default
       pkgs.inputs.packages.app-images.responsively
