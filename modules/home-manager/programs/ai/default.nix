@@ -266,6 +266,7 @@ in {
         enable = mkDefault true;
         servers.mempalace = mkDefault {
           command = lib.getExe' inputs.packages.packages.${pkgs.system}.python.mempalace "mempalace-mcp";
+          args = [];
         };
       };
     })
