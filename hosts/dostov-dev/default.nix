@@ -134,7 +134,6 @@ with lib; {
 
     # Office
     onlyoffice-desktopeditors
-    freeoffice
 
     # Windows
     winboat
@@ -147,7 +146,6 @@ with lib; {
     vial
     kooha
     uv
-    inkscape-with-extensions
     wireshark
     claude-code
   ];

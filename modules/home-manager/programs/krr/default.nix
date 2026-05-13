@@ -14,7 +14,7 @@ in {
     enable = mkEnableOption (mdDoc "krr");
     package = mkOption {
       type = types.package;
-      default = pkgs.krr;
+      default = attrByPath ["inputs" "packages" "kubernetes" "krr"] pkgs.krr pkgs;
       description = "Override the krr package.";
     };
     enableK9sIntegration = mkEnableOption (mdDoc "Integrate krr with k9s");
