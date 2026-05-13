@@ -51,6 +51,7 @@
         user = "pelagrino";
       };
     };
+
     gemini-cli = {
       enable = true;
       package = pkgs.unstable.gemini-cli;
@@ -68,6 +69,7 @@
   modules.programs = {
     k9s.enable = true;
     zed.enable = true;
+    opencode.enable = true;
     krr = {
       enable = true;
       enableK9sIntegration = true;

@@ -98,9 +98,6 @@ with lib; {
       pkgs.inputs.packages.hunk
 
       # AI
-      unstable.gemini-cli
-      unstable.github-copilot-cli
-      pkgs.inputs.packages.openwork
       pkgs.inputs.packages.coderabbit
       pkgs.inputs.packages.app-images.t3code
     ];
