@@ -25,7 +25,6 @@ in {
     homeDirectory = osConfig.users.users.${user}.home;
 
     packages = with pkgs; [
-      inputs.opencode.default
       inputs.opencode.oh-my-opencode
       inputs.packages.python.mempalace
     ];
