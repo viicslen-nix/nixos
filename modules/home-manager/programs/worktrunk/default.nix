@@ -34,9 +34,22 @@ with lib; let
       exit 1
     fi
 
+    git_common_dir=$($GIT -C "$repo_root" rev-parse --git-common-dir 2>/dev/null || true)
+    if [ -z "$git_common_dir" ]; then
+      printf 'Unable to determine git common directory.\n' >&2
+      exit 1
+    fi
+
+    case "$git_common_dir" in
+      /*) ;;
+      *) git_common_dir="$repo_root/$git_common_dir" ;;
+    esac
+
+    repo_name=$(basename "$(dirname "$git_common_dir")")
+
     current_branch=$($GIT branch --show-current 2>/dev/null || true)
     selection=$($GIT -C "$repo_root" worktree list --porcelain \
-      | awk -v repo="$(basename "$repo_root")" '
+      | awk -v repo="$repo_name" '
           $1 == "worktree" {
             path = substr($0, 10)
             branch = "detached"
