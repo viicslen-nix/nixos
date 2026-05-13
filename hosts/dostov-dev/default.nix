@@ -147,7 +147,6 @@ with lib; {
     kooha
     uv
     wireshark
-    claude-code
   ];
 
   modules = {
