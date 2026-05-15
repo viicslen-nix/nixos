@@ -11,14 +11,22 @@ with lib; let
   namespace = "programs";
 
   cfg = config.modules.${namespace}.${name};
-
-  mempalaceSkill = ./skills/mempalace.md;
-  mempalaceCommands = {
-    mempalace-help = ./commands/mempalace/help.md;
-    mempalace-init = ./commands/mempalace/init.md;
-    mempalace-mine = ./commands/mempalace/mine.md;
-    mempalace-search = ./commands/mempalace/search.md;
-    mempalace-status = ./commands/mempalace/status.md;
+  mempalaceIntegration = import ./integrations/mempalace.nix {
+    inherit
+      lib
+      cfg
+      pkgs
+      inputs
+      hasMcpOption
+      isAttrs
+      ;
+  };
+  coderabbitIntegration = import ./integrations/coderabbit.nix {
+    inherit
+      lib
+      cfg
+      isAttrs
+      ;
   };
 
   commandDefinitionType = types.submodule {
@@ -63,10 +71,17 @@ with lib; let
   hasGithubCopilotCliOption = hasAttrByPath ["programs" "github-copilot-cli" "agents"] options;
   hasGithubCopilotCliSkillsOption = hasAttrByPath ["programs" "github-copilot-cli" "skills"] options;
 
-  effectiveCommands = cfg.commands // optionalAttrs cfg.mempalace.enable mempalaceCommands;
+  effectiveCommands =
+    cfg.commands
+    // optionalAttrs cfg.mempalace.enable mempalaceIntegration.commands
+    // optionalAttrs cfg.coderabbit.enable coderabbitIntegration.commands;
+  effectiveAgents = cfg.agents // optionalAttrs cfg.coderabbit.enable coderabbitIntegration.agents;
   effectiveSkills =
     if isAttrs cfg.skills
-    then cfg.skills // optionalAttrs cfg.mempalace.enable {mempalace = mempalaceSkill;}
+    then
+      cfg.skills
+      // optionalAttrs cfg.mempalace.enable mempalaceIntegration.skills
+      // optionalAttrs cfg.coderabbit.enable coderabbitIntegration.skills
     else cfg.skills;
 
   mkDefaultAttrs = attrs: mapAttrs (_: value: mkDefault value) attrs;
@@ -184,9 +199,8 @@ in {
       };
     };
 
-    mempalace = {
-      enable = mkEnableOption (mdDoc "mempalace integration for shared ai tooling");
-    };
+    inherit (mempalaceIntegration.options) mempalace;
+    inherit (coderabbitIntegration.options) coderabbit;
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -201,13 +215,13 @@ in {
       warnings =
         optional (!hasMcpOption && cfg.mcps != {})
         "`modules.programs.ai.mcps` is set, but `programs.mcp` is unavailable in this Home Manager version."
-        ++ optional (!hasOpencodeOption && cfg.targets.opencode && (effectiveCommands != {} || cfg.agents != {} || hasGlobalContext || hasGlobalSkills))
+        ++ optional (!hasOpencodeOption && cfg.targets.opencode && (effectiveCommands != {} || effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
         "`modules.programs.ai.targets.opencode` is enabled, but `programs.opencode` is unavailable."
-        ++ optional (!hasClaudeCodeOption && cfg.targets.claude-code && (effectiveCommands != {} || cfg.agents != {} || hasGlobalContext || hasGlobalSkills))
+        ++ optional (!hasClaudeCodeOption && cfg.targets.claude-code && (effectiveCommands != {} || effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
         "`modules.programs.ai.targets.claude-code` is enabled, but `programs.claude-code` is unavailable."
         ++ optional (!hasGeminiOption && cfg.targets.gemini-cli && (effectiveCommands != {} || hasGlobalContext || hasGlobalSkills))
         "`modules.programs.ai.targets.gemini-cli` is enabled, but `programs.gemini-cli` is unavailable."
-        ++ optional (!hasGithubCopilotCliOption && cfg.targets.github-copilot-cli && (cfg.agents != {} || hasGlobalContext || hasGlobalSkills))
+        ++ optional (!hasGithubCopilotCliOption && cfg.targets.github-copilot-cli && (effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
         "`modules.programs.ai.targets.github-copilot-cli` is enabled, but `programs.github-copilot-cli` is unavailable."
         ++ optional (!hasOpencodeSkillsOption && cfg.targets.opencode && hasGlobalSkills)
         "`modules.programs.ai.skills` is set, but `programs.opencode.skills` is unavailable."
@@ -217,8 +231,8 @@ in {
         "`modules.programs.ai.skills` is set, but `programs.gemini-cli.skills` is unavailable."
         ++ optional (!hasGithubCopilotCliSkillsOption && cfg.targets.github-copilot-cli && hasGlobalSkills)
         "`modules.programs.ai.skills` is set, but `programs.github-copilot-cli.skills` is unavailable."
-        ++ optional (cfg.mempalace.enable && !(isAttrs cfg.skills))
-        "`modules.programs.ai.mempalace.enable` adds a default mempalace skill only when `modules.programs.ai.skills` is an attribute set.";
+        ++ mempalaceIntegration.warnings
+        ++ coderabbitIntegration.warnings;
 
       programs.mcp = mkIf (hasMcpOption && cfg.mcps != {}) {
         enable = mkDefault true;
@@ -229,7 +243,7 @@ in {
       programs.opencode = {
         enableMcpIntegration = true;
         commands = mkDefaultAttrs opencodeCommands;
-        agents = mkDefaultAttrs cfg.agents;
+        agents = mkDefaultAttrs effectiveAgents;
         context = mkIf hasGlobalContext (mkDefault cfg.context);
         skills = mkIf (hasGlobalSkills && hasOpencodeSkillsOption) (mkDefault effectiveSkills);
       };
@@ -238,7 +252,7 @@ in {
       programs.claude-code = {
         enableMcpIntegration = true;
         commands = mkDefaultAttrs claudeCodeCommands;
-        agents = mkDefaultAttrs cfg.agents;
+        agents = mkDefaultAttrs effectiveAgents;
         context = mkIf hasGlobalContext (mkDefault cfg.context);
         skills = mkIf (hasGlobalSkills && hasClaudeCodeSkillsOption) (mkDefault effectiveSkills);
       };
@@ -256,19 +270,11 @@ in {
     (mkIf (hasGithubCopilotCliOption && cfg.targets.github-copilot-cli) {
       programs.github-copilot-cli = {
         enableMcpIntegration = true;
-        agents = mkDefaultAttrs cfg.agents;
+        agents = mkDefaultAttrs effectiveAgents;
         context = mkIf hasGlobalContext (mkDefault cfg.context);
         skills = mkIf (hasGlobalSkills && hasGithubCopilotCliSkillsOption) (mkDefault effectiveSkills);
       };
     })
-    (mkIf cfg.mempalace.enable {
-      programs.mcp = mkIf hasMcpOption {
-        enable = mkDefault true;
-        servers.mempalace = mkDefault {
-          command = lib.getExe' inputs.packages.packages.${pkgs.system}.python.mempalace "mempalace-mcp";
-          args = [];
-        };
-      };
-    })
+    mempalaceIntegration.config
   ]);
 }
