@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 with lib; let
@@ -31,15 +32,13 @@ in {
     };
   };
 
-  config.programs = mkIf cfg.enable {
-    delta = {
-      enable = true;
-      enableGitIntegration = true;
-    };
+  config = mkIf cfg.enable {
+    home.packages = [pkgs.inputs.packages.hunk];
 
-    git = {
+    programs.git = {
       enable = true;
       settings = {
+        core.pager = "hunk pager";
         user = {
           name = mkIf (cfg.user != null) cfg.user;
           email = mkIf (cfg.email != null) cfg.email;
