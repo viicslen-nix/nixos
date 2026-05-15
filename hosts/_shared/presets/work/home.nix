@@ -60,9 +60,19 @@
       enable = true;
       package = pkgs.unstable.github-copilot-cli;
     };
-    claude-code = {
+    claude-code = let
+      claudeCodeRepo = pkgs.fetchFromGitHub {
+        owner = "anthropics";
+        repo = "claude-code";
+        rev = "main";
+        sha256 = "sha256-2Kd4oSU3vuDlbo1024hyY0cBA5oeeBPaMWmS3caH6wc=";
+      };
+    in {
       enable = true;
       package = pkgs.unstable.claude-code;
+      plugins = [
+        "${claudeCodeRepo}/plugins/ralph-wiggum"
+      ];
     };
   };
 

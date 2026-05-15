@@ -17,14 +17,15 @@
     {
       enable = true;
       mempalace.enable = true;
+      coderabbit.enable = true;
+      context = ./AGENTS.md;
+      skills = mkMarkdownAttrSet ./skills;
+      commands = mkMarkdownAttrSet ./commands;
       mcps = {
         context7.url = "https://mcp.context7.com/mcp";
         gh_grep.url = "https://mcp.grep.app";
         linear.url = "https://mcp.linear.app/mcp";
         google_stitch.url = "https://stitch.googleapis.com/mcp";
       };
-      commands = mkMarkdownAttrSet ./commands;
-      skills = mkMarkdownAttrSet ./skills;
-      context = ./AGENTS.md;
     };
 }
