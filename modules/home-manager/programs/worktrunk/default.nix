@@ -48,41 +48,72 @@ with lib; let
     repo_name=$(basename "$(dirname "$git_common_dir")")
 
     current_branch=$($GIT branch --show-current 2>/dev/null || true)
-    selection=$($GIT -C "$repo_root" worktree list --porcelain \
-      | awk -v repo="$repo_name" '
-          $1 == "worktree" {
-            path = substr($0, 10)
-            branch = "detached"
-            next
-          }
 
-          $1 == "branch" {
-            branch = $2
-            sub("^refs/heads/", "", branch)
-            printf "%s@%s\t%s\n", repo, branch, path
-            next
-          }
+    while true; do
+      selection_raw=$($GIT -C "$repo_root" worktree list --porcelain \
+        | awk -v repo="$repo_name" '
+            $1 == "worktree" {
+              path = substr($0, 10)
+              branch = "detached"
+              next
+            }
 
-          $1 == "detached" {
-            printf "%s@detached\t%s\n", repo, path
-          }
-        ' \
-      | $TV \
-      | tr -d '\n')
+            $1 == "branch" {
+              branch = $2
+              sub("^refs/heads/", "", branch)
+              printf "%s@%s\t%s\n", repo, branch, path
+              next
+            }
 
-    if [ -z "$selection" ]; then
+            $1 == "detached" {
+              printf "%s@detached\t%s\n", repo, path
+            }
+          ' \
+        | $TV \
+            --expect='ctrl-d' \
+            --input-header='worktrees (enter: switch, ctrl-d: delete)' \
+        | tr -d '\r')
+
+      if [ -z "$selection_raw" ]; then
+        exit 0
+      fi
+
+      action_key="enter"
+      selection="$selection_raw"
+
+      case "$selection_raw" in
+        *$'\n'*)
+          action_key="''${selection_raw%%$'\n'*}"
+          selection="''${selection_raw#*$'\n'}"
+          ;;
+      esac
+
+      selection="$(printf '%s' "$selection" | tr -d '\n')"
+
+      if [ -z "$selection" ]; then
+        exit 0
+      fi
+
+      selection_path="''${selection#*$'\t'}"
+
+      if [ "$action_key" = "ctrl-d" ]; then
+        if [ "$selection_path" = "$repo_root" ]; then
+          continue
+        fi
+
+        $WT remove --force -D "$selection_path"
+        continue
+      fi
+
+      target_branch=$($GIT -C "$selection_path" branch --show-current 2>/dev/null || true)
+
+      if [ -z "$target_branch" ] || [ "$target_branch" = "$current_branch" ]; then
+        exit 0
+      fi
+
+      $WT tmux "$target_branch"
       exit 0
-    fi
-
-    selection_path="''${selection#*$'\t'}"
-
-    target_branch=$($GIT -C "$selection_path" branch --show-current 2>/dev/null || true)
-
-    if [ -z "$target_branch" ] || [ "$target_branch" = "$current_branch" ]; then
-      exit 0
-    fi
-
-    $WT tmux "$target_branch"
+    done
   '';
 
   postSwitchScript = pkgs.writeShellScript "worktrunk-post-switch" ''
