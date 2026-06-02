@@ -38,8 +38,8 @@ in
       )
       .packages
       .composer
-      nodejs_20
-      corepack_20
+      nodejs_22
+      corepack_22
       bun
       stripe-cli
       python3
