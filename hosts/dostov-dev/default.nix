@@ -40,7 +40,7 @@ with lib; {
     firewall.enable = mkForce false;
   };
 
-  nix.settings.max-jobs = lib.mkDefault 16;
+  nix.settings.max-jobs = lib.mkDefault 12;
 
   users.users = {
     dostov = {
@@ -61,8 +61,11 @@ with lib; {
     blueman.enable = true;
     tailscale.enable = true;
     ghost-backup.enable = true;
-    displayManager.defaultSession = "niri";
-    # displayManager.gdm.enable = true;
+
+    displayManager = {
+      defaultSession = "niri";
+      gdm.enable = false;
+    };
 
     miami-bus-tracker = {
       enable = true;
@@ -71,7 +74,7 @@ with lib; {
       direction = "Westbound";
       notification = true;
       notifyMinutes = 10;
-      activeTimeStart = "20:00"; # UTC
+      activeTimeStart = "22:00"; # UTC
       activeTimeEnd = "23:59"; # UTC
     };
 
