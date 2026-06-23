@@ -68,7 +68,7 @@ with lib; {
       luakit
       phpWithExtensions
       phpWithExtensions.packages.composer
-      nodejs_20
+      nodejs_22
       bun
       go
       gosec
@@ -92,14 +92,22 @@ with lib; {
       gh-dash
       percona-toolkit
       ferdium
+      sublime4
+      sublime-merge
+      pkgs.inputs.hunk.hunk
       # pkgs.inputs.gitura.default
       pkgs.inputs.ghost-backup.default
       pkgs.inputs.packages.app-images.responsively
-      pkgs.inputs.packages.hunk
 
       # AI
       pkgs.inputs.packages.coderabbit
       pkgs.inputs.packages.app-images.t3code
+      pkgs.inputs.packages.superset.desktop
+      pkgs.inputs.packages.superset.cli
+    ];
+
+    nixpkgs.config.permittedInsecurePackages = [
+      "openssl-1.1.1w"
     ];
   };
 }

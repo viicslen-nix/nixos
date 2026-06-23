@@ -30,15 +30,20 @@ in {
       default = "main";
       description = "The default branch name to use when initializing new repositories.";
     };
+    jetbrainIntegration = {
+      enable = mkEnableOption "Whether to use phpstorm for diff and merge";
+      cmdExe = mkOption {
+        type = types.str;
+        default = "phpstorm";
+        description = "The path to the JetBrains command line launcher executable.";
+      };
+    };
   };
 
   config = mkIf cfg.enable {
-    home.packages = [pkgs.inputs.packages.hunk];
-
     programs.git = {
       enable = true;
       settings = {
-        core.pager = "hunk pager";
         user = {
           name = mkIf (cfg.user != null) cfg.user;
           email = mkIf (cfg.email != null) cfg.email;
@@ -60,6 +65,20 @@ in {
         };
 
         # submodule.recurse = true;
+      } // optionalAttrs cfg.jetbrainIntegration.enable {
+        diff.tool = "jetbrains";
+        merge.tool = "jetbrains";
+        difftool = {
+          prompt = false;
+          jetbrains = {
+            cmd = ''${cfg.jetbrainIntegration.cmdExe} diff $(cd $(dirname "$LOCAL") && pwd)/$(basename "$LOCAL") $(cd $(dirname "$REMOTE") && pwd)/$(basename "$REMOTE")'';
+            trustExitCode = true;
+          };
+        };
+        mergetool.jetbrains = {
+          cmd = ''${cfg.jetbrainIntegration.cmdExe} merge $(cd $(dirname "$LOCAL") && pwd)/$(basename "$LOCAL") $(cd $(dirname "$REMOTE") && pwd)/$(basename "$REMOTE") $(cd $(dirname "$BASE") && pwd)/$(basename "$BASE") $(cd $(dirname "$MERGED") && pwd)/$(basename "$MERGED")'';
+          trustExitCode = true;
+        };
       };
     };
   };
