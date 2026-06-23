@@ -13,13 +13,29 @@
           name = builtins.elemAt (builtins.match "(.*)\\.md" name) 0;
           value = dir + "/${name}";
         }) markdownFiles);
+
+      mkSkillAttrSet = dir:
+        let
+          entries = builtins.readDir dir;
+          skillEntries = builtins.filter (
+            name:
+            let
+              kind = entries.${name};
+            in
+            kind == "directory" || (kind == "regular" && builtins.match ".*\\.md" name != null)
+          ) (builtins.attrNames entries);
+        in
+        builtins.listToAttrs (map (name: {
+          name = if entries.${name} == "directory" then name else builtins.elemAt (builtins.match "(.*)\\.md" name) 0;
+          value = dir + "/${name}";
+        }) skillEntries);
     in
     {
       enable = true;
       mempalace.enable = true;
       coderabbit.enable = true;
       context = ./AGENTS.md;
-      skills = mkMarkdownAttrSet ./skills;
+      skills = mkSkillAttrSet ./skills;
       commands = mkMarkdownAttrSet ./commands;
       mcps = {
         context7.url = "https://mcp.context7.com/mcp";
