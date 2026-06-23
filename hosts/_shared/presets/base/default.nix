@@ -95,6 +95,8 @@ in {
       };
     };
 
+    stylix.targets.kmscon.enable = false;
+
     modules.features.appImages.enable = true;
 
     # Install fonts
