@@ -23,6 +23,7 @@ with lib; {
       scrcpy
       qtscrcpy
       ferdium
+      nchat
       inputs.nixvim.default
       inputs.packages.scripts.git-carve-submodule
     ];
