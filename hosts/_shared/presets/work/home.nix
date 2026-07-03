@@ -58,7 +58,7 @@
     };
     github-copilot-cli = {
       enable = true;
-      package = pkgs.unstable.github-copilot-cli;
+      package = pkgs.inputs.packages.github.copilot-cli;
     };
     claude-code = let
       claudeCodeRepo = pkgs.fetchFromGitHub {
@@ -69,7 +69,7 @@
       };
     in {
       enable = true;
-      package = pkgs.unstable.claude-code;
+      package = pkgs.claude-code;
       plugins = [
         "${claudeCodeRepo}/plugins/ralph-wiggum"
       ];

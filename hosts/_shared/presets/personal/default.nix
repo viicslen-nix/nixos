@@ -26,7 +26,12 @@ with lib; {
       nchat
       inputs.nixvim.default
       inputs.packages.scripts.git-carve-submodule
+      dict
     ];
+
+    services = {
+      dictd.enable = mkDefault true;
+    };
 
     programs = {
       localsend.enable = mkDefault true;

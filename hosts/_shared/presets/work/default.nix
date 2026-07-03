@@ -104,6 +104,7 @@ with lib; {
       pkgs.inputs.packages.app-images.t3code
       pkgs.inputs.packages.superset.desktop
       pkgs.inputs.packages.superset.cli
+      pkgs.inputs.packages.github.copilot-desktop
     ];
 
     nixpkgs.config.permittedInsecurePackages = [

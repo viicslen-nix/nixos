@@ -149,6 +149,7 @@
 
     # Community packages
     agenix.url = "github:ryantm/agenix";
+    claude-code.url = "github:sadjow/claude-code-nix";
     worktrunk = {
       url = "github:max-sixty/worktrunk";
       inputs.nixpkgs.follows = "nixpkgs";

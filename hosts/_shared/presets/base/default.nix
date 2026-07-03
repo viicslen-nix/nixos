@@ -204,6 +204,7 @@ in {
         inputs.nix-alien.overlays.default
         inputs.nix-cachyos-kernel.overlays.pinned
         inputs.nixpkgs-wayland.overlay
+        inputs.claude-code.overlays.default
       ];
       # Configure your nixpkgs instance
       config = {
@@ -234,10 +235,12 @@ in {
         substituters = [
           "https://nix-community.cachix.org"
           "https://attic.xuyh0120.win/lantian"
+          "https://claude-code.cachix.org"
         ];
         trusted-public-keys = [
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+          "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
         ];
 
         # Limit the number of parallel jobs to avoid OOM
