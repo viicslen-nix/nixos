@@ -157,6 +157,7 @@ with lib; {
       intel.enable = true;
       nvidia.enable = true;
       bluetooth.enable = true;
+      razer.enable = true;
     };
 
     desktop = {

@@ -4,6 +4,8 @@ let mapleader=" "
 Plug 'machakann/vim-highlightedyank' " Highlight copied text
 Plug 'tpope/vim-surround'            " Delete/change/add parentheses/quotes/XML-tags/much more with ease
 Plug 'justinmk/vim-sneak'            " More efficient jumps than f/F
+Plug 'bkad/CamelCaseMotion'          " Sub-word and camel case motions
+let g:camelcasemotion_key = '<leader>'
 
 set which-key            " Enable Which-Key plugin
 set NERDTree             " Enable NERDTree plugin
@@ -15,6 +17,11 @@ set hls                  " Enable search highlighting
 set ignorecase smartcase " Case-insensitive search
 set relativenumber       " Relative line numbers by default
 set ideajoin             " Join lines using idea
+set VimEverywhere        " Enable keyboard first navigation everywhere
+
+" Enable quickscope plugin for highlighting f/F/t/T matches
+set quickscope
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 " Leader maps
 map <Leader>n :set rnu!<CR>

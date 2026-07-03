@@ -14,4 +14,8 @@
       transparent_background = false;
     };
   };
+
+  services.flameshot = {
+    enable = true;
+  };
 }

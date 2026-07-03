@@ -16,6 +16,8 @@ in {
   };
 
   config = mkIf cfg.enable {
+    home.shell.enableNushellIntegration = true;
+
     programs = {
       nushell = {
         enable = true;
@@ -65,6 +67,10 @@ in {
           ${(builtins.unsafeDiscardStringContext (builtins.readFile ./config.nu))}
 
           source ${inputs.nu-scripts}/custom-completions/nix/nix-completions.nu
+        '';
+
+        extraEnv = ''
+          $env.PATH = ($env.PATH | prepend ($env.HOME | path join ".local" "bin"))
         '';
       };
 
