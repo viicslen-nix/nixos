@@ -111,6 +111,15 @@
             ["opt/vivaldi-snapshot/vivaldi-snapshot" "vivaldi-snapshot" "opt/vivaldi-snapshot/"]
             oldAttrs.installPhase)
         else oldAttrs.installPhase;
+
+      postFixup =
+        (oldAttrs.postFixup or "")
+        + ''
+          wrapProgram $out/bin/vivaldi \
+            --unset NIX_LD \
+            --unset NIX_LD_LIBRARY_PATH \
+            --prefix LD_LIBRARY_PATH : "$out/opt/vivaldi:$out/opt/vivaldi/lib"
+        '';
     });
 
     # Patch openssh to ignore file permissions on ssh_config file
