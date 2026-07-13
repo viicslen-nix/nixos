@@ -105,6 +105,7 @@ with lib; {
       pkgs.inputs.packages.superset.desktop
       pkgs.inputs.packages.superset.cli
       pkgs.inputs.packages.github.copilot-desktop
+      pkgs.inputs.llm-agents.claude-desktop
     ];
 
     nixpkgs.config.permittedInsecurePackages = [

@@ -52,14 +52,6 @@
       };
     };
 
-    gemini-cli = {
-      enable = true;
-      package = pkgs.unstable.gemini-cli;
-    };
-    github-copilot-cli = {
-      enable = true;
-      package = pkgs.inputs.packages.github.copilot-cli;
-    };
     claude-code = let
       claudeCodeRepo = pkgs.fetchFromGitHub {
         owner = "anthropics";
@@ -69,10 +61,18 @@
       };
     in {
       enable = true;
-      package = pkgs.claude-code;
+      package = pkgs.inputs.llm-agents.claude-code;
       plugins = [
         "${claudeCodeRepo}/plugins/ralph-wiggum"
       ];
+    };
+    gemini-cli = {
+      enable = true;
+      package = pkgs.inputs.llm-agents.gemini-cli;
+    };
+    github-copilot-cli = {
+      enable = true;
+      package = pkgs.inputs.llm-agents.copilot-cli;
     };
   };
 
