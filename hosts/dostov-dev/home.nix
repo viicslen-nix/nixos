@@ -10,12 +10,13 @@
     tinkerwell.enable = true;
     zen-browser.enable = true;
     vivaldi.enable = true;
+    webapps.enable = true;
   };
 
   home.file.".config/hypr/pyprland.toml".text = lib.mkAfter ''
     [monitors.placement."LW9AA0048525"]
     rightOf = "DP-1"
-    transform = 3
+    transform = 1
   '';
 
   home.autostart = [
@@ -39,34 +40,34 @@
   };
 
   programs.niri.settings = lib.mkIf osConfig.programs.niri.enable {
-    outputs = {
-      "DP-1" = {
-        scale = 1.0;
-        position = {
-          x = 0;
-          y = 0;
-        };
-        mode = {
-          width = 1920;
-          height = 1080;
-          refresh = 59.997;
-        };
-      };
-      "DP-2" = {
-        scale = 1.0;
-        position = {
-          x = 1920;
-          y = 0;
-        };
-        mode = {
-          width = 1920;
-          height = 1080;
-          refresh = 59.997;
-        };
-        focus-at-startup = true;
-        transform.rotation = 270;
-      };
-    };
+    # outputs = {
+    #   "DP-1" = {
+    #     scale = 1.0;
+    #     position = {
+    #       x = 1920;
+    #       y = 0;
+    #     };
+    #     mode = {
+    #       width = 1920;
+    #       height = 1080;
+    #       refresh = 59.997;
+    #     };
+    #   };
+    #   "DP-2" = {
+    #     scale = 1.0;
+    #     position = {
+    #       x = 0;
+    #       y = 0;
+    #     };
+    #     mode = {
+    #       width = 1920;
+    #       height = 1080;
+    #       refresh = 59.997;
+    #     };
+    #     focus-at-startup = true;
+    #     transform.rotation = 90;
+    #   };
+    # };
 
     workspaces = {
       "browser" = {

@@ -107,6 +107,15 @@ with lib; {
     };
   };
 
+  # Force-install Violentmonkey into chromium (used by the webapps module).
+  # Must be "<id>;<update_url>" — a bare id no-ops; chromium needs the Web Store
+  # update URL to actually fetch the extension.
+  environment.etc."chromium/policies/managed/webapps.json".text = builtins.toJSON {
+    ExtensionInstallForcelist = [
+      "jinjaccalgkegednnccohejagnlnfdag;https://clients2.google.com/service/update2/crx"
+    ];
+  };
+
   environment.systemPackages = with pkgs; [
     # Browsers
     google-chrome
@@ -208,6 +217,7 @@ with lib; {
         "db-staging-read" = "45.79.180.88";
 
         # Local Dev
+        "erpnext.test" = "127.0.0.1";
         "selldiam.test" = "127.0.0.1";
         "mylisterhub.test" = "127.0.0.1";
         "vite.mylisterhub.test" = "127.0.0.1";
@@ -228,6 +238,7 @@ with lib; {
           # keyPath = config.age.secrets.mkcert-rootCA-key.path;
         };
         domains = [
+          "erpnext.test"
           "selldiam.test"
           "mylisterhub.test"
           "*.mylisterhub.test"
