@@ -74,14 +74,15 @@
     };
 
     vivaldi = _prev.vivaldi.overrideAttrs (oldAttrs: let
-      version = "8.1.4087.5";
+      version = "8.1.4087.43";
+      versionShort = _prev.lib.versions.majorMinor version;
       channel = "stable";
     in {
       inherit version;
 
       src = _prev.fetchurl {
         url = "https://downloads.vivaldi.com/${channel}/vivaldi-${channel}_${version}-1_amd64.deb";
-        hash = "sha256-paDE+AztErjZxXti2mv0GP7OvAEuq3/7xWb7/K7VANo=";
+        hash = "sha256-UNkRdTyq1TjkKi0DbtfOtdBZAVGA0pOkZ0V5jmW921g=";
       };
 
       passthru =
@@ -112,13 +113,15 @@
             oldAttrs.installPhase)
         else oldAttrs.installPhase;
 
+      # nixpkgs replaces Vivaldi's bundled ffmpeg by symlinking libffmpeg.so.<ver>
+      # to chromium-codecs-ffmpeg-extra, but that package is pinned to an older
+      # Chromium and lacks symbols this Vivaldi build needs (e.g.
+      # av_dynamic_hdr_smpte2094_app5_to_t35). The launcher LD_PRELOADs that
+      # symlink, so point it back at Vivaldi's own version-matched libffmpeg.so.
       postFixup =
         (oldAttrs.postFixup or "")
         + ''
-          wrapProgram $out/bin/vivaldi \
-            --unset NIX_LD \
-            --unset NIX_LD_LIBRARY_PATH \
-            --prefix LD_LIBRARY_PATH : "$out/opt/vivaldi:$out/opt/vivaldi/lib"
+          ln -sf libffmpeg.so "$out/opt/vivaldi/libffmpeg.so.${versionShort}"
         '';
     });
 
