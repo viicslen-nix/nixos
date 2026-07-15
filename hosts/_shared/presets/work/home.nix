@@ -66,9 +66,9 @@
         "${claudeCodeRepo}/plugins/ralph-wiggum"
       ];
     };
-    gemini-cli = {
+    antigravity-cli = {
       enable = true;
-      package = pkgs.inputs.llm-agents.gemini-cli;
+      package = pkgs.inputs.llm-agents.antigravity-cli;
     };
     github-copilot-cli = {
       enable = true;
@@ -85,5 +85,6 @@
       enableK9sIntegration = true;
       package = pkgs.inputs.packages.kubernetes.krr;
     };
+    ai.commands.skill-assessment-review = ./ai/skill-assessment-review.md;
   };
 }
