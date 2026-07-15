@@ -172,6 +172,9 @@ in {
             fi
           '';
         };
+        projects."github.com/FmTod/mylisterhub-main-app" = {
+          pre-start.dirnev = "direnv allow";
+        };
       };
       description = ''
         Configuration written to {file}`$XDG_CONFIG_HOME/worktrunk/config.toml`.
