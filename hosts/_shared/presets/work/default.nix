@@ -111,5 +111,9 @@ with lib; {
     nixpkgs.config.permittedInsecurePackages = [
       "openssl-1.1.1w"
     ];
+
+    # sublimetext4 is marked broken because its plug-in host needs the insecure
+    # OpenSSL above, which we already permit. Downgrade the block to a warning.
+    nixpkgs.config.problems.handlers.sublimetext4.broken = "warn";
   };
 }
