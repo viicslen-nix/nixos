@@ -78,6 +78,7 @@ in {
       enable = true;
       enableZshIntegration = true;
       tmux.enableShellIntegration = true;
+      historyWidget.command = "";
     };
 
     hstr = {
