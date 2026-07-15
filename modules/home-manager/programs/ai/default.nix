@@ -34,7 +34,7 @@ with lib; let
       prompt = mkOption {
         type = types.nullOr types.lines;
         default = null;
-        description = mdDoc "Prompt text for structured command outputs (for example gemini-cli).";
+        description = mdDoc "Prompt text for structured command outputs (for example antigravity-cli).";
       };
 
       description = mkOption {
@@ -66,8 +66,8 @@ with lib; let
   hasOpencodeSkillsOption = hasAttrByPath ["programs" "opencode" "skills"] options;
   hasClaudeCodeOption = hasAttrByPath ["programs" "claude-code" "commands"] options;
   hasClaudeCodeSkillsOption = hasAttrByPath ["programs" "claude-code" "skills"] options;
-  hasGeminiOption = hasAttrByPath ["programs" "gemini-cli" "commands"] options;
-  hasGeminiSkillsOption = hasAttrByPath ["programs" "gemini-cli" "skills"] options;
+  hasAntigravityOption = hasAttrByPath ["programs" "antigravity-cli" "commands"] options;
+  hasAntigravitySkillsOption = hasAttrByPath ["programs" "antigravity-cli" "skills"] options;
   hasGithubCopilotCliOption = hasAttrByPath ["programs" "github-copilot-cli" "agents"] options;
   hasGithubCopilotCliSkillsOption = hasAttrByPath ["programs" "github-copilot-cli" "skills"] options;
 
@@ -112,7 +112,7 @@ with lib; let
     then builtins.readFile command.content
     else command.content;
 
-  toGeminiCommand = name: command: {
+  toAntigravityCommand = name: command: {
     prompt = toPromptString command;
     description =
       if command.description != null
@@ -131,7 +131,7 @@ with lib; let
 
   opencodeCommands = mapAttrs toMarkdownCommand normalizedCommands;
   claudeCodeCommands = mapAttrs toMarkdownCommand normalizedCommands;
-  geminiCommands = mapAttrs toGeminiCommand normalizedCommands;
+  antigravityCommands = mapAttrs toAntigravityCommand normalizedCommands;
 in {
   options.modules.${namespace}.${name} = {
     enable = mkEnableOption (mdDoc "shared AI tooling");
@@ -186,10 +186,10 @@ in {
         description = mdDoc "Forward commands and agents to claude-code.";
       };
 
-      gemini-cli = mkOption {
+      antigravity-cli = mkOption {
         type = types.bool;
         default = true;
-        description = mdDoc "Forward commands to gemini-cli.";
+        description = mdDoc "Forward commands to antigravity-cli.";
       };
 
       github-copilot-cli = mkOption {
@@ -219,16 +219,16 @@ in {
         "`modules.programs.ai.targets.opencode` is enabled, but `programs.opencode` is unavailable."
         ++ optional (!hasClaudeCodeOption && cfg.targets.claude-code && (effectiveCommands != {} || effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
         "`modules.programs.ai.targets.claude-code` is enabled, but `programs.claude-code` is unavailable."
-        ++ optional (!hasGeminiOption && cfg.targets.gemini-cli && (effectiveCommands != {} || hasGlobalContext || hasGlobalSkills))
-        "`modules.programs.ai.targets.gemini-cli` is enabled, but `programs.gemini-cli` is unavailable."
+        ++ optional (!hasAntigravityOption && cfg.targets.antigravity-cli && (effectiveCommands != {} || hasGlobalContext || hasGlobalSkills))
+        "`modules.programs.ai.targets.antigravity-cli` is enabled, but `programs.antigravity-cli` is unavailable."
         ++ optional (!hasGithubCopilotCliOption && cfg.targets.github-copilot-cli && (effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
         "`modules.programs.ai.targets.github-copilot-cli` is enabled, but `programs.github-copilot-cli` is unavailable."
         ++ optional (!hasOpencodeSkillsOption && cfg.targets.opencode && hasGlobalSkills)
         "`modules.programs.ai.skills` is set, but `programs.opencode.skills` is unavailable."
         ++ optional (!hasClaudeCodeSkillsOption && cfg.targets.claude-code && hasGlobalSkills)
         "`modules.programs.ai.skills` is set, but `programs.claude-code.skills` is unavailable."
-        ++ optional (!hasGeminiSkillsOption && cfg.targets.gemini-cli && hasGlobalSkills)
-        "`modules.programs.ai.skills` is set, but `programs.gemini-cli.skills` is unavailable."
+        ++ optional (!hasAntigravitySkillsOption && cfg.targets.antigravity-cli && hasGlobalSkills)
+        "`modules.programs.ai.skills` is set, but `programs.antigravity-cli.skills` is unavailable."
         ++ optional (!hasGithubCopilotCliSkillsOption && cfg.targets.github-copilot-cli && hasGlobalSkills)
         "`modules.programs.ai.skills` is set, but `programs.github-copilot-cli.skills` is unavailable."
         ++ mempalaceIntegration.warnings
@@ -257,14 +257,14 @@ in {
         skills = mkIf (hasGlobalSkills && hasClaudeCodeSkillsOption) (mkDefault effectiveSkills);
       };
     })
-    (mkIf (hasGeminiOption && cfg.targets.gemini-cli) {
-      programs.gemini-cli = {
+    (mkIf (hasAntigravityOption && cfg.targets.antigravity-cli) {
+      programs.antigravity-cli = {
         enableMcpIntegration = true;
-        commands = mkDefaultAttrs geminiCommands;
+        commands = mkDefaultAttrs antigravityCommands;
         context = mkIf hasGlobalContext {
           GEMINI = mkDefault cfg.context;
         };
-        skills = mkIf (hasGlobalSkills && hasGeminiSkillsOption) (mkDefault effectiveSkills);
+        skills = mkIf (hasGlobalSkills && hasAntigravitySkillsOption) (mkDefault effectiveSkills);
       };
     })
     (mkIf (hasGithubCopilotCliOption && cfg.targets.github-copilot-cli) {
