@@ -49,6 +49,21 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: _prev: {
+    # dpcontracts' README doctest (pulled in via nix-alien → pylddwrap → icontract)
+    # calls asyncio.get_event_loop(), which no longer implicitly creates a loop on
+    # python 3.14, failing the build. Skip that check.
+    pythonPackagesExtensions =
+      (_prev.pythonPackagesExtensions or [])
+      ++ [
+        (_pyfinal: pyprev: {
+          dpcontracts = pyprev.dpcontracts.overridePythonAttrs (_: {
+            dontUsePytestCheck = true;
+            doCheck = false;
+            doInstallCheck = false;
+          });
+        })
+      ];
+
     # Make Microsoft-Edge not be shit on Wayland
     microsoft-edge-wayland = _prev.symlinkJoin {
       name = "microsoft-edge-wayland";
