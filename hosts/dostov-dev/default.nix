@@ -177,6 +177,11 @@ with lib; {
 
       niri.enable = true;
 
+      kde = {
+        enable = true;
+        enableSddm = false;
+      };
+
       hyprland = {
         enable = false;
         nvidia = true;
