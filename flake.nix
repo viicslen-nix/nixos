@@ -5,6 +5,10 @@
     # Enable submodules
     self.submodules = true;
 
+    # Linux-only systems list, used to strip x86_64-darwin from transitive
+    # flake-parts flakes (nixpkgs 26.11 throws when its darwin set is evaluated).
+    systems-linux.url = "github:nix-systems/default-linux";
+
     # Nixpkgs
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
@@ -149,7 +153,10 @@
 
     # Community packages
     agenix.url = "github:ryantm/agenix";
-    llm-agents.url = "github:numtide/llm-agents.nix";
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.systems.follows = "systems-linux";
+    };
     worktrunk = {
       url = "github:max-sixty/worktrunk";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -180,6 +187,7 @@
     hunk = {
       url = "github:modem-dev/hunk";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.bun2nix.inputs.systems.follows = "systems-linux";
     };
   };
 
