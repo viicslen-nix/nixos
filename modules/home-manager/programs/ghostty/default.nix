@@ -40,8 +40,7 @@ in {
         background-blur = true;
 
         gtk-toolbar-style = "raised-border";
-        gtk-titlebar-style = "tabs";
-        gtk-tabs-location = "bottom";
+        gtk-titlebar-style = "native";
 
         keybind = [
           "ctrl+shift+q=close_surface"
