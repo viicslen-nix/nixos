@@ -180,6 +180,7 @@ with lib; {
       kde = {
         enable = true;
         enableSddm = false;
+        useGnomeKeyring = true;
       };
 
       hyprland = {
