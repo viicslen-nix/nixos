@@ -3,11 +3,21 @@
   pkgs,
   config,
   inputs,
+  nixosModules,
+  homeModules,
   ...
 }:
 with lib; {
+  imports = [
+    nixosModules.homarr
+    nixosModules.qmk
+  ];
+
   config = {
     home-manager.sharedModules = [
+      # Shared AI tooling; ./ai configures it below.
+      homeModules.ai
+
       ({osConfig, ...}: {
         imports = [
           inputs.hunk.homeManagerModules.default
@@ -73,9 +83,5 @@ with lib; {
       localsend.enable = mkDefault true;
     };
 
-    modules = {
-      containers.homarr.enable = mkDefault true;
-      programs.qmk.enable = mkDefault true;
-    };
   };
 }

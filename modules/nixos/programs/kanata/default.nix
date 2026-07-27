@@ -14,7 +14,7 @@ with lib; let
   cfg = config.modules.${namespace}.${name};
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name);
+    enable = mkEnableOption (mdDoc name) // {default = true;};
   };
 
   config = mkIf cfg.enable {

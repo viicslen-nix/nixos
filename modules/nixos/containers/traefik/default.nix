@@ -13,7 +13,7 @@ with lib; let
   containerCfg = config.modules.containers.settings;
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name);
+    enable = mkEnableOption (mdDoc name) // {default = true;};
 
     host = mkOption {
       type = types.str;

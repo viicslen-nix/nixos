@@ -283,7 +283,7 @@ with lib; let
   '';
 in {
   options.services.miami-bus-tracker = {
-    enable = mkEnableOption "Miami-Dade Transit Bus Tracker";
+    enable = mkEnableOption "Miami-Dade Transit Bus Tracker" // {default = true;};
 
     routeId = mkOption {
       type = types.str;

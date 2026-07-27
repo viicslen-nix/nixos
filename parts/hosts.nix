@@ -20,20 +20,12 @@
   nixosModules = config.flake.nixosModules;
   homeModules = config.flake.homeManagerModules;
 
-  # home-manager's own modules are only wired up when the host actually pulls in
-  # home-manager (the base preset does), hence the option guard.
-  hmSharedModules = {options, ...}: {
-    config = lib.mkIf (builtins.hasAttr "home-manager" options) {
-      home-manager.sharedModules = lib.attrValues homeModules;
-    };
-  };
-
   mkHost = hostName: hostConfig:
     inputs.nixpkgs.lib.nixosSystem {
+      # No blanket module import: presets and hosts pull in exactly the modules
+      # they want, via the `nixosModules` / `homeModules` specialArgs.
       modules =
         (shared.modules or [])
-        ++ lib.attrValues nixosModules
-        ++ [hmSharedModules]
         ++ map (name: presetModules.${name}) (hostConfig.presets or [])
         ++ [
           (hostConfig.path or (hostsPath + "/${hostName}"))

@@ -13,7 +13,7 @@ with lib; let
   cfg = config.modules.${namespace}.${name};
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "krr");
+    enable = mkEnableOption (mdDoc "krr") // {default = true;};
     package = mkOption {
       type = types.package;
       default = attrByPath ["inputs" "packages" "kubernetes" "krr"] pkgs.krr pkgs;

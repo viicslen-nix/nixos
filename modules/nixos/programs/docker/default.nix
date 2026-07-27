@@ -17,7 +17,7 @@ with inputs.self.lib; let
   cfg = config.modules.${namespace}.${name};
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "docker");
+    enable = mkEnableOption (mdDoc "docker") // {default = true;};
 
     nvidiaSupport = mkOption {
       type = types.bool;

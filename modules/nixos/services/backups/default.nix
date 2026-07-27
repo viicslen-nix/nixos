@@ -16,7 +16,7 @@ with lib; let
   userDirs = concatLists (lists.forEach cfg.home.users (user: lists.forEach cfg.home.paths (dir: "${config.users.users.${user}.home}/${dir}")));
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name);
+    enable = mkEnableOption (mdDoc name) // {default = true;};
 
     repository = mkOption {
       type = types.str;

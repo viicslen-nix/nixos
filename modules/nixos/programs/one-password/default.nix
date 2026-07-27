@@ -19,7 +19,7 @@ with inputs.self.lib; let
   homeManagerLoaded = builtins.hasAttr "home-manager" options;
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption "1Password";
+    enable = mkEnableOption "1Password" // {default = true;};
     gitSignCommits = mkEnableOption "Git commit signing";
     gitSignKey = mkOption {
       type = types.str;
