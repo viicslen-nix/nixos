@@ -197,66 +197,13 @@
     };
   };
 
-  outputs = inputs @ {
-    nixpkgs,
-    self,
-    flake-parts,
-    ...
-  }: let
-    vlib = inputs.viicslen-lib.lib;
-
-    # Raw module trees, as produced by autoImportRecursive: a nested attrset
-    # where a category (e.g. `core`) maps to a set of modules. flake-parts'
-    # typed `flake.nixosModules` option normalises every entry into
-    # `{_class; _file; imports;}`, which breaks hosts.nix's "an attrset means a
-    # category of modules" convention. Keep the raw trees for internal wiring.
-    nixosModuleTree = vlib.modules.autoImportRecursive ./modules/nixos;
-    homeModuleTree = vlib.modules.autoImportRecursive ./modules/home-manager;
-  in
+  outputs = inputs @ {flake-parts, ...}:
     flake-parts.lib.mkFlake {inherit inputs;} {
-      # Matches viicslen-lib's `defaultSystems` (nix-systems/default), so the
-      # per-system outputs stay identical to the pre-flake-parts layout.
-      systems = vlib.defaultSystems;
-
-      perSystem = {system, ...}: {
-        # Formatter for your nix files, available through 'nix fmt'
-        # Other options beside 'alejandra' include 'nixpkgs-fmt'
-        formatter = (vlib.pkgsFor system).alejandra;
-
-        # Your custom dev shells
-        devShells = import ./dev-shells {
-          inherit inputs system;
-          pkgs = vlib.pkgsFor system;
-        };
-      };
-
-      flake = {
-        # Re-export viicslen-lib so modules can use `inputs.self.lib`
-        lib = vlib;
-
-        # Your custom packages and modifications, exported as overlays
-        overlays = import ./overlays {inherit inputs;};
-
-        # Reusable nixos modules you might want to export
-        nixosModules = nixosModuleTree;
-
-        # Reusable home-manager modules you might want to export
-        homeManagerModules = homeModuleTree;
-
-        # NixOS configurations for all your hosts.
-        # Feed hosts.nix the raw trees rather than the flake-parts-normalised
-        # `self.outputs.{nixosModules,homeManagerModules}` (see note above).
-        nixosConfigurations =
-          vlib.hosts.mkNixosConfigurations {
-            inherit inputs;
-            outputs =
-              self.outputs
-              // {
-                nixosModules = nixosModuleTree;
-                homeManagerModules = homeModuleTree;
-              };
-          }
-          ./hosts;
-      };
+      # Every file under ./parts is a flake-parts module and is picked up
+      # automatically — drop a new file in to add a concern, no wiring needed.
+      imports =
+        map (name: ./parts + "/${name}")
+        (builtins.filter (name: builtins.match ".*\\.nix" name != null)
+          (builtins.attrNames (builtins.readDir ./parts)));
     };
 }
