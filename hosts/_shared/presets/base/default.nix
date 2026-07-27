@@ -203,7 +203,6 @@ in {
 
         inputs.nix-alien.overlays.default
         inputs.nix-cachyos-kernel.overlays.pinned
-        inputs.nixpkgs-wayland.overlay
         inputs.llm-agents.overlays.shared-nixpkgs
       ];
       # Configure your nixpkgs instance
