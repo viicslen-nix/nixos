@@ -19,7 +19,7 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       home.packages = [
-        inputs.jj-starship.packages.${pkgs.system}.default
+        inputs.jj-starship.packages.${pkgs.stdenv.hostPlatform.system}.default
         pkgs.inputs.packages.scripts.starship-smart-dir
       ];
 

@@ -18,7 +18,7 @@ with lib; {
   home-manager.sharedModules = [./home.nix];
   services.displayManager.defaultSession = "niri";
 
-  programs.dank-material-shell.greeter = {
+  programs.dms-greeter = {
     enable = true;
     compositor.name = "niri";
     configHome = "/home/neoscode";

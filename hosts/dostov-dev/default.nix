@@ -100,7 +100,7 @@ with lib; {
 
   programs = {
     wireshark.enable = true;
-    dank-material-shell.greeter = {
+    dms-greeter = {
       enable = true;
       compositor.name = "niri";
       configHome = "/home/neoscode";
