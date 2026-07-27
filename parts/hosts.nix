@@ -8,14 +8,13 @@
   lib,
   nixosModuleList,
   homeModuleList,
+  presetModules,
   ...
 }: let
   hostsPath = ../hosts;
   hostsConfig = import hostsPath {};
   shared = hostsConfig.shared or {};
   hosts = hostsConfig.hosts or {};
-
-  presetsPath = hostsPath + "/_shared/presets";
 
   # home-manager's own modules are only wired up when the host actually pulls in
   # home-manager (the base preset does), hence the option guard.
@@ -31,7 +30,7 @@
         (shared.modules or [])
         ++ nixosModuleList
         ++ [hmSharedModules]
-        ++ map (name: presetsPath + "/${name}") (hostConfig.presets or [])
+        ++ map (name: presetModules.${name}) (hostConfig.presets or [])
         ++ [
           (hostConfig.path or (hostsPath + "/${hostName}"))
           {nixpkgs.hostPlatform.system = hostConfig.system;}
