@@ -253,6 +253,8 @@ with lib; {
     nixpkgs.config.permittedInsecurePackages = [
       "openssl-1.1.1w"
       "electron-40.10.5"
+      # pulled in via corepack
+      "pnpm-9.15.9"
     ];
 
     # sublimetext4 is marked broken (its plug-in host needs the insecure OpenSSL
