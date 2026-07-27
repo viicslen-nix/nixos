@@ -9,6 +9,12 @@
     # flake-parts flakes (nixpkgs 26.11 throws when its darwin set is evaluated).
     systems-linux.url = "github:nix-systems/default-linux";
 
+    # Flake framework
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+
     # Nixpkgs
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
@@ -194,39 +200,63 @@
   outputs = inputs @ {
     nixpkgs,
     self,
+    flake-parts,
     ...
   }: let
     vlib = inputs.viicslen-lib.lib;
-  in {
-    # Re-export viicslen-lib so modules can use `inputs.self.lib`
-    lib = vlib;
 
-    # Formatter for your nix files, available through 'nix fmt'
-    # Other options beside 'alejandra' include 'nixpkgs-fmt'
-    formatter = vlib.pkgFromSystem "alejandra";
+    # Raw module trees, as produced by autoImportRecursive: a nested attrset
+    # where a category (e.g. `core`) maps to a set of modules. flake-parts'
+    # typed `flake.nixosModules` option normalises every entry into
+    # `{_class; _file; imports;}`, which breaks hosts.nix's "an attrset means a
+    # category of modules" convention. Keep the raw trees for internal wiring.
+    nixosModuleTree = vlib.modules.autoImportRecursive ./modules/nixos;
+    homeModuleTree = vlib.modules.autoImportRecursive ./modules/home-manager;
+  in
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      # Matches viicslen-lib's `defaultSystems` (nix-systems/default), so the
+      # per-system outputs stay identical to the pre-flake-parts layout.
+      systems = vlib.defaultSystems;
 
-    # Your custom dev shells
-    devShells = vlib.genSystems (system:
-      import ./dev-shells {
-        inherit inputs system;
-        pkgs = vlib.pkgsFor system;
-      });
+      perSystem = {system, ...}: {
+        # Formatter for your nix files, available through 'nix fmt'
+        # Other options beside 'alejandra' include 'nixpkgs-fmt'
+        formatter = (vlib.pkgsFor system).alejandra;
 
-    # Your custom packages and modifications, exported as overlays
-    overlays = import ./overlays {inherit inputs;};
+        # Your custom dev shells
+        devShells = import ./dev-shells {
+          inherit inputs system;
+          pkgs = vlib.pkgsFor system;
+        };
+      };
 
-    # Reusable nixos modules you might want to export
-    nixosModules = vlib.modules.autoImportRecursive ./modules/nixos;
+      flake = {
+        # Re-export viicslen-lib so modules can use `inputs.self.lib`
+        lib = vlib;
 
-    # Reusable home-manager modules you might want to export
-    homeManagerModules = vlib.modules.autoImportRecursive ./modules/home-manager;
+        # Your custom packages and modifications, exported as overlays
+        overlays = import ./overlays {inherit inputs;};
 
-    # NixOS configurations for all your hosts
-    nixosConfigurations =
-      vlib.hosts.mkNixosConfigurations {
-        inherit inputs;
-        outputs = self.outputs;
-      }
-      ./hosts;
-  };
+        # Reusable nixos modules you might want to export
+        nixosModules = nixosModuleTree;
+
+        # Reusable home-manager modules you might want to export
+        homeManagerModules = homeModuleTree;
+
+        # NixOS configurations for all your hosts.
+        # Feed hosts.nix the raw trees rather than the flake-parts-normalised
+        # `self.outputs.{nixosModules,homeManagerModules}` (see note above).
+        nixosConfigurations =
+          vlib.hosts.mkNixosConfigurations {
+            inherit inputs;
+            outputs =
+              self.outputs
+              // {
+                nixosModules = nixosModuleTree;
+                homeManagerModules = homeModuleTree;
+              };
+          }
+          ./hosts;
+      };
+    };
 }
