@@ -75,8 +75,13 @@ test *ARGS:
 #
 ############################################################################
 
-# Update all flake inputs
+# Update all subflakes then all root flake inputs
 update *ARGS:
+  for d in flakes/*/; do nix flake update --flake "path:$d"; done
+  nix flake update {{ARGS}}
+
+# Update root flake inputs only
+update-main *ARGS:
   nix flake update {{ARGS}}
 
 # Update specific flake input
