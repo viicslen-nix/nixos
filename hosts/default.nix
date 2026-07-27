@@ -31,7 +31,7 @@
 
     lenovo-legion-go = {
       system = "x86_64-linux";
-      presets = ["base"];
+      presets = ["base" "desktop"];
     };
   };
 }

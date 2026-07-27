@@ -9,31 +9,26 @@
 }:
 with lib; let
   flakeLocation = "/etc/nixos";
-  fonts = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-color-emoji
-    victor-mono
-    nerd-fonts.noto
-    nerd-fonts.hack
-    nerd-fonts.fira-code
-    nerd-fonts.fira-mono
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.droid-sans-mono
-    nerd-fonts.victor-mono
-  ];
 in {
   imports = [
     inputs.home-manager.nixosModules.default
     inputs.nur.modules.nixos.default
     inputs.agenix.nixosModules.default
-    inputs.niri.nixosModules.default
-    inputs.hyprland.nixosModules.default
   ];
+
+  # Marker set by the `desktop` preset so other presets (work, personal) can
+  # gate GUI-only bits to graphical hosts. Declared here in `base` because it is
+  # always imported, so reading it never hits an undeclared option.
+  options.modules.presets.desktop.enable =
+    mkEnableOption "graphical desktop host (set by the desktop preset)";
 
   config = {
     system.stateVersion = "26.05";
     systemd.settings.Manager.DefaultTimeoutStopSec = "20s";
+
+    # Every host in this config runs its own firewall management / trusts its
+    # LAN, so disable the NixOS firewall globally. Hosts can re-enable if needed.
+    networking.firewall.enable = mkForce false;
 
     users.users =
       lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
@@ -67,40 +62,10 @@ in {
     };
 
     services = {
-      # Enable CUPS to print documents.
-      printing.enable = lib.mkDefault true;
-
-      # Enable GVFS for file system access
-      gvfs.enable = true;
-
-      # Enable libinput for input devices
-      libinput.enable = true;
-
-      # Enable Avahi for network discovery
-      avahi.enable = true;
-
-      # Enable fuse filesystem to provides common FHS-style paths like /bin/bash, so scripts with #!/bin/bash work unchanged.
+      # Enable fuse filesystem to provide common FHS-style paths like /bin/bash,
+      # so scripts with #!/bin/bash work unchanged.
       envfs.enable = true;
-
-      # Configure keymap in X11
-      xserver.xkb = {
-        layout = "us";
-        variant = "";
-      };
-
-      # Enable Smartd for disk monitoring
-      smartd = {
-        enable = false;
-        autodetect = true;
-      };
     };
-
-    stylix.targets.kmscon.enable = false;
-
-    modules.features.appImages.enable = true;
-
-    # Install fonts
-    fonts.packages = fonts;
 
     # Set default shell
     users.defaultUserShell = pkgs.zsh;
@@ -123,7 +88,7 @@ in {
     };
 
     environment = {
-      # Some useful system packages
+      # Some useful system packages (universal CLI tooling)
       systemPackages = with pkgs;
         [
           libsecret
@@ -150,15 +115,8 @@ in {
           glibc
           glib
           just
-          wmctrl
           lazygit
           busybox
-          libinput
-          wl-clipboard
-          hunspell
-          hunspellDicts.en_US
-          bluez
-          bluez-tools
           pkgs.inputs.packages.scripts.system-update
           pkgs.inputs.packages.scripts.system-upgrade
         ]
@@ -179,7 +137,6 @@ in {
       # Set flake path in environment
       sessionVariables = {
         NH_FLAKE = lib.mkDefault flakeLocation;
-        NIXOS_OZONE_WL = "1";
       };
 
       # Install available shells
@@ -252,6 +209,14 @@ in {
         dates = "weekly";
         options = "--delete-older-than 1w";
       };
+    };
+
+    # Skip building the HTML NixOS/package/info docs on every rebuild (eval +
+    # closure cost across the preset stack). Keep man pages.
+    documentation = {
+      nixos.enable = false;
+      doc.enable = false;
+      info.enable = false;
     };
   };
 }

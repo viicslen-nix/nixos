@@ -21,7 +21,6 @@ with lib; {
 
   networking = {
     hostName = "wsl";
-    firewall.enable = mkForce false;
     nameservers = mkForce [];
   };
 

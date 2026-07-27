@@ -11,26 +11,14 @@ with lib; {
     inputs.disko.nixosModules.disko
     (import ./disko.nix {device = "/dev/disk/by-uuid/2da72401-b2b8-4a0d-8324-fd474124f51e";})
     ./hardware.nix
-    inputs.dms.nixosModules.default
-    inputs.dms.nixosModules.greeter
   ];
 
   home-manager.sharedModules = [./home.nix];
   services.displayManager.defaultSession = "niri";
 
-  programs.dms-greeter = {
-    enable = true;
-    compositor.name = "niri";
-    configHome = "/home/neoscode";
-  };
-
-  hardware.openrazer = {
-    enable = true;
-    users = attrNames users;
-  };
+  modules.hardware.razer.enable = true;
 
   boot = {
-    plymouth.enable = true;
     binfmt.emulatedSystems = ["aarch64-linux"];
     kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
@@ -50,7 +38,6 @@ with lib; {
   networking = {
     hostId = "86f2c355";
     hostName = "home-desktop";
-    firewall.enable = mkForce false;
   };
 
   users = {
@@ -59,18 +46,8 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
-    jetbrains-toolbox
     vscode
-    lens
-    insomnia
-    drawing
-    kooha
-    obsidian
-    drawio
-    legcord
     discord
-    fish
-    dbeaver-bin
     uv
     rpi-imager
     pkgs.inputs.ambxst.default
@@ -112,28 +89,11 @@ with lib; {
       };
     };
 
-    services = {
-      oom.enable = true;
-      powerManagement.enable = true;
-    };
-
-    features.appImages.enable = true;
-
     core = {
-      theming.enable = true;
-
       network.hosts = {
         # Docker
         "kubernetes.docker.internal" = "127.0.0.1";
         "host.docker.internal" = "127.0.0.1";
-
-        # Remote
-        "webapps" = "50.116.36.170";
-        "storesites" = "23.239.17.196";
-        "db-prod-master" = "50.116.56.10";
-        "db-prod-read" = "50.116.56.249";
-        "db-staging-master" = "45.79.180.78";
-        "db-staging-read" = "45.79.180.88";
 
         # Development
         "ai.local" = "127.0.0.1";
@@ -153,46 +113,14 @@ with lib; {
     };
 
     programs = {
-      ld.enable = true;
       steam.enable = true;
+
       docker = {
-        enable = true;
         nvidiaSupport = true;
         storageDriver = "btrfs";
-        allowTcpPorts = [
-          # Traefik
-          80
-          443
-          8080
-
-          # PHPStorm Xdebug
-          9003
-
-          # Portainer
-          9443
-
-          # MySQL
-          3306
-
-          # Ray
-          23517
-        ];
       };
 
-      onePassword = {
-        enable = true;
-        autostart = true;
-        gitSignCommits = true;
-        allowedCustomBrowsers = [
-          ".zen-wrapped"
-          "zen"
-          "vivaldi"
-          "vivaldi-bin"
-          "vivaldi-stable"
-          "vivaldi-snapshot"
-        ];
-        users = attrNames users;
-      };
+      onePassword.autostart = true;
     };
   };
 }

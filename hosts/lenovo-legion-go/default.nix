@@ -46,7 +46,6 @@ with lib; {
     };
 
     consoleLogLevel = 0;
-    plymouth.enable = true;
   };
 
   systemd.settings.Manager = {DefaultTimeoutStopSec = "5s";};
@@ -68,7 +67,6 @@ with lib; {
   ############
   networking = {
     hostName = "lenovo-legion-go";
-    firewall.enable = false;
   };
 
   #################
@@ -148,19 +146,9 @@ with lib; {
   };
 
   modules = {
-    core.theming.enable = true;
-
-    programs = {
-      onePassword = {
-        enable = true;
-        gitSignCommits = true;
-        allowedCustomBrowsers = [
-          ".zen-wrapped"
-          "zen"
-        ];
-        users = attrNames users;
-      };
-    };
+    # Jovian/SteamOS manages its own OOM handling, so opt out of the desktop
+    # preset's default.
+    services.oom.enable = false;
   };
 
   ########################

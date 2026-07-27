@@ -9,16 +9,12 @@ with lib; {
   imports = [
     # Include the results of the hardware scan.
     ./hardware.nix
-    inputs.dms.nixosModules.default
-    inputs.dms.nixosModules.greeter
     inputs.ghost-backup.nixosModules.default
   ];
 
   home-manager.sharedModules = [./home.nix];
 
   boot = {
-    plymouth.enable = true;
-
     loader = {
       efi = {
         canTouchEfiVariables = true;
@@ -37,7 +33,6 @@ with lib; {
 
   networking = {
     hostName = "dostov-dev";
-    firewall.enable = mkForce false;
   };
 
   nix.settings.max-jobs = lib.mkDefault 12;
@@ -100,11 +95,6 @@ with lib; {
 
   programs = {
     wireshark.enable = true;
-    dms-greeter = {
-      enable = true;
-      compositor.name = "niri";
-      configHome = "/home/neoscode";
-    };
   };
 
   # Force-install Violentmonkey into chromium (used by the webapps module).
@@ -122,27 +112,16 @@ with lib; {
     brave
 
     # IDEs & Editors
-    jetbrains-toolbox
     unstable.vscode-fhs
     unstable.code-cursor-fhs
 
     # Development Tools
     ghostty
-    insomnia
     postman
-    lens
-
-    # Notes
-    obsidian
 
     # Communication
-    legcord
     discordo
     discord
-
-    # Drawing
-    drawing
-    drawio
 
     # Office
     onlyoffice-desktopeditors
@@ -153,10 +132,8 @@ with lib; {
     iptables
 
     # Misc
-    ferdium
     tlrc
     vial
-    kooha
     uv
     wireshark
   ];
@@ -202,26 +179,10 @@ with lib; {
       };
     };
 
-    services = {
-      oom.enable = true;
-      powerManagement.enable = true;
-    };
-
     core = {
-      theming = {
-        enable = true;
-        disabledTargets = ["chromium"];
-      };
+      theming.disabledTargets = ["chromium"];
 
       network.hosts = {
-        # Remote
-        "webapps" = "50.116.36.170";
-        "storesites" = "23.239.17.196";
-        "db-prod-master" = "50.116.56.10";
-        "db-prod-read" = "50.116.56.249";
-        "db-staging-master" = "45.79.180.78";
-        "db-staging-read" = "45.79.180.88";
-
         # Local Dev
         "erpnext.test" = "127.0.0.1";
         "selldiam.test" = "127.0.0.1";
@@ -234,7 +195,6 @@ with lib; {
     };
 
     programs = {
-      ld.enable = true;
       mullvad.enable = true;
 
       mkcert = {
@@ -251,41 +211,7 @@ with lib; {
         ];
       };
 
-      docker = {
-        enable = true;
-        nvidiaSupport = true;
-        allowTcpPorts = [
-          # Traefik
-          80
-          443
-          8080
-
-          # PHPStorm Xdebug
-          9003
-
-          # Portainer
-          9443
-
-          # MySQL
-          3306
-
-          # Ray
-          23517
-        ];
-      };
-
-      onePassword = {
-        enable = true;
-        gitSignCommits = true;
-        users = attrNames users;
-        allowedCustomBrowsers = [
-          ".zen-wrapped"
-          "zen"
-          "vivaldi"
-          "vivaldi-bin"
-          "vivaldi-snapshot"
-        ];
-      };
+      docker.nvidiaSupport = true;
     };
 
     containers.vitess.enable = true;
