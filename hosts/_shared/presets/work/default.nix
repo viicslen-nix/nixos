@@ -12,26 +12,26 @@ with lib; {
     inputs.opencode.nixosModules.opencode-web
 
     # Development tooling
-    nixosModules.corepack
-    nixosModules.mkcert
-    nixosModules.docker
+    nixosModules.programs.corepack
+    nixosModules.programs.mkcert
+    nixosModules.programs.docker
 
     # Container stack. The `containers` base module declares the shared
     # settings each container module reads, and the containers consult mkcert.
-    nixosModules.containers
-    nixosModules.traefik
-    nixosModules.mysql
-    nixosModules.redis
-    nixosModules.soketi
-    nixosModules.qdrant
-    nixosModules.centrifugo
-    nixosModules.meilisearch
-    nixosModules.buggregator
+    nixosModules.containers.base
+    nixosModules.containers.traefik
+    nixosModules.containers.mysql
+    nixosModules.containers.redis
+    nixosModules.containers.soketi
+    nixosModules.containers.qdrant
+    nixosModules.containers.centrifugo
+    nixosModules.containers.meilisearch
+    nixosModules.containers.buggregator
   ];
   config = {
     home-manager.sharedModules = [
-      homeModules.k9s
-      homeModules.krr
+      homeModules.programs.k9s
+      homeModules.programs.krr
       ({pkgs, ...}: {
       programs = {
         ssh.settings = {

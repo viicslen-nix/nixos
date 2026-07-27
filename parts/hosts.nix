@@ -8,17 +8,17 @@
 {
   inputs,
   lib,
-  config,
   presetModules,
+  # Namespaced module trees, mirroring the modules/ directory layout
+  # (see parts/modules.nix).
+  nixosModules,
+  homeModules,
   ...
 }: let
   hostsPath = ../hosts;
   hostsConfig = import hostsPath {};
   shared = hostsConfig.shared or {};
   hosts = hostsConfig.hosts or {};
-
-  nixosModules = config.flake.nixosModules;
-  homeModules = config.flake.homeManagerModules;
 
   mkHost = hostName: hostConfig:
     inputs.nixpkgs.lib.nixosSystem {

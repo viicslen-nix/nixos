@@ -13,10 +13,10 @@ with lib; {
     (import ./disko.nix {device = "/dev/disk/by-uuid/2da72401-b2b8-4a0d-8324-fd474124f51e";})
     ./hardware.nix
 
-    nixosModules.intel
-    nixosModules.nvidia
-    nixosModules.razer
-    nixosModules.steam
+    nixosModules.hardware.intel
+    nixosModules.hardware.nvidia
+    nixosModules.hardware.razer
+    nixosModules.programs.steam
   ];
 
   # (no host-specific home-manager config)

@@ -9,14 +9,14 @@
 }:
 with lib; {
   imports = [
-    nixosModules.homarr
-    nixosModules.qmk
+    nixosModules.containers.homarr
+    nixosModules.programs.qmk
   ];
 
   config = {
     home-manager.sharedModules = [
       # Shared AI tooling; ./ai configures it below.
-      homeModules.ai
+      homeModules.programs.ai
 
       ({osConfig, ...}: {
         imports = [

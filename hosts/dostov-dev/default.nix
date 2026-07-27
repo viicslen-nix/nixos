@@ -13,25 +13,25 @@ with lib; {
     ./hardware.nix
     inputs.ghost-backup.nixosModules.default
 
-    nixosModules.intel
-    nixosModules.nvidia
-    nixosModules.bluetooth
-    nixosModules.razer
-    nixosModules.kde
-    nixosModules.mullvad
-    nixosModules.vitess
+    nixosModules.hardware.intel
+    nixosModules.hardware.nvidia
+    nixosModules.hardware.bluetooth
+    nixosModules.hardware.razer
+    nixosModules.desktop.kde
+    nixosModules.programs.mullvad
+    nixosModules.containers.vitess
 
     # Declares `services.miami-bus-tracker`, outside the modules.* namespace
-    nixosModules.miami-bus-tracker
+    nixosModules.features.miami-bus-tracker
   ];
 
   home-manager.sharedModules = [
-    homeModules.ray
-    homeModules.kitty
-    homeModules.tinkerwell
-    homeModules.zen-browser
-    homeModules.vivaldi
-    homeModules.webapps
+    homeModules.programs.ray
+    homeModules.programs.kitty
+    homeModules.programs.tinkerwell
+    homeModules.programs.zen-browser
+    homeModules.programs.vivaldi
+    homeModules.programs.webapps
 
     ({lib, pkgs, osConfig, ...}: {
     
