@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.asus =
+{
   lib,
   pkgs,
   config,
@@ -34,4 +36,6 @@ in {
       asusd.enable = true;
     };
   };
+}
+  ;
 }

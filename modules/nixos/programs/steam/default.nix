@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.steam =
+{
   lib,
   config,
   options,
@@ -60,4 +62,6 @@ in {
       share = ["Steam"];
     })
   ]);
+}
+  ;
 }

@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.chromium =
+{
   lib,
   config,
   inputs,
@@ -30,4 +32,6 @@ in {
       config = ["chromium"];
     })
   ]);
+}
+  ;
 }

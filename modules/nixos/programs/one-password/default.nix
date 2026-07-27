@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.one-password =
+{
   lib,
   pkgs,
   config,
@@ -148,4 +150,6 @@ in {
       configDirs = ["1Password" "op"];
     })
   ]);
+}
+  ;
 }

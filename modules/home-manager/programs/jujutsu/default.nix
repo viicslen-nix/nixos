@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.jujutsu =
+{
   lib,
   pkgs,
   config,
@@ -56,4 +58,6 @@ in {
       };
     };
   };
+}
+  ;
 }

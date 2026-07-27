@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.sesh =
+{
   lib,
   pkgs,
   config,
@@ -104,4 +106,6 @@ in {
       '');
     };
   };
+}
+  ;
 }

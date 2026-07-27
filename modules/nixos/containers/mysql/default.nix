@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.mysql =
+{
   lib,
   config,
   ...
@@ -58,4 +60,6 @@ in {
       };
     };
   };
+}
+  ;
 }

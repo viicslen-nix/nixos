@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.sound =
+{
   lib,
   config,
   ...
@@ -42,4 +44,6 @@ in {
       };
     };
   };
+}
+  ;
 }

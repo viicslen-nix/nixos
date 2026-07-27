@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.impermanence =
+{
   lib,
   pkgs,
   config,
@@ -106,4 +108,6 @@ in {
         ++ cfg.files;
     };
   };
+}
+  ;
 }

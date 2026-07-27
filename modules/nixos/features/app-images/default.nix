@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.app-images =
+{
   lib,
   config,
   pkgs,
@@ -24,4 +26,6 @@ in {
       magicOrExtension = ''\x7fELF....AI\x02'';
     };
   };
+}
+  ;
 }

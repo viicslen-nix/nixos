@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.webapps =
+{
   lib,
   pkgs,
   config,
@@ -125,4 +127,6 @@ in {
       config = ["chromium"];
     })
   ]);
+}
+  ;
 }

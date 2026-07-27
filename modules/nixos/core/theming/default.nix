@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.theming =
+{
   lib,
   pkgs,
   inputs,
@@ -157,4 +159,6 @@ in {
       ];
     })
   ]);
+}
+  ;
 }

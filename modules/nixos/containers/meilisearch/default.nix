@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.meilisearch =
+{
   lib,
   config,
   ...
@@ -53,4 +55,6 @@ in {
       };
     };
   };
+}
+  ;
 }

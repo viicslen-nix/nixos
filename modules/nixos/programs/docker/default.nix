@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.docker =
+{
   lib,
   pkgs,
   users,
@@ -98,4 +100,6 @@ in {
       ];
     })
   ]);
+}
+  ;
 }

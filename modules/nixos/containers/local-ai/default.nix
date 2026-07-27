@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.local-ai =
+{
   lib,
   config,
   ...
@@ -61,4 +63,6 @@ in {
       };
     };
   };
+}
+  ;
 }

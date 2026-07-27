@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.ai =
+{
   lib,
   pkgs,
   config,
@@ -277,4 +279,6 @@ in {
     })
     mempalaceIntegration.config
   ]);
+}
+  ;
 }

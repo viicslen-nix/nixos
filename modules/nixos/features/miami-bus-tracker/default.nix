@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.miami-bus-tracker =
+{
   config,
   lib,
   pkgs,
@@ -397,4 +399,6 @@ in {
       };
     };
   };
+}
+  ;
 }

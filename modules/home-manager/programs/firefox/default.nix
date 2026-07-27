@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.firefox =
+{
   pkgs,
   lib,
   config,
@@ -89,4 +91,6 @@ in {
       directories = [".mozilla"];
     })
   ];
+}
+  ;
 }

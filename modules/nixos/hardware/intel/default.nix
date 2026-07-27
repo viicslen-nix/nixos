@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.intel =
+{
   lib,
   pkgs,
   config,
@@ -21,4 +23,6 @@ in {
       intel-media-driver
     ];
   };
+}
+  ;
 }

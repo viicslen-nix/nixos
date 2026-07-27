@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.lan-mouse =
+{
   lib,
   pkgs,
   config,
@@ -61,4 +63,6 @@ in {
       config = ["lan-mouse"];
     })
   ]);
+}
+  ;
 }

@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.atuin =
+{
   lib,
   config,
   inputs,
@@ -33,4 +35,6 @@ in {
       cache = ["atuin"];
     })
   ]);
+}
+  ;
 }

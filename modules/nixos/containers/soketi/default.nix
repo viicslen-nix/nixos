@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.soketi =
+{
   lib,
   config,
   ...
@@ -65,4 +67,6 @@ in {
       };
     };
   };
+}
+  ;
 }

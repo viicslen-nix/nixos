@@ -1,13 +1,14 @@
 # NixOS configurations for all hosts.
 #
 # The host list, and the presets each host receives, are declared in
-# ../hosts/default.nix. Every host gets the full module set; individual modules
-# are switched on through their `modules.<namespace>.<name>.enable` options.
+# ../hosts/default.nix. Hosts and presets reach the registered modules through
+# the `nixosModules` / `homeModules` specialArgs, e.g.
+#
+#   {nixosModules, ...}: { imports = with nixosModules; [docker steam]; }
 {
   inputs,
   lib,
-  nixosModuleList,
-  homeModuleList,
+  config,
   presetModules,
   ...
 }: let
@@ -16,11 +17,14 @@
   shared = hostsConfig.shared or {};
   hosts = hostsConfig.hosts or {};
 
+  nixosModules = config.flake.nixosModules;
+  homeModules = config.flake.homeManagerModules;
+
   # home-manager's own modules are only wired up when the host actually pulls in
   # home-manager (the base preset does), hence the option guard.
   hmSharedModules = {options, ...}: {
     config = lib.mkIf (builtins.hasAttr "home-manager" options) {
-      home-manager.sharedModules = homeModuleList;
+      home-manager.sharedModules = lib.attrValues homeModules;
     };
   };
 
@@ -28,7 +32,7 @@
     inputs.nixpkgs.lib.nixosSystem {
       modules =
         (shared.modules or [])
-        ++ nixosModuleList
+        ++ lib.attrValues nixosModules
         ++ [hmSharedModules]
         ++ map (name: presetModules.${name}) (hostConfig.presets or [])
         ++ [
@@ -37,7 +41,7 @@
         ];
 
       specialArgs = {
-        inherit inputs hostName;
+        inherit inputs hostName nixosModules homeModules;
         outputs = inputs.self.outputs;
         users = shared.users or {};
       };

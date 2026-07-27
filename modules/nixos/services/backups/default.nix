@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.backups =
+{
   lib,
   pkgs,
   config,
@@ -153,4 +155,6 @@ in {
       };
     };
   };
+}
+  ;
 }

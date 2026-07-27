@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.oom =
+{
   lib,
   config,
   ...
@@ -94,4 +96,6 @@ in {
       services."nix-daemon".serviceConfig.OOMScoreAdjust = 1000;
     };
   };
+}
+  ;
 }

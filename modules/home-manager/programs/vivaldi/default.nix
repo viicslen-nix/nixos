@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.vivaldi =
+{
   lib,
   pkgs,
   config,
@@ -270,4 +272,6 @@ in {
       cache = ["vivaldi"];
     })
   ]);
+}
+  ;
 }

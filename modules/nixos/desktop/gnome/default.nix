@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.gnome =
+{
   lib,
   pkgs,
   users,
@@ -306,4 +308,6 @@ in {
       ];
     })
   ]);
+}
+  ;
 }

@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.impermanence =
+{
   lib,
   config,
   inputs,
@@ -78,4 +80,6 @@ in {
         else {}
       );
   };
+}
+  ;
 }

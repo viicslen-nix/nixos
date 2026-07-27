@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.zsh =
+{
   lib,
   pkgs,
   config,
@@ -97,4 +99,6 @@ in {
       files = [".zsh_history"];
     })
   ]);
+}
+  ;
 }

@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.autostart =
+{
   lib,
   config,
   pkgs,
@@ -91,4 +93,6 @@ in {
       entries = map genDesktopEntryPath cfg;
     };
   };
+}
+  ;
 }

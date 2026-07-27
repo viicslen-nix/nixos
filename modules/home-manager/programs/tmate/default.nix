@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.tmate =
+{
   lib,
   config,
   ...
@@ -20,4 +22,6 @@ in {
       ${builtins.unsafeDiscardStringContext (builtins.readFile ./tmux.conf)}
     '';
   };
+}
+  ;
 }

@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.qdrant =
+{
   lib,
   config,
   ...
@@ -52,4 +54,6 @@ in {
       };
     };
   };
+}
+  ;
 }
