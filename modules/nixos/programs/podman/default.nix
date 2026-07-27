@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.podman =
+{
   lib,
   pkgs,
   users,
@@ -48,4 +50,6 @@ in {
       podman-desktop # GUI for podman
     ];
   };
+}
+  ;
 }

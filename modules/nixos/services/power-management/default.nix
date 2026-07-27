@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.power-management =
+{
   lib,
   config,
   ...
@@ -37,4 +39,6 @@ in {
       };
     };
   };
+}
+  ;
 }

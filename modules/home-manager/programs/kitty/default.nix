@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.kitty =
+{
   lib,
   config,
   ...
@@ -42,4 +44,6 @@ in {
       whitelist = ["kitty"];
     };
   };
+}
+  ;
 }

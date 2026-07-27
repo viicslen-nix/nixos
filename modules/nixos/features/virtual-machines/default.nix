@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.virtual-machines =
+{
   lib,
   pkgs,
   config,
@@ -46,4 +48,6 @@ in {
       };
     })
   ]);
+}
+  ;
 }

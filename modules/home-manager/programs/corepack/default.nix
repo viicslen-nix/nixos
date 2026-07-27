@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.corepack =
+{
   lib,
   pkgs,
   config,
@@ -42,4 +44,6 @@ in {
       packages = [cfg.package];
     };
   };
+}
+  ;
 }

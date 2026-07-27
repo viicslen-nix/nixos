@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.homarr =
+{
   lib,
   config,
   ...
@@ -63,4 +65,6 @@ in {
       };
     };
   };
+}
+  ;
 }

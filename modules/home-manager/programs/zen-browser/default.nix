@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.zen-browser =
+{
   lib,
   pkgs,
   config,
@@ -110,4 +112,6 @@ in {
       directories = [".config/zen"];
     })
   ]);
+}
+  ;
 }

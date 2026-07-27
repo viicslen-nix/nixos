@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.localization =
+{
   lib,
   config,
   ...
@@ -50,4 +52,6 @@ in {
       };
     };
   };
+}
+  ;
 }

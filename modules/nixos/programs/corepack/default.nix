@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.corepack =
+{
   lib,
   pkgs,
   config,
@@ -42,4 +44,6 @@ in {
       systemPackages = [cfg.package];
     };
   };
+}
+  ;
 }

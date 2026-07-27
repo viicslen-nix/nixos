@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.mkcert =
+{
   lib,
   pkgs,
   users,
@@ -132,4 +134,6 @@ in {
       share = ["mkcert"];
     })
   ]);
+}
+  ;
 }

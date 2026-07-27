@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.razer =
+{
   lib,
   config,
   users,
@@ -21,4 +23,6 @@ in {
     };
     boot.extraModulePackages = with config.boot.kernelPackages; [openrazer];
   };
+}
+  ;
 }

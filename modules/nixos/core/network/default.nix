@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.network =
+{
   lib,
   config,
   ...
@@ -50,4 +52,6 @@ in {
       nameservers = mkDefault cfg.nameservers;
     };
   };
+}
+  ;
 }

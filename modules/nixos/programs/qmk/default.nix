@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.qmk =
+{
   lib,
   pkgs,
   config,
@@ -31,4 +33,6 @@ in {
       ${(builtins.unsafeDiscardStringContext (builtins.readFile ./qmk.rules))}
     '';
   };
+}
+  ;
 }

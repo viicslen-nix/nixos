@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.centrifugo =
+{
   lib,
   pkgs,
   config,
@@ -95,4 +97,6 @@ in {
       };
     };
   };
+}
+  ;
 }

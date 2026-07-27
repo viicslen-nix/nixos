@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.containers =
+{
   lib,
   pkgs,
   config,
@@ -65,4 +67,6 @@ in {
       virtualisation.oci-containers.backend = cfg.settings.backend;
     }
   ];
+}
+  ;
 }

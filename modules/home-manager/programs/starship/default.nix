@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.starship =
+{
   lib,
   pkgs,
   config,
@@ -37,4 +39,6 @@ in {
       cache = ["starship"];
     })
   ]);
+}
+  ;
 }

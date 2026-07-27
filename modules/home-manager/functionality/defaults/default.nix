@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.defaults =
+{
   lib,
   config,
   osConfig,
@@ -123,4 +125,6 @@ in {
       };
     })
   ];
+}
+  ;
 }

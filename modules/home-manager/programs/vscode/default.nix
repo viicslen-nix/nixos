@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.vscode =
+{
   lib,
   pkgs,
   config,
@@ -37,4 +39,6 @@ in {
       directories = [".vscode"];
     })
   ]);
+}
+  ;
 }

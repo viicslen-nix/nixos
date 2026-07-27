@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.ghostty =
+{
   lib,
   pkgs,
   config,
@@ -66,4 +68,6 @@ in {
       whitelist = ["com.mitchellh.ghostty"];
     };
   };
+}
+  ;
 }

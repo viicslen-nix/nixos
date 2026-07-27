@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.vitess =
+{
   lib,
   config,
   ...
@@ -121,4 +123,6 @@ in {
       };
     };
   };
+}
+  ;
 }

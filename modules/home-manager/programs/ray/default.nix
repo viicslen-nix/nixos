@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.ray =
+{
   lib,
   pkgs,
   config,
@@ -52,4 +54,6 @@ in {
       };
     }
   ]);
+}
+  ;
 }

@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.krr =
+{
   lib,
   pkgs,
   config,
@@ -68,4 +70,6 @@ in {
       };
     };
   };
+}
+  ;
 }

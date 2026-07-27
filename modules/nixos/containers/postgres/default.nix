@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.postgres =
+{
   lib,
   config,
   ...
@@ -53,4 +55,6 @@ in {
       };
     };
   };
+}
+  ;
 }

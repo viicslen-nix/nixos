@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.traefik =
+{
   lib,
   config,
   ...
@@ -268,4 +270,6 @@ in {
       requires = ["${containerCfg.backend}-traefik-admin-db.service"];
     };
   };
+}
+  ;
 }

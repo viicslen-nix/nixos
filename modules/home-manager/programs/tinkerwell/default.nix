@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.tinkerwell =
+{
   lib,
   pkgs,
   config,
@@ -51,4 +53,6 @@ in {
       config = ["Tinkerwell" "tinkerwell"];
     })
   ]);
+}
+  ;
 }

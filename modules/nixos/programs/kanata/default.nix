@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.kanata =
+{
   lib,
   pkgs,
   users,
@@ -118,4 +120,6 @@ in {
       extraGroups = ["uinput"];
     });
   };
+}
+  ;
 }

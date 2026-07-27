@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.git =
+{
   lib,
   config,
   pkgs,
@@ -82,4 +84,6 @@ in {
       };
     };
   };
+}
+  ;
 }

@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.kde =
+{
   lib,
   pkgs,
   config,
@@ -48,4 +50,6 @@ in {
       "org.freedesktop.impl.portal.Secret" = "gnome-keyring";
     };
   };
+}
+  ;
 }

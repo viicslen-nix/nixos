@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.aider =
+{
   lib,
   pkgs,
   config,
@@ -32,4 +34,6 @@ in {
       vim: true
     '';
   };
+}
+  ;
 }

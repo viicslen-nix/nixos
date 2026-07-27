@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.ld =
+{
   lib,
   config,
   pkgs,
@@ -146,4 +148,6 @@ in {
       ];
     };
   };
+}
+  ;
 }

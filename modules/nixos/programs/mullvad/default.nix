@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.mullvad =
+{
   lib,
   pkgs,
   config,
@@ -75,4 +77,6 @@ in {
       directories = ["/etc/mullvad-vpn"];
     })
   ]);
+}
+  ;
 }

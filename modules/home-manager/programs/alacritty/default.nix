@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.alacritty =
+{
   lib,
   config,
   ...
@@ -46,4 +48,6 @@ in {
       };
     };
   };
+}
+  ;
 }

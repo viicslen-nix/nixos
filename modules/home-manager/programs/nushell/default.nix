@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.nushell =
+{
   lib,
   pkgs,
   config,
@@ -86,4 +88,6 @@ in {
       yazi.enableNushellIntegration = true;
     };
   };
+}
+  ;
 }

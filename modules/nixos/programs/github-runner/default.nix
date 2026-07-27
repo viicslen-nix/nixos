@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.github-runner =
+{
   lib,
   pkgs,
   config,
@@ -50,4 +52,6 @@ in {
       ];
     };
   };
+}
+  ;
 }

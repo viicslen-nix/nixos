@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.nvidia =
+{
   lib,
   pkgs,
   config,
@@ -51,4 +53,6 @@ in {
 
     services.xserver.videoDrivers = ["nvidia"];
   };
+}
+  ;
 }

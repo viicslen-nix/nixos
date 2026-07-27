@@ -1,4 +1,6 @@
 {
+  flake.nixosModules.display =
+{
   lib,
   config,
   ...
@@ -43,4 +45,6 @@ in {
       '';
     };
   };
+}
+  ;
 }

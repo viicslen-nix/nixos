@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.worktrunk =
+{
   lib,
   pkgs,
   config,
@@ -213,4 +215,6 @@ in {
       bind-key W new-window -n worktrees -c "#{pane_current_path}" '${tmuxWorktreePickerScript}'
     '');
   };
+}
+  ;
 }

@@ -1,4 +1,6 @@
 {
+  flake.homeManagerModules.ideavim =
+{
   lib,
   config,
   ...
@@ -16,4 +18,6 @@ in {
   config.home.file.".ideavimrc" = mkIf cfg.enable {
     source = ./ideavimrc;
   };
+}
+  ;
 }
