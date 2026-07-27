@@ -32,22 +32,8 @@ in {
     };
   };
 
-  imports = [
-    ./buggregator
-    ./centrifugo
-    ./homarr
-    ./local-ai
-    ./meilisearch
-    ./mysql
-    ./nginx-proxy-manager
-    ./portainer
-    ./postgres
-    ./qdrant
-    ./redis
-    ./soketi
-    ./traefik
-    ./vitess
-  ];
+  # The container modules in this directory are discovered automatically by
+  # parts/modules.nix — no import list to maintain.
 
   config = mkMerge [
     {
