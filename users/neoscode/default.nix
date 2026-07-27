@@ -7,7 +7,7 @@
 }: let
   user = "neoscode";
 in {
-  imports = with homeModules; [
+  imports = with homeModules.programs; [
     zsh
     tmux
     btop

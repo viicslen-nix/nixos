@@ -15,20 +15,20 @@ with lib; {
     (import ./disko.nix {device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_223766801969";})
     ./hardware.nix
 
-    nixosModules.asus
-    nixosModules.intel
-    nixosModules.nvidia
-    nixosModules.display
-    nixosModules.razer
-    nixosModules.mullvad
-    nixosModules.steam
+    nixosModules.hardware.asus
+    nixosModules.hardware.intel
+    nixosModules.hardware.nvidia
+    nixosModules.hardware.display
+    nixosModules.hardware.razer
+    nixosModules.programs.mullvad
+    nixosModules.programs.steam
 
     # Imported for its options; disabled below.
-    nixosModules.backups
+    nixosModules.services.backups
   ];
 
   home-manager.sharedModules = [
-    homeModules.kitty
+    homeModules.programs.kitty
 
     ({lib, pkgs, inputs, ...}: {
       modules = {

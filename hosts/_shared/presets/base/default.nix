@@ -19,10 +19,10 @@ in {
 
     # Universal, always-on modules. `impermanence` is imported for the options
     # the persistence helpers read; it stays disabled unless a host enables it.
-    nixosModules.localization
-    nixosModules.network
-    nixosModules.sound
-    nixosModules.impermanence
+    nixosModules.core.localization
+    nixosModules.core.network
+    nixosModules.core.sound
+    nixosModules.services.impermanence
   ];
 
   # Marker set by the `desktop` preset so other presets (work, personal) can
@@ -94,9 +94,9 @@ in {
         # Always available: `defaults`/`autostart` declare options other modules
         # read, and `impermanence` supplies the options the persistence helpers
         # consult (it stays disabled unless a host turns it on).
-        homeModules.defaults
-        homeModules.autostart
-        homeModules.impermanence
+        homeModules.functionality.defaults
+        homeModules.functionality.autostart
+        homeModules.functionality.impermanence
 
         ({osConfig, ...}: {
           imports = [
