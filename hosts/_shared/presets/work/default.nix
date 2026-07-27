@@ -73,7 +73,7 @@ with lib; {
       go
       gosec
       pkg-config
-      opusTools
+      opus-tools
       opusfile
       opustags
 
@@ -110,10 +110,15 @@ with lib; {
 
     nixpkgs.config.permittedInsecurePackages = [
       "openssl-1.1.1w"
+      "electron-40.10.5"
     ];
 
-    # sublimetext4 is marked broken because its plug-in host needs the insecure
-    # OpenSSL above, which we already permit. Downgrade the block to a warning.
-    nixpkgs.config.problems.handlers.sublimetext4.broken = "warn";
+    # sublimetext4 is marked broken (its plug-in host needs the insecure OpenSSL
+    # we already permit above) and flagged for the Python 3.3 removal. We keep
+    # using it deliberately, so silence both problem warnings.
+    nixpkgs.config.problems.handlers.sublimetext4 = {
+      broken = "ignore";
+      removal = "ignore";
+    };
   };
 }

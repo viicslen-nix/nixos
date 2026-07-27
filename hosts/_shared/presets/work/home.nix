@@ -1,54 +1,54 @@
 {pkgs, ...}: {
   programs = {
-    ssh.matchBlocks = {
+    ssh.settings = {
       "FmTod" = {
-        hostname = "webapps";
-        user = "fmtod";
+        HostName = "webapps";
+        User = "fmtod";
       };
 
       "SellDiam" = {
-        hostname = "webapps";
-        user = "inventory";
+        HostName = "webapps";
+        User = "inventory";
       };
 
       "DOS" = {
-        hostname = "storesites";
-        user = "dostov";
+        HostName = "storesites";
+        User = "dostov";
       };
 
       "BLVD" = {
-        hostname = "storesites";
-        user = "diamondblvd";
+        HostName = "storesites";
+        User = "diamondblvd";
       };
 
       "EXB" = {
-        hostname = "storesites";
-        user = "extrabrilliant";
+        HostName = "storesites";
+        User = "extrabrilliant";
       };
 
       "DTC" = {
-        hostname = "storesites";
-        user = "diamondtraces";
+        HostName = "storesites";
+        User = "diamondtraces";
       };
 
       "NFC" = {
-        hostname = "storesites";
-        user = "naturalfacet";
+        HostName = "storesites";
+        User = "naturalfacet";
       };
 
       "TJD" = {
-        hostname = "storesites";
-        user = "tiffanyjonesdesigns";
+        HostName = "storesites";
+        User = "tiffanyjonesdesigns";
       };
 
       "47DD" = {
-        hostname = "storesites";
-        user = "47diamonddistrict";
+        HostName = "storesites";
+        User = "47diamonddistrict";
       };
 
       "PELA" = {
-        hostname = "storesites";
-        user = "pelagrino";
+        HostName = "storesites";
+        User = "pelagrino";
       };
     };
 
@@ -62,9 +62,7 @@
     in {
       enable = true;
       package = pkgs.inputs.llm-agents.claude-code;
-      plugins = [
-        "${claudeCodeRepo}/plugins/ralph-wiggum"
-      ];
+      plugins.ralph-wiggum = "${claudeCodeRepo}/plugins/ralph-wiggum";
     };
     antigravity-cli = {
       enable = true;

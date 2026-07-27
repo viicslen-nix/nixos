@@ -33,7 +33,7 @@ with lib; {
     programs.mcp = mkIf hasMcpOption {
       enable = mkDefault true;
       servers.mempalace = mkDefault {
-        command = lib.getExe' inputs.packages.packages.${pkgs.system}.python.mempalace "mempalace-mcp";
+        command = lib.getExe' inputs.packages.packages.${pkgs.stdenv.hostPlatform.system}.python.mempalace "mempalace-mcp";
         args = [];
       };
     };

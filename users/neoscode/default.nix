@@ -89,9 +89,9 @@ in {
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks = {
-        "*".controlPath = "/home/${user}/.ssh/controlmasters/%r@%h:%p";
-        "work.neoscode.com".proxyCommand = "${lib.getExe pkgs.cloudflared} access ssh --hostname %h";
+      settings = {
+        "*".ControlPath = "/home/${user}/.ssh/controlmasters/%r@%h:%p";
+        "work.neoscode.com".ProxyCommand = "${lib.getExe pkgs.cloudflared} access ssh --hostname %h";
       };
     };
   };
