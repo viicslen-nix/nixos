@@ -64,7 +64,7 @@ in {
   ];
 
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "theming");
+    enable = mkEnableOption (mdDoc "theming") // {default = true;};
 
     polarity = mkOption {
       type = types.str;

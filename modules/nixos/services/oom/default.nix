@@ -12,7 +12,7 @@ with lib; let
   cfg = config.modules.${namespace}.${name};
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc feature);
+    enable = mkEnableOption (mdDoc feature) // {default = true;};
 
     prefer = mkOption {
       type = types.listOf types.str;

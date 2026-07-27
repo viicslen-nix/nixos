@@ -3,12 +3,35 @@
   pkgs,
   config,
   inputs,
+  nixosModules,
+  homeModules,
   ...
 }:
 with lib; {
-  imports = [inputs.opencode.nixosModules.opencode-web];
+  imports = [
+    inputs.opencode.nixosModules.opencode-web
+
+    # Development tooling
+    nixosModules.corepack
+    nixosModules.mkcert
+    nixosModules.docker
+
+    # Container stack. The `containers` base module declares the shared
+    # settings each container module reads, and the containers consult mkcert.
+    nixosModules.containers
+    nixosModules.traefik
+    nixosModules.mysql
+    nixosModules.redis
+    nixosModules.soketi
+    nixosModules.qdrant
+    nixosModules.centrifugo
+    nixosModules.meilisearch
+    nixosModules.buggregator
+  ];
   config = {
     home-manager.sharedModules = [
+      homeModules.k9s
+      homeModules.krr
       ({pkgs, ...}: {
       programs = {
         ssh.settings = {
@@ -86,11 +109,9 @@ with lib; {
       };
     
       modules.programs = {
-        k9s.enable = true;
         zed.enable = true;
         opencode.enable = true;
         krr = {
-          enable = true;
           enableK9sIntegration = true;
           package = pkgs.inputs.packages.kubernetes.krr;
         };
@@ -113,13 +134,10 @@ with lib; {
       };
 
       programs = {
-        corepack.enable = true;
-        mkcert.enable = true;
 
         # Docker with the common dev port set. Hosts add hardware-specific bits
         # (nvidiaSupport, storageDriver). WSL force-disables the daemon itself.
         docker = {
-          enable = true;
           allowTcpPorts = [
             # Traefik
             80
@@ -141,16 +159,6 @@ with lib; {
         };
       };
 
-      containers = {
-        traefik.enable = true;
-        mysql.enable = true;
-        redis.enable = true;
-        soketi.enable = true;
-        qdrant.enable = true;
-        centrifugo.enable = true;
-        meilisearch.enable = true;
-        buggregator.enable = true;
-      };
     };
 
     programs.zsh.shellAliases = {

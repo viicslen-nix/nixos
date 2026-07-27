@@ -5,6 +5,8 @@
   config,
   inputs,
   outputs,
+  nixosModules,
+  homeModules,
   ...
 }:
 with lib; let
@@ -14,6 +16,13 @@ in {
     inputs.home-manager.nixosModules.default
     inputs.nur.modules.nixos.default
     inputs.agenix.nixosModules.default
+
+    # Universal, always-on modules. `impermanence` is imported for the options
+    # the persistence helpers read; it stays disabled unless a host enables it.
+    nixosModules.localization
+    nixosModules.network
+    nixosModules.sound
+    nixosModules.impermanence
   ];
 
   # Marker set by the `desktop` preset so other presets (work, personal) can
@@ -76,12 +85,19 @@ in {
       useUserPackages = true;
       backupFileExtension = "backup";
       extraSpecialArgs = {
-        inherit inputs outputs;
+        inherit inputs outputs homeModules;
         stateVersion = config.system.stateVersion;
       };
 
       # Universal home-manager config, applied to every user on every host.
       sharedModules = [
+        # Always available: `defaults`/`autostart` declare options other modules
+        # read, and `impermanence` supplies the options the persistence helpers
+        # consult (it stays disabled unless a host turns it on).
+        homeModules.defaults
+        homeModules.autostart
+        homeModules.impermanence
+
         ({osConfig, ...}: {
           imports = [
             inputs.agenix.homeManagerModules.default

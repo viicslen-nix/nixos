@@ -14,7 +14,7 @@ with lib; let
   cfg = config.modules.${namespace}.${name};
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "tmux");
+    enable = mkEnableOption (mdDoc "tmux") // {default = true;};
   };
 
   config.programs.tmux = mkIf cfg.enable {

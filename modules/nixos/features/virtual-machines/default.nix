@@ -15,7 +15,7 @@ with lib; let
   cfg = config.modules.${namespace}.${name};
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "virtual-machines");
+    enable = mkEnableOption (mdDoc "virtual-machines") // {default = true;};
 
     user = mkOption {
       type = types.str;

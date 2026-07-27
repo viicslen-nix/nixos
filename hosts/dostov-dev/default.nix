@@ -3,6 +3,8 @@
   pkgs,
   users,
   inputs,
+  nixosModules,
+  homeModules,
   ...
 }:
 with lib; {
@@ -10,18 +12,28 @@ with lib; {
     # Include the results of the hardware scan.
     ./hardware.nix
     inputs.ghost-backup.nixosModules.default
+
+    nixosModules.intel
+    nixosModules.nvidia
+    nixosModules.bluetooth
+    nixosModules.razer
+    nixosModules.kde
+    nixosModules.mullvad
+    nixosModules.vitess
+
+    # Declares `services.miami-bus-tracker`, outside the modules.* namespace
+    nixosModules.miami-bus-tracker
   ];
 
   home-manager.sharedModules = [
+    homeModules.ray
+    homeModules.kitty
+    homeModules.tinkerwell
+    homeModules.zen-browser
+    homeModules.vivaldi
+    homeModules.webapps
+
     ({lib, pkgs, osConfig, ...}: {
-      modules.programs = {
-        ray.enable = true;
-        kitty.enable = true;
-        tinkerwell.enable = true;
-        zen-browser.enable = true;
-        vivaldi.enable = true;
-        webapps.enable = true;
-      };
     
       home.file.".config/hypr/pyprland.toml".text = lib.mkAfter ''
         [monitors.placement."LW9AA0048525"]
@@ -238,43 +250,13 @@ with lib; {
   ];
 
   modules = {
-    hardware = {
-      intel.enable = true;
-      nvidia.enable = true;
-      bluetooth.enable = true;
-      razer.enable = true;
-    };
-
     desktop = {
-      gnome = {
-        enable = false;
-        remoteDesktop = false;
-      };
-
+      # niri comes from the niri subflake module, imported by the desktop preset
       niri.enable = true;
 
       kde = {
-        enable = true;
         enableSddm = false;
         useGnomeKeyring = true;
-      };
-
-      hyprland = {
-        enable = false;
-        nvidia = true;
-        portals = {
-          enable = true;
-          backend = "gtk";
-          extraBackends = ["gnome"];
-        };
-        globalVariables = {
-          NVD_BACKEND = "direct";
-          GBM_BACKEND = "nvidia-drm";
-          LIBVA_DRIVER_NAME = "nvidia";
-          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-          __GL_GSYNC_ALLOWED = "0";
-          __GL_VRR_ALLOWED = "0";
-        };
       };
     };
 
@@ -294,7 +276,6 @@ with lib; {
     };
 
     programs = {
-      mullvad.enable = true;
 
       mkcert = {
         rootCA = {
@@ -313,6 +294,5 @@ with lib; {
       docker.nvidiaSupport = true;
     };
 
-    containers.vitess.enable = true;
   };
 }

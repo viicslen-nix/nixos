@@ -2,10 +2,27 @@
   lib,
   pkgs,
   osConfig,
+  homeModules,
   ...
 }: let
   user = "neoscode";
 in {
+  imports = with homeModules; [
+    zsh
+    tmux
+    btop
+    tmate
+    atuin
+    ghostty
+    ideavim
+    nushell
+    starship
+    worktrunk
+    git
+    jujutsu
+    sesh
+  ];
+
   age = {
     identityPaths = ["${osConfig.users.users.${user}.home}/.ssh/agenix"];
 
@@ -105,33 +122,19 @@ in {
       passwordManager = _1password-gui;
     };
     programs = {
-      zsh.enable = true;
-      tmux.enable = true;
-      btop.enable = true;
-      tmate.enable = true;
-      atuin.enable = true;
-      ghostty.enable = true;
-      ideavim.enable = true;
-      nushell.enable = true;
-      starship.enable = true;
-      worktrunk = {
-        enable = true;
-        tmux.enable = true;
-      };
+      worktrunk.tmux.enable = true;
+
       git = {
-        enable = true;
         user = osConfig.users.users.${user}.description;
         email = "39545521+viicslen@users.noreply.github.com";
         signingKey = builtins.readFile ./ssh/git-signing-key.pub;
       };
       jujutsu = {
-        enable = true;
         userName = osConfig.users.users.${user}.description;
         userEmail = "39545521+viicslen@users.noreply.github.com";
         signingKey = builtins.readFile ./ssh/git-signing-key.pub;
       };
       sesh = {
-        enable = true;
         enableNushellIntegration = true;
         enableTmuxIntegration = true;
       };

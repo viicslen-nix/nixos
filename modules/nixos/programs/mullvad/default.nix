@@ -17,7 +17,7 @@ with inputs.self.lib; let
   cfg = config.modules.${namespace}.${name};
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "mullvad");
+    enable = mkEnableOption (mdDoc "mullvad") // {default = true;};
     enableExludeIPs = mkOption {
       type = types.bool;
       default = false;

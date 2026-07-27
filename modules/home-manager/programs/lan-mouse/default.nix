@@ -19,7 +19,7 @@ in {
   ];
 
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name);
+    enable = mkEnableOption (mdDoc name) // {default = true;};
     autostart = mkOption {
       type = types.bool;
       default = false;

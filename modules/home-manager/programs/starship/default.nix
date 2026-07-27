@@ -15,7 +15,7 @@ with inputs.self.lib; let
   cfg = config.modules.${namespace}.${name};
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "starship");
+    enable = mkEnableOption (mdDoc "starship") // {default = true;};
   };
 
   config = mkIf cfg.enable (mkMerge [

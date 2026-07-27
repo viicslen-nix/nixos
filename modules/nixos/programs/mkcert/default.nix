@@ -17,7 +17,7 @@ with inputs.self.lib; let
   cfg = config.modules.${namespace}.${name};
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name);
+    enable = mkEnableOption (mdDoc name) // {default = true;};
     rootCA = {
       enable = mkEnableOption "Enable mkcert root CA certificate.";
 

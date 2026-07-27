@@ -156,7 +156,7 @@ with inputs.self.lib; let
     '';
 in {
   options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "Vivaldi browser with custom mods");
+    enable = mkEnableOption (mdDoc "Vivaldi browser with custom mods") // {default = true;};
 
     package = mkOption {
       type = types.package;
