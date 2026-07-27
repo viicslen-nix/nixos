@@ -1,23 +1,35 @@
-# Discovery and export of the reusable NixOS / home-manager module trees.
-{inputs, ...}: let
-  vlib = inputs.viicslen-lib.lib;
+# Discovery and export of the reusable NixOS / home-manager modules.
+#
+# Every `default.nix` under ../modules/{nixos,home-manager} is a module and is
+# picked up automatically, at any nesting depth. This replaces vlib's
+# `autoImportRecursive`, which could not descend into a directory that had both
+# a `default.nix` and subdirectories — that limitation is why
+# modules/nixos/containers/default.nix used to hand-maintain a list of its 14
+# children.
+#
+# Convention: a path component starting with `_` is skipped, for helper files
+# that are not modules — e.g. services/impermanence/_presets, whose default.nix
+# takes a `systemConfig` argument and so is not a NixOS module.
+{lib, ...}: let
+  discover = root:
+    builtins.filter (
+      p: let
+        s = toString p;
+      in
+        lib.hasSuffix "/default.nix" s && !(lib.hasInfix "/_" s)
+    ) (lib.filesystem.listFilesRecursive root);
 
-  # Raw trees as produced by autoImportRecursive: a nested attrset where a
-  # category (e.g. `core`) maps to a set of modules.
-  nixosModuleTree = vlib.modules.autoImportRecursive ../modules/nixos;
-  homeModuleTree = vlib.modules.autoImportRecursive ../modules/home-manager;
+  nixosModuleList = discover ../modules/nixos;
+  homeModuleList = discover ../modules/home-manager;
 in {
-  # Share the raw trees with the other parts (see hosts.nix). They are kept out
-  # of the typed `flake.nixosModules` option on purpose: flake-parts normalises
-  # each entry into `{_class; _file; imports;}`, which breaks hosts.nix's
-  # "an attrset value is a category of modules" convention.
-  _module.args = {inherit nixosModuleTree homeModuleTree;};
+  # Shared with parts/hosts.nix.
+  _module.args = {inherit nixosModuleList homeModuleList;};
 
   flake = {
-    # Reusable nixos modules you might want to export
-    nixosModules = nixosModuleTree;
-
-    # Reusable home-manager modules you might want to export
-    homeManagerModules = homeModuleTree;
+    # Every module, bundled as one importable module. Consumers get the whole
+    # set and switch individual modules on through their
+    # `modules.<namespace>.<name>.enable` options.
+    nixosModules.default = {imports = nixosModuleList;};
+    homeManagerModules.default = {imports = homeModuleList;};
   };
 }
