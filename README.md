@@ -18,10 +18,14 @@ The configuration is built using a modular flake-based architecture with the fol
 
 ## 💻 Supported Hosts
 
+Hosts and the presets each one receives are declared in `hosts/default.nix`.
+
 ### 🖥️ Physical Machines
 
-- **asus-zephyrus-gu603**: ASUS Zephyrus gaming laptop with NVIDIA graphics
-- **dostov-dev**: Development workstation
+- **asus-zephyrus-gu603**: ASUS Zephyrus GU603 gaming laptop with NVIDIA graphics (niri)
+- **dostov-dev**: Intel development workstation (niri)
+- **home-desktop**: Desktop workstation, CachyOS kernel (niri)
+- **lenovo-legion-go**: Lenovo Legion Go handheld, KDE Plasma 6 on Jovian-NixOS
 
 ### 🌐 Virtual Environments
 
@@ -29,20 +33,18 @@ The configuration is built using a modular flake-based architecture with the fol
 
 ## 🎨 Desktop Environments
 
-This configuration supports multiple desktop environments:
-
-- **Hyprland**: Wayland compositor with extensive customization
-- **GNOME**: Traditional desktop environment
-- **KDE Plasma**: Feature-rich desktop environment
+- **niri**: primary Wayland compositor on the desktop/laptop hosts
+- **DankMaterialShell (DMS)**: shell, panel, and login greeter for niri
+- **KDE Plasma 6**: used on the Legion Go handheld
+- **Hyprland**: available as a module (`flakes/hyprland`), not currently enabled by default
 
 ## 🛠️ Development Environments
 
-Pre-configured development shells for:
+Pre-configured development shells (see `dev-shells/`):
 
 - **Kubernetes**: Container orchestration development
 - **Laravel/PHP**: Web development with PHP and Laravel
 - **Python**: Python development with common tools
-- **Default**: General development environment
 
 ## 📦 Key Features
 
@@ -55,10 +57,10 @@ Pre-configured development shells for:
 
 ### 🖥️ Desktop Experience
 
-- **Hyprland**: Modern Wayland compositor with custom theming
-- **HyprPanel**: Custom status bar and system panels
+- **niri**: Scrollable-tiling Wayland compositor
+- **DankMaterialShell**: Status bar, panels, and login greeter
 - **Stylix**: System-wide theming
-- **Multiple browsers**: Firefox, Chromium, Zen Browser support
+- **Multiple browsers**: Firefox, Chromium, Zen Browser, Vivaldi support
 
 ### 🛠️ Development Tools
 
@@ -113,21 +115,32 @@ Pre-configured development shells for:
 ### ⚡ Available Commands (using Just)
 
 ```bash
-# Update all flake inputs
+# Update all subflakes and root flake inputs
 just update
 
-# Update specific input
+# Update only root inputs, or a single input / subflake
+just update-main
 just update-input nixpkgs
+just update-subflake niri
 
-# Rebuild system
-just nix-upgrade switch
+# Rebuild and switch (nh wrapper); use boot/test in place of switch as needed
+just upgrade switch
 
-# Run tests
+# Or rebuild directly with nixos-rebuild
+just rebuild switch
+
+# Update flake inputs, then rebuild (full upgrade)
+just full-upgrade
+
+# Run the eval tests
 just test
 
 # View all available commands
 just --list
 ```
+
+> Heavy rebuilds are resource-intensive; you can pass build limits through, e.g.
+> `just upgrade boot --cores 3 --max-jobs 2`.
 
 ## 🔧 Customization
 
@@ -136,7 +149,7 @@ just --list
 1. Create a new directory in `hosts/`
 2. Add configuration files (`default.nix`, `hardware.nix`, etc.)
 3. Update `hosts/default.nix` to include the new host
-4. Rebuild with `just nix-upgrade switch`
+4. Rebuild with `just upgrade switch`
 
 ### 📦 Adding New Programs
 
@@ -160,7 +173,7 @@ This configuration uses `agenix` for secrets management:
 
 - Secrets are stored in `secrets/` directory
 - Encrypted with age
-- Referenced in `secrets.nix`
+- Referenced in `secrets/default.nix`
 
 ## ⚙️ Hardware Support
 
