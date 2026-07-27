@@ -13,7 +13,7 @@ with lib; {
     ./hardware.nix
   ];
 
-  home-manager.sharedModules = [./home.nix];
+  # (no host-specific home-manager config)
   services.displayManager.defaultSession = "niri";
 
   modules.hardware.razer.enable = true;
