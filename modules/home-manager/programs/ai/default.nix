@@ -85,7 +85,7 @@
           // optionalAttrs cfg.coderabbit.enable coderabbitIntegration.skills
         else cfg.skills;
 
-      mkDefaultAttrs = attrs: mapAttrs (_: value: mkDefault value) attrs;
+      mkDefaultAttrs = attrs: mapAttrs (_: mkDefault) attrs;
       hasGlobalContext = cfg.context != "";
       hasGlobalSkills = effectiveSkills != {};
 
@@ -102,7 +102,7 @@
           content = value;
         };
 
-      normalizedCommands = mapAttrs (_: value: normalizeCommand value) effectiveCommands;
+      normalizedCommands = mapAttrs (_: normalizeCommand) effectiveCommands;
 
       toPromptString = command:
         if command.prompt != null

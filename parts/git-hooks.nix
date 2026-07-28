@@ -4,7 +4,7 @@
 {inputs, ...}: {
   imports = [inputs.git-hooks.flakeModule];
 
-  perSystem = {...}: {
+  perSystem = _: {
     pre-commit.settings.hooks = {
       alejandra.enable = true; # format nix
       deadnix.enable = true; # dead nix code (unused args/bindings)

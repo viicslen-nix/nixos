@@ -93,7 +93,7 @@
         services.restic.backups = {
           ${jobName} = {
             initialize = true;
-            repository = cfg.repository;
+            inherit (cfg) repository;
 
             # environmentFile = config.age.secrets."restic/env".path;
             # passwordFile = config.age.secrets."restic/password".path;
@@ -108,7 +108,7 @@
               userDirs
             ];
 
-            exclude = cfg.exclude;
+            inherit (cfg) exclude;
 
             pruneOpts = [
               "--keep-daily 7"

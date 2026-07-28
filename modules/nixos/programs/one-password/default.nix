@@ -110,7 +110,7 @@
               enable = true;
               # the specified packages as well as 1Password CLI will be
               # automatically installed and configured to use shell plugins
-              plugins = cfg.plugins;
+              inherit (cfg) plugins;
             };
 
             # Configure the SSH client to use the 1Password socket
@@ -145,7 +145,7 @@
         })
         (persistence.mkHmPersistence {
           inherit config options;
-          users = cfg.users;
+          inherit (cfg) users;
           configDirs = ["1Password" "op"];
         })
       ]);

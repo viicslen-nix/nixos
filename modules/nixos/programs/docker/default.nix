@@ -60,7 +60,7 @@
             docker = {
               enable = true;
               autoPrune.enable = true;
-              storageDriver = cfg.storageDriver;
+              inherit (cfg) storageDriver;
               package = pkgs.docker.override {
                 buildxSupport = true;
               };

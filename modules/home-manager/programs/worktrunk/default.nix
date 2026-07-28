@@ -144,7 +144,7 @@
         };
 
         settings = mkOption {
-          type = tomlFormat.type;
+          inherit (tomlFormat) type;
           default = {
             list.summary = false;
             merge.squash = false;

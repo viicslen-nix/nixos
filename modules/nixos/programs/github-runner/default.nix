@@ -39,7 +39,7 @@
           replace = true;
           ephemeral = true;
           user = "root";
-          url = cfg.url;
+          inherit (cfg) url;
           # tokenFile = config.age.secrets."github-runners/nixos.token".path;
           extraPackages = with pkgs; [
             sudo
