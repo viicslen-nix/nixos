@@ -13,15 +13,7 @@ with lib; {
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   nixpkgs.hostPlatform = "x86_64-linux";
-  home-manager.sharedModules = [
-    ({...}: {
-      programs.nushell.shellAliases = {
-        op = "op.exe";
-        ssh = "ssh.exe";
-        ssh-add = "ssh-add.exe";
-      };
-    })
-  ];
+  home-manager.sharedModules = [./home.nix];
 
   # WSL Specific Configuration
   virtualisation.docker.enable = mkForce false;
