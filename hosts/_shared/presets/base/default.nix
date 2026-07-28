@@ -238,11 +238,15 @@ in {
           "https://nix-community.cachix.org"
           "https://attic.xuyh0120.win/lantian"
           "https://cache.numtide.com"
+          # garnix builds this flake's outputs (incl. the local packages that
+          # have no other cache) and serves them here — see garnix.yaml.
+          "https://cache.garnix.io"
         ];
         trusted-public-keys = [
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
           "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+          "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         ];
 
         # Limit the number of parallel jobs to avoid OOM

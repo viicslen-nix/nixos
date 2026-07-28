@@ -11,13 +11,19 @@ flake's own `checks` outputs, so CI and a local `nix flake check` agree:
 
 - **`format-and-lint`** — builds `checks.x86_64-linux.{treefmt,pre-commit}`
   (alejandra formatting + deadnix/statix lint). Fast; the primary gate.
-- **`build-hosts`** — matrix that builds each evaluable host's toplevel via the
-  `host-<name>` checks, with the repo's binary caches wired in so the Wayland
-  closure substitutes instead of compiling. `wsl` and `lenovo-legion-go` are
+- **`eval-hosts`** — matrix that evaluates each evaluable host's toplevel to a
+  derivation (fast gate; does not build). `wsl` and `lenovo-legion-go` are
   excluded (see `parts/checks.nix`) because they currently fail to evaluate for
-  pre-existing reasons. The job targets the check attributes directly rather
-  than `nix flake check`, which would evaluate *every* `nixosConfiguration` and
-  trip over those two.
+  pre-existing reasons. Targets the check attributes directly rather than
+  `nix flake check`, which would evaluate *every* `nixosConfiguration` and trip
+  over those two.
+
+The actual **building and binary-caching** of hosts, packages, dev shells and
+the format/lint checks is delegated to [garnix](https://garnix.io) (see
+`garnix.yaml` at the repo root), which serves the results from
+`https://cache.garnix.io` — added as a substituter in the `base` preset so local
+`nixos-rebuild` benefits too, most usefully for the otherwise-uncached
+`flakes/packages` locals.
 
 ### Main Workflow: Build ISO Images (`build-iso.yml`)
 

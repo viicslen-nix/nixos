@@ -1,0 +1,21 @@
+# garnix.io build + binary-cache config.
+#
+# garnix builds the listed flake outputs on every push/PR and serves the results
+# from https://cache.garnix.io (free for public repos). The cache is added as a
+# substituter in the base preset, so both CI and local `nixos-rebuild` pull from
+# it — most usefully the `flakes/packages` locals (superset, php, …), which have
+# no other cache.
+#
+# Only `include` outputs are built. We deliberately do NOT list
+# `nixosConfigurations.*` — the host toplevels are already covered by the
+# `checks.*.host-<name>` entries (see parts/checks.nix), and that check set is
+# filtered by host name so it never evaluates wsl or lenovo-legion-go, which
+# currently fail to evaluate for pre-existing reasons.
+builds:
+  include:
+    - "checks.*.*" # host-<name> toplevels + treefmt + pre-commit
+    - "packages.*.*" # local packages (superset, php, scripts, …)
+    - "devShells.*.*"
+    - "formatter.*"
+  exclude:
+    - "*.aarch64-linux.*" # x86_64-linux only; no aarch64 builders needed
