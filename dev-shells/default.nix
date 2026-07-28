@@ -1,7 +1,6 @@
 {
   inputs,
   system,
-  pkgs,
   ...
 }: {
   kubernetes = import ./kubernetes.nix {inherit inputs system;};

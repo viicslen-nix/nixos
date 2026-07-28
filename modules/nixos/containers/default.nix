@@ -1,7 +1,6 @@
 {
   flake.modules.nixos.containers = {
     lib,
-    pkgs,
     config,
     ...
   }:

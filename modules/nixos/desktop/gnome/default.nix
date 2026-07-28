@@ -2,7 +2,6 @@
   flake.modules.nixos.gnome = {
     lib,
     pkgs,
-    users,
     config,
     options,
     ...
