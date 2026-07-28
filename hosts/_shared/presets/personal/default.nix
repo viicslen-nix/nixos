@@ -82,6 +82,5 @@ with lib; {
     programs = {
       localsend.enable = mkDefault true;
     };
-
   };
 }

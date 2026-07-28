@@ -1,44 +1,42 @@
 {
-  flake.modules.homeManager.starship =
-{
-  lib,
-  pkgs,
-  config,
-  inputs,
-  ...
-}:
-with lib;
-with inputs.self.lib; let
-  name = "starship";
-  namespace = "programs";
+  flake.modules.homeManager.starship = {
+    lib,
+    pkgs,
+    config,
+    inputs,
+    ...
+  }:
+    with lib;
+    with inputs.self.lib; let
+      name = "starship";
+      namespace = "programs";
 
-  cfg = config.modules.${namespace}.${name};
-in {
-  options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "starship") // {default = true;};
-  };
-
-  config = mkIf cfg.enable (mkMerge [
-    {
-      home.packages = [
-        inputs.jj-starship.packages.${pkgs.stdenv.hostPlatform.system}.default
-        pkgs.inputs.packages.scripts.starship-smart-dir
-      ];
-
-      programs.starship = {
-        enable = true;
-
-        settings =
-          builtins.fromTOML (builtins.unsafeDiscardStringContext (builtins.readFile ./config.toml))
-          // {
-            palette = mkForce "main";
-          };
+      cfg = config.modules.${namespace}.${name};
+    in {
+      options.modules.${namespace}.${name} = {
+        enable = mkEnableOption (mdDoc "starship") // {default = true;};
       };
-    }
-    (persistence.mkPersistence config {
-      cache = ["starship"];
-    })
-  ]);
-}
-  ;
+
+      config = mkIf cfg.enable (mkMerge [
+        {
+          home.packages = [
+            inputs.jj-starship.packages.${pkgs.stdenv.hostPlatform.system}.default
+            pkgs.inputs.packages.scripts.starship-smart-dir
+          ];
+
+          programs.starship = {
+            enable = true;
+
+            settings =
+              builtins.fromTOML (builtins.unsafeDiscardStringContext (builtins.readFile ./config.toml))
+              // {
+                palette = mkForce "main";
+              };
+          };
+        }
+        (persistence.mkPersistence config {
+          cache = ["starship"];
+        })
+      ]);
+    };
 }

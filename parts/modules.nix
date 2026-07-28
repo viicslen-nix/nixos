@@ -70,12 +70,10 @@
     then true
     else throw "Duplicate module directory names under ${toString root}: ${lib.concatStringsSep ", " (lib.unique dupes)}";
 
-  nixosTree =
-    assert assertUnique ../modules/nixos;
-      mkTree ../modules/nixos config.flake.modules.nixos;
-  homeTree =
-    assert assertUnique ../modules/home-manager;
-      mkTree ../modules/home-manager config.flake.modules.homeManager;
+  nixosTree = assert assertUnique ../modules/nixos;
+    mkTree ../modules/nixos config.flake.modules.nixos;
+  homeTree = assert assertUnique ../modules/home-manager;
+    mkTree ../modules/home-manager config.flake.modules.homeManager;
 in {
   imports = discover ../modules/nixos ++ discover ../modules/home-manager;
 

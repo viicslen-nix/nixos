@@ -177,7 +177,6 @@ with lib; {
     };
 
     programs = {
-
       mkcert = {
         rootCA = {
           enable = false;
@@ -194,6 +193,5 @@ with lib; {
 
       docker.nvidiaSupport = true;
     };
-
   };
 }

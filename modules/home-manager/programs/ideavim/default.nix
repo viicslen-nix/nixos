@@ -1,23 +1,21 @@
 {
-  flake.modules.homeManager.ideavim =
-{
-  lib,
-  config,
-  ...
-}:
-with lib; let
-  name = "ideavim";
-  namespace = "programs";
+  flake.modules.homeManager.ideavim = {
+    lib,
+    config,
+    ...
+  }:
+    with lib; let
+      name = "ideavim";
+      namespace = "programs";
 
-  cfg = config.modules.${namespace}.${name};
-in {
-  options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name) // {default = true;};
-  };
+      cfg = config.modules.${namespace}.${name};
+    in {
+      options.modules.${namespace}.${name} = {
+        enable = mkEnableOption (mdDoc name) // {default = true;};
+      };
 
-  config.home.file.".ideavimrc" = mkIf cfg.enable {
-    source = ./ideavimrc;
-  };
-}
-  ;
+      config.home.file.".ideavimrc" = mkIf cfg.enable {
+        source = ./ideavimrc;
+      };
+    };
 }
