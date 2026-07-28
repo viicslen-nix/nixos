@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.sesh =
+  flake.modules.homeManager.sesh =
 {
   lib,
   pkgs,

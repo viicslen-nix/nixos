@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.lan-mouse =
+  flake.modules.homeManager.lan-mouse =
 {
   lib,
   pkgs,

@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.theming =
+  flake.modules.nixos.theming =
 {
   lib,
   pkgs,

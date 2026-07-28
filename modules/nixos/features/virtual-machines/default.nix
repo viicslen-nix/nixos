@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.virtual-machines =
+  flake.modules.nixos.virtual-machines =
 {
   lib,
   pkgs,

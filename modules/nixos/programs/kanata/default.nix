@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.kanata =
+  flake.modules.nixos.kanata =
 {
   lib,
   pkgs,

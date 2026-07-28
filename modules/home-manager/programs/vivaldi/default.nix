@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.vivaldi =
+  flake.modules.homeManager.vivaldi =
 {
   lib,
   pkgs,

@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.app-images =
+  flake.modules.nixos.app-images =
 {
   lib,
   config,

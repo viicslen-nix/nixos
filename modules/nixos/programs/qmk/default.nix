@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.qmk =
+  flake.modules.nixos.qmk =
 {
   lib,
   pkgs,

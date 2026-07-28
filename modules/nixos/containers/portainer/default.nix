@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.portainer =
+  flake.modules.nixos.portainer =
 {
   lib,
   config,

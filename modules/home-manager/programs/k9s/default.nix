@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.k9s =
+  flake.modules.homeManager.k9s =
 {
   lib,
   pkgs,

@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.asus =
+  flake.modules.nixos.asus =
 {
   lib,
   pkgs,

@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.autostart =
+  flake.modules.homeManager.autostart =
 {
   lib,
   config,

@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.corepack =
+  flake.modules.nixos.corepack =
 {
   lib,
   pkgs,

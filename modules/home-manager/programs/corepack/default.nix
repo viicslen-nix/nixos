@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.corepack =
+  flake.modules.homeManager.corepack =
 {
   lib,
   pkgs,

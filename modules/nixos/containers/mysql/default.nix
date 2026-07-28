@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.mysql =
+  flake.modules.nixos.mysql =
 {
   lib,
   config,

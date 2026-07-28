@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.localization =
+  flake.modules.nixos.localization =
 {
   lib,
   config,

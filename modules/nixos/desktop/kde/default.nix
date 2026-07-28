@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.kde =
+  flake.modules.nixos.kde =
 {
   lib,
   pkgs,

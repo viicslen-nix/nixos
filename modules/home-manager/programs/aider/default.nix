@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.aider =
+  flake.modules.homeManager.aider =
 {
   lib,
   pkgs,

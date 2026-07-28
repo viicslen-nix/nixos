@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.traefik =
+  flake.modules.nixos.traefik =
 {
   lib,
   config,

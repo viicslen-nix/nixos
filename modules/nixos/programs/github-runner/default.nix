@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.github-runner =
+  flake.modules.nixos.github-runner =
 {
   lib,
   pkgs,

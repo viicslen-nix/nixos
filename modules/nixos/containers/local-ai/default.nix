@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.local-ai =
+  flake.modules.nixos.local-ai =
 {
   lib,
   config,

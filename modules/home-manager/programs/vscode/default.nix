@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.vscode =
+  flake.modules.homeManager.vscode =
 {
   lib,
   pkgs,

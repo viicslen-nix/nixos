@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.oom =
+  flake.modules.nixos.oom =
 {
   lib,
   config,

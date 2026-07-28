@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.ai =
+  flake.modules.homeManager.ai =
 {
   lib,
   pkgs,

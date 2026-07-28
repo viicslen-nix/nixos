@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.display =
+  flake.modules.nixos.display =
 {
   lib,
   config,

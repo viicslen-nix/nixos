@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.tmux =
+  flake.modules.homeManager.tmux =
 {
   lib,
   pkgs,

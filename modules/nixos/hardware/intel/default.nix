@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.intel =
+  flake.modules.nixos.intel =
 {
   lib,
   pkgs,

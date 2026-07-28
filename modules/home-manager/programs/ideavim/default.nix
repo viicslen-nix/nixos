@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.ideavim =
+  flake.modules.homeManager.ideavim =
 {
   lib,
   config,

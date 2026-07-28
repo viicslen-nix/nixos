@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.homarr =
+  flake.modules.nixos.homarr =
 {
   lib,
   config,

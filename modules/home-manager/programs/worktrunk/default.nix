@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.worktrunk =
+  flake.modules.homeManager.worktrunk =
 {
   lib,
   pkgs,

@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.backups =
+  flake.modules.nixos.backups =
 {
   lib,
   pkgs,
