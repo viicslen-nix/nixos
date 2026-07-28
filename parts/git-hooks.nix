@@ -9,6 +9,12 @@
       alejandra.enable = true; # format nix
       deadnix.enable = true; # dead nix code (unused args/bindings)
       statix.enable = true; # nix anti-patterns
+
+      # Block secrets before they commit. ripsecrets catches API keys/tokens,
+      # detect-private-keys catches key material. gitleaks (the deeper scan)
+      # runs in CI — see .github/workflows/gitleaks.yml.
+      ripsecrets.enable = true;
+      detect-private-keys.enable = true;
     };
   };
 }
