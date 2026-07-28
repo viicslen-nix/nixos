@@ -19,8 +19,6 @@ with lib; {
     nixosModules.desktop.kde
     nixosModules.programs.mullvad
     nixosModules.containers.vitess
-
-    # Declares `services.miami-bus-tracker`, outside the modules.* namespace
     nixosModules.features.miami-bus-tracker
   ];
 
@@ -93,29 +91,10 @@ with lib; {
         AllowUsers = ["neoscode"];
       };
     };
-
-    cloudflared = {
-      enable = true;
-      tunnels = {
-        "0998f771c-00d1-4caa-9c82-de93b57c89a0" = {
-          credentialsFile = "/home/neoscode/.cloudflared/998f771c-00d1-4caa-9c82-de93b57c89a0.json";
-          default = "http_status:404";
-        };
-      };
-    };
   };
 
   programs = {
     wireshark.enable = true;
-  };
-
-  # Force-install Violentmonkey into chromium (used by the webapps module).
-  # Must be "<id>;<update_url>" — a bare id no-ops; chromium needs the Web Store
-  # update URL to actually fetch the extension.
-  environment.etc."chromium/policies/managed/webapps.json".text = builtins.toJSON {
-    ExtensionInstallForcelist = [
-      "jinjaccalgkegednnccohejagnlnfdag;https://clients2.google.com/service/update2/crx"
-    ];
   };
 
   environment.systemPackages = with pkgs; [
@@ -152,13 +131,7 @@ with lib; {
 
   modules = {
     desktop = {
-      # niri comes from the niri subflake module, imported by the desktop preset
       niri.enable = true;
-
-      kde = {
-        enableSddm = false;
-        useGnomeKeyring = true;
-      };
     };
 
     core = {
