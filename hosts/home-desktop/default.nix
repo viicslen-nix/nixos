@@ -4,7 +4,6 @@
   inputs,
   nixosModules,
   config,
-  users,
   ...
 }:
 with lib; {

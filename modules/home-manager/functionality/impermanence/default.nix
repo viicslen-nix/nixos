@@ -2,7 +2,6 @@
   flake.modules.homeManager.impermanence = {
     lib,
     config,
-    inputs,
     ...
   }:
     with lib; let

@@ -2,7 +2,6 @@
   flake.modules.homeManager.git = {
     lib,
     config,
-    pkgs,
     ...
   }:
     with lib; let

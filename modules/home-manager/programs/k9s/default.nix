@@ -1,7 +1,6 @@
 {
   flake.modules.homeManager.k9s = {
     lib,
-    pkgs,
     config,
     ...
   }:

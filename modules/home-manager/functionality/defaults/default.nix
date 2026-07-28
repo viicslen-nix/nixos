@@ -2,7 +2,6 @@
   flake.modules.homeManager.defaults = {
     lib,
     config,
-    osConfig,
     ...
   }:
     with lib; let
