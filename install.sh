@@ -14,7 +14,7 @@ DISK=$2
 confirm() {
   echo "$1"
   read -p "Proceed with this command? (y/n): " CONFIRM
-  if [[ ! "$CONFIRM" =~ ^[Yy]$ ]]; then
+  if [[ ! $CONFIRM =~ ^[Yy]$ ]]; then
     echo "Skipping command."
     return 1
   fi

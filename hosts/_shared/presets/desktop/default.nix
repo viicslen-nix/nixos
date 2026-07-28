@@ -42,7 +42,6 @@ in {
     # Flag graphical hosts so work/personal can gate their GUI-only packages.
     modules.presets.desktop.enable = true;
 
-
     # Boot splash on graphical hosts.
     boot.plymouth.enable = true;
 

@@ -22,7 +22,6 @@ with lib; {
   # (no host-specific home-manager config)
   services.displayManager.defaultSession = "niri";
 
-
   boot = {
     binfmt.emulatedSystems = ["aarch64-linux"];
     kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
@@ -111,8 +110,6 @@ with lib; {
     };
 
     programs = {
-
-
       docker = {
         nvidiaSupport = true;
         storageDriver = "btrfs";

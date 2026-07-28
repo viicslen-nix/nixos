@@ -1,53 +1,51 @@
 {
-  flake.modules.homeManager.alacritty =
-{
-  lib,
-  config,
-  ...
-}:
-with lib; let
-  name = "alacritty";
-  namespace = "features";
+  flake.modules.homeManager.alacritty = {
+    lib,
+    config,
+    ...
+  }:
+    with lib; let
+      name = "alacritty";
+      namespace = "features";
 
-  cfg = config.modules.${namespace}.${name};
-in {
-  options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name) // {default = true;};
+      cfg = config.modules.${namespace}.${name};
+    in {
+      options.modules.${namespace}.${name} = {
+        enable = mkEnableOption (mdDoc name) // {default = true;};
 
-    tmuxIntegration = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Enable TMUX integration";
-    };
-  };
-
-  config = mkIf cfg.enable {
-    programs.alacritty = {
-      enable = true;
-      settings = {
-        live_config_reload = true;
-
-        shell = mkIf cfg.tmuxIntegration {
-          program = "zsh";
-          args = ["-l" "-c" "tmux attach || tmux"];
+        tmuxIntegration = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Enable TMUX integration";
         };
+      };
 
-        font = {
-          offset = {
-            y = 0;
-            x = 0;
-          };
+      config = mkIf cfg.enable {
+        programs.alacritty = {
+          enable = true;
+          settings = {
+            live_config_reload = true;
 
-          glyph_offset = {
-            y = 0;
-            x = 0;
+            shell = mkIf cfg.tmuxIntegration {
+              program = "zsh";
+              args = ["-l" "-c" "tmux attach || tmux"];
+            };
+
+            font = {
+              offset = {
+                y = 0;
+                x = 0;
+              };
+
+              glyph_offset = {
+                y = 0;
+                x = 0;
+              };
+            };
+
+            window.startup_mode = "Maximized";
           };
         };
-
-        window.startup_mode = "Maximized";
       };
     };
-  };
-}
-  ;
 }

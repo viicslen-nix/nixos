@@ -1,28 +1,26 @@
 {
-  flake.modules.nixos.razer =
-{
-  lib,
-  config,
-  users,
-  ...
-}:
-with lib; let
-  name = "razer";
-  namespace = "hardware";
+  flake.modules.nixos.razer = {
+    lib,
+    config,
+    users,
+    ...
+  }:
+    with lib; let
+      name = "razer";
+      namespace = "hardware";
 
-  cfg = config.modules.${namespace}.${name};
-in {
-  options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name) // {default = true;};
-  };
+      cfg = config.modules.${namespace}.${name};
+    in {
+      options.modules.${namespace}.${name} = {
+        enable = mkEnableOption (mdDoc name) // {default = true;};
+      };
 
-  config = mkIf cfg.enable {
-    hardware.openrazer = {
-      enable = true;
-      users = attrNames users;
+      config = mkIf cfg.enable {
+        hardware.openrazer = {
+          enable = true;
+          users = attrNames users;
+        };
+        boot.extraModulePackages = with config.boot.kernelPackages; [openrazer];
+      };
     };
-    boot.extraModulePackages = with config.boot.kernelPackages; [openrazer];
-  };
-}
-  ;
 }

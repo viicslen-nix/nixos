@@ -1,93 +1,91 @@
 {
-  flake.modules.homeManager.nushell =
-{
-  lib,
-  pkgs,
-  config,
-  inputs,
-  ...
-}:
-with lib; let
-  name = "nushell";
-  namespace = "programs";
+  flake.modules.homeManager.nushell = {
+    lib,
+    pkgs,
+    config,
+    inputs,
+    ...
+  }:
+    with lib; let
+      name = "nushell";
+      namespace = "programs";
 
-  cfg = config.modules.${namespace}.${name};
-in {
-  options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "nushell") // {default = true;};
-  };
-
-  config = mkIf cfg.enable {
-    home.shell.enableNushellIntegration = true;
-
-    programs = {
-      nushell = {
-        enable = true;
-
-        shellAliases = {
-          pn = "pnpm";
-          vim = "nvim";
-          cat = "bat";
-          ts = "tmux-session";
-          ds = "dev-shell";
-          dsl = "dev-shell laravel";
-          dsk = "dev-shell kubernetes";
-          o = "xdg-open";
-          spf = "search-package-files";
-          g = "git";
-          ss = "sesh-sessions";
-
-          k = "kubectl";
-          kga = "kubectl get all";
-          kgp = "kubectl get pods";
-          kdp = "kubectl describe pod";
-          kcuc = "kubectl config use-context";
-          krr = "kubectl rollout restart";
-
-          dep = "vendor/bin/dep";
-          sail = "vendor/bin/sail";
-          s = "vendor/bin/sail";
-          sud = "vendor/bin/sail up -d";
-          sdown = "vendor/bin/sail down";
-          art = "vendor/bin/sail artisan";
-          sa = "vendor/bin/sail artisan";
-          sc = "vendor/bin/sail composer";
-          sp = "vendor/bin/sail php";
-          sn = "vendor/bin/sail npm";
-          st = "vendor/bin/sail tinker";
-          sd = "vendor/bin/sail debug";
-          sda = "vendor/bin/sail debug artisan";
-        };
-
-        plugins = with pkgs.nushellPlugins; [
-          query
-          formats
-          # highlight
-        ];
-
-        extraConfig = ''
-          ${(builtins.unsafeDiscardStringContext (builtins.readFile ./config.nu))}
-
-          source ${inputs.nu-scripts}/custom-completions/nix/nix-completions.nu
-        '';
-
-        extraEnv = ''
-          $env.PATH = ($env.PATH | prepend ($env.HOME | path join ".local" "bin"))
-        '';
+      cfg = config.modules.${namespace}.${name};
+    in {
+      options.modules.${namespace}.${name} = {
+        enable = mkEnableOption (mdDoc "nushell") // {default = true;};
       };
 
-      # Needed for completions
-      fish.enable = true;
+      config = mkIf cfg.enable {
+        home.shell.enableNushellIntegration = true;
 
-      # Integrations
-      keychain.enableNushellIntegration = true;
-      direnv.enableNushellIntegration = true;
-      carapace.enableNushellIntegration = true;
-      atuin.enableNushellIntegration = true;
-      zoxide.enableNushellIntegration = true;
-      yazi.enableNushellIntegration = true;
+        programs = {
+          nushell = {
+            enable = true;
+
+            shellAliases = {
+              pn = "pnpm";
+              vim = "nvim";
+              cat = "bat";
+              ts = "tmux-session";
+              ds = "dev-shell";
+              dsl = "dev-shell laravel";
+              dsk = "dev-shell kubernetes";
+              o = "xdg-open";
+              spf = "search-package-files";
+              g = "git";
+              ss = "sesh-sessions";
+
+              k = "kubectl";
+              kga = "kubectl get all";
+              kgp = "kubectl get pods";
+              kdp = "kubectl describe pod";
+              kcuc = "kubectl config use-context";
+              krr = "kubectl rollout restart";
+
+              dep = "vendor/bin/dep";
+              sail = "vendor/bin/sail";
+              s = "vendor/bin/sail";
+              sud = "vendor/bin/sail up -d";
+              sdown = "vendor/bin/sail down";
+              art = "vendor/bin/sail artisan";
+              sa = "vendor/bin/sail artisan";
+              sc = "vendor/bin/sail composer";
+              sp = "vendor/bin/sail php";
+              sn = "vendor/bin/sail npm";
+              st = "vendor/bin/sail tinker";
+              sd = "vendor/bin/sail debug";
+              sda = "vendor/bin/sail debug artisan";
+            };
+
+            plugins = with pkgs.nushellPlugins; [
+              query
+              formats
+              # highlight
+            ];
+
+            extraConfig = ''
+              ${(builtins.unsafeDiscardStringContext (builtins.readFile ./config.nu))}
+
+              source ${inputs.nu-scripts}/custom-completions/nix/nix-completions.nu
+            '';
+
+            extraEnv = ''
+              $env.PATH = ($env.PATH | prepend ($env.HOME | path join ".local" "bin"))
+            '';
+          };
+
+          # Needed for completions
+          fish.enable = true;
+
+          # Integrations
+          keychain.enableNushellIntegration = true;
+          direnv.enableNushellIntegration = true;
+          carapace.enableNushellIntegration = true;
+          atuin.enableNushellIntegration = true;
+          zoxide.enableNushellIntegration = true;
+          yazi.enableNushellIntegration = true;
+        };
+      };
     };
-  };
-}
-  ;
 }

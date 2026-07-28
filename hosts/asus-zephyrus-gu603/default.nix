@@ -43,7 +43,6 @@ with lib; {
     };
   };
 
-
   networking = {
     hostId = "86f2c355";
     hostName = "asus-zephyrus-gu603";

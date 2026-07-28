@@ -33,90 +33,90 @@ with lib; {
       homeModules.programs.k9s
       homeModules.programs.krr
       ({pkgs, ...}: {
-      programs = {
-        ssh.settings = {
-          "FmTod" = {
-            HostName = "webapps";
-            User = "fmtod";
+        programs = {
+          ssh.settings = {
+            "FmTod" = {
+              HostName = "webapps";
+              User = "fmtod";
+            };
+
+            "SellDiam" = {
+              HostName = "webapps";
+              User = "inventory";
+            };
+
+            "DOS" = {
+              HostName = "storesites";
+              User = "dostov";
+            };
+
+            "BLVD" = {
+              HostName = "storesites";
+              User = "diamondblvd";
+            };
+
+            "EXB" = {
+              HostName = "storesites";
+              User = "extrabrilliant";
+            };
+
+            "DTC" = {
+              HostName = "storesites";
+              User = "diamondtraces";
+            };
+
+            "NFC" = {
+              HostName = "storesites";
+              User = "naturalfacet";
+            };
+
+            "TJD" = {
+              HostName = "storesites";
+              User = "tiffanyjonesdesigns";
+            };
+
+            "47DD" = {
+              HostName = "storesites";
+              User = "47diamonddistrict";
+            };
+
+            "PELA" = {
+              HostName = "storesites";
+              User = "pelagrino";
+            };
           };
-    
-          "SellDiam" = {
-            HostName = "webapps";
-            User = "inventory";
+
+          claude-code = let
+            claudeCodeRepo = pkgs.fetchFromGitHub {
+              owner = "anthropics";
+              repo = "claude-code";
+              rev = "main";
+              sha256 = "sha256-2Kd4oSU3vuDlbo1024hyY0cBA5oeeBPaMWmS3caH6wc=";
+            };
+          in {
+            enable = true;
+            package = pkgs.inputs.llm-agents.claude-code;
+            plugins.ralph-wiggum = "${claudeCodeRepo}/plugins/ralph-wiggum";
           };
-    
-          "DOS" = {
-            HostName = "storesites";
-            User = "dostov";
+          antigravity-cli = {
+            enable = true;
+            package = pkgs.inputs.llm-agents.antigravity-cli;
           };
-    
-          "BLVD" = {
-            HostName = "storesites";
-            User = "diamondblvd";
-          };
-    
-          "EXB" = {
-            HostName = "storesites";
-            User = "extrabrilliant";
-          };
-    
-          "DTC" = {
-            HostName = "storesites";
-            User = "diamondtraces";
-          };
-    
-          "NFC" = {
-            HostName = "storesites";
-            User = "naturalfacet";
-          };
-    
-          "TJD" = {
-            HostName = "storesites";
-            User = "tiffanyjonesdesigns";
-          };
-    
-          "47DD" = {
-            HostName = "storesites";
-            User = "47diamonddistrict";
-          };
-    
-          "PELA" = {
-            HostName = "storesites";
-            User = "pelagrino";
+          github-copilot-cli = {
+            enable = true;
+            package = pkgs.inputs.llm-agents.copilot-cli;
           };
         };
-    
-        claude-code = let
-          claudeCodeRepo = pkgs.fetchFromGitHub {
-            owner = "anthropics";
-            repo = "claude-code";
-            rev = "main";
-            sha256 = "sha256-2Kd4oSU3vuDlbo1024hyY0cBA5oeeBPaMWmS3caH6wc=";
+
+        modules.programs = {
+          zed.enable = true;
+          opencode.enable = true;
+          krr = {
+            enableK9sIntegration = true;
+            package = pkgs.inputs.packages.kubernetes.krr;
           };
-        in {
-          enable = true;
-          package = pkgs.inputs.llm-agents.claude-code;
-          plugins.ralph-wiggum = "${claudeCodeRepo}/plugins/ralph-wiggum";
+          ai.commands.skill-assessment-review = ./ai/skill-assessment-review.md;
         };
-        antigravity-cli = {
-          enable = true;
-          package = pkgs.inputs.llm-agents.antigravity-cli;
-        };
-        github-copilot-cli = {
-          enable = true;
-          package = pkgs.inputs.llm-agents.copilot-cli;
-        };
-      };
-    
-      modules.programs = {
-        zed.enable = true;
-        opencode.enable = true;
-        krr = {
-          enableK9sIntegration = true;
-          package = pkgs.inputs.packages.kubernetes.krr;
-        };
-        ai.commands.skill-assessment-review = ./ai/skill-assessment-review.md;
-      };
       })
     ];
 
@@ -134,7 +134,6 @@ with lib; {
       };
 
       programs = {
-
         # Docker with the common dev port set. Hosts add hardware-specific bits
         # (nvidiaSupport, storageDriver). WSL force-disables the daemon itself.
         docker = {
@@ -158,7 +157,6 @@ with lib; {
           ];
         };
       };
-
     };
 
     programs.zsh.shellAliases = {

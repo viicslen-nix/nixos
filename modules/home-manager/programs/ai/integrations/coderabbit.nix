@@ -2,7 +2,7 @@
   lib,
   cfg,
   isAttrs,
-}: 
+}:
 with lib; {
   commands = {
     coderabbit-review = ../commands/coderabbit/review.md;
