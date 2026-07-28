@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.containers =
+  flake.modules.nixos.containers =
 {
   lib,
   pkgs,

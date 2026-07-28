@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.zen-browser =
+  flake.modules.homeManager.zen-browser =
 {
   lib,
   pkgs,

@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.ray =
+  flake.modules.homeManager.ray =
 {
   lib,
   pkgs,

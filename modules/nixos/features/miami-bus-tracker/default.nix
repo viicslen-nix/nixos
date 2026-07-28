@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.miami-bus-tracker =
+  flake.modules.nixos.miami-bus-tracker =
 {
   config,
   lib,

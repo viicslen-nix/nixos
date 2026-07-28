@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.qdrant =
+  flake.modules.nixos.qdrant =
 {
   lib,
   config,

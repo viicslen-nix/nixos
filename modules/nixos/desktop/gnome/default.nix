@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.gnome =
+  flake.modules.nixos.gnome =
 {
   lib,
   pkgs,

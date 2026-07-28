@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.tinkerwell =
+  flake.modules.homeManager.tinkerwell =
 {
   lib,
   pkgs,

@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.defaults =
+  flake.modules.homeManager.defaults =
 {
   lib,
   config,

@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.one-password =
+  flake.modules.nixos.one-password =
 {
   lib,
   pkgs,

@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.razer =
+  flake.modules.nixos.razer =
 {
   lib,
   config,

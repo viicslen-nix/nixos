@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.krr =
+  flake.modules.homeManager.krr =
 {
   lib,
   pkgs,

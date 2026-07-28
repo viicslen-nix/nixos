@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.git =
+  flake.modules.homeManager.git =
 {
   lib,
   config,

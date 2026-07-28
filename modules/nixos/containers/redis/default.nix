@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.redis =
+  flake.modules.nixos.redis =
 {
   lib,
   config,

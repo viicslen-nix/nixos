@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.impermanence =
+  flake.modules.homeManager.impermanence =
 {
   lib,
   config,

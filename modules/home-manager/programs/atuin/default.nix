@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.atuin =
+  flake.modules.homeManager.atuin =
 {
   lib,
   config,

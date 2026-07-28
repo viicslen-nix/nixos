@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.buggregator =
+  flake.modules.nixos.buggregator =
 {
   lib,
   config,

@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.alacritty =
+  flake.modules.homeManager.alacritty =
 {
   lib,
   config,

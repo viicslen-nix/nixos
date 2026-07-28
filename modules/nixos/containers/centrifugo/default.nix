@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.centrifugo =
+  flake.modules.nixos.centrifugo =
 {
   lib,
   pkgs,

@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.vitess =
+  flake.modules.nixos.vitess =
 {
   lib,
   config,

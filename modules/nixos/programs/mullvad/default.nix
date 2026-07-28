@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.mullvad =
+  flake.modules.nixos.mullvad =
 {
   lib,
   pkgs,

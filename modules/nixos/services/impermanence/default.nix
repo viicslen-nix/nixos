@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.impermanence =
+  flake.modules.nixos.impermanence =
 {
   lib,
   pkgs,

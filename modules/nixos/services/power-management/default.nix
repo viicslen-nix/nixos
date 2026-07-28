@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.power-management =
+  flake.modules.nixos.power-management =
 {
   lib,
   config,

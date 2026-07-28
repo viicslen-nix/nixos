@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.meilisearch =
+  flake.modules.nixos.meilisearch =
 {
   lib,
   config,

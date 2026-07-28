@@ -1,15 +1,14 @@
 # Module discovery.
 #
 # Every `default.nix` under ../modules/{nixos,home-manager} is itself a
-# flake-parts module registering one entry under `flake.nixosModules.<name>` or
-# `flake.homeManagerModules.<name>`, named after its directory. Adding a module
-# is just adding a file, at any depth.
+# flake-parts module registering one entry under `flake.modules.nixos.<name>` or
+# `flake.modules.homeManager.<name>` (the native dendritic output, enabled in
+# flake-modules.nix), named after its directory. Adding a module is just adding
+# a file, at any depth.
 #
-# flake-parts types `flake.nixosModules` as `lazyAttrsOf deferredModule` and
-# wraps each *top-level* entry in `{_class; _file; imports;}`, so that attrset
-# has to stay flat. To keep the directory namespaces at import sites we build a
-# nested view over it and hand that to hosts as the `nixosModules` /
-# `homeModules` specialArgs:
+# `flake.modules.<class>` is flat within a class. To keep the directory
+# namespaces at import sites we build a nested view over it and hand that to
+# hosts as the `nixosModules` / `homeModules` specialArgs:
 #
 #   imports = with nixosModules; [hardware.nvidia programs.docker];
 #
@@ -73,10 +72,10 @@
 
   nixosTree =
     assert assertUnique ../modules/nixos;
-      mkTree ../modules/nixos config.flake.nixosModules;
+      mkTree ../modules/nixos config.flake.modules.nixos;
   homeTree =
     assert assertUnique ../modules/home-manager;
-      mkTree ../modules/home-manager config.flake.homeManagerModules;
+      mkTree ../modules/home-manager config.flake.modules.homeManager;
 in {
   imports = discover ../modules/nixos ++ discover ../modules/home-manager;
 

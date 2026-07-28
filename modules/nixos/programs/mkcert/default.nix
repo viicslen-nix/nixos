@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.mkcert =
+  flake.modules.nixos.mkcert =
 {
   lib,
   pkgs,

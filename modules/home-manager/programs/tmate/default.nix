@@ -1,5 +1,5 @@
 {
-  flake.homeManagerModules.tmate =
+  flake.modules.homeManager.tmate =
 {
   lib,
   config,

@@ -1,5 +1,5 @@
 {
-  flake.nixosModules.soketi =
+  flake.modules.nixos.soketi =
 {
   lib,
   config,
