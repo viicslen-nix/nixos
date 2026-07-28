@@ -152,7 +152,7 @@
                 "--providers.http.endpoint=http://traefik-admin:3000/api/traefik/config"
                 "--providers.http.pollInterval=10s"
               ];
-            log-driver = containerCfg.log-driver;
+            inherit (containerCfg) log-driver;
           };
 
           traefik-admin-db = mkIf cfg.admin.enable {
@@ -172,7 +172,7 @@
               POSTGRES_PASSWORD = cfg.admin.dbPassword;
               POSTGRES_DB = "traefik_admin";
             };
-            log-driver = containerCfg.log-driver;
+            inherit (containerCfg) log-driver;
           };
 
           traefik-admin = mkIf cfg.admin.enable {
@@ -202,7 +202,7 @@
               NEXTAUTH_SECRET = cfg.admin.nextAuthSecret;
               NEXTAUTH_URL = "https://${cfg.admin.host}";
             };
-            log-driver = containerCfg.log-driver;
+            inherit (containerCfg) log-driver;
           };
         };
 
@@ -227,7 +227,7 @@
             };
             script = let
               customCerts =
-                mapAttrsToList (domain: cert: {
+                mapAttrsToList (_domain: cert: {
                   certFile = "/custom-certs/${baseNameOf cert.certFile}";
                   keyFile = "/custom-certs/${baseNameOf cert.keyFile}";
                 })
@@ -239,7 +239,7 @@
                   certFile = "/custom-certs/${replaceStrings ["*"] ["wildcard"] domain}.crt";
                   keyFile = "/custom-certs/${replaceStrings ["*"] ["wildcard"] domain}.key";
                   # Keep the original domain for SNI matching
-                  domain = domain;
+                  inherit domain;
                 })
                 config.modules.programs.mkcert.domains;
 

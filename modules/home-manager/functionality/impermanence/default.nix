@@ -75,7 +75,7 @@
           }
           // (
             if (length cfg.files) > 0
-            then {files = cfg.files;}
+            then {inherit (cfg) files;}
             else {}
           );
       };

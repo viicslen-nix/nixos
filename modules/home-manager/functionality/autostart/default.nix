@@ -42,8 +42,8 @@
       genDesktopEntryPath = app: let
         normalized = normalizeApp app;
         pkg = normalized.package;
-        args = normalized.args;
-        delay = normalized.delay;
+        inherit (normalized) args;
+        inherit (normalized) delay;
         exePath = lib.getExe pkg;
         command = lib.escapeShellArgs ([exePath] ++ args);
         execLine =

@@ -102,7 +102,7 @@
             base16Scheme = cfg.scheme;
 
             image = cfg.wallpaper;
-            polarity = cfg.polarity;
+            inherit (cfg) polarity;
 
             cursor = {
               name = "Bibata-Modern-Classic";
