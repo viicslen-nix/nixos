@@ -1,20 +1,45 @@
 # Pre-commit hooks, via git-hooks.nix. Exposes `checks.pre-commit` (so
-# `nix flake check` runs them) and an installation script wired into the dev
-# shells (see dev-shells.nix), so the hooks install on `nix develop`.
+# `nix flake check` and CI run them) and an installation script wired into the
+# dev shells (see dev-shells.nix), so the hooks install on `nix develop`.
+#
+# Scope: secrets only. Formatting is already gated by parts/treefmt.nix (which
+# runs alejandra), so it is not duplicated here.
+#
+# deadnix and statix are deliberately NOT enabled as commit gates: both declare
+# `pass_filenames = false` and scan from the repo root, so they ignore
+# pre-commit's `excludes` and lint the flakes/* submodules — separate repos
+# whose code is not ours to fix. They also surface stylistic findings (repeated
+# key assignments) that `statix fix` cannot resolve automatically. Run them by
+# hand when doing a cleanup pass:
+#
+#   nix run nixpkgs#deadnix -- --edit modules parts overlays dev-shells users hosts
+#   nix run nixpkgs#statix -- fix modules parts overlays dev-shells users hosts
 {inputs, ...}: {
   imports = [inputs.git-hooks.flakeModule];
 
-  perSystem = _: {
-    pre-commit.settings.hooks = {
-      alejandra.enable = true; # format nix
-      deadnix.enable = true; # dead nix code (unused args/bindings)
-      statix.enable = true; # nix anti-patterns
+  perSystem = {pkgs, ...}: {
+    pre-commit.settings = {
+      # Mirrors parts/treefmt.nix: flakes/* are submodules, and personal/ai/* is
+      # vendored content read verbatim into the home config.
+      excludes = [
+        "^flakes/"
+        "^hosts/_shared/presets/personal/ai/"
+      ];
 
-      # Block secrets before they commit. ripsecrets catches API keys/tokens,
-      # detect-private-keys catches key material. gitleaks (the deeper scan)
-      # runs in CI — see .github/workflows/gitleaks.yml.
-      ripsecrets.enable = true;
-      detect-private-keys.enable = true;
+      hooks = {
+        # Same tool CI runs (.github/workflows/gitleaks.yml), so local and CI
+        # agree. It scans the tree itself, hence pass_filenames = false.
+        # ripsecrets was tried first but flagged keybindings such as
+        # `key = "Ctrl+Shift+Space"` as secrets.
+        gitleaks = {
+          enable = true;
+          name = "gitleaks";
+          entry = "${pkgs.gitleaks}/bin/gitleaks dir --no-banner --redact";
+          pass_filenames = false;
+        };
+
+        detect-private-keys.enable = true;
+      };
     };
   };
 }
