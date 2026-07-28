@@ -1,0 +1,66 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Cancel superseded runs on the same ref.
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Fast gate: formatting (treefmt) and lint (alejandra/deadnix/statix via
+  # pre-commit). These are the flake's own checks, so CI and local
+  # `nix flake check` agree.
+  format-and-lint:
+    runs-on: ubuntu-latest
+    name: Format & lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - name: Setup Nix Build Environment
+        uses: ./.github/actions/setup-nix-build
+
+      - name: treefmt + pre-commit
+        run: |
+          nix build --print-build-logs \
+            .#checks.x86_64-linux.treefmt \
+            .#checks.x86_64-linux.pre-commit
+
+  # Build each evaluable host's toplevel (the flake's host-* checks). wsl and
+  # lenovo-legion-go are excluded in parts/checks.nix (pre-existing eval
+  # failures), so this never trips over them — and we target the check attrs
+  # directly rather than `nix flake check`, which would evaluate every
+  # nixosConfiguration.
+  build-hosts:
+    runs-on: ubuntu-latest
+    name: Build ${{ matrix.host }}
+    strategy:
+      fail-fast: false
+      matrix:
+        host:
+          - dostov-dev
+          - home-desktop
+          - asus-zephyrus-gu603
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - name: Setup Nix Build Environment
+        uses: ./.github/actions/setup-nix-build
+
+      - name: Build host check
+        run: |
+          nix build --print-build-logs --keep-going \
+            --option cores 0 --option max-jobs auto \
+            --option extra-substituters "https://nixpkgs-wayland.cachix.org https://ghostty.cachix.org https://attic.xuyh0120.win/lantian https://cache.numtide.com" \
+            --option extra-trusted-public-keys "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA= ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns= lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc= niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g=" \
+            .#checks.x86_64-linux.host-${{ matrix.host }}

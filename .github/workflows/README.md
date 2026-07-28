@@ -4,6 +4,21 @@ This directory contains GitHub Actions workflows for the NixOS configuration rep
 
 ## Workflow Structure
 
+### CI: Checks (`checks.yml`)
+
+Runs on every push to `main`, on pull requests, and on demand. It runs the
+flake's own `checks` outputs, so CI and a local `nix flake check` agree:
+
+- **`format-and-lint`** — builds `checks.x86_64-linux.{treefmt,pre-commit}`
+  (alejandra formatting + deadnix/statix lint). Fast; the primary gate.
+- **`build-hosts`** — matrix that builds each evaluable host's toplevel via the
+  `host-<name>` checks, with the repo's binary caches wired in so the Wayland
+  closure substitutes instead of compiling. `wsl` and `lenovo-legion-go` are
+  excluded (see `parts/checks.nix`) because they currently fail to evaluate for
+  pre-existing reasons. The job targets the check attributes directly rather
+  than `nix flake check`, which would evaluate *every* `nixosConfiguration` and
+  trip over those two.
+
 ### Main Workflow: Build ISO Images (`build-iso.yml`)
 
 A manually triggered workflow that orchestrates building of ISO installation images for different target systems.
