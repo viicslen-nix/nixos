@@ -62,8 +62,13 @@ with lib; {
 
   services = {
     blueman.enable = true;
-    tailscale.enable = true;
     ghost-backup.enable = true;
+
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      extraUpFlags = ["--ssh"];
+    };
 
     displayManager = {
       defaultSession = "niri";

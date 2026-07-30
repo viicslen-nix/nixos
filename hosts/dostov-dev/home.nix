@@ -71,4 +71,12 @@
   programs.dank-material-shell.niri.includes.filesToInclude = [
     "custom"
   ];
+
+  services = {
+    tailscale-systray = {
+      enable = true;
+      theme = "dark:nobg";
+    };
+    trayscale.enable = true;
+  };
 }
