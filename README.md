@@ -123,6 +123,18 @@ just update-main
 just update-input nixpkgs
 just update-subflake niri
 
+# List the local packages in flakes/packages
+just packages
+
+# Check GitHub-sourced local packages against their latest upstream release
+just outdated
+
+# Bump version + hash of a local package in flakes/packages (nix-update)
+just bump app-images.t3code
+just bump coderabbit --version 0.4.5   # upstream nix-update can't autodetect
+just bump-all                          # sweep every local package
+just bump-outdated                     # bump only what `just outdated` flags
+
 # Rebuild and switch (nh wrapper); use boot/test in place of switch as needed
 just upgrade switch
 
