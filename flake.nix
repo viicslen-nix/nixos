@@ -184,6 +184,7 @@
     ghostty.url = "github:ghostty-org/ghostty";
     lan-mouse.url = "github:feschber/lan-mouse";
     nix-alien.url = "github:thiagokokada/nix-alien";
+    tuicr.url = "github:agavra/tuicr";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
