@@ -241,11 +241,13 @@ with lib; {
         ferdium
         sublime4
         sublime-merge
+        pkgs.inputs.tuicr.default
+        pkgs.inputs.llm-agents.claude-desktop
+        pkgs.inputs.packages.php.phpstorm-light
         pkgs.inputs.packages.app-images.responsively
         pkgs.inputs.packages.app-images.t3code
         pkgs.inputs.packages.superset.desktop
         pkgs.inputs.packages.github.copilot-desktop
-        pkgs.inputs.llm-agents.claude-desktop
       ];
 
     nixpkgs.config.permittedInsecurePackages = [
