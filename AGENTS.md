@@ -97,6 +97,22 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **Update recipes.** `just update` updates every subflake *and* all root
   inputs; `just update-main` = root inputs only; `just update-input <x>` /
   `just update-subflake <x>` for one.
+- **Bumping local packages.** `just packages` lists the attrs; `just outdated`
+  compares every GitHub-sourced one against upstream's latest release (read-only,
+  uses `gh`; `-` = the repo has no matching release, e.g. rev-pinned plugins);
+  `just bump <attr>` wraps `nix-update --flake` inside
+  `flakes/packages`; the attr is the path under `by-name/` (`app-images.t3code`,
+  `superset.cli`, bare `coderabbit`). Version autodetect only works for
+  github/gitlab/pypi/npm/crates upstreams — otherwise pass `--version <x>` (or
+  `--version skip` to refresh the hash of a re-uploaded binary). Multi-platform
+  `fetchurl` needs a second pass with `--system aarch64-linux`. `just bump-all`
+  sweeps every package carrying a src hash and lists the ones it couldn't
+  resolve; `just bump-outdated` bumps exactly what `just outdated` flags.
+  Remember to commit in the submodule + `just update-subflake packages`.
+- **Local packages must interpolate the version into the tag.** Write
+  `tag = "v${version}"` (or `"v${finalAttrs.version}"`), never a literal
+  `rev = "v3.2.1"` — with a literal rev, nix-update rewrites `version` only, so
+  the package silently keeps building the old source at the old hash.
 - **Binary caches.** Substituters live in the `base` preset plus the `desktop`
   preset. The bleeding-edge `nixpkgs-wayland` overlay and its cache are scoped to
   `desktop` (graphical hosts only) — don't move them back into `base`, or
