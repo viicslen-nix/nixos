@@ -1,5 +1,5 @@
 ---
-name: autofix
+name: coderabbit-autofix
 description: Auto-fix CodeRabbit review comments - get CodeRabbit review comments from GitHub and fix them interactively or in batch.
 version: 0.1.0
 ---
