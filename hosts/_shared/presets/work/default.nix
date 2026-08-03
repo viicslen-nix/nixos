@@ -32,7 +32,58 @@ with lib; {
     home-manager.sharedModules = [
       homeModules.programs.k9s
       homeModules.programs.krr
-      ({pkgs, ...}: {
+      ({pkgs, config, ...}: let
+        # Google's MCP server for databases. Distributed as a prebuilt static Go
+        # binary, so it needs no patchelf — it runs on NixOS as-is.
+        mcp-toolbox = pkgs.runCommand "mcp-toolbox-1.8.0" {
+          src = pkgs.fetchurl {
+            url = "https://storage.googleapis.com/mcp-toolbox-for-databases/v1.8.0/linux/amd64/toolbox";
+            hash = "sha256-jArDuXhdFCStPWZ5nCbF2mldc8dMRSJaMBaJv3051xQ=";
+          };
+        } ''
+          mkdir -p $out/bin
+          cp $src $out/bin/toolbox
+          chmod +x $out/bin/toolbox
+        '';
+
+        # Read-only MCP access to the production MariaDB read replica. Brings the
+        # SSH tunnel up (MariaDB binds to the Linode private address only), then
+        # serves it over stdio. The password comes from an agenix secret
+        # decrypted at activation, so MCP clients can spawn this non-interactively
+        # (no 1Password unlock prompt) and it never lands in ~/.claude.json.
+        prod-db-mcp = pkgs.writeShellScriptBin "prod-db-mcp" ''
+          set -euo pipefail
+
+          PORT="''${MYSQL_PORT:-33061}"
+
+          # ponytail: ControlPersist means only the first call actually dials; the
+          # rest reuse the master. `|| true` because ssh exits non-zero when the
+          # forward is already bound, which is the success case here.
+          ssh -fN db-prod-read-tunnel 2>/dev/null || true
+
+          # Fail once, loudly, instead of letting every query surface as a
+          # confusing connection-refused.
+          if ! timeout 5 bash -c "</dev/tcp/127.0.0.1/$PORT" 2>/dev/null; then
+            echo "prod-db-mcp: tunnel not listening on 127.0.0.1:$PORT" >&2
+            exit 1
+          fi
+
+          # The mysql prebuilt refuses to start unless all of these are set.
+          # Only the password is a secret; the rest just describe the tunnel target.
+          export MYSQL_HOST="''${MYSQL_HOST:-127.0.0.1}"
+          export MYSQL_PORT="$PORT"
+          export MYSQL_USER="''${MYSQL_USER:-mcp_readonly}"
+          export MYSQL_DATABASE="''${MYSQL_DATABASE:-mylisterhub_central}"
+          export MYSQL_PASSWORD="$(cat ${config.age.secrets.prod-db-mysql-password.path})"
+          exec ${mcp-toolbox}/bin/toolbox --prebuilt mysql --stdio
+        '';
+      in {
+        age.secrets.prod-db-mysql-password = {
+          file = ../../../../secrets/prod-db/mysql-password.age;
+        };
+
+        home.packages = [mcp-toolbox prod-db-mcp];
+
         programs = {
           ssh.settings = {
             "FmTod" = {
@@ -84,6 +135,22 @@ with lib; {
               HostName = "storesites";
               User = "pelagrino";
             };
+
+            # Tunnel for the read-only MCP database server (see ~/.local/bin/prod-db-mcp).
+            # MariaDB binds to the Linode private address only, so 3306 is unreachable
+            # from outside the datacenter — the forward target is that private IP.
+            "db-prod-read-tunnel" = {
+              HostName = "db-prod-read";
+              User = "root";
+              LocalForward = "33061 192.168.201.159:3306";
+              # Fail the ssh call outright if the forward can't bind, instead of
+              # succeeding and leaving every query to fail with connection-refused.
+              ExitOnForwardFailure = "yes";
+              ServerAliveInterval = 30;
+              ServerAliveCountMax = 3;
+              ControlMaster = "auto";
+              ControlPersist = "30m";
+            };
           };
 
           claude-code = let
@@ -119,7 +186,12 @@ with lib; {
             enableK9sIntegration = true;
             package = pkgs.inputs.packages.kubernetes.krr;
           };
-          ai.commands.skill-assessment-review = ./ai/skill-assessment-review.md;
+          ai = {
+            commands.skill-assessment-review = ./ai/skill-assessment-review.md;
+            mcps.prod-db = {
+              command = (lib.getExe prod-db-mcp);
+            };
+          };
         };
       })
     ];
@@ -131,10 +203,8 @@ with lib; {
       core.network.hosts = {
         "webapps" = "50.116.36.170";
         "storesites" = "23.239.17.196";
-        "db-prod-master" = "50.116.56.10";
-        "db-prod-read" = "50.116.56.249";
-        "db-staging-master" = "45.79.180.78";
-        "db-staging-read" = "45.79.180.88";
+        "db-prod-master" = "45.33.94.139";
+        "db-prod-read" = "45.79.151.62";
       };
 
       programs = {
