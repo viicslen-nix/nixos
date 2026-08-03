@@ -106,6 +106,10 @@ with lib; {
             enable = true;
             package = pkgs.inputs.llm-agents.copilot-cli;
           };
+          codex = {
+            enable = true;
+            package = pkgs.inputs.llm-agents.codex;
+          };
         };
 
         modules.programs = {
@@ -243,6 +247,7 @@ with lib; {
         sublime-merge
         pkgs.inputs.tuicr.default
         pkgs.inputs.llm-agents.claude-desktop
+        pkgs.inputs.llm-agents.antigravity-cli
         pkgs.inputs.packages.php.phpstorm-light
         pkgs.inputs.packages.app-images.responsively
         pkgs.inputs.packages.app-images.t3code
