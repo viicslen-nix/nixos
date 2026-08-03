@@ -188,6 +188,7 @@ with lib; {
           };
           ai = {
             commands.skill-assessment-review = ./ai/skill-assessment-review.md;
+            skills.prod-db-operations = ./ai/prod-db-operations.md;
             mcps.prod-db = {
               command = (lib.getExe prod-db-mcp);
             };
