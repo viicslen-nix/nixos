@@ -32,19 +32,24 @@ with lib; {
     home-manager.sharedModules = [
       homeModules.programs.k9s
       homeModules.programs.krr
-      ({pkgs, config, ...}: let
+      ({
+        pkgs,
+        config,
+        ...
+      }: let
         # Google's MCP server for databases. Distributed as a prebuilt static Go
         # binary, so it needs no patchelf — it runs on NixOS as-is.
-        mcp-toolbox = pkgs.runCommand "mcp-toolbox-1.8.0" {
-          src = pkgs.fetchurl {
-            url = "https://storage.googleapis.com/mcp-toolbox-for-databases/v1.8.0/linux/amd64/toolbox";
-            hash = "sha256-jArDuXhdFCStPWZ5nCbF2mldc8dMRSJaMBaJv3051xQ=";
-          };
-        } ''
-          mkdir -p $out/bin
-          cp $src $out/bin/toolbox
-          chmod +x $out/bin/toolbox
-        '';
+        mcp-toolbox =
+          pkgs.runCommand "mcp-toolbox-1.8.0" {
+            src = pkgs.fetchurl {
+              url = "https://storage.googleapis.com/mcp-toolbox-for-databases/v1.8.0/linux/amd64/toolbox";
+              hash = "sha256-jArDuXhdFCStPWZ5nCbF2mldc8dMRSJaMBaJv3051xQ=";
+            };
+          } ''
+            mkdir -p $out/bin
+            cp $src $out/bin/toolbox
+            chmod +x $out/bin/toolbox
+          '';
 
         # Read-only MCP access to the production MariaDB read replica. Brings the
         # SSH tunnel up (MariaDB binds to the Linode private address only), then
@@ -190,7 +195,7 @@ with lib; {
             commands.skill-assessment-review = ./ai/skill-assessment-review.md;
             skills.prod-db-operations = ./ai/prod-db-operations.md;
             mcps.prod-db = {
-              command = (lib.getExe prod-db-mcp);
+              command = lib.getExe prod-db-mcp;
             };
           };
         };
