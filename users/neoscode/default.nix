@@ -45,6 +45,11 @@ in {
       inputs.packages.python.mempalace
     ];
 
+    # ssh refuses to open a control socket if the ControlPath directory is
+    # missing, which breaks any host using ControlMaster. See the ControlPath
+    # declaration in programs.ssh.settings below.
+    file.".ssh/controlmasters/.keep".text = "";
+
     autostart = [
       {
         package = pkgs._1password-gui;
