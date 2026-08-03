@@ -18,12 +18,10 @@ flake's own `checks` outputs, so CI and a local `nix flake check` agree:
   `nix flake check`, which would evaluate *every* `nixosConfiguration` and trip
   over those two.
 
-The actual **building and binary-caching** of hosts, packages, dev shells and
-the format/lint checks is delegated to [garnix](https://garnix.io) (see
-`garnix.yaml` at the repo root), which serves the results from
-`https://cache.garnix.io` — added as a substituter in the `base` preset so local
-`nixos-rebuild` benefits too, most usefully for the otherwise-uncached
-`flakes/packages` locals.
+Nothing here builds the host toplevels or caches them — this workflow is
+eval-only. (This used to be covered by garnix, which [shut
+down](https://garnix.io/blog/shutting-down/) in July 2026.) The
+`flakes/packages` locals therefore build from source on each host rebuild.
 
 ### Main Workflow: Build ISO Images (`build-iso.yml`)
 
