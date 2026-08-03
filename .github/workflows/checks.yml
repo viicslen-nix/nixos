@@ -34,8 +34,8 @@ jobs:
             .#checks.x86_64-linux.pre-commit
 
   # Fast evaluation gate for each evaluable host: prove the toplevel evaluates
-  # to a derivation without building it. The actual build + caching is done by
-  # garnix (see garnix.yaml), so this stays cheap and gives quick PR feedback.
+  # to a derivation without building it, so this stays cheap and gives quick PR
+  # feedback.
   #
   # wsl and lenovo-legion-go are excluded (pre-existing eval failures). Targets
   # the check attrs directly rather than `nix flake check`, which would evaluate
