@@ -1,280 +1,282 @@
 {
-  lib,
-  pkgs,
-  config,
-  options,
-  inputs,
-  ...
-}:
-with lib; let
-  name = "ai";
-  namespace = "programs";
+  flake.modules.homeManager.ai = {
+    lib,
+    pkgs,
+    config,
+    options,
+    inputs,
+    ...
+  }:
+    with lib; let
+      name = "ai";
+      namespace = "programs";
 
-  cfg = config.modules.${namespace}.${name};
-  mempalaceIntegration = import ./integrations/mempalace.nix {
-    inherit
-      lib
-      cfg
-      pkgs
-      inputs
-      hasMcpOption
-      isAttrs
-      ;
-  };
-  coderabbitIntegration = import ./integrations/coderabbit.nix {
-    inherit
-      lib
-      cfg
-      isAttrs
-      ;
-  };
-
-  commandDefinitionType = types.submodule {
-    options = {
-      prompt = mkOption {
-        type = types.nullOr types.lines;
-        default = null;
-        description = mdDoc "Prompt text for structured command outputs (for example antigravity-cli).";
+      cfg = config.modules.${namespace}.${name};
+      mempalaceIntegration = import ./integrations/mempalace.nix {
+        inherit
+          lib
+          cfg
+          pkgs
+          inputs
+          hasMcpOption
+          isAttrs
+          ;
+      };
+      coderabbitIntegration = import ./integrations/coderabbit.nix {
+        inherit
+          lib
+          cfg
+          isAttrs
+          ;
       };
 
-      description = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-        description = mdDoc "Command description for structured command outputs.";
+      commandDefinitionType = types.submodule {
+        options = {
+          prompt = mkOption {
+            type = types.nullOr types.lines;
+            default = null;
+            description = mdDoc "Prompt text for structured command outputs (for example antigravity-cli).";
+          };
+
+          description = mkOption {
+            type = types.nullOr types.str;
+            default = null;
+            description = mdDoc "Command description for structured command outputs.";
+          };
+
+          content = mkOption {
+            type = types.nullOr (types.either types.lines types.path);
+            default = null;
+            description = mdDoc "Raw markdown command content for markdown-based CLIs.";
+          };
+        };
       };
 
-      content = mkOption {
-        type = types.nullOr (types.either types.lines types.path);
-        default = null;
-        description = mdDoc "Raw markdown command content for markdown-based CLIs.";
-      };
-    };
-  };
-
-  commandValueType = types.oneOf [
-    types.lines
-    types.path
-    commandDefinitionType
-  ];
-
-  sharedContentType = types.attrsOf (types.either types.lines types.path);
-  commandContentType = types.attrsOf commandValueType;
-  sharedSkillsType = types.either (types.attrsOf (types.oneOf [types.lines types.path types.str])) types.path;
-
-  hasMcpOption = hasAttrByPath ["programs" "mcp" "servers"] options;
-  hasOpencodeOption = hasAttrByPath ["programs" "opencode" "commands"] options;
-  hasOpencodeSkillsOption = hasAttrByPath ["programs" "opencode" "skills"] options;
-  hasClaudeCodeOption = hasAttrByPath ["programs" "claude-code" "commands"] options;
-  hasClaudeCodeSkillsOption = hasAttrByPath ["programs" "claude-code" "skills"] options;
-  hasAntigravityOption = hasAttrByPath ["programs" "antigravity-cli" "commands"] options;
-  hasAntigravitySkillsOption = hasAttrByPath ["programs" "antigravity-cli" "skills"] options;
-  hasGithubCopilotCliOption = hasAttrByPath ["programs" "github-copilot-cli" "agents"] options;
-  hasGithubCopilotCliSkillsOption = hasAttrByPath ["programs" "github-copilot-cli" "skills"] options;
-
-  effectiveCommands =
-    cfg.commands
-    // optionalAttrs cfg.mempalace.enable mempalaceIntegration.commands
-    // optionalAttrs cfg.coderabbit.enable coderabbitIntegration.commands;
-  effectiveAgents = cfg.agents // optionalAttrs cfg.coderabbit.enable coderabbitIntegration.agents;
-  effectiveSkills =
-    if isAttrs cfg.skills
-    then
-      cfg.skills
-      // optionalAttrs cfg.mempalace.enable mempalaceIntegration.skills
-      // optionalAttrs cfg.coderabbit.enable coderabbitIntegration.skills
-    else cfg.skills;
-
-  mkDefaultAttrs = attrs: mapAttrs (_: value: mkDefault value) attrs;
-  hasGlobalContext = cfg.context != "";
-  hasGlobalSkills = effectiveSkills != {};
-
-  isPathLike = value:
-    isPath value
-    || (isString value && (hasPrefix builtins.storeDir value || hasPrefix "/" value));
-
-  normalizeCommand = value:
-    if isAttrs value
-    then value
-    else {
-      prompt = null;
-      description = null;
-      content = value;
-    };
-
-  normalizedCommands = mapAttrs (_: value: normalizeCommand value) effectiveCommands;
-
-  toPromptString = command:
-    if command.prompt != null
-    then command.prompt
-    else if command.content == null
-    then ""
-    else if isPathLike command.content
-    then builtins.readFile command.content
-    else command.content;
-
-  toAntigravityCommand = name: command: {
-    prompt = toPromptString command;
-    description =
-      if command.description != null
-      then command.description
-      else "Run ${name} command.";
-  };
-
-  toMarkdownCommand = name: command:
-    if command.content != null
-    then command.content
-    else
-      concatStringsSep "" [
-        (optionalString (command.description != null) "# ${name}\n\n${command.description}\n\n")
-        (toPromptString command)
+      commandValueType = types.oneOf [
+        types.lines
+        types.path
+        commandDefinitionType
       ];
 
-  opencodeCommands = mapAttrs toMarkdownCommand normalizedCommands;
-  claudeCodeCommands = mapAttrs toMarkdownCommand normalizedCommands;
-  antigravityCommands = mapAttrs toAntigravityCommand normalizedCommands;
-in {
-  options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "shared AI tooling");
+      sharedContentType = types.attrsOf (types.either types.lines types.path);
+      commandContentType = types.attrsOf commandValueType;
+      sharedSkillsType = types.either (types.attrsOf (types.oneOf [types.lines types.path types.str])) types.path;
 
-    mcps = mkOption {
-      type = types.attrsOf types.attrs;
-      default = {};
-      description = mdDoc "MCP servers forwarded to `programs.mcp.servers`.";
-      example = literalExpression ''
+      hasMcpOption = hasAttrByPath ["programs" "mcp" "servers"] options;
+      hasOpencodeOption = hasAttrByPath ["programs" "opencode" "commands"] options;
+      hasOpencodeSkillsOption = hasAttrByPath ["programs" "opencode" "skills"] options;
+      hasClaudeCodeOption = hasAttrByPath ["programs" "claude-code" "commands"] options;
+      hasClaudeCodeSkillsOption = hasAttrByPath ["programs" "claude-code" "skills"] options;
+      hasAntigravityOption = hasAttrByPath ["programs" "antigravity-cli" "commands"] options;
+      hasAntigravitySkillsOption = hasAttrByPath ["programs" "antigravity-cli" "skills"] options;
+      hasGithubCopilotCliOption = hasAttrByPath ["programs" "github-copilot-cli" "agents"] options;
+      hasGithubCopilotCliSkillsOption = hasAttrByPath ["programs" "github-copilot-cli" "skills"] options;
+
+      effectiveCommands =
+        cfg.commands
+        // optionalAttrs cfg.mempalace.enable mempalaceIntegration.commands
+        // optionalAttrs cfg.coderabbit.enable coderabbitIntegration.commands;
+      effectiveAgents = cfg.agents // optionalAttrs cfg.coderabbit.enable coderabbitIntegration.agents;
+      effectiveSkills =
+        if isAttrs cfg.skills
+        then
+          cfg.skills
+          // optionalAttrs cfg.mempalace.enable mempalaceIntegration.skills
+          // optionalAttrs cfg.coderabbit.enable coderabbitIntegration.skills
+        else cfg.skills;
+
+      mkDefaultAttrs = attrs: mapAttrs (_: mkDefault) attrs;
+      hasGlobalContext = cfg.context != "";
+      hasGlobalSkills = effectiveSkills != {};
+
+      isPathLike = value:
+        isPath value
+        || (isString value && (hasPrefix builtins.storeDir value || hasPrefix "/" value));
+
+      normalizeCommand = value:
+        if isAttrs value
+        then value
+        else {
+          prompt = null;
+          description = null;
+          content = value;
+        };
+
+      normalizedCommands = mapAttrs (_: normalizeCommand) effectiveCommands;
+
+      toPromptString = command:
+        if command.prompt != null
+        then command.prompt
+        else if command.content == null
+        then ""
+        else if isPathLike command.content
+        then builtins.readFile command.content
+        else command.content;
+
+      toAntigravityCommand = name: command: {
+        prompt = toPromptString command;
+        description =
+          if command.description != null
+          then command.description
+          else "Run ${name} command.";
+      };
+
+      toMarkdownCommand = name: command:
+        if command.content != null
+        then command.content
+        else
+          concatStringsSep "" [
+            (optionalString (command.description != null) "# ${name}\n\n${command.description}\n\n")
+            (toPromptString command)
+          ];
+
+      opencodeCommands = mapAttrs toMarkdownCommand normalizedCommands;
+      claudeCodeCommands = mapAttrs toMarkdownCommand normalizedCommands;
+      antigravityCommands = mapAttrs toAntigravityCommand normalizedCommands;
+    in {
+      options.modules.${namespace}.${name} = {
+        enable = mkEnableOption (mdDoc "shared AI tooling") // {default = true;};
+
+        mcps = mkOption {
+          type = types.attrsOf types.attrs;
+          default = {};
+          description = mdDoc "MCP servers forwarded to `programs.mcp.servers`.";
+          example = literalExpression ''
+            {
+              context7 = {
+                url = "https://mcp.context7.com/mcp";
+              };
+            }
+          '';
+        };
+
+        commands = mkOption {
+          type = commandContentType;
+          default = {};
+          description = mdDoc "Global commands forwarded to enabled AI CLI targets.";
+        };
+
+        agents = mkOption {
+          type = sharedContentType;
+          default = {};
+          description = mdDoc "Global agents forwarded to supported agent targets.";
+        };
+
+        context = mkOption {
+          type = types.either types.lines types.path;
+          default = "";
+          description = mdDoc "Global context forwarded to enabled AI CLI targets.";
+        };
+
+        skills = mkOption {
+          type = sharedSkillsType;
+          default = {};
+          description = mdDoc "Global skills forwarded to enabled AI CLI targets.";
+        };
+
+        targets = {
+          opencode = mkOption {
+            type = types.bool;
+            default = true;
+            description = mdDoc "Forward commands and agents to opencode.";
+          };
+
+          claude-code = mkOption {
+            type = types.bool;
+            default = true;
+            description = mdDoc "Forward commands and agents to claude-code.";
+          };
+
+          antigravity-cli = mkOption {
+            type = types.bool;
+            default = true;
+            description = mdDoc "Forward commands to antigravity-cli.";
+          };
+
+          github-copilot-cli = mkOption {
+            type = types.bool;
+            default = true;
+            description = mdDoc "Forward agents (and MCP integration) to github copilot cli HM module.";
+          };
+        };
+
+        inherit (mempalaceIntegration.options) mempalace;
+        inherit (coderabbitIntegration.options) coderabbit;
+      };
+
+      config = mkIf cfg.enable (mkMerge [
         {
-          context7 = {
-            url = "https://mcp.context7.com/mcp";
+          assertions = [
+            {
+              assertion = all (command: command.content != null || command.prompt != null) (attrValues normalizedCommands);
+              message = "`modules.programs.ai.commands.<name>` must set either `content` or `prompt` when using attribute syntax.";
+            }
+          ];
+
+          warnings =
+            optional (!hasMcpOption && cfg.mcps != {})
+            "`modules.programs.ai.mcps` is set, but `programs.mcp` is unavailable in this Home Manager version."
+            ++ optional (!hasOpencodeOption && cfg.targets.opencode && (effectiveCommands != {} || effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
+            "`modules.programs.ai.targets.opencode` is enabled, but `programs.opencode` is unavailable."
+            ++ optional (!hasClaudeCodeOption && cfg.targets.claude-code && (effectiveCommands != {} || effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
+            "`modules.programs.ai.targets.claude-code` is enabled, but `programs.claude-code` is unavailable."
+            ++ optional (!hasAntigravityOption && cfg.targets.antigravity-cli && (effectiveCommands != {} || hasGlobalContext || hasGlobalSkills))
+            "`modules.programs.ai.targets.antigravity-cli` is enabled, but `programs.antigravity-cli` is unavailable."
+            ++ optional (!hasGithubCopilotCliOption && cfg.targets.github-copilot-cli && (effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
+            "`modules.programs.ai.targets.github-copilot-cli` is enabled, but `programs.github-copilot-cli` is unavailable."
+            ++ optional (!hasOpencodeSkillsOption && cfg.targets.opencode && hasGlobalSkills)
+            "`modules.programs.ai.skills` is set, but `programs.opencode.skills` is unavailable."
+            ++ optional (!hasClaudeCodeSkillsOption && cfg.targets.claude-code && hasGlobalSkills)
+            "`modules.programs.ai.skills` is set, but `programs.claude-code.skills` is unavailable."
+            ++ optional (!hasAntigravitySkillsOption && cfg.targets.antigravity-cli && hasGlobalSkills)
+            "`modules.programs.ai.skills` is set, but `programs.antigravity-cli.skills` is unavailable."
+            ++ optional (!hasGithubCopilotCliSkillsOption && cfg.targets.github-copilot-cli && hasGlobalSkills)
+            "`modules.programs.ai.skills` is set, but `programs.github-copilot-cli.skills` is unavailable."
+            ++ mempalaceIntegration.warnings
+            ++ coderabbitIntegration.warnings;
+
+          programs.mcp = mkIf (hasMcpOption && cfg.mcps != {}) {
+            enable = mkDefault true;
+            servers = mkDefaultAttrs cfg.mcps;
           };
         }
-      '';
+        (mkIf (hasOpencodeOption && cfg.targets.opencode) {
+          programs.opencode = {
+            enableMcpIntegration = true;
+            commands = mkDefaultAttrs opencodeCommands;
+            agents = mkDefaultAttrs effectiveAgents;
+            context = mkIf hasGlobalContext (mkDefault cfg.context);
+            skills = mkIf (hasGlobalSkills && hasOpencodeSkillsOption) (mkDefault effectiveSkills);
+          };
+        })
+        (mkIf (hasClaudeCodeOption && cfg.targets.claude-code) {
+          programs.claude-code = {
+            enableMcpIntegration = true;
+            commands = mkDefaultAttrs claudeCodeCommands;
+            agents = mkDefaultAttrs effectiveAgents;
+            context = mkIf hasGlobalContext (mkDefault cfg.context);
+            skills = mkIf (hasGlobalSkills && hasClaudeCodeSkillsOption) (mkDefault effectiveSkills);
+          };
+        })
+        (mkIf (hasAntigravityOption && cfg.targets.antigravity-cli) {
+          programs.antigravity-cli = {
+            enableMcpIntegration = true;
+            commands = mkDefaultAttrs antigravityCommands;
+            context = mkIf hasGlobalContext {
+              GEMINI = mkDefault cfg.context;
+            };
+            skills = mkIf (hasGlobalSkills && hasAntigravitySkillsOption) (mkDefault effectiveSkills);
+          };
+        })
+        (mkIf (hasGithubCopilotCliOption && cfg.targets.github-copilot-cli) {
+          programs.github-copilot-cli = {
+            enableMcpIntegration = true;
+            agents = mkDefaultAttrs effectiveAgents;
+            context = mkIf hasGlobalContext (mkDefault cfg.context);
+            skills = mkIf (hasGlobalSkills && hasGithubCopilotCliSkillsOption) (mkDefault effectiveSkills);
+          };
+        })
+        mempalaceIntegration.config
+      ]);
     };
-
-    commands = mkOption {
-      type = commandContentType;
-      default = {};
-      description = mdDoc "Global commands forwarded to enabled AI CLI targets.";
-    };
-
-    agents = mkOption {
-      type = sharedContentType;
-      default = {};
-      description = mdDoc "Global agents forwarded to supported agent targets.";
-    };
-
-    context = mkOption {
-      type = types.either types.lines types.path;
-      default = "";
-      description = mdDoc "Global context forwarded to enabled AI CLI targets.";
-    };
-
-    skills = mkOption {
-      type = sharedSkillsType;
-      default = {};
-      description = mdDoc "Global skills forwarded to enabled AI CLI targets.";
-    };
-
-    targets = {
-      opencode = mkOption {
-        type = types.bool;
-        default = true;
-        description = mdDoc "Forward commands and agents to opencode.";
-      };
-
-      claude-code = mkOption {
-        type = types.bool;
-        default = true;
-        description = mdDoc "Forward commands and agents to claude-code.";
-      };
-
-      antigravity-cli = mkOption {
-        type = types.bool;
-        default = true;
-        description = mdDoc "Forward commands to antigravity-cli.";
-      };
-
-      github-copilot-cli = mkOption {
-        type = types.bool;
-        default = true;
-        description = mdDoc "Forward agents (and MCP integration) to github copilot cli HM module.";
-      };
-    };
-
-    inherit (mempalaceIntegration.options) mempalace;
-    inherit (coderabbitIntegration.options) coderabbit;
-  };
-
-  config = mkIf cfg.enable (mkMerge [
-    {
-      assertions = [
-        {
-          assertion = all (command: command.content != null || command.prompt != null) (attrValues normalizedCommands);
-          message = "`modules.programs.ai.commands.<name>` must set either `content` or `prompt` when using attribute syntax.";
-        }
-      ];
-
-      warnings =
-        optional (!hasMcpOption && cfg.mcps != {})
-        "`modules.programs.ai.mcps` is set, but `programs.mcp` is unavailable in this Home Manager version."
-        ++ optional (!hasOpencodeOption && cfg.targets.opencode && (effectiveCommands != {} || effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
-        "`modules.programs.ai.targets.opencode` is enabled, but `programs.opencode` is unavailable."
-        ++ optional (!hasClaudeCodeOption && cfg.targets.claude-code && (effectiveCommands != {} || effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
-        "`modules.programs.ai.targets.claude-code` is enabled, but `programs.claude-code` is unavailable."
-        ++ optional (!hasAntigravityOption && cfg.targets.antigravity-cli && (effectiveCommands != {} || hasGlobalContext || hasGlobalSkills))
-        "`modules.programs.ai.targets.antigravity-cli` is enabled, but `programs.antigravity-cli` is unavailable."
-        ++ optional (!hasGithubCopilotCliOption && cfg.targets.github-copilot-cli && (effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
-        "`modules.programs.ai.targets.github-copilot-cli` is enabled, but `programs.github-copilot-cli` is unavailable."
-        ++ optional (!hasOpencodeSkillsOption && cfg.targets.opencode && hasGlobalSkills)
-        "`modules.programs.ai.skills` is set, but `programs.opencode.skills` is unavailable."
-        ++ optional (!hasClaudeCodeSkillsOption && cfg.targets.claude-code && hasGlobalSkills)
-        "`modules.programs.ai.skills` is set, but `programs.claude-code.skills` is unavailable."
-        ++ optional (!hasAntigravitySkillsOption && cfg.targets.antigravity-cli && hasGlobalSkills)
-        "`modules.programs.ai.skills` is set, but `programs.antigravity-cli.skills` is unavailable."
-        ++ optional (!hasGithubCopilotCliSkillsOption && cfg.targets.github-copilot-cli && hasGlobalSkills)
-        "`modules.programs.ai.skills` is set, but `programs.github-copilot-cli.skills` is unavailable."
-        ++ mempalaceIntegration.warnings
-        ++ coderabbitIntegration.warnings;
-
-      programs.mcp = mkIf (hasMcpOption && cfg.mcps != {}) {
-        enable = mkDefault true;
-        servers = mkDefaultAttrs cfg.mcps;
-      };
-    }
-    (mkIf (hasOpencodeOption && cfg.targets.opencode) {
-      programs.opencode = {
-        enableMcpIntegration = true;
-        commands = mkDefaultAttrs opencodeCommands;
-        agents = mkDefaultAttrs effectiveAgents;
-        context = mkIf hasGlobalContext (mkDefault cfg.context);
-        skills = mkIf (hasGlobalSkills && hasOpencodeSkillsOption) (mkDefault effectiveSkills);
-      };
-    })
-    (mkIf (hasClaudeCodeOption && cfg.targets.claude-code) {
-      programs.claude-code = {
-        enableMcpIntegration = true;
-        commands = mkDefaultAttrs claudeCodeCommands;
-        agents = mkDefaultAttrs effectiveAgents;
-        context = mkIf hasGlobalContext (mkDefault cfg.context);
-        skills = mkIf (hasGlobalSkills && hasClaudeCodeSkillsOption) (mkDefault effectiveSkills);
-      };
-    })
-    (mkIf (hasAntigravityOption && cfg.targets.antigravity-cli) {
-      programs.antigravity-cli = {
-        enableMcpIntegration = true;
-        commands = mkDefaultAttrs antigravityCommands;
-        context = mkIf hasGlobalContext {
-          GEMINI = mkDefault cfg.context;
-        };
-        skills = mkIf (hasGlobalSkills && hasAntigravitySkillsOption) (mkDefault effectiveSkills);
-      };
-    })
-    (mkIf (hasGithubCopilotCliOption && cfg.targets.github-copilot-cli) {
-      programs.github-copilot-cli = {
-        enableMcpIntegration = true;
-        agents = mkDefaultAttrs effectiveAgents;
-        context = mkIf hasGlobalContext (mkDefault cfg.context);
-        skills = mkIf (hasGlobalSkills && hasGithubCopilotCliSkillsOption) (mkDefault effectiveSkills);
-      };
-    })
-    mempalaceIntegration.config
-  ]);
 }

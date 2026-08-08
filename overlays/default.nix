@@ -48,7 +48,7 @@
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
-  modifications = final: _prev: {
+  modifications = _final: _prev: {
     # dpcontracts' README doctest (pulled in via nix-alien → pylddwrap → icontract)
     # calls asyncio.get_event_loop(), which no longer implicitly creates a loop on
     # python 3.14, failing the build. Skip that check.

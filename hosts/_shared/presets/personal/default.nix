@@ -2,11 +2,43 @@
   lib,
   pkgs,
   config,
+  inputs,
+  nixosModules,
+  homeModules,
   ...
 }:
 with lib; {
+  imports = [
+    nixosModules.containers.homarr
+    nixosModules.programs.qmk
+  ];
+
   config = {
-    home-manager.sharedModules = [./home.nix];
+    home-manager.sharedModules = [
+      # Shared AI tooling; ./ai configures it below.
+      homeModules.programs.ai
+
+      ({osConfig, ...}: {
+        imports = [
+          inputs.hunk.homeManagerModules.default
+          ./ai
+        ];
+
+        programs.hunk = {
+          enable = true;
+          enableGitIntegration = true;
+          settings = {
+            mode = "auto";
+            wrap_lines = false;
+            line_numbers = true;
+            transparent_background = false;
+          };
+        };
+
+        # GUI screenshot tool — only on graphical hosts.
+        services.flameshot.enable = mkIf osConfig.modules.presets.desktop.enable true;
+      })
+    ];
 
     # Optimization: Prevent systemd from waiting for network online
     # (Optional but recommended for faster boot with VPNs)
@@ -22,8 +54,10 @@ with lib; {
         yazi
         android-tools
         nchat
-        inputs.nixvim.default
-        inputs.packages.scripts.git-carve-submodule
+        # Explicitly qualified: `inputs` is now a module argument, which shadows
+        # the `pkgs.inputs` alias that `with pkgs;` used to resolve these to.
+        pkgs.inputs.nixvim.default
+        pkgs.inputs.packages.scripts.git-carve-submodule
         dict
       ]
       # GUI apps only on graphical hosts (excluded on WSL/headless).
@@ -47,11 +81,6 @@ with lib; {
 
     programs = {
       localsend.enable = mkDefault true;
-    };
-
-    modules = {
-      containers.homarr.enable = mkDefault true;
-      programs.qmk.enable = mkDefault true;
     };
   };
 }

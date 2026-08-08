@@ -8,4 +8,5 @@ in {
   "secrets/avante/anthropic-api-key.age".publicKeys = [sshKey];
   "secrets/mkcert/rootCA.age".publicKeys = [sshKey];
   "secrets/mkcert/rootCA-key.age".publicKeys = [sshKey];
+  "secrets/prod-db/mysql-password.age".publicKeys = [sshKey];
 }

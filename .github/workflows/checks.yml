@@ -1,0 +1,65 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Cancel superseded runs on the same ref.
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Fast gate: formatting (treefmt) and lint (alejandra/deadnix/statix via
+  # pre-commit). These are the flake's own checks, so CI and local
+  # `nix flake check` agree.
+  format-and-lint:
+    runs-on: ubuntu-latest
+    name: Format & lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - name: Setup Nix Build Environment
+        uses: ./.github/actions/setup-nix-build
+
+      - name: treefmt + pre-commit
+        run: |
+          nix build --print-build-logs \
+            .#checks.x86_64-linux.treefmt \
+            .#checks.x86_64-linux.pre-commit
+
+  # Fast evaluation gate for each evaluable host: prove the toplevel evaluates
+  # to a derivation without building it, so this stays cheap and gives quick PR
+  # feedback.
+  #
+  # wsl and lenovo-legion-go are excluded (pre-existing eval failures). Targets
+  # the check attrs directly rather than `nix flake check`, which would evaluate
+  # every nixosConfiguration.
+  eval-hosts:
+    runs-on: ubuntu-latest
+    name: Eval ${{ matrix.host }}
+    strategy:
+      fail-fast: false
+      matrix:
+        host:
+          - dostov-dev
+          - home-desktop
+          - asus-zephyrus-gu603
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - name: Setup Nix Build Environment
+        uses: ./.github/actions/setup-nix-build
+
+      - name: Evaluate host toplevel
+        run: |
+          nix eval --raw \
+            .#checks.x86_64-linux.host-${{ matrix.host }}.drvPath

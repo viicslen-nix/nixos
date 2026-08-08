@@ -5,7 +5,7 @@
   inputs,
   hasMcpOption,
   isAttrs,
-}: 
+}:
 with lib; {
   commands = {
     mempalace-help = ../commands/mempalace/help.md;

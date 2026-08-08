@@ -3,6 +3,7 @@
   pkgs,
   config,
   inputs,
+  nixosModules,
   users,
   ...
 }:
@@ -26,13 +27,20 @@ in {
     inputs.hyprland.nixosModules.default
     inputs.dms.nixosModules.default
     inputs.dms.nixosModules.greeter
+
+    # Graphical-host modules. Importing a module activates it; a host can still
+    # opt out with `<module>.enable = false` (lenovo does this for oom).
+    nixosModules.features.app-images
+    nixosModules.core.theming
+    nixosModules.services.oom
+    nixosModules.services.power-management
+    nixosModules.programs.ld
+    nixosModules.programs.one-password
   ];
 
   config = {
     # Flag graphical hosts so work/personal can gate their GUI-only packages.
     modules.presets.desktop.enable = true;
-
-    modules.features.appImages.enable = true;
 
     # Boot splash on graphical hosts.
     boot.plymouth.enable = true;
@@ -69,20 +77,8 @@ in {
     fonts.packages = fonts;
 
     modules = {
-      core.theming.enable = true;
-
-      services = {
-        # mkDefault so a host (e.g. the Jovian handheld) can opt out.
-        oom.enable = lib.mkDefault true;
-        powerManagement.enable = lib.mkDefault true;
-      };
-
       programs = {
-        # nix-ld for running non-Nix / AppImage binaries.
-        ld.enable = true;
-
         onePassword = {
-          enable = true;
           gitSignCommits = true;
           users = attrNames users;
           allowedCustomBrowsers = [

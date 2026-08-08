@@ -1,81 +1,82 @@
 {
-  lib,
-  config,
-  inputs,
-  ...
-}:
-with lib; let
-  name = "impermanence";
-  namespace = "functionality";
+  flake.modules.homeManager.impermanence = {
+    lib,
+    config,
+    ...
+  }:
+    with lib; let
+      name = "impermanence";
+      namespace = "functionality";
 
-  cfg = config.modules.${namespace}.${name};
-in {
-  options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc "impermanence");
+      cfg = config.modules.${namespace}.${name};
+    in {
+      options.modules.${namespace}.${name} = {
+        enable = mkEnableOption (mdDoc "impermanence");
 
-    autoPersistence = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Allow program modules to automatically configure persistence via mkPersistence helper";
-    };
+        autoPersistence = mkOption {
+          type = types.bool;
+          default = true;
+          description = "Allow program modules to automatically configure persistence via mkPersistence helper";
+        };
 
-    persistencePath = mkOption {
-      type = types.str;
-      default = "/persist";
-      description = "Root path where to store persistent files and directories";
-    };
+        persistencePath = mkOption {
+          type = types.str;
+          default = "/persist";
+          description = "Root path where to store persistent files and directories";
+        };
 
-    share = mkOption {
-      type = types.listOf types.str;
-      default = [];
-      description = "Share directories to keep after reboot";
-    };
-    config = mkOption {
-      type = types.listOf types.str;
-      default = [];
-      description = "Config directories to keep after reboot";
-    };
-    cache = mkOption {
-      type = types.listOf types.str;
-      default = [];
-      description = "Cache directories to keep after reboot";
-    };
-    directories = mkOption {
-      type = types.listOf types.str;
-      default = [];
-      description = "Directories to keep after reboot";
-    };
-    files = mkOption {
-      type = types.listOf types.str;
-      default = [];
-      description = "Files to keep after reboot";
-    };
-  };
+        share = mkOption {
+          type = types.listOf types.str;
+          default = [];
+          description = "Share directories to keep after reboot";
+        };
+        config = mkOption {
+          type = types.listOf types.str;
+          default = [];
+          description = "Config directories to keep after reboot";
+        };
+        cache = mkOption {
+          type = types.listOf types.str;
+          default = [];
+          description = "Cache directories to keep after reboot";
+        };
+        directories = mkOption {
+          type = types.listOf types.str;
+          default = [];
+          description = "Directories to keep after reboot";
+        };
+        files = mkOption {
+          type = types.listOf types.str;
+          default = [];
+          description = "Files to keep after reboot";
+        };
+      };
 
-  config = mkIf cfg.enable {
-    home.persistence."${cfg.persistencePath}" =
-      {
-        directories = concatLists [
-          (lists.forEach cfg.share (dir: ".local/share/${dir}"))
-          (lists.forEach cfg.config (dir: ".config/${dir}"))
-          (lists.forEach cfg.cache (dir: ".cache/${dir}"))
-          cfg.directories
-          [
-            "Development"
-            "Documents"
-            "Downloads"
-            "Pictures"
-            "Desktop"
-            "Videos"
-            "Music"
-            ".nix"
-          ]
-        ];
-      }
-      // (
-        if (length cfg.files) > 0
-        then {files = cfg.files;}
-        else {}
-      );
-  };
+      config = mkIf cfg.enable {
+        home.persistence."${cfg.persistencePath}" =
+          {
+            directories = concatLists [
+              (lists.forEach cfg.share (dir: ".local/share/${dir}"))
+              (lists.forEach cfg.config (dir: ".config/${dir}"))
+              (lists.forEach cfg.cache (dir: ".cache/${dir}"))
+              cfg.directories
+              [
+                "Development"
+                "Documents"
+                "Downloads"
+                "Pictures"
+                "Desktop"
+                "Videos"
+                "Music"
+                ".nix"
+              ]
+            ];
+          }
+          // (
+            if (length cfg.files) > 0
+            then {inherit (cfg) files;}
+            else {}
+          );
+      };
+    };
 }

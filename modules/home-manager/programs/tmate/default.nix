@@ -1,23 +1,25 @@
 {
-  lib,
-  config,
-  ...
-}:
-with lib; let
-  name = "tmate";
-  namespace = "programs";
+  flake.modules.homeManager.tmate = {
+    lib,
+    config,
+    ...
+  }:
+    with lib; let
+      name = "tmate";
+      namespace = "programs";
 
-  cfg = config.modules.${namespace}.${name};
-in {
-  options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name);
-  };
+      cfg = config.modules.${namespace}.${name};
+    in {
+      options.modules.${namespace}.${name} = {
+        enable = mkEnableOption (mdDoc name) // {default = true;};
+      };
 
-  config.programs.tmate = mkIf cfg.enable {
-    enable = true;
+      config.programs.tmate = mkIf cfg.enable {
+        enable = true;
 
-    extraConfig = ''
-      ${builtins.unsafeDiscardStringContext (builtins.readFile ./tmux.conf)}
-    '';
-  };
+        extraConfig = ''
+          ${builtins.unsafeDiscardStringContext (builtins.readFile ./tmux.conf)}
+        '';
+      };
+    };
 }

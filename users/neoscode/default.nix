@@ -2,10 +2,27 @@
   lib,
   pkgs,
   osConfig,
+  homeModules,
   ...
 }: let
   user = "neoscode";
 in {
+  imports = with homeModules.programs; [
+    zsh
+    tmux
+    btop
+    tmate
+    atuin
+    ghostty
+    ideavim
+    nushell
+    starship
+    worktrunk
+    git
+    jujutsu
+    sesh
+  ];
+
   age = {
     identityPaths = ["${osConfig.users.users.${user}.home}/.ssh/agenix"];
 
@@ -27,6 +44,11 @@ in {
       inputs.opencode.oh-my-opencode
       inputs.packages.python.mempalace
     ];
+
+    # ssh refuses to open a control socket if the ControlPath directory is
+    # missing, which breaks any host using ControlMaster. See the ControlPath
+    # declaration in programs.ssh.settings below.
+    file.".ssh/controlmasters/.keep".text = "";
 
     autostart = [
       {
@@ -105,33 +127,19 @@ in {
       passwordManager = _1password-gui;
     };
     programs = {
-      zsh.enable = true;
-      tmux.enable = true;
-      btop.enable = true;
-      tmate.enable = true;
-      atuin.enable = true;
-      ghostty.enable = true;
-      ideavim.enable = true;
-      nushell.enable = true;
-      starship.enable = true;
-      worktrunk = {
-        enable = true;
-        tmux.enable = true;
-      };
+      worktrunk.tmux.enable = true;
+
       git = {
-        enable = true;
         user = osConfig.users.users.${user}.description;
         email = "39545521+viicslen@users.noreply.github.com";
         signingKey = builtins.readFile ./ssh/git-signing-key.pub;
       };
       jujutsu = {
-        enable = true;
         userName = osConfig.users.users.${user}.description;
         userEmail = "39545521+viicslen@users.noreply.github.com";
         signingKey = builtins.readFile ./ssh/git-signing-key.pub;
       };
       sesh = {
-        enable = true;
         enableNushellIntegration = true;
         enableTmuxIntegration = true;
       };

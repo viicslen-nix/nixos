@@ -1,9 +1,13 @@
 {
   lib,
   pkgs,
-  inputs,
+  homeModules,
   ...
 }: {
+  imports = with homeModules; [
+    programs.kitty
+  ];
+
   modules = {
     functionality.impermanence = {
       enable = false;
@@ -51,10 +55,6 @@
         ".gitconfig"
         ".wakatime.cfg"
       ];
-    };
-
-    programs = {
-      kitty.enable = true;
     };
   };
 

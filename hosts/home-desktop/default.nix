@@ -2,8 +2,8 @@
   lib,
   pkgs,
   inputs,
+  nixosModules,
   config,
-  users,
   ...
 }:
 with lib; {
@@ -11,12 +11,15 @@ with lib; {
     inputs.disko.nixosModules.disko
     (import ./disko.nix {device = "/dev/disk/by-uuid/2da72401-b2b8-4a0d-8324-fd474124f51e";})
     ./hardware.nix
+
+    nixosModules.hardware.intel
+    nixosModules.hardware.nvidia
+    nixosModules.hardware.razer
+    nixosModules.programs.steam
   ];
 
-  home-manager.sharedModules = [./home.nix];
+  # (no host-specific home-manager config)
   services.displayManager.defaultSession = "niri";
-
-  modules.hardware.razer.enable = true;
 
   boot = {
     binfmt.emulatedSystems = ["aarch64-linux"];
@@ -54,14 +57,7 @@ with lib; {
   ];
 
   modules = {
-    hardware = {
-      intel.enable = true;
-
-      nvidia = {
-        enable = true;
-        latest = true;
-      };
-    };
+    hardware.nvidia.latest = true;
 
     desktop = {
       niri.enable = true;
@@ -113,8 +109,6 @@ with lib; {
     };
 
     programs = {
-      steam.enable = true;
-
       docker = {
         nvidiaSupport = true;
         storageDriver = "btrfs";

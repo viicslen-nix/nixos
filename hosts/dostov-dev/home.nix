@@ -2,16 +2,17 @@
   lib,
   pkgs,
   osConfig,
+  homeModules,
   ...
 }: {
-  modules.programs = {
-    ray.enable = true;
-    kitty.enable = true;
-    tinkerwell.enable = true;
-    zen-browser.enable = true;
-    vivaldi.enable = true;
-    webapps.enable = true;
-  };
+  imports = with homeModules; [
+    programs.ray
+    programs.kitty
+    programs.tinkerwell
+    programs.zen-browser
+    programs.vivaldi
+    programs.webapps
+  ];
 
   home.file.".config/hypr/pyprland.toml".text = lib.mkAfter ''
     [monitors.placement."LW9AA0048525"]
@@ -40,35 +41,6 @@
   };
 
   programs.niri.settings = lib.mkIf osConfig.programs.niri.enable {
-    # outputs = {
-    #   "DP-1" = {
-    #     scale = 1.0;
-    #     position = {
-    #       x = 1920;
-    #       y = 0;
-    #     };
-    #     mode = {
-    #       width = 1920;
-    #       height = 1080;
-    #       refresh = 59.997;
-    #     };
-    #   };
-    #   "DP-2" = {
-    #     scale = 1.0;
-    #     position = {
-    #       x = 0;
-    #       y = 0;
-    #     };
-    #     mode = {
-    #       width = 1920;
-    #       height = 1080;
-    #       refresh = 59.997;
-    #     };
-    #     focus-at-startup = true;
-    #     transform.rotation = 90;
-    #   };
-    # };
-
     workspaces = {
       "browser" = {
         name = "Browser";
@@ -99,4 +71,12 @@
   programs.dank-material-shell.niri.includes.filesToInclude = [
     "custom"
   ];
+
+  services = {
+    tailscale-systray = {
+      enable = true;
+      theme = "dark:nobg";
+    };
+    trayscale.enable = true;
+  };
 }
