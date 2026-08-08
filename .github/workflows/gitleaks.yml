@@ -1,0 +1,35 @@
+name: Secret Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: gitleaks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gitleaks:
+    runs-on: ubuntu-latest
+    name: gitleaks
+    steps:
+      # No submodules: they are separate repos with their own scanning.
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            access-tokens = github.com=${{ github.token }}
+
+      # Scan the working tree of the pushed commit (`dir`), not history — so a
+      # secret already removed from HEAD but present in an old commit does not
+      # fail every run. The pre-commit ripsecrets/detect-private-keys hooks are
+      # the first line of defence; this is the backstop.
+      - name: gitleaks
+        run: |
+          nix run nixpkgs#gitleaks -- dir --no-banner --redact --verbose .

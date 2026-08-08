@@ -1,216 +1,218 @@
 {
-  lib,
-  pkgs,
-  config,
-  inputs,
-  ...
-}:
-with lib; let
-  name = "worktrunk";
-  namespace = "programs";
+  flake.modules.homeManager.worktrunk = {
+    lib,
+    pkgs,
+    config,
+    inputs,
+    ...
+  }:
+    with lib; let
+      name = "worktrunk";
+      namespace = "programs";
 
-  cfg = config.modules.${namespace}.${name};
+      cfg = config.modules.${namespace}.${name};
 
-  tomlFormat = pkgs.formats.toml {};
+      tomlFormat = pkgs.formats.toml {};
 
-  commitScript = pkgs.writeShellScript "worktrunk-commit" ''
-    f=$(mktemp)
-    printf '\n\n' > "$f"
-    sed 's/^/# /' >> "$f"
-    ''${EDITOR:-vi} "$f" < /dev/tty > /dev/tty
-    grep -v '^#' "$f"
-  '';
+      commitScript = pkgs.writeShellScript "worktrunk-commit" ''
+        f=$(mktemp)
+        printf '\n\n' > "$f"
+        sed 's/^/# /' >> "$f"
+        ''${EDITOR:-vi} "$f" < /dev/tty > /dev/tty
+        grep -v '^#' "$f"
+      '';
 
-  tmuxWorktreePickerScript = pkgs.writeShellScript "worktrunk-tmux-worktree-picker" ''
-    set -eu
+      tmuxWorktreePickerScript = pkgs.writeShellScript "worktrunk-tmux-worktree-picker" ''
+        set -eu
 
-    GIT='${lib.getExe pkgs.git}'
-    TV='${lib.getExe pkgs.television}'
-    WT='${lib.getExe config.programs.worktrunk.package}'
+        GIT='${lib.getExe pkgs.git}'
+        TV='${lib.getExe pkgs.television}'
+        WT='${lib.getExe config.programs.worktrunk.package}'
 
-    repo_root=$($GIT rev-parse --show-toplevel 2>/dev/null || true)
-    if [ -z "$repo_root" ]; then
-      printf 'Not inside a git repository.\n' >&2
-      exit 1
-    fi
-
-    git_common_dir=$($GIT -C "$repo_root" rev-parse --git-common-dir 2>/dev/null || true)
-    if [ -z "$git_common_dir" ]; then
-      printf 'Unable to determine git common directory.\n' >&2
-      exit 1
-    fi
-
-    case "$git_common_dir" in
-      /*) ;;
-      *) git_common_dir="$repo_root/$git_common_dir" ;;
-    esac
-
-    repo_name=$(basename "$(dirname "$git_common_dir")")
-
-    current_branch=$($GIT branch --show-current 2>/dev/null || true)
-
-    while true; do
-      selection_raw=$($GIT -C "$repo_root" worktree list --porcelain \
-        | awk -v repo="$repo_name" '
-            $1 == "worktree" {
-              path = substr($0, 10)
-              branch = "detached"
-              next
-            }
-
-            $1 == "branch" {
-              branch = $2
-              sub("^refs/heads/", "", branch)
-              printf "%s@%s\t%s\n", repo, branch, path
-              next
-            }
-
-            $1 == "detached" {
-              printf "%s@detached\t%s\n", repo, path
-            }
-          ' \
-        | $TV \
-            --expect='ctrl-d' \
-            --input-header='worktrees (enter: switch, ctrl-d: delete)' \
-        | tr -d '\r')
-
-      if [ -z "$selection_raw" ]; then
-        exit 0
-      fi
-
-      action_key="enter"
-      selection="$selection_raw"
-
-      case "$selection_raw" in
-        *$'\n'*)
-          action_key="''${selection_raw%%$'\n'*}"
-          selection="''${selection_raw#*$'\n'}"
-          ;;
-      esac
-
-      selection="$(printf '%s' "$selection" | tr -d '\n')"
-
-      if [ -z "$selection" ]; then
-        exit 0
-      fi
-
-      selection_path="''${selection#*$'\t'}"
-
-      if [ "$action_key" = "ctrl-d" ]; then
-        if [ "$selection_path" = "$repo_root" ]; then
-          continue
+        repo_root=$($GIT rev-parse --show-toplevel 2>/dev/null || true)
+        if [ -z "$repo_root" ]; then
+          printf 'Not inside a git repository.\n' >&2
+          exit 1
         fi
 
-        $WT remove --force -D "$selection_path"
-        continue
-      fi
+        git_common_dir=$($GIT -C "$repo_root" rev-parse --git-common-dir 2>/dev/null || true)
+        if [ -z "$git_common_dir" ]; then
+          printf 'Unable to determine git common directory.\n' >&2
+          exit 1
+        fi
 
-      target_branch=$($GIT -C "$selection_path" branch --show-current 2>/dev/null || true)
+        case "$git_common_dir" in
+          /*) ;;
+          *) git_common_dir="$repo_root/$git_common_dir" ;;
+        esac
 
-      if [ -z "$target_branch" ] || [ "$target_branch" = "$current_branch" ]; then
-        exit 0
-      fi
+        repo_name=$(basename "$(dirname "$git_common_dir")")
 
-      $WT tmux "$target_branch"
-      exit 0
-    done
-  '';
+        current_branch=$($GIT branch --show-current 2>/dev/null || true)
 
-  postSwitchScript = pkgs.writeShellScript "worktrunk-post-switch" ''
-    S=$1
-    W=$2
+        while true; do
+          selection_raw=$($GIT -C "$repo_root" worktree list --porcelain \
+            | awk -v repo="$repo_name" '
+                $1 == "worktree" {
+                  path = substr($0, 10)
+                  branch = "detached"
+                  next
+                }
 
-    if ! tmux has-session -t "$S" 2>/dev/null; then
-      tmux new-session -d -s "$S" -c "$W"
-    fi
+                $1 == "branch" {
+                  branch = $2
+                  sub("^refs/heads/", "", branch)
+                  printf "%s@%s\t%s\n", repo, branch, path
+                  next
+                }
 
-    if [ -n "$TMUX" ]; then
-      tmux switch-client -t "$S"
-    else
-      tmux attach-session -t "$S"
-    fi
-  '';
-in {
-  imports = [
-    inputs.worktrunk.homeModules.default
-  ];
+                $1 == "detached" {
+                  printf "%s@detached\t%s\n", repo, path
+                }
+              ' \
+            | $TV \
+                --expect='ctrl-d' \
+                --input-header='worktrees (enter: switch, ctrl-d: delete)' \
+            | tr -d '\r')
 
-  options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name);
+          if [ -z "$selection_raw" ]; then
+            exit 0
+          fi
 
-    tmux = {
-      enable = mkEnableOption (mdDoc "tmux session per worktree");
-    };
+          action_key="enter"
+          selection="$selection_raw"
 
-    settings = mkOption {
-      type = tomlFormat.type;
-      default = {
-        list.summary = false;
-        merge.squash = false;
-        commit.generation.command = "${commitScript}";
-        worktree-path = "../{{ repo }}@{{ branch | sanitize }}";
-        aliases = {
-          create = "wt switch --no-cd --create {{ args }}";
-          delete = "wt remove --force -D  {{ args }}";
-          workspace = "wt switch --base=@ --create  {{ args }}";
-          since-main = "git log --oneline {{ default_branch }}..HEAD";
-          mv = ''
-            if git diff --quiet HEAD && test -z "$(git ls-files --others --exclude-standard)"; then
-              wt switch --create {{ to }} --execute="{{ args }}"
-            else
-              git stash push --include-untracked --quiet
-              wt switch --create {{ to }} --execute="git stash pop --index; {{ args }}"
+          case "$selection_raw" in
+            *$'\n'*)
+              action_key="''${selection_raw%%$'\n'*}"
+              selection="''${selection_raw#*$'\n'}"
+              ;;
+          esac
+
+          selection="$(printf '%s' "$selection" | tr -d '\n')"
+
+          if [ -z "$selection" ]; then
+            exit 0
+          fi
+
+          selection_path="''${selection#*$'\t'}"
+
+          if [ "$action_key" = "ctrl-d" ]; then
+            if [ "$selection_path" = "$repo_root" ]; then
+              continue
             fi
+
+            $WT remove --force -D "$selection_path"
+            continue
+          fi
+
+          target_branch=$($GIT -C "$selection_path" branch --show-current 2>/dev/null || true)
+
+          if [ -z "$target_branch" ] || [ "$target_branch" = "$current_branch" ]; then
+            exit 0
+          fi
+
+          $WT tmux "$target_branch"
+          exit 0
+        done
+      '';
+
+      postSwitchScript = pkgs.writeShellScript "worktrunk-post-switch" ''
+        S=$1
+        W=$2
+
+        if ! tmux has-session -t "$S" 2>/dev/null; then
+          tmux new-session -d -s "$S" -c "$W"
+        fi
+
+        if [ -n "$TMUX" ]; then
+          tmux switch-client -t "$S"
+        else
+          tmux attach-session -t "$S"
+        fi
+      '';
+    in {
+      imports = [
+        inputs.worktrunk.homeModules.default
+      ];
+
+      options.modules.${namespace}.${name} = {
+        enable = mkEnableOption (mdDoc name) // {default = true;};
+
+        tmux = {
+          enable = mkEnableOption (mdDoc "tmux session per worktree");
+        };
+
+        settings = mkOption {
+          inherit (tomlFormat) type;
+          default = {
+            list.summary = false;
+            merge.squash = false;
+            commit.generation.command = "${commitScript}";
+            worktree-path = "../{{ repo }}@{{ branch | sanitize }}";
+            aliases = {
+              create = "wt switch --no-cd --create {{ args }}";
+              delete = "wt remove --force -D  {{ args }}";
+              workspace = "wt switch --base=@ --create  {{ args }}";
+              since-main = "git log --oneline {{ default_branch }}..HEAD";
+              mv = ''
+                if git diff --quiet HEAD && test -z "$(git ls-files --others --exclude-standard)"; then
+                  wt switch --create {{ to }} --execute="{{ args }}"
+                else
+                  git stash push --include-untracked --quiet
+                  wt switch --create {{ to }} --execute="git stash pop --index; {{ args }}"
+                fi
+              '';
+              cp = ''
+                if git diff --quiet HEAD && test -z "$(git ls-files --others --exclude-standard)"; then
+                  wt switch --create {{ to }} --execute="{{ args }}"
+                else
+                  git stash push --include-untracked --quiet
+                  git stash apply --index --quiet
+                  wt switch --create {{ to }} --execute="git stash pop --index; {{ args }}"
+                fi
+              '';
+            };
+            projects."github.com/FmTod/mylisterhub-main-app" = {
+              pre-start.dirnev = "direnv allow";
+            };
+          };
+          description = ''
+            Configuration written to {file}`$XDG_CONFIG_HOME/worktrunk/config.toml`.
+            See <https://github.com/max-sixty/worktrunk> for the available options.
           '';
-          cp = ''
-            if git diff --quiet HEAD && test -z "$(git ls-files --others --exclude-standard)"; then
-              wt switch --create {{ to }} --execute="{{ args }}"
-            else
-              git stash push --include-untracked --quiet
-              git stash apply --index --quiet
-              wt switch --create {{ to }} --execute="git stash pop --index; {{ args }}"
-            fi
+          example = literalExpression ''
+            {
+              worktree-path = "../{{ repo }}@{{ branch | sanitize }}";
+              commit.generation.command = "llm -m claude-haiku-4.5";
+            }
           '';
         };
-        projects."github.com/FmTod/mylisterhub-main-app" = {
-          pre-start.dirnev = "direnv allow";
+      };
+
+      config = mkIf cfg.enable {
+        programs.worktrunk = {
+          enable = true;
+          enableBashIntegration = true;
+          enableZshIntegration = true;
+          enableFishIntegration = true;
+          enableNushellIntegration = true;
         };
+
+        xdg.configFile."worktrunk/config.toml" = let
+          tmuxSettings = optionalAttrs cfg.tmux.enable {
+            pre-remove.tmux = "tmux kill-session -t {{ repo }}@{{ branch | sanitize }} 2>/dev/null || true";
+            aliases.tmux = "wt switch {{ args }} --no-cd --execute='${postSwitchScript} \"{% raw %}{{ repo }}@{{ branch | sanitize }}{% endraw %}\" {% raw %}{{ worktree_path }}{% endraw %}'";
+          };
+          mergedSettings = recursiveUpdate cfg.settings tmuxSettings;
+        in
+          mkIf (cfg.settings != {}) {
+            source = tomlFormat.generate "worktrunk-config" mergedSettings;
+          };
+
+        programs.tmux.extraConfig = mkIf cfg.tmux.enable (mkAfter ''
+          bind-key W new-window -n worktrees -c "#{pane_current_path}" '${tmuxWorktreePickerScript}'
+        '');
       };
-      description = ''
-        Configuration written to {file}`$XDG_CONFIG_HOME/worktrunk/config.toml`.
-        See <https://github.com/max-sixty/worktrunk> for the available options.
-      '';
-      example = literalExpression ''
-        {
-          worktree-path = "../{{ repo }}@{{ branch | sanitize }}";
-          commit.generation.command = "llm -m claude-haiku-4.5";
-        }
-      '';
     };
-  };
-
-  config = mkIf cfg.enable {
-    programs.worktrunk = {
-      enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-      enableFishIntegration = true;
-      enableNushellIntegration = true;
-    };
-
-    xdg.configFile."worktrunk/config.toml" = let
-      tmuxSettings = optionalAttrs cfg.tmux.enable {
-        pre-remove.tmux = "tmux kill-session -t {{ repo }}@{{ branch | sanitize }} 2>/dev/null || true";
-        aliases.tmux = "wt switch {{ args }} --no-cd --execute='${postSwitchScript} \"{% raw %}{{ repo }}@{{ branch | sanitize }}{% endraw %}\" {% raw %}{{ worktree_path }}{% endraw %}'";
-      };
-      mergedSettings = recursiveUpdate cfg.settings tmuxSettings;
-    in
-      mkIf (cfg.settings != {}) {
-        source = tomlFormat.generate "worktrunk-config" mergedSettings;
-      };
-
-    programs.tmux.extraConfig = mkIf cfg.tmux.enable (mkAfter ''
-      bind-key W new-window -n worktrees -c "#{pane_current_path}" '${tmuxWorktreePickerScript}'
-    '');
-  };
 }

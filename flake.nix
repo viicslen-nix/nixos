@@ -9,6 +9,22 @@
     # flake-parts flakes (nixpkgs 26.11 throws when its darwin set is evaluated).
     systems-linux.url = "github:nix-systems/default-linux";
 
+    # Flake framework
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+
+    # Dev tooling (formatter + pre-commit), wired as flake-parts modules
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Nixpkgs
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
@@ -168,6 +184,7 @@
     ghostty.url = "github:ghostty-org/ghostty";
     lan-mouse.url = "github:feschber/lan-mouse";
     nix-alien.url = "github:thiagokokada/nix-alien";
+    tuicr.url = "github:agavra/tuicr";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -191,42 +208,13 @@
     };
   };
 
-  outputs = inputs @ {
-    nixpkgs,
-    self,
-    ...
-  }: let
-    vlib = inputs.viicslen-lib.lib;
-  in {
-    # Re-export viicslen-lib so modules can use `inputs.self.lib`
-    lib = vlib;
-
-    # Formatter for your nix files, available through 'nix fmt'
-    # Other options beside 'alejandra' include 'nixpkgs-fmt'
-    formatter = vlib.pkgFromSystem "alejandra";
-
-    # Your custom dev shells
-    devShells = vlib.genSystems (system:
-      import ./dev-shells {
-        inherit inputs system;
-        pkgs = vlib.pkgsFor system;
-      });
-
-    # Your custom packages and modifications, exported as overlays
-    overlays = import ./overlays {inherit inputs;};
-
-    # Reusable nixos modules you might want to export
-    nixosModules = vlib.modules.autoImportRecursive ./modules/nixos;
-
-    # Reusable home-manager modules you might want to export
-    homeManagerModules = vlib.modules.autoImportRecursive ./modules/home-manager;
-
-    # NixOS configurations for all your hosts
-    nixosConfigurations =
-      vlib.hosts.mkNixosConfigurations {
-        inherit inputs;
-        outputs = self.outputs;
-      }
-      ./hosts;
-  };
+  outputs = inputs @ {flake-parts, ...}:
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      # Every file under ./parts is a flake-parts module and is picked up
+      # automatically — drop a new file in to add a concern, no wiring needed.
+      imports =
+        map (name: ./parts + "/${name}")
+        (builtins.filter (name: builtins.match ".*\\.nix" name != null)
+          (builtins.attrNames (builtins.readDir ./parts)));
+    };
 }

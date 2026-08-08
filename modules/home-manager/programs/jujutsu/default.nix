@@ -1,59 +1,61 @@
 {
-  lib,
-  pkgs,
-  config,
-  ...
-}:
-with lib; let
-  name = "jujutsu";
-  namespace = "programs";
+  flake.modules.homeManager.jujutsu = {
+    lib,
+    pkgs,
+    config,
+    ...
+  }:
+    with lib; let
+      name = "jujutsu";
+      namespace = "programs";
 
-  cfg = config.modules.${namespace}.${name};
-in {
-  options.modules.${namespace}.${name} = {
-    enable = mkEnableOption (mdDoc name);
-    userName = mkOption {
-      type = types.str;
-      description = "The name of the user to use for jujutsu.";
-    };
-    userEmail = mkOption {
-      type = types.str;
-      description = "The email of the user to use for jujutsu.";
-    };
-    signingKey = mkOption {
-      type = types.str;
-      description = "The signing key to use for jujutsu.";
-    };
-  };
-
-  config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      jujutsu
-      lazyjj
-      meld
-      mergiraf
-    ];
-
-    programs.jujutsu = {
-      enable = true;
-      settings = {
-        remotes.origin.auto-track-bookmarks = "*";
-        user = {
-          name = cfg.userName;
-          email = cfg.userEmail;
+      cfg = config.modules.${namespace}.${name};
+    in {
+      options.modules.${namespace}.${name} = {
+        enable = mkEnableOption (mdDoc name) // {default = true;};
+        userName = mkOption {
+          type = types.str;
+          description = "The name of the user to use for jujutsu.";
         };
-        ui = {
-          editor = "nvim";
-          diff-editor = "meld-3";
-          merge-editor = "meld";
-          default-command = ["log"];
+        userEmail = mkOption {
+          type = types.str;
+          description = "The email of the user to use for jujutsu.";
         };
-        signing = {
-          backend = "ssh";
-          behavior = "own";
-          key = cfg.signingKey;
+        signingKey = mkOption {
+          type = types.str;
+          description = "The signing key to use for jujutsu.";
+        };
+      };
+
+      config = mkIf cfg.enable {
+        home.packages = with pkgs; [
+          jujutsu
+          lazyjj
+          meld
+          mergiraf
+        ];
+
+        programs.jujutsu = {
+          enable = true;
+          settings = {
+            remotes.origin.auto-track-bookmarks = "*";
+            user = {
+              name = cfg.userName;
+              email = cfg.userEmail;
+            };
+            ui = {
+              editor = "nvim";
+              diff-editor = "meld-3";
+              merge-editor = "meld";
+              default-command = ["log"];
+            };
+            signing = {
+              backend = "ssh";
+              behavior = "own";
+              key = cfg.signingKey;
+            };
+          };
         };
       };
     };
-  };
 }

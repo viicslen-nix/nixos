@@ -2,7 +2,7 @@
   lib,
   pkgs,
   inputs,
-  config,
+  nixosModules,
   users,
   ...
 }:
@@ -12,6 +12,17 @@ with lib; {
     inputs.disko.nixosModules.disko
     (import ./disko.nix {device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_223766801969";})
     ./hardware.nix
+
+    nixosModules.hardware.asus
+    nixosModules.hardware.intel
+    nixosModules.hardware.nvidia
+    nixosModules.hardware.display
+    nixosModules.hardware.razer
+    nixosModules.programs.mullvad
+    nixosModules.programs.steam
+
+    # Imported for its options; disabled below.
+    nixosModules.services.backups
   ];
 
   home-manager.sharedModules = [./home.nix];
@@ -31,8 +42,6 @@ with lib; {
     };
   };
 
-  modules.hardware.razer.enable = true;
-
   networking = {
     hostId = "86f2c355";
     hostName = "asus-zephyrus-gu603";
@@ -45,7 +54,8 @@ with lib; {
   };
 
   services = {
-    displayManager.defaultSession = "gnome";
+    # This host runs niri; "gnome" was never a registered session here.
+    displayManager.defaultSession = "niri";
 
     # Disable the built-in keyboard
     udev.extraRules = lib.mkAfter ''
@@ -66,18 +76,13 @@ with lib; {
 
   modules = {
     hardware = {
-      asus.enable = true;
-      intel.enable = true;
-
       nvidia = {
-        enable = true;
         modern = true;
         prime = true;
         latest = true;
       };
 
       display = {
-        enable = true;
         resolution = "2560x1600";
         refreshRate = "165";
         port = "eDP-1-1";
@@ -168,9 +173,6 @@ with lib; {
     };
 
     programs = {
-      mullvad.enable = true;
-      steam.enable = true;
-
       docker = {
         nvidiaSupport = true;
         storageDriver = "btrfs";

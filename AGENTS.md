@@ -61,12 +61,22 @@ already happened. Treat every heavy Nix invocation as dangerous.
   GUI-only packages behind it (`lib.optionals config.modules.presets.desktop.enable [ … ]`)
   so headless hosts (WSL) don't pull GUI apps. In home-manager, read it via
   `osConfig.modules.presets.desktop.enable`.
+- **parts/** — the root flake is a [flake-parts](https://flake.parts) flake.
+  `flake.nix` only declares inputs; every `.nix` file under `parts/` is a
+  flake-parts module and is auto-imported (`systems`, `lib`, `overlays`,
+  `dev-shells`, `modules`, `hosts`). Add a concern by dropping in a file.
+- **module discovery** — `parts/modules.nix` collects every `default.nix` under
+  `modules/{nixos,home-manager}` at any depth. A path component starting with
+  `_` is skipped, which is how non-module helpers opt out (e.g.
+  `services/impermanence/_presets`, whose `default.nix` takes `systemConfig`).
 - **subflake** — a git submodule flake under `flakes/*` (`lib`, `packages`,
   `opencode`, `zed`, `neovim`, `nixvim`, `niri`, `hyprland`, `dms`). Each is a
   separate upstream repo (`viicslen-nix/*`).
 - **vlib / viicslen-lib** — helper library exported from `flakes/lib`; provides
-  `mkNixosConfigurations`, `genSystems`, `pkgsFor`,
-  `modules.autoImportRecursive`, etc. Reachable in modules as `inputs.self.lib`.
+  `defaultSystems`, `genSystems`, `pkgsFor`, `persistence`, etc. Reachable in
+  modules as `inputs.self.lib`. Its `hosts.mkNixosConfigurations` and
+  `modules.autoImportRecursive` are no longer used by this repo — `parts/`
+  does that work now.
 - **overlays** — `overlays/default.nix` exposes `pkgs.unstable`, `pkgs.stable`,
   `pkgs.local`, `pkgs.inputs.<flake>`, and package `modifications`.
 - **modules** — everything under `modules/nixos` and `modules/home-manager` is
@@ -87,6 +97,22 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **Update recipes.** `just update` updates every subflake *and* all root
   inputs; `just update-main` = root inputs only; `just update-input <x>` /
   `just update-subflake <x>` for one.
+- **Bumping local packages.** `just packages` lists the attrs; `just outdated`
+  compares every GitHub-sourced one against upstream's latest release (read-only,
+  uses `gh`; `-` = the repo has no matching release, e.g. rev-pinned plugins);
+  `just bump <attr>` wraps `nix-update --flake` inside
+  `flakes/packages`; the attr is the path under `by-name/` (`app-images.t3code`,
+  `superset.cli`, bare `coderabbit`). Version autodetect only works for
+  github/gitlab/pypi/npm/crates upstreams — otherwise pass `--version <x>` (or
+  `--version skip` to refresh the hash of a re-uploaded binary). Multi-platform
+  `fetchurl` needs a second pass with `--system aarch64-linux`. `just bump-all`
+  sweeps every package carrying a src hash and lists the ones it couldn't
+  resolve; `just bump-outdated` bumps exactly what `just outdated` flags.
+  Remember to commit in the submodule + `just update-subflake packages`.
+- **Local packages must interpolate the version into the tag.** Write
+  `tag = "v${version}"` (or `"v${finalAttrs.version}"`), never a literal
+  `rev = "v3.2.1"` — with a literal rev, nix-update rewrites `version` only, so
+  the package silently keeps building the old source at the old hash.
 - **Binary caches.** Substituters live in the `base` preset plus the `desktop`
   preset. The bleeding-edge `nixpkgs-wayland` overlay and its cache are scoped to
   `desktop` (graphical hosts only) — don't move them back into `base`, or
@@ -97,6 +123,20 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **Local packages have no cache.** `flakes/packages` (superset, php, custom
   scripts, …) builds from source on every input bump — expect slow rebuilds
   there, and note the lantian/CachyOS cache can be flaky/down.
+- **flake-parts normalises module outputs.** Entries in `flake.nixosModules` /
+  `flake.homeManagerModules` get wrapped into `{_class; _file; imports;}`. Code
+  that treats an attrset value as "a category of modules" will destructure that
+  wrapper and feed the literal string `"nixos"` into an `imports` list; the
+  error is `string 'nixos' doesn't represent an absolute path`, and the trace
+  points at `lib/modules.nix`, never at the real culprit. Pass raw module lists
+  around via `_module.args` instead.
+- **Everything embeds the flake's own hash.** `nix.registry` maps every input,
+  including `self`, so `/etc/nix/path/*` and `nix/registry.json` contain the
+  flake source path — and `containers/{qdrant,buggregator}` mount
+  `${./config}`. Any file edit therefore changes the toplevel `drvPath`. To
+  check a refactor is behaviour-preserving compare the **`system-path`
+  derivation**, the `/etc` entry names, and the systemd unit names — not the
+  toplevel hash.
 - **Renamed attrs.** Prefer current names: `pkgs.<x>` over `pkgs.xorg.<x>`,
   `stdenv.hostPlatform.system` over `pkgs.system`. nixpkgs prints eval warnings
   for the old ones.

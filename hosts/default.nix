@@ -1,4 +1,4 @@
-{...}: {
+_: {
   shared = {
     users = {
       neoscode = {

@@ -5,6 +5,8 @@
   config,
   inputs,
   outputs,
+  nixosModules,
+  homeModules,
   ...
 }:
 with lib; let
@@ -14,6 +16,13 @@ in {
     inputs.home-manager.nixosModules.default
     inputs.nur.modules.nixos.default
     inputs.agenix.nixosModules.default
+
+    # Universal, always-on modules. `impermanence` is imported for the options
+    # the persistence helpers read; it stays disabled unless a host enables it.
+    nixosModules.core.localization
+    nixosModules.core.network
+    nixosModules.core.sound
+    nixosModules.services.impermanence
   ];
 
   # Marker set by the `desktop` preset so other presets (work, personal) can
@@ -33,7 +42,7 @@ in {
     users.users =
       lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
         isNormalUser = true;
-        description = value.description;
+        inherit (value) description;
         initialPassword = lib.mkIf (value.password == "") name;
         hashedPassword = lib.mkIf (value.password != "") value.password;
         extraGroups = ["networkmanager" "wheel" "adbusers" name];
@@ -76,12 +85,49 @@ in {
       useUserPackages = true;
       backupFileExtension = "backup";
       extraSpecialArgs = {
-        inherit inputs outputs;
+        inherit inputs outputs homeModules;
         stateVersion = config.system.stateVersion;
       };
 
+      # Universal home-manager config, applied to every user on every host.
       sharedModules = [
-        ./home.nix
+        # Always available: `defaults`/`autostart` declare options other modules
+        # read, and `impermanence` supplies the options the persistence helpers
+        # consult (it stays disabled unless a host turns it on).
+        homeModules.functionality.defaults
+        homeModules.functionality.autostart
+        homeModules.functionality.impermanence
+
+        ({osConfig, ...}: {
+          imports = [
+            inputs.agenix.homeManagerModules.default
+            inputs.opencode.homeManagerModules.default
+            inputs.zed.homeManagerModules.default
+          ];
+
+          config = {
+            home = {
+              # Set state version
+              stateVersion = mkDefault osConfig.system.stateVersion;
+
+              # Add local bin to PATH
+              sessionPath = ["$HOME/.local/bin"];
+            };
+
+            # Allow home-manager to manage itself
+            programs.home-manager.enable = mkDefault true;
+
+            # Use sd-switch to manage systemd services
+            systemd.user.startServices = mkDefault "sd-switch";
+
+            # Configure the package manager
+            xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs.nix;
+
+            # Disable manual
+            manual.manpages.enable = mkDefault false;
+            programs.man.enable = mkDefault false;
+          };
+        })
       ];
 
       users = genAttrs (filter (user: (pathExists ../../../../users/${user})) (attrNames users)) (name: import ../../../../users/${name});

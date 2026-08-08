@@ -29,7 +29,7 @@
 
   presetBuilder = preset:
     builtins.mapAttrs (name: value: buildPreset preset name value)
-    (optionalAttrs config.presets."${preset}".enable (import (../presets + "/${preset}.nix") {inherit systemConfig lib;}));
+    (optionalAttrs config.presets."${preset}".enable (import (../_presets + "/${preset}.nix") {inherit systemConfig lib;}));
 
   allPresets = builtins.foldl' (val: col: val // (presetBuilder col)) {} [
     "essential"

@@ -42,6 +42,16 @@
         gh_grep.url = "https://mcp.grep.app";
         linear.url = "https://mcp.linear.app/mcp";
         google_stitch.url = "https://stitch.googleapis.com/mcp";
+        playwright = {
+          command = "npx";
+          args = [
+            "-y"
+            "@playwright/mcp@latest"
+            "--ignore-https-errors"
+            "--browser"
+            "chromium"
+          ];
+        };
       };
     };
 }

@@ -9,7 +9,9 @@ runs:
   using: 'composite'
   steps: 
     - name: Free Disk Space (Ubuntu)
-      uses: jlumbroso/free-disk-space@main
+      # Pinned to a release rather than @main: a moving branch would run
+      # arbitrary upstream changes in CI.
+      uses: jlumbroso/free-disk-space@v1.3.1
 
     - name: Install Nix
       uses: cachix/install-nix-action@v31
@@ -20,7 +22,7 @@ runs:
           access-tokens = github.com=${{ github.token }}
 
     - name: Setup Cachix
-      uses: cachix/cachix-action@v16
+      uses: cachix/cachix-action@v17
       with:
         name: nix-community
         authToken: ${{ inputs.cachix-auth-token }}

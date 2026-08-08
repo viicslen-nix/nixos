@@ -1,8 +1,8 @@
 {
   lib,
   pkgs,
-  users,
   inputs,
+  nixosModules,
   ...
 }:
 with lib; {
@@ -10,6 +10,14 @@ with lib; {
     # Include the results of the hardware scan.
     ./hardware.nix
     inputs.ghost-backup.nixosModules.default
+
+    nixosModules.hardware.intel
+    nixosModules.hardware.nvidia
+    nixosModules.hardware.bluetooth
+    nixosModules.hardware.razer
+    nixosModules.programs.mullvad
+    nixosModules.containers.vitess
+    nixosModules.features.miami-bus-tracker
   ];
 
   home-manager.sharedModules = [./home.nix];
@@ -54,8 +62,13 @@ with lib; {
 
   services = {
     blueman.enable = true;
-    tailscale.enable = true;
     ghost-backup.enable = true;
+
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      extraUpFlags = ["--ssh"];
+    };
 
     displayManager = {
       defaultSession = "niri";
@@ -81,29 +94,10 @@ with lib; {
         AllowUsers = ["neoscode"];
       };
     };
-
-    cloudflared = {
-      enable = true;
-      tunnels = {
-        "0998f771c-00d1-4caa-9c82-de93b57c89a0" = {
-          credentialsFile = "/home/neoscode/.cloudflared/998f771c-00d1-4caa-9c82-de93b57c89a0.json";
-          default = "http_status:404";
-        };
-      };
-    };
   };
 
   programs = {
     wireshark.enable = true;
-  };
-
-  # Force-install Violentmonkey into chromium (used by the webapps module).
-  # Must be "<id>;<update_url>" — a bare id no-ops; chromium needs the Web Store
-  # update URL to actually fetch the extension.
-  environment.etc."chromium/policies/managed/webapps.json".text = builtins.toJSON {
-    ExtensionInstallForcelist = [
-      "jinjaccalgkegednnccohejagnlnfdag;https://clients2.google.com/service/update2/crx"
-    ];
   };
 
   environment.systemPackages = with pkgs; [
@@ -139,44 +133,8 @@ with lib; {
   ];
 
   modules = {
-    hardware = {
-      intel.enable = true;
-      nvidia.enable = true;
-      bluetooth.enable = true;
-      razer.enable = true;
-    };
-
     desktop = {
-      gnome = {
-        enable = false;
-        remoteDesktop = false;
-      };
-
       niri.enable = true;
-
-      kde = {
-        enable = true;
-        enableSddm = false;
-        useGnomeKeyring = true;
-      };
-
-      hyprland = {
-        enable = false;
-        nvidia = true;
-        portals = {
-          enable = true;
-          backend = "gtk";
-          extraBackends = ["gnome"];
-        };
-        globalVariables = {
-          NVD_BACKEND = "direct";
-          GBM_BACKEND = "nvidia-drm";
-          LIBVA_DRIVER_NAME = "nvidia";
-          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-          __GL_GSYNC_ALLOWED = "0";
-          __GL_VRR_ALLOWED = "0";
-        };
-      };
     };
 
     core = {
@@ -195,8 +153,6 @@ with lib; {
     };
 
     programs = {
-      mullvad.enable = true;
-
       mkcert = {
         rootCA = {
           enable = false;
@@ -213,7 +169,5 @@ with lib; {
 
       docker.nvidiaSupport = true;
     };
-
-    containers.vitess.enable = true;
   };
 }

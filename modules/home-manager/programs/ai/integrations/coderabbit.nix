@@ -2,19 +2,19 @@
   lib,
   cfg,
   isAttrs,
-}: 
+}:
 with lib; {
   commands = {
     coderabbit-review = ../commands/coderabbit/review.md;
   };
 
   agents = {
-    code-reviewer = ../agents/coderabbit/code-reviewer.md;
+    coderabbit-reviewer = ../agents/coderabbit/reviewer.md;
   };
 
   skills = {
-    autofix = ../skills/coderabbit/autofix/SKILL.md;
-    code-review = ../skills/coderabbit/code-review/SKILL.md;
+    coderabbit-autofix = ../skills/coderabbit/autofix/SKILL.md;
+    coderabbit-review = ../skills/coderabbit/review/SKILL.md;
   };
 
   options = {

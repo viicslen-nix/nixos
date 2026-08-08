@@ -232,7 +232,7 @@
   // --- 调用AI流式接口 (callAIStream) ---
   // (这部分代码保持不变)
   async function callAIStream(historyText, onChunk) {
-    const API_KEY = "e2105adcbe8d4d6ea49dce2fd94c127f.6dcsB9uMmtNxKXl2";
+    const API_KEY = "";
     const API_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
 
     if (!API_KEY) {
