@@ -87,8 +87,11 @@ in {
     gh = {
       enable = true;
       gitCredentialHelper.enable = true;
-      extensions = [pkgs.github-copilot-cli];
       settings.prompts = "disabled";
+      extensions = with pkgs; [
+        gh-stack
+        github-copilot-cli
+      ];
     };
 
     direnv = {
