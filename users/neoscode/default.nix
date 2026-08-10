@@ -10,6 +10,7 @@ in {
   imports = with homeModules.programs; [
     zsh
     tmux
+    herdr
     btop
     tmate
     atuin
