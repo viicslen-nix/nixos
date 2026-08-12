@@ -146,10 +146,13 @@
         settings = mkOption {
           inherit (tomlFormat) type;
           default = {
-            list.summary = false;
             merge.squash = false;
             commit.generation.command = "${commitScript}";
             worktree-path = "../{{ repo }}@{{ branch | sanitize }}";
+            list = {
+              summary = false;
+              json-schema = 2;
+            };
             aliases = {
               create = "wt switch --no-cd --create {{ args }}";
               delete = "wt remove --force -D  {{ args }}";
