@@ -86,6 +86,10 @@
         else cfg.skills;
 
       mkDefaultAttrs = attrs: mapAttrs (_: mkDefault) attrs;
+      mkDefaultSkills = skills:
+        if isAttrs skills
+        then mkDefaultAttrs skills
+        else mkDefault skills;
       hasGlobalContext = cfg.context != "";
       hasGlobalSkills = effectiveSkills != {};
 
@@ -246,7 +250,7 @@
             commands = mkDefaultAttrs opencodeCommands;
             agents = mkDefaultAttrs effectiveAgents;
             context = mkIf hasGlobalContext (mkDefault cfg.context);
-            skills = mkIf (hasGlobalSkills && hasOpencodeSkillsOption) (mkDefault effectiveSkills);
+            skills = mkIf (hasGlobalSkills && hasOpencodeSkillsOption) (mkDefaultSkills effectiveSkills);
           };
         })
         (mkIf (hasClaudeCodeOption && cfg.targets.claude-code) {
@@ -255,7 +259,7 @@
             commands = mkDefaultAttrs claudeCodeCommands;
             agents = mkDefaultAttrs effectiveAgents;
             context = mkIf hasGlobalContext (mkDefault cfg.context);
-            skills = mkIf (hasGlobalSkills && hasClaudeCodeSkillsOption) (mkDefault effectiveSkills);
+            skills = mkIf (hasGlobalSkills && hasClaudeCodeSkillsOption) (mkDefaultSkills effectiveSkills);
           };
         })
         (mkIf (hasAntigravityOption && cfg.targets.antigravity-cli) {
@@ -265,7 +269,7 @@
             context = mkIf hasGlobalContext {
               GEMINI = mkDefault cfg.context;
             };
-            skills = mkIf (hasGlobalSkills && hasAntigravitySkillsOption) (mkDefault effectiveSkills);
+            skills = mkIf (hasGlobalSkills && hasAntigravitySkillsOption) (mkDefaultSkills effectiveSkills);
           };
         })
         (mkIf (hasGithubCopilotCliOption && cfg.targets.github-copilot-cli) {
@@ -273,7 +277,7 @@
             enableMcpIntegration = true;
             agents = mkDefaultAttrs effectiveAgents;
             context = mkIf hasGlobalContext (mkDefault cfg.context);
-            skills = mkIf (hasGlobalSkills && hasGithubCopilotCliSkillsOption) (mkDefault effectiveSkills);
+            skills = mkIf (hasGlobalSkills && hasGithubCopilotCliSkillsOption) (mkDefaultSkills effectiveSkills);
           };
         })
         mempalaceIntegration.config
