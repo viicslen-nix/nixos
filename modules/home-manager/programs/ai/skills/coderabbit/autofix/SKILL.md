@@ -1,6 +1,6 @@
 ---
 name: coderabbit-autofix
-description: Auto-fix CodeRabbit review comments - get CodeRabbit review comments from GitHub and fix them interactively or in batch.
+description: Fetches CodeRabbit's review comments from GitHub and applies them, interactively or in batch. Use ONLY when the user names CodeRabbit — "fix the coderabbit comments", "address coderabbit". Generic "fix the review comments" with no tool named is not this skill.
 version: 0.1.0
 ---
 

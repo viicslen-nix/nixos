@@ -1,6 +1,6 @@
 ---
 name: mempalace
-description: MemPalace - mine projects and conversations into a searchable memory palace. Use when asked about mempalace, memory palace, mining memories, searching memories, or palace setup.
+description: Drives the MemPalace CLI/MCP — mine projects and conversations into a searchable memory palace. Use ONLY when the user names MemPalace or their memory palace ("mempalace", "memory palace", "mine this into the palace", "search my palace", palace setup). Generic requests to remember, recall, or search past work are not this skill unless the palace is named.
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 ---
 
