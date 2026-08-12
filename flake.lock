@@ -559,6 +559,22 @@
         "type": "github"
       }
     },
+    "effective-html": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785799141,
+        "narHash": "sha256-5j212fdzcLd3yG6cUOpcZPLaLFevlBBqtEyay2tCKXk=",
+        "owner": "plannotator",
+        "repo": "effective-html",
+        "rev": "d95debbaef15af1d201fc6c10c77cf92b524a0d6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "plannotator",
+        "repo": "effective-html",
+        "type": "github"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -4472,6 +4488,7 @@
         "base16": "base16",
         "disko": "disko",
         "dms": "dms",
+        "effective-html": "effective-html",
         "flake-parts": "flake-parts",
         "flake-registry": "flake-registry",
         "fzf-tab": "fzf-tab",
