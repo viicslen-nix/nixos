@@ -140,6 +140,17 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **Renamed attrs.** Prefer current names: `pkgs.<x>` over `pkgs.xorg.<x>`,
   `stdenv.hostPlatform.system` over `pkgs.system`. nixpkgs prints eval warnings
   for the old ones.
+- **AI skills sourced from a flake input need a real path.** `modules.programs.ai.skills`
+  values reach home-manager's `claude-code` module, which branches on
+  `lib.isPath` to decide *copy this directory* vs *write this string as the
+  file body* — hand it a string and you get a `SKILL.md` whose contents are a
+  store path. A flake input's `outPath` **is** a string, and `/. + "${input}/x"`
+  throws `a string that refers to a store path cannot be appended to a path`.
+  The idiom that works is
+  `/. + (builtins.unsafeDiscardStringContext "${inputs.<x>}/…")`; discarding the
+  context is safe here only because a flake input is a source that is already
+  realised at eval time, never a derivation that still needs building. See
+  `hosts/_shared/presets/personal/ai/default.nix`.
 
 ## Keep docs current
 
