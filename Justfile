@@ -7,27 +7,6 @@ set shell := ["zsh", "-c"]
 #
 ############################################################################
 
-# Generate a new NixOS or Home Manager module
-# Usage: just new-module nixos programs my-program
-new-module TYPE CATEGORY NAME *ARGS:
-  #!/usr/bin/env bash
-  ./tools/generate-module.sh {{TYPE}} {{CATEGORY}} {{NAME}} {{ARGS}}
-
-# Validate configuration syntax and host builds
-validate *ARGS:
-  ./tools/validate-config.sh {{ARGS}}
-
-# Update auto-generated documentation
-update-docs *ARGS:
-  ./tools/update-docs.sh {{ARGS}}
-
-# Run validation and update docs
-check: validate update-docs
-  #!/usr/bin/env bash
-  if ! git diff --quiet docs/ modules/*/README.md hosts/README.md 2>/dev/null; then
-    echo "⚠️  Documentation changes detected. Review and commit."
-  fi
-
 # Open a nix shell with the flake
 repl *ARGS:
   nixos-rebuild repl --flake . {{ARGS}}
