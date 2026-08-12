@@ -140,6 +140,17 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **Renamed attrs.** Prefer current names: `pkgs.<x>` over `pkgs.xorg.<x>`,
   `stdenv.hostPlatform.system` over `pkgs.system`. nixpkgs prints eval warnings
   for the old ones.
+- **Two ways to get upstream AI skills.** Small, skill-only repos ride as a
+  `flake = false` input (`mattpocock-skills`), bumped with `just update-input`.
+  Repos that carry a lot of non-skill weight are vendored instead — there is no
+  sparse fetch for a non-flake input, so an input would copy the whole thing
+  into the store (effective-html is 22M for 148K of skills). `just vendor-skills`
+  sparse-checks out the subtree listed in `tools/skill-sources.tsv` into
+  `hosts/_shared/presets/personal/ai/skills/`, stamping each directory with
+  `.vendored-from` so the next run can prune what upstream deleted. **`git add`
+  the result before evaluating** — the flake source is `git+file://`, so
+  untracked skills are invisible to `nix eval` and to a rebuild, and the failure
+  looks like the skill silently not existing.
 - **AI skills sourced from a flake input need a real path.** `modules.programs.ai.skills`
   values reach home-manager's `claude-code` module, which branches on
   `lib.isPath` to decide *copy this directory* vs *write this string as the

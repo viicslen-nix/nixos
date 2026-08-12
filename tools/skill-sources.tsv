@@ -1,0 +1,11 @@
+# Upstream skill collections vendored into the personal AI preset by
+# `just vendor-skills`. Tab-separated: <collection>  <repo>  <subpath>
+#
+# Every directory under <subpath> is copied to
+# hosts/_shared/presets/personal/ai/skills/<name>, where mkSkillAttrSet picks
+# it up like any hand-written skill.
+#
+# Prefer a flake input (see flake.nix) when the upstream repo is small and
+# mostly skills. Vendor here when it isn't: a non-flake input copies the whole
+# repo into the store, and there is no sparse fetch for one.
+effective-html	https://github.com/plannotator/effective-html	skills

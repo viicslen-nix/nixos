@@ -95,6 +95,12 @@ update-subflake NAME *ARGS:
   nix flake update --flake "path:flakes/{{NAME}}"
   nix flake update "{{NAME}}" {{ARGS}}
 
+# Re-vendor upstream AI skill collections (tools/skill-sources.tsv) via sparse
+# checkout, for repos too large to carry as a flake input. Commit the result.
+# Usage: just vendor-skills [collection]
+vendor-skills *NAME:
+  ./tools/vendor-skills.sh {{NAME}}
+
 # List the local package attrs in flakes/packages (as `just bump` takes them)
 packages:
   #!/usr/bin/env bash

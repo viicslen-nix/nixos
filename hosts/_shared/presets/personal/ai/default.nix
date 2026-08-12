@@ -74,13 +74,10 @@
       mempalace.enable = true;
       coderabbit.enable = true;
       context = ./AGENTS.md;
-      # Local last: a directory under ./skills shadows any upstream copy.
-      # effective-html is taken whole — `html` routes to the html-* specialists,
-      # and they only resolve if all of them are present.
-      skills =
-        upstreamSkills
-        // mkSkillAttrSet (fromInput inputs.effective-html "skills")
-        // mkSkillAttrSet ./skills;
+      # Local last: a directory under ./skills shadows any upstream copy. That
+      # directory also holds the vendored collections (`just vendor-skills`),
+      # which are plain checked-in skills as far as this is concerned.
+      skills = upstreamSkills // mkSkillAttrSet ./skills;
       commands = mkMarkdownAttrSet ./commands;
       mcps = {
         context7.url = "https://mcp.context7.com/mcp";
