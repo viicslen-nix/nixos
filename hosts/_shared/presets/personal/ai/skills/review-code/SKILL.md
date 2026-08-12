@@ -1,10 +1,11 @@
 ---
 name: review-code
-description: Two-axis review (Standards + Spec) of changes since a fixed point, with optional posting to GitHub as a batched pending review via gh CLI. Use whenever the user wants to review a branch, a PR, work-in-progress changes, asks to "review since X", or wants review comments or code suggestions posted to a GitHub pull request. Covers both the analysis (repo coding standards, Fowler smell baseline, spec/issue conformance) and the publishing (pending reviews, code suggestions, APPROVE/REQUEST_CHANGES/COMMENT).
+description: Two-axis review (Standards + Spec) of changes since a fixed point — repo coding standards plus a Fowler smell baseline, and conformance to the originating issue/PRD/spec. Reports locally by default. Use whenever the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X". Only when the request explicitly says to post — `--post`, "post to the PR", "post this review to GitHub" — does it publish the findings as a batched pending review via the gh CLI.
+argument-hint: '<fixed-point> [--post]'
 allowed-tools: AskUserQuestion
 ---
 
-# Code Review (Two-Axis, with Optional GitHub Posting)
+# Code Review (Two-Axis, Local by Default)
 
 ## Overview
 
@@ -13,7 +14,7 @@ Review the diff between `HEAD` and a fixed point along two deliberately separate
 - **Standards** — does the code conform to this repo's documented coding standards (plus a fixed smell baseline)?
 - **Spec** — does the code faithfully implement the originating issue / PRD / spec?
 
-After the analysis, **ask the user each time** whether they want a local report only, or to post the findings to the GitHub PR. Posting always goes through a **pending review** (batched comments, one notification) and always requires **explicit user approval of the exact content** before anything is published.
+**The local report is the deliverable.** Steps 1–5 produce it and stop there. Posting to GitHub is opt-in: it happens only when the user's request explicitly asked for it (step 6). When it does happen, it always goes through a **pending review** (batched comments, one notification) and always requires **explicit user approval of the exact content** before anything is published.
 
 ## Process
 
@@ -101,21 +102,15 @@ Present the two reports under `## Standards` and `## Spec` headings, verbatim or
 
 End with a one-line summary: total findings per axis, and the worst issue _within each axis_ (if any). Don't pick a single winner across axes — that's the reranking the separation exists to prevent.
 
-### 6. Ask: local report or post to GitHub?
+### 6. Stop here — unless posting was explicitly requested
 
-**Ask this every time**, even if the user asked for the same mode last run. Use AskUserQuestion:
+**The default is local.** You are done at step 5. Do not ask whether to post, and do not offer to.
 
-```
-Question: "How should I deliver this review?"
-Header: "Delivery"
-Options:
-  - Local report only: We're done — the report above is the deliverable
-  - Post to GitHub PR: Draft review comments and post after your approval
-```
+Continue to step 7 **only** if the request that invoked this skill explicitly asked to publish — a `--post` argument, or wording like "post to the PR", "post this review to GitHub", "leave these as PR comments". Nothing else counts: not a PR number as the fixed point, not a large pile of findings, not "this is important".
 
-If **local report only**: done.
+If posting was requested but the changes aren't associated with a GitHub PR, say so and stop at the local report.
 
-If **post to GitHub**: continue to step 7. If the changes aren't associated with a GitHub PR, say so and stop at the local report.
+If posting was *not* requested, close with a single line noting it's available — "Run again with `--post` to publish these to the PR." — and stop.
 
 ### 7. Check gh CLI (only now — posting requires it)
 
@@ -279,7 +274,8 @@ const example = "value";
 |---------|-----|
 | Posting immediately under time pressure | Still create pending review first — can submit immediately after |
 | "Only one comment so no need for pending" | Use pending anyway — consistent workflow, allows adding more |
-| Skipping the delivery question because "they always want it posted" | Ask every time — that's the contract |
+| Posting because the findings seem important, without being asked | Local is the default — publish only on an explicit `--post`/"post to the PR" |
+| Asking "shall I post this?" when they didn't ask | Don't offer. Note `--post` exists in one line and stop |
 | Merging Standards and Spec findings into one ranked list | Keep the axes separate end to end |
 | Forgetting single quotes around `comments[][]` | Always quote: `'comments[][path]'` |
 | Not getting the commit SHA | `gh pr view <N> --json commits --jq '.commits[-1].oid'` |
@@ -293,12 +289,13 @@ Stop if you're thinking:
 - "Only one comment so I'll post directly"
 - "User already approved the review idea, so I'll skip showing the content"
 - "I'll post it and then tell them what I posted"
-- "They chose 'post to GitHub' last time, no need to ask this time"
+- "They gave me a PR number, so they obviously want it posted"
+- "These findings are too important to leave in a local report"
 - "gh is probably installed, no need to check"
 - "The diff is big but I'll just review it inline anyway without noting it" (fine to go inline when no sub-agent tool exists — but say so)
 - "Standards found something worse, so I'll bury the Spec findings"
 
-All of these mean: **STOP.** Ask the delivery question, check gh, show exact content, get explicit approval, use a pending review.
+All of these mean: **STOP.** Publish only on an explicit request, then check gh, show exact content, get explicit approval, and use a pending review.
 
 ## Why This Shape
 
@@ -307,3 +304,5 @@ All of these mean: **STOP.** Ask the delivery question, check gh, show exact con
 **Pending reviews** — same effort (2 API calls vs 1) but: all feedback lands as one notification, you can add comments as you find more issues, and you can re-read your own comments before they go public.
 
 **Explicit approval** — review comments are public and permanent; suggestions might be wrong; tone might need adjustment. The user must see the exact content, not a summary of intent.
+
+**Local by default** — a review you asked for is information; a review posted to a PR is a message to your colleagues. The second is outward-facing and hard to retract, so it takes a deliberate `--post`, not a prompt you might wave through.
