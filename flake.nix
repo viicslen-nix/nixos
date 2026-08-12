@@ -126,9 +126,15 @@
       inputs.packages.follows = "packages";
     };
 
-    # Upstream AI harness skills; bump with `just update-input mattpocock-skills`.
+    # Upstream AI harness skills; bump with `just update-input <name>`.
     mattpocock-skills = {
       url = "github:mattpocock/skills";
+      flake = false;
+    };
+    # NB: ~22M, nearly all of it the `site/` Next.js app — only `skills/` (148K)
+    # is used. There is no sparse fetch for a non-flake input.
+    effective-html = {
+      url = "github:plannotator/effective-html";
       flake = false;
     };
 

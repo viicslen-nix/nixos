@@ -31,17 +31,17 @@
           value = dir + "/${name}";
         }) skillEntries);
 
-      # Skills taken verbatim from github:mattpocock/skills.
-      #
       # A flake input's outPath is a *string*, but home-manager's claude-code
       # module branches on `lib.isPath` to decide "copy this directory" vs
       # "write this string as the file body" — so it has to be coerced back to
       # a real path. `/. + str` refuses strings carrying store context, and the
       # context is pointless here: a flake input is a source that is already
       # realised at eval time, never a derivation that needs building.
-      upstream =
-        category: name:
-        /. + (builtins.unsafeDiscardStringContext "${inputs.mattpocock-skills}/skills/${category}/${name}");
+      fromInput = input: sub: /. + (builtins.unsafeDiscardStringContext "${input}/${sub}");
+
+      # Skills taken verbatim from github:mattpocock/skills. Curated by name —
+      # that repo carries more than we want (in-progress/, misc/, deprecated/).
+      upstream = category: name: fromInput inputs.mattpocock-skills "skills/${category}/${name}";
 
       upstreamSkills = builtins.listToAttrs (
         map (spec: {
@@ -74,8 +74,13 @@
       mempalace.enable = true;
       coderabbit.enable = true;
       context = ./AGENTS.md;
-      # Local last: a directory under ./skills shadows the upstream copy.
-      skills = upstreamSkills // mkSkillAttrSet ./skills;
+      # Local last: a directory under ./skills shadows any upstream copy.
+      # effective-html is taken whole — `html` routes to the html-* specialists,
+      # and they only resolve if all of them are present.
+      skills =
+        upstreamSkills
+        // mkSkillAttrSet (fromInput inputs.effective-html "skills")
+        // mkSkillAttrSet ./skills;
       commands = mkMarkdownAttrSet ./commands;
       mcps = {
         context7.url = "https://mcp.context7.com/mcp";
