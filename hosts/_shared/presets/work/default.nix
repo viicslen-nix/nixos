@@ -162,8 +162,8 @@ with lib; {
             claudeCodeRepo = pkgs.fetchFromGitHub {
               owner = "anthropics";
               repo = "claude-code";
-              rev = "main";
-              sha256 = "sha256-2Kd4oSU3vuDlbo1024hyY0cBA5oeeBPaMWmS3caH6wc=";
+              rev = "53f9910f6ef015ddda6a4b5fceab5dd745af7f4c";
+              sha256 = "sha256-ba7eTo6L4Xdb86kS9khFKXOIWWBmlNfUk8W39cSLWeM=";
             };
           in {
             enable = true;
