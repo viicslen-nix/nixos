@@ -1,5 +1,5 @@
 ---
-description: Run CodeRabbit AI code review on your changes.
+description: Run a CodeRabbit AI (`coderabbit`/`cr`) review on your changes — the CodeRabbit tool specifically, not the repo's generic review skill.
 argument-hint: '[type] [--base <branch>]'
 allowed-tools: Bash(coderabbit:*), Bash(cr:*), Bash(git:*)
 ---

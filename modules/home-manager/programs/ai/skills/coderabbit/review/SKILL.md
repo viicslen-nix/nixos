@@ -1,6 +1,6 @@
 ---
 name: coderabbit-review
-description: Reviews code changes using CodeRabbit AI. Use when user asks for code review, PR feedback, code quality checks, security issues, or wants autonomous fix-review cycles.
+description: Runs a code review through the CodeRabbit AI CLI (`coderabbit`/`cr`). Use ONLY when the user names CodeRabbit — "coderabbit review", "run cr on this", "what does coderabbit say" — or asks for an autonomous CodeRabbit fix-review cycle. For a plain "review my code" with no tool named, this is the wrong skill: use the repo's own review skill instead.
 ---
 
 # CodeRabbit Code Review
