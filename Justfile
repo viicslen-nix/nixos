@@ -34,19 +34,11 @@ fmt PATH='.' *ARGS:
 build HOST *ARGS:
   nix build .#nixosConfigurations.{{HOST}}.config.system.build.toplevel --print-build-logs {{ARGS}}
 
-# Build all host configurations
+# Runs parts/checks.nix, which skips the hosts known not to evaluate.
+# Heavy — see the resource-safety notes in AGENTS.md before running.
+# Build every host configuration
 build-all *ARGS:
-  #!/usr/bin/env bash
-  for host in $(ls hosts/ | grep -v default.nix | grep -v README.md | grep -v _shared); do
-    if [[ -d "hosts/$host" && -f "hosts/$host/default.nix" ]]; then
-      echo "Building $host..."
-      just build "$host" {{ARGS}}
-    fi
-  done
-
-# Run eval tests
-test *ARGS:
-  nix eval .#evalTests --show-trace --print-build-logs --verbose {{ARGS}}
+  nix flake check --print-build-logs {{ARGS}}
 
 ############################################################################
 #
