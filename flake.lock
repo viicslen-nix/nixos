@@ -3021,6 +3021,22 @@
         "type": "github"
       }
     },
+    "mattpocock-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786045791,
+        "narHash": "sha256-pseSJJb5nBBGPzpxA1GzjGLB9OrT+u0At1saJ4NqZ1E=",
+        "owner": "mattpocock",
+        "repo": "skills",
+        "rev": "84fdeffd12f2ee307994d1eb6feb48173b6e0502",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mattpocock",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
     "mcphub-nvim": {
       "inputs": {
         "flake-parts": "flake-parts_5",
@@ -4472,6 +4488,7 @@
         "lan-mouse": "lan-mouse",
         "laravel-sail": "laravel-sail",
         "llm-agents": "llm-agents",
+        "mattpocock-skills": "mattpocock-skills",
         "neovim": "neovim",
         "niri": "niri",
         "nix-alien": "nix-alien",

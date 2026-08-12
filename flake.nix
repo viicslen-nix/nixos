@@ -126,6 +126,12 @@
       inputs.packages.follows = "packages";
     };
 
+    # Upstream AI harness skills; bump with `just update-input mattpocock-skills`.
+    mattpocock-skills = {
+      url = "github:mattpocock/skills";
+      flake = false;
+    };
+
     zed = {
       url = "path:./flakes/zed";
       inputs.nixpkgs.follows = "nixpkgs";
