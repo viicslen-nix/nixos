@@ -70,8 +70,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `_` is skipped, which is how non-module helpers opt out (e.g.
   `services/impermanence/_presets`, whose `default.nix` takes `systemConfig`).
 - **subflake** — a git submodule flake under `flakes/*` (`lib`, `packages`,
-  `opencode`, `zed`, `neovim`, `nixvim`, `niri`, `hyprland`, `dms`). Each is a
-  separate upstream repo (`viicslen-nix/*`).
+  `opencode`, `zed`, `neovim`, `nixvim`, `niri`, `hyprland`, `dms`, `emacs`).
+  Each is a separate upstream repo (`viicslen-nix/*`).
 - **vlib / viicslen-lib** — helper library exported from `flakes/lib`; provides
   `defaultSystems`, `genSystems`, `pkgsFor`, `persistence`, etc. Reachable in
   modules as `inputs.self.lib`. Its `hosts.mkNixosConfigurations` and

@@ -25,3 +25,6 @@
 [submodule "flakes/zed"]
 	path = flakes/zed
 	url = https://github.com/viicslen-nix/zed
+[submodule "flakes/emacs"]
+	path = flakes/emacs
+	url = https://github.com/viicslen-nix/emacs

@@ -150,6 +150,12 @@
       url = "path:./flakes/nixvim";
       inputs.packages.follows = "packages";
     };
+
+    # Emacs
+    emacs = {
+      url = "path:./flakes/emacs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     packages = {
       url = "path:./flakes/packages";
       inputs.nixpkgs.follows = "nixpkgs";
