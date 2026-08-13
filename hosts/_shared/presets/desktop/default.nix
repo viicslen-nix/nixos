@@ -20,6 +20,9 @@ with lib; let
     nerd-fonts.jetbrains-mono
     nerd-fonts.droid-sans-mono
     nerd-fonts.victor-mono
+    # Family "Symbols Nerd Font Mono" — what nerd-icons (Emacs) asks for by
+    # name. The patched fonts above carry the glyphs but not that family name.
+    nerd-fonts.symbols-only
   ];
 in {
   imports = [
