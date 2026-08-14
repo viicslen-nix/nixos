@@ -23,6 +23,9 @@ with lib; let
     # Family "Symbols Nerd Font Mono" — what nerd-icons (Emacs) asks for by
     # name. The patched fonts above carry the glyphs but not that family name.
     nerd-fonts.symbols-only
+    # all-the-icons' font set (treemacs icon theme); the package's own
+    # `all-the-icons-install-fonts' writes into $HOME, so install it here.
+    emacs-all-the-icons-fonts
   ];
 in {
   imports = [
