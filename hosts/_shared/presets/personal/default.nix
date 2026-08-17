@@ -17,6 +17,7 @@ with lib; {
     home-manager.sharedModules = [
       # Shared AI tooling; ./ai configures it below.
       homeModules.programs.ai
+      homeModules.programs.claude-code
 
       ({osConfig, ...}: {
         imports = [

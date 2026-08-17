@@ -6,7 +6,28 @@
   }: let
     cfg = config.modules.programs.herdr;
   in {
-    options.modules.programs.herdr.enable = lib.mkEnableOption "Herdr" // {default = true;};
+    options.modules.programs.herdr = {
+      enable = lib.mkEnableOption "Herdr" // {default = true;};
+      enableClaudeIntegration =
+        lib.mkEnableOption "reporting Claude Code session state to Herdr"
+        // {default = true;};
+    };
+
+    # herdr installs the hook script into $HOME itself; this only wires it up.
+    config.programs.claude-code.settings = lib.mkIf (cfg.enable && cfg.enableClaudeIntegration) {
+      hooks.SessionStart = [
+        {
+          matcher = "*";
+          hooks = [
+            {
+              type = "command";
+              command = "bash '${config.home.homeDirectory}/.claude/hooks/herdr-agent-state.sh' session";
+              timeout = 10;
+            }
+          ];
+        }
+      ];
+    };
 
     config.programs.herdr = lib.mkIf cfg.enable {
       enable = true;

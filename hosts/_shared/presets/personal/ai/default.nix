@@ -1,6 +1,25 @@
 
 { inputs, ... }:
 {
+  modules.programs.claude-code = {
+    marketplaces = {
+      mempalace = "MemPalace/mempalace";
+      ponytail = "DietrichGebert/ponytail";
+      worktrunk = "max-sixty/worktrunk";
+    };
+
+    plugins = {
+      "document-skills@anthropic-agent-skills" = true;
+      "example-skills@anthropic-agent-skills" = false;
+      "laravel-simplifier@laravel" = true;
+      "mempalace@mempalace" = true;
+      "phpstorm-plugin@phpstorm-marketplace" = true;
+      "ponytail@ponytail" = true;
+      "worktrunk@worktrunk" = true;
+      "playground@claude-plugins-official" = true;
+    };
+  };
+
   modules.programs.ai =
     let
       mkMarkdownAttrSet = dir:
@@ -71,6 +90,8 @@
     in
     {
       enable = true;
+      gateway.enable = true;
+      superset.enable = true;
       mempalace.enable = true;
       coderabbit.enable = true;
       context = ./AGENTS.md;
