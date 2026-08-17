@@ -17,17 +17,22 @@
           lib
           cfg
           pkgs
+          config
           inputs
-          hasMcpOption
           isAttrs
           ;
       };
+      supersetIntegration = import ./integrations/superset.nix {inherit lib;};
       coderabbitIntegration = import ./integrations/coderabbit.nix {
         inherit
           lib
           cfg
           isAttrs
           ;
+      };
+      mcpGatewayIntegration = import ./integrations/mcp-gateway.nix {
+        inherit lib cfg pkgs config;
+        mcps = effectiveMcps;
       };
 
       commandDefinitionType = types.submodule {
@@ -72,11 +77,18 @@
       hasGithubCopilotCliOption = hasAttrByPath ["programs" "github-copilot-cli" "agents"] options;
       hasGithubCopilotCliSkillsOption = hasAttrByPath ["programs" "github-copilot-cli" "skills"] options;
 
+      effectiveMcps = cfg.mcps // optionalAttrs cfg.mempalace.enable mempalaceIntegration.mcps;
       effectiveCommands =
         cfg.commands
         // optionalAttrs cfg.mempalace.enable mempalaceIntegration.commands
         // optionalAttrs cfg.coderabbit.enable coderabbitIntegration.commands;
       effectiveAgents = cfg.agents // optionalAttrs cfg.coderabbit.enable coderabbitIntegration.agents;
+      # Hook lists for the same event come from several integrations, so they are
+      # concatenated per event rather than overwritten.
+      effectiveHooks = zipAttrsWith (_: concatLists) (
+        optional cfg.mempalace.enable mempalaceIntegration.hooks
+        ++ optional cfg.superset.enable supersetIntegration.hooks
+      );
       effectiveSkills =
         if isAttrs cfg.skills
         then
@@ -206,19 +218,23 @@
 
         inherit (mempalaceIntegration.options) mempalace;
         inherit (coderabbitIntegration.options) coderabbit;
+        inherit (supersetIntegration.options) superset;
+        inherit (mcpGatewayIntegration.options) gateway;
       };
 
       config = mkIf cfg.enable (mkMerge [
         {
-          assertions = [
-            {
-              assertion = all (command: command.content != null || command.prompt != null) (attrValues normalizedCommands);
-              message = "`modules.programs.ai.commands.<name>` must set either `content` or `prompt` when using attribute syntax.";
-            }
-          ];
+          assertions =
+            [
+              {
+                assertion = all (command: command.content != null || command.prompt != null) (attrValues normalizedCommands);
+                message = "`modules.programs.ai.commands.<name>` must set either `content` or `prompt` when using attribute syntax.";
+              }
+            ]
+            ++ mcpGatewayIntegration.assertions;
 
           warnings =
-            optional (!hasMcpOption && cfg.mcps != {})
+            optional (!hasMcpOption && effectiveMcps != {})
             "`modules.programs.ai.mcps` is set, but `programs.mcp` is unavailable in this Home Manager version."
             ++ optional (!hasOpencodeOption && cfg.targets.opencode && (effectiveCommands != {} || effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
             "`modules.programs.ai.targets.opencode` is enabled, but `programs.opencode` is unavailable."
@@ -239,9 +255,15 @@
             ++ mempalaceIntegration.warnings
             ++ coderabbitIntegration.warnings;
 
-          programs.mcp = mkIf (hasMcpOption && cfg.mcps != {}) {
+          # With the gateway on, clients see only the gateway; the real servers
+          # become its backends.
+          programs.mcp = mkIf (hasMcpOption && effectiveMcps != {}) {
             enable = mkDefault true;
-            servers = mkDefaultAttrs cfg.mcps;
+            servers = mkDefaultAttrs (
+              if cfg.gateway.enable
+              then mcpGatewayIntegration.servers
+              else effectiveMcps
+            );
           };
         }
         (mkIf (hasOpencodeOption && cfg.targets.opencode) {
@@ -260,6 +282,7 @@
             agents = mkDefaultAttrs effectiveAgents;
             context = mkIf hasGlobalContext (mkDefault cfg.context);
             skills = mkIf (hasGlobalSkills && hasClaudeCodeSkillsOption) (mkDefaultSkills effectiveSkills);
+            settings = optionalAttrs (effectiveHooks != {}) {hooks = effectiveHooks;};
           };
         })
         (mkIf (hasAntigravityOption && cfg.targets.antigravity-cli) {
@@ -280,7 +303,7 @@
             skills = mkIf (hasGlobalSkills && hasGithubCopilotCliSkillsOption) (mkDefaultSkills effectiveSkills);
           };
         })
-        mempalaceIntegration.config
+        mcpGatewayIntegration.config
       ]);
     };
 }
