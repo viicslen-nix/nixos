@@ -162,6 +162,22 @@ already happened. Treat every heavy Nix invocation as dangerous.
   context is safe here only because a flake input is a source that is already
   realised at eval time, never a derivation that still needs building. See
   `hosts/_shared/presets/personal/ai/default.nix`.
+- **`modules.programs.ai` never touches `~/.claude.json`.** MCP servers reach
+  Claude Code as a generated `claude-code-home-manager` plugin (a `.mcp.json`
+  in a plugin dir passed via `--plugin-dir` on the wrapped binary) — hence the
+  `mcp__plugin_claude-code-home-manager_*` tool prefix. Anything still listed
+  under `mcpServers` in `~/.claude.json` was added by `claude mcp add -s user`
+  and shadows the Nix-provided copy; drop it with
+  `claude mcp remove <name> -s user`. `~/.claude/settings.json` is likewise only
+  written when `programs.claude-code.settings != {}` — owned by
+  `modules/home-manager/programs/claude-code` (global prefs, marketplaces,
+  enabled plugins), plus a hook block from every module that wants one —
+  `modules.programs.ai`'s `integrations/{mempalace,superset}.nix` and
+  `modules.programs.herdr.enableClaudeIntegration`. Hook lists for the same
+  event concatenate, so modules never need to know about each other.
+  Claude Code itself, and the mempalace/ponytail/superset hook installers,
+  rewrite that file at runtime, so those edits land in `settings.json.backup`
+  and are dropped on the next activation. Change settings in Nix, not in the TUI.
 
 ## Keep docs current
 
