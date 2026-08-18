@@ -1,21 +1,11 @@
 # This file defines overlays
-{inputs, ...}: {
+{inputs, ...}: let
+  inherit (inputs.viicslen-lib.lib.overlays) mkFlakeInputsOverlay mkChannelOverlay;
+in {
   # For every flake input, aliases 'pkgs.inputs.${flake}' to
   # 'inputs.${flake}.packages.${pkgs.system}' or
   # 'inputs.${flake}.legacyPackages.${pkgs.system}'
-  flake-inputs = final: _: {
-    inputs =
-      builtins.mapAttrs (
-        _: flake: let
-          legacyPackages = (flake.legacyPackages or {}).${final.stdenv.hostPlatform.system} or {};
-          packages = (flake.packages or {}).${final.stdenv.hostPlatform.system} or {};
-        in
-          if legacyPackages != {}
-          then legacyPackages
-          else packages
-      )
-      inputs;
-  };
+  flake-inputs = mkFlakeInputsOverlay inputs;
 
   # This one brings our custom packages from the 'pkgs' directory
   additions = final: _prev: {
@@ -24,25 +14,20 @@
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
   # be accessible through 'pkgs.unstable'
-  unstable-packages = final: _prev: {
-    unstable = import inputs.nixpkgs-unstable {
-      system = final.stdenv.hostPlatform.system;
-      config = {
-        allowUnfree = true;
-        permittedInsecurePackages = [
-          "openssl-1.1.1w"
-        ];
-      };
+  unstable-packages = mkChannelOverlay {
+    attr = "unstable";
+    flake = inputs.nixpkgs-unstable;
+    config = {
+      allowUnfree = true;
+      permittedInsecurePackages = ["openssl-1.1.1w"];
     };
   };
 
   # When applied, the stable nixpkgs set (declared in the flake inputs) will
   # be accessible through 'pkgs.stable'
-  stable-packages = final: _prev: {
-    stable = import inputs.nixpkgs-stable {
-      system = final.stdenv.hostPlatform.system;
-      config.allowUnfree = true;
-    };
+  stable-packages = mkChannelOverlay {
+    attr = "stable";
+    flake = inputs.nixpkgs-stable;
   };
 
   # This one contains whatever you want to overlay
