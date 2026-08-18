@@ -11,7 +11,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
         resolution = mkOption {
           type = types.str;
           default = "1920x1080";

@@ -14,7 +14,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc "starship") // {default = true;};
+        enable = mkEnabledOption (mdDoc "starship");
       };
 
       config = mkIf cfg.enable (mkMerge [

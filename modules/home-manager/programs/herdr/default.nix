@@ -7,7 +7,7 @@
     cfg = config.modules.programs.herdr;
   in {
     options.modules.programs.herdr = {
-      enable = lib.mkEnableOption "Herdr" // {default = true;};
+      enable = lib.mkEnabledOption "Herdr";
       enableClaudeIntegration =
         lib.mkEnableOption "reporting Claude Code session state to Herdr"
         // {default = true;};

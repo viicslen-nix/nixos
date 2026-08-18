@@ -16,7 +16,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc "docker") // {default = true;};
+        enable = mkEnabledOption (mdDoc "docker");
 
         nvidiaSupport = mkOption {
           type = types.bool;

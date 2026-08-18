@@ -13,7 +13,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc feature) // {default = true;};
+        enable = mkEnabledOption (mdDoc feature);
       };
 
       config = mkIf cfg.enable {

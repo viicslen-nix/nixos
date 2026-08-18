@@ -11,7 +11,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
         user = mkOption {
           type = types.nullOr types.str;
           description = "The user name to use for git commits.";

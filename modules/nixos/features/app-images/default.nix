@@ -12,7 +12,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc "app-images") // {default = true;};
+        enable = mkEnabledOption (mdDoc "app-images");
       };
 
       config = mkIf cfg.enable {

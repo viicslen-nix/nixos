@@ -282,7 +282,7 @@
       '';
     in {
       options.services.miami-bus-tracker = {
-        enable = mkEnableOption "Miami-Dade Transit Bus Tracker" // {default = true;};
+        enable = mkEnabledOption "Miami-Dade Transit Bus Tracker";
 
         routeId = mkOption {
           type = types.str;

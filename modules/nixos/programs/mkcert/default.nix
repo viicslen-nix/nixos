@@ -16,7 +16,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
         rootCA = {
           enable = mkEnableOption "Enable mkcert root CA certificate.";
 

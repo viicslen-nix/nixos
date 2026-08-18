@@ -29,7 +29,7 @@
       enabledExtensions = cfg.additionalExtensions ++ defaultExtensions;
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc "gnome") // {default = true;};
+        enable = mkEnabledOption (mdDoc "gnome");
 
         enableGdm = mkOption {
           type = types.bool;
