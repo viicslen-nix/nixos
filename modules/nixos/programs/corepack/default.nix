@@ -12,7 +12,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
         strict = mkEnableOption (mdDoc "Enable strict mode");
         autoPin = mkEnableOption (mdDoc "Enable auto pin");
         projectSpec = mkEnableOption (mdDoc "Enable project spec");

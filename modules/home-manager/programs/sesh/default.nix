@@ -39,7 +39,7 @@
       '';
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
 
         enableNushellIntegration = mkEnableOption "Enable nushell integration";
         enableTmuxIntegration = mkEnableOption "Enable tmux integration";

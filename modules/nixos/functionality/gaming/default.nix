@@ -12,8 +12,6 @@
     with lib;
     with inputs.self.lib; let
       cfg = config.modules.functionality.gaming;
-      defaultEnabled = description:
-        mkEnableOption description // {default = true;};
       audioQuantum = "${toString cfg.audio.quantum}/${toString cfg.audio.rate}";
       jovianPkgs = inputs.jovian.legacyPackages.x86_64-linux;
       gamescopePortalPackages = [
@@ -84,7 +82,7 @@
       ];
 
       options.modules.functionality.gaming = {
-        enable = defaultEnabled (mdDoc "gaming support");
+        enable = mkEnabledOption (mdDoc "gaming support");
 
         extraPackages = mkOption {
           type = types.listOf types.package;
@@ -93,10 +91,10 @@
         };
 
         steam = {
-          enable = defaultEnabled "Steam";
-          protonGe = defaultEnabled "GE-Proton";
-          protontricks = defaultEnabled "Protontricks";
-          gamescopeSession = defaultEnabled "the dedicated Steam Gamescope session";
+          enable = mkEnabledOption "Steam";
+          protonGe = mkEnabledOption "GE-Proton";
+          protontricks = mkEnabledOption "Protontricks";
+          gamescopeSession = mkEnabledOption "the dedicated Steam Gamescope session";
           extest = mkEnableOption "the Steam Input Wayland mouse workaround";
           remotePlay.openFirewall = mkEnableOption "Steam Remote Play firewall ports";
           localNetworkTransfers.openFirewall = mkEnableOption "Steam LAN transfer firewall ports";
@@ -104,44 +102,44 @@
         };
 
         launchers = {
-          bottles = defaultEnabled "Bottles";
-          heroic = defaultEnabled "Heroic Games Launcher";
-          lutris = defaultEnabled "Lutris";
+          bottles = mkEnabledOption "Bottles";
+          heroic = mkEnabledOption "Heroic Games Launcher";
+          lutris = mkEnabledOption "Lutris";
         };
 
         wine = {
-          enable = defaultEnabled "Wine support";
+          enable = mkEnabledOption "Wine support";
           package = mkOption {
             type = types.package;
             default = pkgs.wineWow64Packages.stable;
             defaultText = literalExpression "pkgs.wineWow64Packages.stable";
             description = "Wine package to install";
           };
-          winetricks = defaultEnabled "Winetricks";
+          winetricks = mkEnabledOption "Winetricks";
         };
 
         tools = {
-          goverlay = defaultEnabled "GOverlay";
-          mangohud = defaultEnabled "MangoHud";
-          protonplus = defaultEnabled "ProtonPlus";
-          vkbasalt = defaultEnabled "vkBasalt";
+          goverlay = mkEnabledOption "GOverlay";
+          mangohud = mkEnabledOption "MangoHud";
+          protonplus = mkEnabledOption "ProtonPlus";
+          vkbasalt = mkEnabledOption "vkBasalt";
         };
 
         gamemode = {
-          enable = defaultEnabled "GameMode";
+          enable = mkEnabledOption "GameMode";
           enableRenice = mkEnableOption "GameMode process renicing with CAP_SYS_NICE";
         };
 
         gamescope = {
-          enable = defaultEnabled "Gamescope";
+          enable = mkEnabledOption "Gamescope";
           enableWsi = mkEnableOption "the Gamescope Vulkan WSI layer";
           capSysNice = mkEnableOption "CAP_SYS_NICE for Gamescope";
         };
 
-        deckyLoader.enable = defaultEnabled "Decky Loader";
+        deckyLoader.enable = mkEnabledOption "Decky Loader";
 
         zram = {
-          enable = defaultEnabled "compressed ZRAM swap";
+          enable = mkEnabledOption "compressed ZRAM swap";
           algorithm = mkOption {
             type = types.str;
             default = "zstd";
@@ -160,7 +158,7 @@
         };
 
         controllers = {
-          extraRules = defaultEnabled "community udev rules for additional game controllers";
+          extraRules = mkEnabledOption "community udev rules for additional game controllers";
           xpadneo = mkEnableOption "Xbox Bluetooth controller support through xpadneo";
           xone = mkEnableOption "Xbox wired and wireless-dongle support through xone";
           joycond = mkEnableOption "Nintendo Joy-Con and Pro Controller support";

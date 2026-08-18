@@ -137,7 +137,7 @@
       ];
 
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
 
         tmux = {
           enable = mkEnableOption (mdDoc "tmux session per worktree");

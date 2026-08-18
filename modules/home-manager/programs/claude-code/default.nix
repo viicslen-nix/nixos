@@ -26,7 +26,7 @@
       };
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc "global Claude Code settings") // {default = true;};
+        enable = mkEnabledOption (mdDoc "global Claude Code settings");
 
         marketplaces = mkOption {
           type = types.attrsOf types.str;

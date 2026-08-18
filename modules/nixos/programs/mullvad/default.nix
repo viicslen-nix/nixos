@@ -16,7 +16,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc "mullvad") // {default = true;};
+        enable = mkEnabledOption (mdDoc "mullvad");
         enableExludeIPs = mkOption {
           type = types.bool;
           default = false;

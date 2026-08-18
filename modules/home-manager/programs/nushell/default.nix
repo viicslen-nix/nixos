@@ -13,7 +13,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc "nushell") // {default = true;};
+        enable = mkEnabledOption (mdDoc "nushell");
       };
 
       config = mkIf cfg.enable {

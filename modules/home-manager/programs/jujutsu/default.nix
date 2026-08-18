@@ -12,7 +12,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
         userName = mkOption {
           type = types.str;
           description = "The name of the user to use for jujutsu.";

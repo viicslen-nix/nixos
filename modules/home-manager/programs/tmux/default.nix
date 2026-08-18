@@ -13,7 +13,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc "tmux") // {default = true;};
+        enable = mkEnabledOption (mdDoc "tmux");
       };
 
       config.programs.tmux = mkIf cfg.enable {

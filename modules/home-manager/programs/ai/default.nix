@@ -151,7 +151,7 @@
       antigravityCommands = mapAttrs toAntigravityCommand normalizedCommands;
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc "shared AI tooling") // {default = true;};
+        enable = mkEnabledOption (mdDoc "shared AI tooling");
 
         mcps = mkOption {
           type = types.attrsOf types.attrs;

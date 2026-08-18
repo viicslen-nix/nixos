@@ -12,7 +12,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
         modern = mkEnableOption (mdDoc "Enable modern NVIDIA power management");
         prime = mkEnableOption (mdDoc "Enable PRIME offloading");
         latest = mkEnableOption (mdDoc "Use the latest NVIDIA drivers");
