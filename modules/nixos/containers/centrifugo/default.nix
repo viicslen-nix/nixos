@@ -1,11 +1,14 @@
 {
   flake.modules.nixos.centrifugo = {
+    inputs,
     lib,
     pkgs,
     config,
     ...
   }:
     with lib; let
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains mkTraefikLabels;
+
       name = "centrifugo";
       namespace = "containers";
 
@@ -45,28 +48,15 @@
       });
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
 
-        host = mkOption {
-          type = types.str;
-          default = "centrifugo.local";
-          description = "Hostname for Centrifugo";
-        };
+        host = mkHostOption "centrifugo.local" "Centrifugo";
       };
 
       config = mkIf cfg.enable {
         networking.hosts."127.0.0.1" = [cfg.host];
 
-        # Auto-configure mkcert for this container's host
-        modules.programs.mkcert =
-          mkIf (
-            (hasAttr "modules" config)
-            && (hasAttr "programs" config.modules)
-            && (hasAttr "mkcert" config.modules.programs)
-            && config.modules.programs.mkcert.enable
-          ) {
-            domains = [cfg.host];
-          };
+        modules.programs.mkcert = mkMkcertDomains config [cfg.host];
 
         virtualisation.oci-containers.containers = {
           centrifugo = {
@@ -75,19 +65,15 @@
             ports = [
               "127.0.0.1:8002:8000"
             ];
-            extraOptions = [
-              "--network=local"
-              "--label=traefik.enable=true"
-              "--label=traefik.http.middlewares.centrifugo-https-redirect.redirectscheme.scheme=https"
-              "--label=traefik.http.middlewares.centrifugo-https-redirect.redirectscheme.permanent=true"
-              "--label=traefik.http.routers.centrifugo-http.rule=Host(`${cfg.host}`)"
-              "--label=traefik.http.routers.centrifugo-http.entrypoints=web"
-              "--label=traefik.http.routers.centrifugo-http.middlewares=centrifugo-https-redirect"
-              "--label=traefik.http.routers.centrifugo.rule=Host(`${cfg.host}`)"
-              "--label=traefik.http.routers.centrifugo.entrypoints=websecure"
-              "--label=traefik.http.routers.centrifugo.tls=true"
-              "--label=traefik.http.services.centrifugo.loadbalancer.server.port=8000"
-            ];
+            extraOptions =
+              [
+                "--network=local"
+              ]
+              ++ mkTraefikLabels {
+                name = "centrifugo";
+                host = cfg.host;
+                port = 8000;
+              };
             volumes = [
               "${centrifugoConfig}:/centrifugo/config.json:ro"
             ];

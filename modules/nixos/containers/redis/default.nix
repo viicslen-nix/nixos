@@ -1,38 +1,28 @@
 {
   flake.modules.nixos.redis = {
+    inputs,
     lib,
     config,
     ...
   }:
     with lib; let
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains mkTraefikLabels;
+
       name = "redis";
       namespace = "containers";
 
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
 
-        host = mkOption {
-          type = types.str;
-          default = "redis.local";
-          description = "Hostname for Redis";
-        };
+        host = mkHostOption "redis.local" "Redis";
       };
 
       config = mkIf cfg.enable {
         networking.hosts."127.0.0.1" = [cfg.host];
 
-        # Auto-configure mkcert for this container's host
-        modules.programs.mkcert =
-          mkIf (
-            (hasAttr "modules" config)
-            && (hasAttr "programs" config.modules)
-            && (hasAttr "mkcert" config.modules.programs)
-            && config.modules.programs.mkcert.enable
-          ) {
-            domains = [cfg.host];
-          };
+        modules.programs.mkcert = mkMkcertDomains config [cfg.host];
 
         virtualisation.oci-containers.containers = {
           redis = {

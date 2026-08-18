@@ -1,23 +1,22 @@
 {
   flake.modules.nixos.vitess = {
+    inputs,
     lib,
     config,
     ...
   }:
     with lib; let
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains mkTraefikLabels;
+
       name = "vitess";
       namespace = "containers";
 
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
 
-        host = mkOption {
-          type = types.str;
-          default = "vitess.local";
-          description = "Hostname for Vitess";
-        };
+        host = mkHostOption "vitess.local" "Vitess";
 
         port = mkOption {
           type = types.port;

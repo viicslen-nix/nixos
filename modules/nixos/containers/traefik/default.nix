@@ -1,10 +1,13 @@
 {
   flake.modules.nixos.traefik = {
+    inputs,
     lib,
     config,
     ...
   }:
     with lib; let
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains mkTraefikLabels;
+
       name = "traefik";
       namespace = "containers";
 
@@ -12,22 +15,14 @@
       containerCfg = config.modules.containers.settings;
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
 
-        host = mkOption {
-          type = types.str;
-          default = "traefik.local";
-          description = "Hostname for Traefik dashboard";
-        };
+        host = mkHostOption "traefik.local" "Traefik dashboard";
 
         admin = {
           enable = mkEnableOption (mdDoc "Traefik Proxy Admin panel");
 
-          host = mkOption {
-            type = types.str;
-            default = "admin.traefik.local";
-            description = "Hostname for Traefik Proxy Admin panel";
-          };
+          host = mkHostOption "admin.traefik.local" "Traefik Proxy Admin panel";
 
           dbPassword = mkOption {
             type = types.str;
@@ -90,16 +85,7 @@
         # Keep hosts entry for .local domains (managed by user)
         networking.hosts."127.0.0.1" = [cfg.host] ++ optional cfg.admin.enable cfg.admin.host;
 
-        # Auto-configure mkcert for this container's host
-        modules.programs.mkcert =
-          mkIf (
-            (hasAttr "modules" config)
-            && (hasAttr "programs" config.modules)
-            && (hasAttr "mkcert" config.modules.programs)
-            && config.modules.programs.mkcert.enable
-          ) {
-            domains = [cfg.host] ++ optional cfg.admin.enable cfg.admin.host;
-          };
+        modules.programs.mkcert = mkMkcertDomains config ([cfg.host] ++ optional cfg.admin.enable cfg.admin.host);
 
         virtualisation.oci-containers.containers = {
           traefik = let
@@ -113,19 +99,15 @@
               "443:443"
               "127.0.0.1:8080:8080"
             ];
-            extraOptions = [
-              "--network=local"
-              "--label=traefik.enable=true"
-              "--label=traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
-              "--label=traefik.http.middlewares.traefik-https-redirect.redirectscheme.permanent=true"
-              "--label=traefik.http.routers.traefik-http.rule=Host(`${cfg.host}`)"
-              "--label=traefik.http.routers.traefik-http.entrypoints=web"
-              "--label=traefik.http.routers.traefik-http.middlewares=traefik-https-redirect"
-              "--label=traefik.http.routers.traefik.rule=Host(`${cfg.host}`)"
-              "--label=traefik.http.routers.traefik.entrypoints=websecure"
-              "--label=traefik.http.routers.traefik.tls=true"
-              "--label=traefik.http.routers.traefik.service=api@internal"
-            ];
+            extraOptions =
+              [
+                "--network=local"
+              ]
+              ++ mkTraefikLabels {
+                name = "traefik";
+                host = cfg.host;
+                service = "api@internal";
+              };
             volumes =
               [
                 "/var/run/docker.sock:/var/run/docker.sock:ro"
@@ -181,19 +163,15 @@
             ports = [
               "127.0.0.1:3001:3000"
             ];
-            extraOptions = [
-              "--network=local"
-              "--label=traefik.enable=true"
-              "--label=traefik.http.middlewares.traefik-admin-https-redirect.redirectscheme.scheme=https"
-              "--label=traefik.http.middlewares.traefik-admin-https-redirect.redirectscheme.permanent=true"
-              "--label=traefik.http.routers.traefik-admin-http.rule=Host(`${cfg.admin.host}`)"
-              "--label=traefik.http.routers.traefik-admin-http.entrypoints=web"
-              "--label=traefik.http.routers.traefik-admin-http.middlewares=traefik-admin-https-redirect"
-              "--label=traefik.http.routers.traefik-admin.rule=Host(`${cfg.admin.host}`)"
-              "--label=traefik.http.routers.traefik-admin.entrypoints=websecure"
-              "--label=traefik.http.routers.traefik-admin.tls=true"
-              "--label=traefik.http.services.traefik-admin.loadbalancer.server.port=3000"
-            ];
+            extraOptions =
+              [
+                "--network=local"
+              ]
+              ++ mkTraefikLabels {
+                name = "traefik-admin";
+                host = cfg.admin.host;
+                port = 3000;
+              };
             volumes = [
               "/var/run/docker.sock:/var/run/docker.sock:ro"
             ];
