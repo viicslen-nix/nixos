@@ -37,19 +37,17 @@
         exec ${chromium} --ozone-platform-hint=auto "$@"
       '';
 
-      mkDesktopEntry = app: {
-        name = "webapp-${app.name}";
-        value = {
+      mkDesktopEntry = app:
+        nameValuePair "webapp-${app.name}" {
           name = "Web App: ${app.name}";
           exec = "webapp-${app.name}";
           settings.StartupWMClass = "webapp-${app.name}";
           terminal = false;
           categories = ["Network"];
         };
-      };
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
 
         package = mkOption {
           type = types.package;
@@ -95,10 +93,9 @@
           home.packages = (map mkLauncher cfg.apps) ++ [manageLauncher cfg.package];
 
           # Copy on disk for pasting into Violentmonkey (VM has no file-based seeding).
-          home.file = listToAttrs (map (app: {
-            name = ".config/webapps/${app.name}.user.js";
-            value = {source = app.injectScript;};
-          }) (filter (app: app.injectScript != null) cfg.apps));
+          home.file = listToAttrs (map (app:
+            nameValuePair ".config/webapps/${app.name}.user.js" {source = app.injectScript;})
+          (filter (app: app.injectScript != null) cfg.apps));
 
           xdg.desktopEntries =
             listToAttrs (map mkDesktopEntry cfg.apps)

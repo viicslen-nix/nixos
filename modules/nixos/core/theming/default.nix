@@ -24,38 +24,13 @@
         sha256 = "pHYa+d5f6MAaY8xWd3lDjhagS+nvwDL3w7zSsQyqH7A=";
       };
 
-      # Function to create disabled targets attribute set
+      # Disable every requested stylix target that actually exists in the option
+      # tree — naming one stylix doesn't know about would be an eval error.
       createDisabledTargets = targetsList: stylixOptions: let
-        # Helper function to check if a nested path exists in stylix options
-        hasStylixTarget = path: stylixOptions: let
-          pathList = lib.splitString "." path;
-          checkPath = opts: pathSegments:
-            if pathSegments == []
-            then true
-            else if builtins.hasAttr (builtins.head pathSegments) opts
-            then checkPath (builtins.getAttr (builtins.head pathSegments) opts) (builtins.tail pathSegments)
-            else false;
-        in
-          checkPath stylixOptions pathList;
-
-        # Filter targets that exist in stylix options
-        validTargets = builtins.filter (target: hasStylixTarget target stylixOptions) targetsList;
-
-        # Helper function to create nested attribute set
-        setAttrPath = path: value: let
-          pathList = lib.splitString "." path;
-          createNested = segments:
-            if builtins.length segments == 1
-            then {${builtins.head segments} = value;}
-            else {${builtins.head segments} = createNested (builtins.tail segments);};
-        in
-          createNested pathList;
-
-        # Create attribute sets for each valid target
-        targetAttrs = map (target: setAttrPath "${target}.enable" false) validTargets;
+        exists = target: hasAttrByPath (splitString "." target) stylixOptions;
+        disable = target: setAttrByPath (splitString "." target ++ ["enable"]) false;
       in
-        # Merge all target attribute sets
-        lib.foldl lib.recursiveUpdate {} targetAttrs;
+        foldl recursiveUpdate {} (map disable (filter exists targetsList));
     in {
       imports = [
         inputs.base16.nixosModule
@@ -63,7 +38,7 @@
       ];
 
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc "theming") // {default = true;};
+        enable = mkEnabledOption (mdDoc "theming");
 
         polarity = mkOption {
           type = types.str;
