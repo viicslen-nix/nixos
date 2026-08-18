@@ -11,7 +11,7 @@
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc feature) // {default = true;};
+        enable = mkEnabledOption (mdDoc feature);
 
         prefer = mkOption {
           type = types.listOf types.str;
@@ -70,13 +70,9 @@
         services.earlyoom = {
           enable = false;
           enableNotifications = true;
-          extraArgs = let
-            catPatterns = patterns: builtins.concatStringsSep "|" patterns;
-            preferPatterns = cfg.prefer;
-            avoidPatterns = cfg.avoid;
-          in [
-            "--prefer '^(${catPatterns preferPatterns})$'"
-            "--avoid '^(${catPatterns avoidPatterns})$'"
+          extraArgs = [
+            "--prefer '^(${concatStringsSep "|" cfg.prefer})$'"
+            "--avoid '^(${concatStringsSep "|" cfg.avoid})$'"
           ];
         };
 
