@@ -163,11 +163,22 @@ just --list
 3. Update `hosts/default.nix` to include the new host
 4. Rebuild with `just upgrade switch`
 
-### 📦 Adding New Programs
+### 📦 Adding New Modules
 
-1. Create a module in appropriate directory (`modules/nixos/programs/` or `modules/home-manager/programs/`)
-2. Import the module in the relevant `all.nix` file
-3. Enable in host or user configurations
+1. Create a `default.nix` under the appropriate `modules/nixos/` or `modules/home-manager/` category
+2. Register it under `flake.modules.nixos` or `flake.modules.homeManager`
+3. Import it from the generated `nixosModules` or `homeModules` tree
+
+### 🎮 Gaming
+
+Import `nixosModules.functionality.gaming` for the safe desktop gaming stack: Steam,
+GE-Proton, Protontricks, GameMode, Gamescope, Decky Loader, ZRAM, Wine, controller
+rules, launchers, and overlay tools. The dedicated Gamescope login session uses its
+own Holo/Gamescope portal routing without changing desktop portal preferences.
+Decky Loader's required root service is enabled by default. Other hardware-specific
+or privileged features remain opt-in under `modules.functionality.gaming`, including
+Gamescope capabilities/WSI, controller drivers, Steam firewall ports, low-latency
+PipeWire, and SteamOS platform sysctls.
 
 ### 🐚 Development Shells
 
