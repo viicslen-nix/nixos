@@ -56,6 +56,21 @@ with lib; {
     pkgs.inputs.ambxst.default
   ];
 
+  services.tailscale = {
+    enable = true;
+    openFirewall = true;
+    extraUpFlags = ["--ssh"];
+  };
+
+  home-manager.sharedModules = [
+    {
+      services.tailscale-systray = {
+        enable = true;
+        theme = "dark:nobg";
+      };
+    }
+  ];
+
   modules = {
     hardware.nvidia.latest = true;
 
@@ -63,13 +78,13 @@ with lib; {
       niri.enable = true;
 
       hyprland = {
-        enable = true;
+        enable = false;
         portals = {
           enable = true;
           backend = "gtk";
           extraBackends = ["gnome"];
         };
-        hyprsplit.enable = true;
+        hyprsplit.enable = false;
         hyprVariables = {
           XDG_CURRENT_DESKTOP = "Hyprland";
           XDG_SESSION_DESKTOP = "Hyprland";
