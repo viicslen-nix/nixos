@@ -19,7 +19,7 @@ with lib; {
     nixosModules.hardware.display
     nixosModules.hardware.razer
     nixosModules.programs.mullvad
-    nixosModules.programs.steam
+    nixosModules.functionality.gaming
 
     # Imported for its options; disabled below.
     nixosModules.services.backups

@@ -15,7 +15,7 @@ with lib; {
     nixosModules.hardware.intel
     nixosModules.hardware.nvidia
     nixosModules.hardware.razer
-    nixosModules.programs.steam
+    nixosModules.functionality.gaming
   ];
 
   # (no host-specific home-manager config)
