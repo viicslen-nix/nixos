@@ -73,10 +73,14 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `opencode`, `zed`, `neovim`, `nixvim`, `niri`, `hyprland`, `dms`, `emacs`).
   Each is a separate upstream repo (`viicslen-nix/*`).
 - **vlib / viicslen-lib** — helper library exported from `flakes/lib`; provides
-  `defaultSystems`, `genSystems`, `pkgsFor`, `persistence`, etc. Reachable in
-  modules as `inputs.self.lib`. Its `hosts.mkNixosConfigurations` and
-  `modules.autoImportRecursive` are no longer used by this repo — `parts/`
-  does that work now.
+  `defaultSystems`, `genSystems`, `pkgsFor`, and the namespaced helper sets
+  `options` (`mkEnabledOption`, `mkDefaultAttrs`), `discovery` (`discover`,
+  `mkTree`, `assertUnique`), `overlays` (`mkFlakeInputsOverlay`,
+  `mkChannelOverlay`), `persistence`, `skills`. Reachable in modules as
+  `inputs.self.lib`; from a `parts/` module use `inputs.viicslen-lib.lib`
+  instead, since `parts/lib.nix` is what defines `self.lib`. Its `hosts.nix`,
+  `modules.nix` and `umport.nix` have **no callers in this repo** — `parts/`
+  and `discovery.nix` do that work now.
 - **overlays** — `overlays/default.nix` exposes `pkgs.unstable`, `pkgs.stable`,
   `pkgs.local`, `pkgs.inputs.<flake>`, and package `modifications`.
 - **modules** — everything under `modules/nixos` and `modules/home-manager` is
@@ -137,6 +141,28 @@ already happened. Treat every heavy Nix invocation as dangerous.
   check a refactor is behaviour-preserving compare the **`system-path`
   derivation**, the `/etc` entry names, and the systemd unit names — not the
   toplevel hash.
+- **`lib` is extended repo-wide.** `parts/hosts.nix` passes
+  `lib.extend (_: _: inputs.viicslen-lib.lib.options)` into `nixosSystem`, so
+  every module reaches `mkEnabledOption` / `mkDefaultAttrs` / `mkDefaultRecursive`
+  through its ordinary `lib` argument — no `inputs` arg, no
+  `with inputs.self.lib;` preamble. It covers home-manager modules too, because
+  home-manager builds its `extendedLib` from the lib it is handed
+  (`nixos/common.nix`), not from `pkgs.lib`. Write
+  `enable = mkEnabledOption (mdDoc name);`, never
+  `mkEnableOption … // {default = true;}`. Two consequences: nixpkgs explicitly
+  advises against extending `lib` when modules are shared, so anything importing
+  this flake's `flake.modules.*` must extend its own lib the same way or reach
+  the helpers at `inputs.viicslen-lib.lib.options`; and a new helper is only
+  visible to modules once it is added to `options.nix` **and** the subflake is
+  committed.
+- **Container module helpers live in the lib subflake.**
+  `inputs.self.lib.containers` provides `mkHostOption`, `mkMkcertDomains` and
+  `mkTraefikLabels`; container modules take an `inputs` argument and
+  `inherit` from it, the same way 19 other modules reach `persistence`.
+  `mkTraefikLabels` deliberately omits `--network=local` so a container needing
+  other flags first (local-ai's `--device`) can order them: write
+  `extraOptions = ["--network=local"] ++ mkTraefikLabels {…};`. Label **order**
+  is part of the systemd unit, so if you extend it, append rather than reorder.
 - **Renamed attrs.** Prefer current names: `pkgs.<x>` over `pkgs.xorg.<x>`,
   `stdenv.hostPlatform.system` over `pkgs.system`. nixpkgs prints eval warnings
   for the old ones.
@@ -151,17 +177,42 @@ already happened. Treat every heavy Nix invocation as dangerous.
   the result before evaluating** — the flake source is `git+file://`, so
   untracked skills are invisible to `nix eval` and to a rebuild, and the failure
   looks like the skill silently not existing.
-- **AI skills sourced from a flake input need a real path.** `modules.programs.ai.skills`
-  values reach home-manager's `claude-code` module, which branches on
-  `lib.isPath` to decide *copy this directory* vs *write this string as the
-  file body* — hand it a string and you get a `SKILL.md` whose contents are a
-  store path. A flake input's `outPath` **is** a string, and `/. + "${input}/x"`
-  throws `a string that refers to a store path cannot be appended to a path`.
-  The idiom that works is
-  `/. + (builtins.unsafeDiscardStringContext "${inputs.<x>}/…")`; discarding the
-  context is safe here only because a flake input is a source that is already
-  realised at eval time, never a derivation that still needs building. See
-  `hosts/_shared/presets/personal/ai/default.nix`.
+- **AI skill helpers live in the `lib` subflake.** `flakes/lib/skills.nix`
+  exports `mkSkillAttrSet` / `mkMarkdownAttrSet` (local directory → attrset),
+  `fromInput` (coerce `"${input}/sub"` back to a real path), `selectFromInput`
+  (many subpaths of an input at once, keyed by basename — the caller states the
+  layout, so it works against any upstream repo), and `patchSkill src subs`.
+  Reach them as `inputs.self.lib.skills.<x>`. **Wire new helpers into `flakes/lib/flake.nix`,
+  not `flakes/lib/default.nix`** — the flake output is assembled inline in
+  `flake.nix`; `default.nix` is a legacy entrypoint nothing imports, and editing
+  only it leaves the helper invisible as `attribute 'skills' missing`. The root
+  input is `path:./flakes/lib` with **no narHash in `flake.lock`**, so a commit
+  inside the submodule is enough — no root re-lock needed (unlike the other
+  subflakes). Note `just update-subflake lib` also bumps the subflake's own
+  nixpkgs pin, which is inert here because the root `follows`.
+- **Skills are pathlike-or-string.** `modules.programs.ai.skills` values reach
+  home-manager's `claude-code` module, whose `mkSkillEntry` branches on
+  `lib.hm.strings.isPathLike content && lib.pathIsDirectory content` to decide
+  *symlink this directory to `skills/<name>/`* vs *write this value as
+  `skills/<name>/SKILL.md`*. `isPathLike` accepts a path, a store-path
+  **string**, or a derivation. A directory path is what you want for a
+  multi-file skill; a plain string gives you a single `SKILL.md`.
+- **Patching an upstream skill without forking it.** `skills` in the personal AI
+  preset is three layers, last wins: `upstreamSkills` (verbatim, via
+  `selectFromInput`) `//` `patchedSkills` `//` `mkSkillAttrSet ./skills` (a local
+  directory, which shadows outright and loses all upstream updates — avoid for a
+  skill you only want to tweak). The middle layer is `patchSkill src subs`: it
+  `readFile`s the upstream `SKILL.md` and `replaceStrings` anchored spans, so
+  `just update-input mattpocock-skills` keeps flowing in. Two things to know:
+  the result is a **string**, so only single-file skills work this way (a
+  multi-file one would need a `runCommand`, which costs an IFD — `pathIsDirectory`
+  has to build the derivation to look inside it); and it **asserts** every `from`
+  anchor is still present, because `replaceStrings` otherwise no-ops silently and
+  hands back vanilla upstream with no signal. Anchor on spans that survive
+  rewording, and keep the patch in
+  `hosts/_shared/presets/personal/ai/skill-patches/<name>.nix`. The same value is
+  forwarded to opencode/antigravity/copilot too — phrase harness-specific edits
+  conditionally rather than naming one harness's tool imperatively.
 - **`modules.programs.ai` never touches `~/.claude.json`.** MCP servers reach
   Claude Code as a generated `claude-code-home-manager` plugin (a `.mcp.json`
   in a plugin dir passed via `--plugin-dir` on the wrapped binary) — hence the
