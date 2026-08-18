@@ -1,7 +1,10 @@
-{systemConfig}: let
+{
+  systemConfig,
+  lib,
+  ...
+}: let
   inherit (systemConfig) services;
-  dataDirGen = svc: {"${svc}".directories = [services."${svc}".dataDir];};
-  stateDirGen = svc: {"${svc}".directories = [services."${svc}".stateDirGen];};
+  inherit (lib) genAttrs;
 in
   {
     prometheus.directories = [("/var/lib/" + services.prometheus.stateDir)];
@@ -50,7 +53,7 @@ in
     gotify.directories = [("/var/lib/" + services.gotify.stateDirectoryName)];
     documize.directories = [("/var/lib/" + services.documize.stateDirectoryName)];
   }
-  // builtins.foldl' (val: col: val // (dataDirGen col)) {} [
+  // genAttrs [
     "postgresql"
     "loki"
     "grafana"
@@ -140,8 +143,8 @@ in
     "hbase-standalone"
     "deliantra-server"
     #"crossfire-server" # Only if it's non-default
-  ]
-  // builtins.foldl' (val: col: val // (stateDirGen col)) {} [
+  ] (svc: {directories = [services.${svc}.dataDir];})
+  // genAttrs [
     "unit"
     "tcsd"
     "gogs"
@@ -166,4 +169,4 @@ in
     "hledger-web"
     "deliantra-server"
     "crossfire-server"
-  ]
+  ] (svc: {directories = [services.${svc}.stateDir];})
