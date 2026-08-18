@@ -3,7 +3,7 @@
   systemConfig,
   lib,
 }: let
-  inherit (lib) optionals foldAttrs optionalAttrs mkOption mkEnableOption;
+  inherit (lib) optionals foldAttrs optionalAttrs mergeAttrsList mkOption mkEnableOption;
   inherit (lib.types) bool;
 
   buildPreset = preset: name: value: let
@@ -31,11 +31,11 @@
     builtins.mapAttrs (name: value: buildPreset preset name value)
     (optionalAttrs config.presets."${preset}".enable (import (../_presets + "/${preset}.nix") {inherit systemConfig lib;}));
 
-  allPresets = builtins.foldl' (val: col: val // (presetBuilder col)) {} [
+  allPresets = mergeAttrsList (map presetBuilder [
     "essential"
     "system"
     "services"
-  ];
+  ]);
   appliedPresets = foldAttrs (val: col: val ++ col) [] (builtins.attrValues allPresets);
 in {
   files = appliedPresets.files or [];
