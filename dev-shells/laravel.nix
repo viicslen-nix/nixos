@@ -1,56 +1,48 @@
-{
-  inputs,
-  system,
-  ...
-}: let
-  pkgs = import inputs.nixpkgs {
-    inherit system;
-  };
-in
-  pkgs.mkShell {
-    packages = with pkgs; [
-      zsh
-      (php.buildEnv {
-        extensions = {
-          enabled,
-          all,
-        }:
-          enabled
-          ++ (with all; [
-            xdebug
-            imagick
-            redis
-          ]);
-        extraConfig = ''
-          xdebug.mode=debug
-        '';
-      })
-      (
-        php.withExtensions ({
-          all,
-          enabled,
-        }:
-          enabled
-          ++ (with all; [
-            imagick
-            redis
-          ]))
-      )
+{pkgs, ...}:
+pkgs.mkShell {
+  packages = with pkgs; [
+    zsh
+    (php.buildEnv {
+      extensions = {
+        enabled,
+        all,
+      }:
+        enabled
+        ++ (with all; [
+          xdebug
+          imagick
+          redis
+        ]);
+      extraConfig = ''
+        xdebug.mode=debug
+      '';
+    })
+    (
+      php.withExtensions ({
+        all,
+        enabled,
+      }:
+        enabled
+        ++ (with all; [
+          imagick
+          redis
+        ]))
+    )
       .packages
       .composer
-      nodejs_22
-      corepack_22
-      bun
-      stripe-cli
-      python3
-      python311Packages.cmake
-      cypress
-      ddev
-    ];
+    nodejs_22
+    corepack_22
+    bun
+    stripe-cli
+    python3
+    python311Packages.cmake
+    cypress
+    ddev
+  ];
 
-    shellHook = ''
-      export CYPRESS_INSTALL_BINARY=0
-      export CYPRESS_RUN_BINARY=${pkgs.cypress}/bin/Cypress
-      exec zsh
-    '';
-  }
+  shellHook = ''
+    export CYPRESS_INSTALL_BINARY=0
+    export CYPRESS_RUN_BINARY=${pkgs.cypress}/bin/Cypress
+    exec zsh
+  '';
+}
