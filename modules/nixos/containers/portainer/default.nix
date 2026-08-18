@@ -1,38 +1,28 @@
 {
   flake.modules.nixos.portainer = {
+    inputs,
     lib,
     config,
     ...
   }:
     with lib; let
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains mkTraefikLabels;
+
       name = "portainer";
       namespace = "containers";
 
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
 
-        host = mkOption {
-          type = types.str;
-          default = "portainer.local";
-          description = "Hostname for Portainer";
-        };
+        host = mkHostOption "portainer.local" "Portainer";
       };
 
       config = mkIf cfg.enable {
         networking.hosts."127.0.0.1" = [cfg.host];
 
-        # Auto-configure mkcert for this container's host
-        modules.programs.mkcert =
-          mkIf (
-            (hasAttr "modules" config)
-            && (hasAttr "programs" config.modules)
-            && (hasAttr "mkcert" config.modules.programs)
-            && config.modules.programs.mkcert.enable
-          ) {
-            domains = [cfg.host];
-          };
+        modules.programs.mkcert = mkMkcertDomains config [cfg.host];
 
         virtualisation.oci-containers.containers = {
           portainer = {
@@ -46,20 +36,16 @@
               "portainer:/data"
               "/var/run/docker.sock:/var/run/docker.sock"
             ];
-            extraOptions = [
-              "--network=local"
-              "--label=traefik.enable=true"
-              "--label=traefik.http.middlewares.portainer-https-redirect.redirectscheme.scheme=https"
-              "--label=traefik.http.middlewares.portainer-https-redirect.redirectscheme.permanent=true"
-              "--label=traefik.http.routers.portainer-http.rule=Host(`${cfg.host}`)"
-              "--label=traefik.http.routers.portainer-http.entrypoints=web"
-              "--label=traefik.http.routers.portainer-http.middlewares=portainer-https-redirect"
-              "--label=traefik.http.routers.portainer.rule=Host(`${cfg.host}`)"
-              "--label=traefik.http.routers.portainer.entrypoints=websecure"
-              "--label=traefik.http.routers.portainer.tls=true"
-              "--label=traefik.http.services.portainer.loadbalancer.server.port=9443"
-              "--label=traefik.http.services.portainer.loadbalancer.server.scheme=https"
-            ];
+            extraOptions =
+              [
+                "--network=local"
+              ]
+              ++ mkTraefikLabels {
+                name = "portainer";
+                host = cfg.host;
+                port = 9443;
+                scheme = "https";
+              };
             log-driver = config.modules.containers.settings.log-driver;
           };
         };

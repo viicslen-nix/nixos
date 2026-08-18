@@ -1,38 +1,28 @@
 {
   flake.modules.nixos.local-ai = {
+    inputs,
     lib,
     config,
     ...
   }:
     with lib; let
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains mkTraefikLabels;
+
       name = "local-ai";
       namespace = "containers";
 
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
 
-        host = mkOption {
-          type = types.str;
-          default = "ai.local";
-          description = "Hostname for Local AI";
-        };
+        host = mkHostOption "ai.local" "Local AI";
       };
 
       config = mkIf cfg.enable {
         networking.hosts."127.0.0.1" = [cfg.host];
 
-        # Auto-configure mkcert for this container's host
-        modules.programs.mkcert =
-          mkIf (
-            (hasAttr "modules" config)
-            && (hasAttr "programs" config.modules)
-            && (hasAttr "mkcert" config.modules.programs)
-            && config.modules.programs.mkcert.enable
-          ) {
-            domains = [cfg.host];
-          };
+        modules.programs.mkcert = mkMkcertDomains config [cfg.host];
 
         virtualisation.oci-containers.containers = {
           local-ai = {
@@ -44,20 +34,16 @@
             environment = {
               DEBUG = "true";
             };
-            extraOptions = [
-              "--network=local"
-              "--device=nvidia.com/gpu=all"
-              "--label=traefik.enable=true"
-              "--label=traefik.http.middlewares.localai-https-redirect.redirectscheme.scheme=https"
-              "--label=traefik.http.middlewares.localai-https-redirect.redirectscheme.permanent=true"
-              "--label=traefik.http.routers.localai-http.rule=Host(`${cfg.host}`)"
-              "--label=traefik.http.routers.localai-http.entrypoints=web"
-              "--label=traefik.http.routers.localai-http.middlewares=localai-https-redirect"
-              "--label=traefik.http.routers.localai.rule=Host(`${cfg.host}`)"
-              "--label=traefik.http.routers.localai.entrypoints=websecure"
-              "--label=traefik.http.routers.localai.tls=true"
-              "--label=traefik.http.services.localai.loadbalancer.server.port=8080"
-            ];
+            extraOptions =
+              [
+                "--network=local"
+                "--device=nvidia.com/gpu=all"
+              ]
+              ++ mkTraefikLabels {
+                name = "localai";
+                host = cfg.host;
+                port = 8080;
+              };
             log-driver = config.modules.containers.settings.log-driver;
           };
         };

@@ -1,38 +1,28 @@
 {
   flake.modules.nixos.nginx-proxy-manager = {
+    inputs,
     lib,
     config,
     ...
   }:
     with lib; let
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains mkTraefikLabels;
+
       name = "nginx-proxy-manager";
       namespace = "containers";
 
       cfg = config.modules.${namespace}.${name};
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnableOption (mdDoc name) // {default = true;};
+        enable = mkEnabledOption (mdDoc name);
 
-        host = mkOption {
-          type = types.str;
-          default = "npm.local";
-          description = "Hostname for Nginx Proxy Manager";
-        };
+        host = mkHostOption "npm.local" "Nginx Proxy Manager";
       };
 
       config = mkIf cfg.enable {
         networking.hosts."127.0.0.1" = [cfg.host];
 
-        # Auto-configure mkcert for this container's host
-        modules.programs.mkcert =
-          mkIf (
-            (hasAttr "modules" config)
-            && (hasAttr "programs" config.modules)
-            && (hasAttr "mkcert" config.modules.programs)
-            && config.modules.programs.mkcert.enable
-          ) {
-            domains = [cfg.host];
-          };
+        modules.programs.mkcert = mkMkcertDomains config [cfg.host];
 
         virtualisation.oci-containers.containers = {
           nginx-proxy-manager = {
