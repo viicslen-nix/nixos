@@ -10,15 +10,27 @@ with lib; let
   yaml = pkgs.formats.yaml {};
 
   # mcp-gateway takes a single shell-ish `command` string (split with shlex),
-  # not command+args, and calls the remote transport `http_url`.
+  # not command+args, and calls the remote transport `http_url`. Remote
+  # endpoints default to Streamable HTTP unless the URL names the legacy `/sse`
+  # transport — with `streamable_http` off the gateway opens an SSE GET
+  # handshake instead, which every `/mcp` endpoint rejects, and the backend
+  # silently never connects. The computed attrs come first so anything set on
+  # the server itself still wins.
   toBackend = server:
-    removeAttrs server ["command" "args" "url"]
-    // (
+    (
       if (server.url or null) != null
-      then {http_url = server.url;}
+      then {
+        http_url = server.url;
+        streamable_http = !hasSuffix "/sse" server.url;
+      }
       else {command = escapeShellArgs ([server.command] ++ (server.args or []));}
-    );
+    )
+    // removeAttrs server ["command" "args" "url"];
 
+  # `meta_mcp.warm_start` is deliberately left unset: an empty list means
+  # *every* backend is warm-started, which is what a browser-OAuth backend
+  # needs (its consent handshake runs at startup instead of stalling the first
+  # tool call). Naming backends there would narrow warm-start to just those.
   settings =
     recursiveUpdate {
       server.port = gcfg.port;
@@ -77,9 +89,13 @@ in {
   config = mkIf gcfg.enable {
     home.packages = [gcfg.package];
 
-    # Also placed where the CLI auto-discovers it, so `mcp-gateway list|doctor`
-    # in a shell sees the same config the service runs.
     xdg.configFile."mcp-gateway/gateway.yaml".source = configFile;
+
+    # `list`/`get`/`add`/`remove`/`doctor` each carry their own `-c`, defaulting
+    # to a cwd-relative `gateway.yaml`; only `serve` falls back to
+    # `~/.config/mcp-gateway/gateway.yaml`. This env var is the one knob that
+    # points all of them at the generated config from any directory.
+    home.sessionVariables.MCP_GATEWAY_CONFIG = "${config.xdg.configHome}/mcp-gateway/gateway.yaml";
 
     systemd.user.services.mcp-gateway = {
       Unit = {
