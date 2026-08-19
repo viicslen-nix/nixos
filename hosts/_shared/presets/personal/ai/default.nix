@@ -75,10 +75,22 @@ in
     skills = upstreamSkills // patchedSkills // mkSkillAttrSet ./skills;
     commands = mkMarkdownAttrSet ./commands;
     mcps = {
-      context7.url = "https://mcp.context7.com/mcp";
-      gh_grep.url = "https://mcp.grep.app";
-      linear.url = "https://mcp.linear.app/mcp";
+      # OAuth-protected too, but its authorization server is
+      # accounts.google.com, which has no registration_endpoint — it needs a
+      # client_id/secret from a Google Cloud OAuth app, so it stays anonymous.
       google_stitch.url = "https://stitch.googleapis.com/mcp";
+      context7 = {
+        url = "https://mcp.context7.com/mcp";
+        oauth.enabled = true;
+      };
+      gh_grep = {
+        url = "https://mcp.grep.app";
+        protocol_version = "2025-06-18";
+      };
+      linear = {
+        url = "https://mcp.linear.app/mcp";
+        oauth.enabled = true;
+      };
       playwright = {
         command = "npx";
         args = [
