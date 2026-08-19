@@ -13,21 +13,32 @@
 
       cfg = config.modules.${namespace}.${name};
 
-      # nixpkgs builds t3code from source, which drops two things upstream's
-      # own release builds carry: the public T3 Connect config (without it the
-      # `t3 connect` subcommand is hidden outright) and a bundled relay client
-      # (without it `t3 connect link` downloads its own cloudflared into ~/.t3).
-      # All four are plain env lookups that win over the build-time fallbacks.
+      # A source build of t3code has T3 Connect compiled out: `scripts/lib/
+      # public-config.ts` feeds the repo's `.env` into both vite builds, so
+      # without it the CLI hides the `connect` subcommand and the web client
+      # bakes in empty Clerk/relay literals, which is what strips the T3
+      # Connect block from Settings › Connections. Upstream's documented fix
+      # for source builds is to copy `.env.example` — public identifiers, not
+      # secrets — into place, so take that verbatim rather than restating the
+      # values here. Costs a full rebuild of the pnpm/electron tree.
+      unwrapped = pkgs.unstable.t3code.unwrapped.overrideAttrs (old: {
+        postPatch =
+          old.postPatch
+          + ''
+            cp .env.example .env
+          '';
+      });
+
+      # The relay client T3 Connect tunnels through is the one piece not
+      # covered by `.env`: upstream downloads its own cloudflared on first
+      # `t3 connect link`. Point it at the Nix one instead.
       # symlinkJoin folds its `postBuild` into `buildCommand`, so append there.
-      wrapped = pkgs.unstable.t3code.overrideAttrs (old: {
+      wrapped = (pkgs.unstable.t3code.override {t3code-unwrapped = unwrapped;}).overrideAttrs (old: {
         buildCommand =
           old.buildCommand
           + ''
             for program in "$out/bin"/*; do
               wrapProgram "$program" \
-                --set-default T3CODE_RELAY_URL "https://relay.t3.codes" \
-                --set-default T3CODE_CLERK_PUBLISHABLE_KEY "pk_live_Y2xlcmsudDMuY29kZXMk" \
-                --set-default T3CODE_CLERK_CLI_OAUTH_CLIENT_ID "hzxSgY2cH10sDU2r" \
                 --set-default T3CODE_CLOUDFLARED_PATH "${getExe cfg.cloudflaredPackage}"
             done
           '';
@@ -39,7 +50,7 @@
         package = mkOption {
           type = types.package;
           default = wrapped;
-          defaultText = literalExpression "pkgs.unstable.t3code (wrapped with the T3 Connect public config)";
+          defaultText = literalExpression "pkgs.unstable.t3code (rebuilt with the T3 Connect public config)";
           description = mdDoc "The t3code package providing the `t3` CLI and the desktop app.";
         };
 
