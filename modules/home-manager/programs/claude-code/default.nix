@@ -55,6 +55,12 @@
             model = "opus[1m]";
             effortLevel = "high";
 
+            # Auto-compact at half the 1M window instead of the model-tuned
+            # default. The effective threshold is min(this, the model's max
+            # context) less a summary buffer. `CLAUDE_CODE_AUTO_COMPACT_WINDOW`
+            # outranks it, and `/autocompact auto` returns to the default.
+            autoCompactWindow = 500000;
+
             permissions.defaultMode = "auto";
 
             statusLine = {
