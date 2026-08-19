@@ -32,6 +32,7 @@ with lib; {
     home-manager.sharedModules = [
       homeModules.programs.k9s
       homeModules.programs.krr
+      homeModules.programs.t3code
       ./home.nix
     ];
 
@@ -154,12 +155,10 @@ with lib; {
         github-desktop
         ferdium
         sublime-merge
-        # unstable.t3code
         pkgs.inputs.tuicr.default
         pkgs.inputs.llm-agents.claude-desktop
         pkgs.inputs.llm-agents.antigravity-cli
         pkgs.inputs.packages.app-images.responsively
-        pkgs.inputs.packages.app-images.t3code
         pkgs.inputs.packages.superset.desktop
         pkgs.inputs.packages.github.copilot-desktop
       ];
