@@ -119,6 +119,7 @@ with lib; {
         opus-tools
         opusfile
         opustags
+        node-gyp
 
         # Tools (CLI/TUI)
         gh
@@ -153,6 +154,7 @@ with lib; {
         github-desktop
         ferdium
         sublime-merge
+        # unstable.t3code
         pkgs.inputs.tuicr.default
         pkgs.inputs.llm-agents.claude-desktop
         pkgs.inputs.llm-agents.antigravity-cli
