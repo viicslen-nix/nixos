@@ -54,6 +54,10 @@
               behavior = "own";
               key = cfg.signingKey;
             };
+            aliases = {
+              init = ["git" "init"];
+              push = ["git" "push"];
+            };
           };
         };
       };
