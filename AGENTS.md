@@ -93,11 +93,16 @@ already happened. Treat every heavy Nix invocation as dangerous.
 ## Gotchas & workflows
 
 - **Submodules + locking.** `flake.nix` sets `self.submodules = true`, so a
-  *local* `path:.` build reads each subflake's dirty working tree — but the root
-  lock still pins every `path:./flakes/<x>` by narHash. After editing a subflake
-  you must commit inside that submodule **and** re-lock the root input
-  (`just update-subflake <name>`, or `nix flake update <name>`), or the change
-  isn't picked up reproducibly.
+  *local* `path:.` build reads each subflake's dirty working tree. **No
+  `path:./flakes/<x>` input carries a narHash in `flake.lock`** (verified for all
+  ten), so committing inside the submodule is enough — a root re-lock changes
+  nothing and `nix flake update <name>` produces an empty diff. `just
+  update-subflake <name>` is still worth running when you want the subflake's
+  *own* inputs bumped; its second step is a no-op for the root lock.
+  What does bite: the flake source is `git+file://`, so a **new** file in a
+  subflake is invisible until `git add`ed — `nix build` fails with
+  `does not provide attribute 'packages.<system>.<name>'` rather than anything
+  pointing at the real cause.
 - **Update recipes.** `just update` updates every subflake *and* all root
   inputs; `just update-main` = root inputs only; `just update-input <x>` /
   `just update-subflake <x>` for one.
@@ -112,7 +117,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `fetchurl` needs a second pass with `--system aarch64-linux`. `just bump-all`
   sweeps every package carrying a src hash and lists the ones it couldn't
   resolve; `just bump-outdated` bumps exactly what `just outdated` flags.
-  Remember to commit in the submodule + `just update-subflake packages`.
+  Remember to commit in the submodule; `git add` any new file first, or the
+  flake cannot see it.
 - **Local packages must interpolate the version into the tag.** Write
   `tag = "v${version}"` (or `"v${finalAttrs.version}"`), never a literal
   `rev = "v3.2.1"` — with a literal rev, nix-update rewrites `version` only, so
@@ -185,11 +191,10 @@ already happened. Treat every heavy Nix invocation as dangerous.
   Reach them as `inputs.self.lib.skills.<x>`. **Wire new helpers into `flakes/lib/flake.nix`,
   not `flakes/lib/default.nix`** — the flake output is assembled inline in
   `flake.nix`; `default.nix` is a legacy entrypoint nothing imports, and editing
-  only it leaves the helper invisible as `attribute 'skills' missing`. The root
-  input is `path:./flakes/lib` with **no narHash in `flake.lock`**, so a commit
-  inside the submodule is enough — no root re-lock needed (unlike the other
-  subflakes). Note `just update-subflake lib` also bumps the subflake's own
-  nixpkgs pin, which is inert here because the root `follows`.
+  only it leaves the helper invisible as `attribute 'skills' missing`. Note `just
+  update-subflake lib` bumps the subflake's own nixpkgs pin, which is inert here
+  because the root `follows` — and its root-lock step is a no-op, per
+  **Submodules + locking** above.
 - **Skills are pathlike-or-string.** `modules.programs.ai.skills` values reach
   home-manager's `claude-code` module, whose `mkSkillEntry` branches on
   `lib.hm.strings.isPathLike content && lib.pathIsDirectory content` to decide
