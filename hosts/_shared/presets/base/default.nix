@@ -64,6 +64,14 @@ in {
       direnv = {
         enable = true;
         nix-direnv.enable = true;
+
+        # nix-direnv's "direnv: export +AR +AS +..." line is a single ~1.1KB
+        # string listing every variable the dev shell touched. On a 100-column
+        # terminal it wraps to a dozen rows, and the prompt hook reprints it on
+        # every cd, so `clear` leaves the prompt stranded mid-screen. Keep the
+        # short status lines that say direnv is doing something; drop the dump.
+        # `programs.direnv.silent = true` would suppress all of it instead.
+        settings.global.log_filter = "^(loading|using|nix-direnv)";
       };
 
       # Enable Zsh
