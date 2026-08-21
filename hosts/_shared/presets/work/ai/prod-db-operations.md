@@ -5,7 +5,7 @@ description: Inspect the production read replica with prod-db-mcp and retrieve K
 
 # Production Database Operations
 
-Use the `prod-db` MCP server for production database investigation. It connects
+Use the `prod-db` MCP server (it might be behind the gateway MCP server) for production database investigation. It connects
 to a read-only MariaDB replica, so use it to inspect data and schema only.
 
 1. Start with `prod-db_list_tables` to identify relevant tables and columns.
