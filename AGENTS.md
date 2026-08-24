@@ -109,10 +109,12 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **Bumping local packages.** The recipes live in the subflake
   (`flakes/packages/Justfile`, implemented by `flakes/packages/scripts/packages.sh`);
   the root `Justfile` only aliases them. `just packages` lists the attrs; `just
-  outdated` compares every GitHub-sourced one against upstream's latest release
-  (read-only, uses `gh`; `-` = the repo has no matching release, e.g. rev-pinned
-  plugins); `just bump <attr>` wraps `nix-update --flake`; the attr is the path
-  under `by-name/` (`app-images.t3code`, `superset.cli`, bare `coderabbit`).
+  outdated` compares every one against upstream's latest version — GitHub
+  releases, else npm / PyPI / the vendor's own endpoint (`latest_other` in the
+  script; extend it there for a new upstream kind). Read-only, uses `gh` +
+  `curl`; `-` = the repo has no matching release, e.g. rev-pinned plugins.
+  `just bump <attr>` wraps `nix-update --flake`; the attr is the path under
+  `by-name/` (`app-images.t3code`, `superset.cli`, bare `coderabbit`).
   Version autodetect only works for github/gitlab/pypi/npm/crates upstreams —
   otherwise pass `--version <x>` (or `--version skip` to refresh the hash of a
   re-uploaded binary). `vivaldi-stable` / `vivaldi-snapshot` are the exception:
