@@ -33,7 +33,7 @@ in {
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
-  modifications = _final: _prev: {
+  modifications = final: _prev: {
     # dpcontracts' README doctest (pulled in via nix-alien → pylddwrap → icontract)
     # calls asyncio.get_event_loop(), which no longer implicitly creates a loop on
     # python 3.14, failing the build. Skip that check.
@@ -73,57 +73,8 @@ in {
       '';
     };
 
-    vivaldi = _prev.vivaldi.overrideAttrs (oldAttrs: let
-      version = "8.1.4087.43";
-      versionShort = _prev.lib.versions.majorMinor version;
-      channel = "stable";
-    in {
-      inherit version;
-
-      src = _prev.fetchurl {
-        url = "https://downloads.vivaldi.com/${channel}/vivaldi-${channel}_${version}-1_amd64.deb";
-        hash = "sha256-UNkRdTyq1TjkKi0DbtfOtdBZAVGA0pOkZ0V5jmW921g=";
-      };
-
-      passthru =
-        (oldAttrs.passthru or {})
-        // {
-          isSnapshot = channel != "stable";
-          desktopFileName =
-            if channel == "stable"
-            then "vivaldi-stable"
-            else "vivaldi-snapshot";
-        };
-
-      buildPhase =
-        if channel == "snapshot"
-        then
-          (builtins.replaceStrings
-            ["opt/vivaldi/"]
-            ["opt/vivaldi-snapshot/"]
-            oldAttrs.buildPhase)
-        else oldAttrs.buildPhase;
-
-      installPhase =
-        if channel == "snapshot"
-        then
-          (builtins.replaceStrings
-            ["opt/vivaldi/vivaldi" "vivaldi-stable" "opt/vivaldi/"]
-            ["opt/vivaldi-snapshot/vivaldi-snapshot" "vivaldi-snapshot" "opt/vivaldi-snapshot/"]
-            oldAttrs.installPhase)
-        else oldAttrs.installPhase;
-
-      # nixpkgs replaces Vivaldi's bundled ffmpeg by symlinking libffmpeg.so.<ver>
-      # to chromium-codecs-ffmpeg-extra, but that package is pinned to an older
-      # Chromium and lacks symbols this Vivaldi build needs (e.g.
-      # av_dynamic_hdr_smpte2094_app5_to_t35). The launcher LD_PRELOADs that
-      # symlink, so point it back at Vivaldi's own version-matched libffmpeg.so.
-      postFixup =
-        (oldAttrs.postFixup or "")
-        + ''
-          ln -sf libffmpeg.so "$out/opt/vivaldi/libffmpeg.so.${versionShort}"
-        '';
-    });
+    # Snapshot channel + version bump; defined in the `packages` subflake.
+    vivaldi = final.local.vivaldi;
 
     # Patch openssh to ignore file permissions on ssh_config file
     # openssh = _prev.openssh.overrideAttrs (old: {
