@@ -76,7 +76,8 @@ vendor-skills *NAME:
 packages:
   @cd flakes/packages && just packages
 
-# Compare each GitHub-sourced local package against the latest release upstream
+# Compare each local package against the latest version upstream (GitHub
+# releases, npm, PyPI, or the vendor's own endpoint)
 # Read-only: no downloads, no file edits — feed the results to `just bump <attr>`
 outdated:
   @cd flakes/packages && just outdated

@@ -126,7 +126,7 @@ just update-subflake niri
 # List the local packages in flakes/packages
 just packages
 
-# Check GitHub-sourced local packages against their latest upstream release
+# Check local packages against their latest upstream version
 just outdated
 
 # Bump version + hash of a local package in flakes/packages (nix-update)
