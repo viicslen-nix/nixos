@@ -72,6 +72,16 @@
             --add-flags "--ozone-platform=wayland" \
             --add-flags "--enable-features=UseOzonePlatform"
           ''}
+
+          # The .desktop files are symlinks into the unwrapped package, and their
+          # Exec= already points at its own bin/vivaldi — launching from a menu
+          # would bypass this wrapper (no mods, no flags). Point them back here.
+          for desktop in $out/share/applications/*.desktop; do
+            cp --remove-destination "$(readlink -f "$desktop")" "$desktop"
+            chmod u+w "$desktop"
+            substituteInPlace "$desktop" \
+              --replace-fail "${vivaldiPackage}/bin/${binaryName}" "$out/bin/${binaryName}"
+          done
         '';
     in {
       options.modules.${namespace}.${name} = {
