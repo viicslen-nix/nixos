@@ -78,6 +78,13 @@
 
         # OOM configuration:
         systemd = {
+          # Let oomd guard desktop apps too, not just nix-daemon. Without this
+          # a leaking app can fill swap and thrash the whole session unchecked.
+          oomd = {
+            enable = true;
+            enableUserSlices = true;
+          };
+
           # Create a separate slice for nix-daemon that is
           # memory-managed by the userspace systemd-oomd killer
           slices."nix-daemon".sliceConfig = {
