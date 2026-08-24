@@ -128,7 +128,7 @@
 
     # Upstream AI harness skills; bump with `just update-input mattpocock-skills`.
     # Collections too large to carry whole are vendored instead — see
-    # tools/skill-sources.tsv and `just vendor-skills`.
+    # scripts/skill-sources.tsv and `just vendor-skills`.
     mattpocock-skills = {
       url = "github:mattpocock/skills";
       flake = false;
