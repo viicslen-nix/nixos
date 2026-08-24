@@ -9,6 +9,7 @@
 {
   flake.modules.homeManager.claude-code = {
     lib,
+    pkgs,
     config,
     ...
   }:
@@ -65,7 +66,11 @@
 
             statusLine = {
               type = "command";
-              command = "npx -y ccstatusline@latest";
+              # A store path, not `npx -y ccstatusline@latest`: npx re-resolves the
+              # version against the registry on every render, so the statusline
+              # paid a network round-trip and an `npm exec` process per refresh,
+              # in every session at once.
+              command = getExe pkgs.local.ccstatusline;
               padding = 0;
               refreshInterval = 10;
             };
