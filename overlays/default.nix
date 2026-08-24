@@ -74,7 +74,7 @@ in {
     };
 
     # Snapshot channel + version bump; defined in the `packages` subflake.
-    vivaldi = final.local.vivaldi;
+    vivaldi = final.local.vivaldi-snapshot;
 
     # Patch openssh to ignore file permissions on ssh_config file
     # openssh = _prev.openssh.overrideAttrs (old: {
