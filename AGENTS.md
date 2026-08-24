@@ -106,15 +106,22 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **Update recipes.** `just update` updates every subflake *and* all root
   inputs; `just update-main` = root inputs only; `just update-input <x>` /
   `just update-subflake <x>` for one.
-- **Bumping local packages.** `just packages` lists the attrs; `just outdated`
-  compares every GitHub-sourced one against upstream's latest release (read-only,
-  uses `gh`; `-` = the repo has no matching release, e.g. rev-pinned plugins);
-  `just bump <attr>` wraps `nix-update --flake` inside
-  `flakes/packages`; the attr is the path under `by-name/` (`app-images.t3code`,
-  `superset.cli`, bare `coderabbit`). Version autodetect only works for
-  github/gitlab/pypi/npm/crates upstreams — otherwise pass `--version <x>` (or
-  `--version skip` to refresh the hash of a re-uploaded binary). Multi-platform
-  `fetchurl` needs a second pass with `--system aarch64-linux`. `just bump-all`
+- **Bumping local packages.** The recipes live in the subflake
+  (`flakes/packages/Justfile`, implemented by `flakes/packages/scripts/packages.sh`);
+  the root `Justfile` only aliases them. `just packages` lists the attrs; `just
+  outdated` compares every GitHub-sourced one against upstream's latest release
+  (read-only, uses `gh`; `-` = the repo has no matching release, e.g. rev-pinned
+  plugins); `just bump <attr>` wraps `nix-update --flake`; the attr is the path
+  under `by-name/` (`app-images.t3code`, `superset.cli`, bare `coderabbit`).
+  Version autodetect only works for github/gitlab/pypi/npm/crates upstreams —
+  otherwise pass `--version <x>` (or `--version skip` to refresh the hash of a
+  re-uploaded binary). `vivaldi-stable` / `vivaldi-snapshot` are the exception:
+  neither has a forge, so `bump` reads the newest build of that channel out of
+  Vivaldi's apt index (`./scripts/packages.sh vivaldi-latest <channel>`). Their
+  shared body lives in `flakes/packages/builders/vivaldi.nix`; `version` and
+  `src` stay in the per-channel file because nix-update rewrites the file where
+  `src` is defined. Multi-platform `fetchurl` needs a second pass with
+  `--system aarch64-linux`. `just bump-all`
   sweeps every package carrying a src hash and lists the ones it couldn't
   resolve; `just bump-outdated` bumps exactly what `just outdated` flags.
   Remember to commit in the submodule; `git add` any new file first, or the
@@ -177,7 +184,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   Repos that carry a lot of non-skill weight are vendored instead — there is no
   sparse fetch for a non-flake input, so an input would copy the whole thing
   into the store (effective-html is 22M for 148K of skills). `just vendor-skills`
-  sparse-checks out the subtree listed in `tools/skill-sources.tsv` into
+  sparse-checks out the subtree listed in `scripts/skill-sources.tsv` into
   `hosts/_shared/presets/personal/ai/skills/`, stamping each directory with
   `.vendored-from` so the next run can prune what upstream deleted. **`git add`
   the result before evaluating** — the flake source is `git+file://`, so
