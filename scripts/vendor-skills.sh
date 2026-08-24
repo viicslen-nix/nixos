@@ -8,7 +8,7 @@
 # hundred KB of skills — and there is no sparse fetch for a non-flake input.
 # A sparse checkout takes only the subtree we install.
 #
-# Sources live in tools/skill-sources.tsv. Re-run to pull upstream changes:
+# Sources live in scripts/skill-sources.tsv. Re-run to pull upstream changes:
 #
 #   just vendor-skills            # every collection
 #   just vendor-skills effective-html
@@ -19,7 +19,7 @@
 set -euo pipefail
 
 root=$(git rev-parse --show-toplevel)
-manifest="$root/tools/skill-sources.tsv"
+manifest="$root/scripts/skill-sources.tsv"
 dest="$root/hosts/_shared/presets/personal/ai/skills"
 only=${1:-}
 
