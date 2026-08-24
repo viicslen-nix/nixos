@@ -16,6 +16,7 @@ in {
     tmate
     atuin
     ghostty
+    wezterm
     ideavim
     nushell
     starship
