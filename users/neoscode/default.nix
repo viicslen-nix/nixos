@@ -125,6 +125,22 @@ in {
   };
 
   programs = let
+    # Superset builds its PTY env from a scrubbed login-shell snapshot, which
+    # carries no WAYLAND_DISPLAY — so wl-copy/wl-paste, and with them Claude
+    # Code's image paste, have no compositor to talk to. Point them back at the
+    # session socket when one exists.
+    reattachWayland = ''
+      if [ -z "$WAYLAND_DISPLAY" ]; then
+        : "''${XDG_RUNTIME_DIR:=/run/user/$(id -u)}"
+        export XDG_RUNTIME_DIR
+        for sock in "$XDG_RUNTIME_DIR"/wayland-[0-9]*; do
+          [ -S "$sock" ] || continue
+          export WAYLAND_DISPLAY="''${sock##*/}"
+          break
+        done
+      fi
+    '';
+
     # lsd stands in for coreutils ls in the posix shells only — nushell keeps
     # its own structured `ls`.
     lsAliases = {
@@ -135,8 +151,15 @@ in {
       lt = "ls --tree";
     };
   in {
-    bash.shellAliases = lsAliases;
-    zsh.shellAliases = lsAliases;
+    bash = {
+      shellAliases = lsAliases;
+      initExtra = reattachWayland;
+    };
+
+    zsh = {
+      shellAliases = lsAliases;
+      initContent = reattachWayland;
+    };
 
     carapace.enable = true;
     zoxide.enable = true;
