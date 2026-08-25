@@ -83,6 +83,7 @@
             workflowKeywordTriggerEnabled = true;
             syntaxHighlightingDisabled = false;
             alwaysThinkingEnabled = true;
+            autoMemoryEnabled = false;
             tui = "fullscreen";
             skipDangerousModePermissionPrompt = true;
             theme = "auto";
