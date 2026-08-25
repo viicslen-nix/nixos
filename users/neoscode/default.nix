@@ -9,6 +9,7 @@
 in {
   imports = with homeModules.programs; [
     zsh
+    bash
     tmux
     herdr
     btop
@@ -41,6 +42,50 @@ in {
   home = {
     username = osConfig.users.users.${user}.name;
     homeDirectory = osConfig.users.users.${user}.home;
+    enableShellIntegration = true;
+
+    # Every shell gets these: home-manager feeds home.shellAliases into bash,
+    # zsh, fish and nushell alike.
+    shellAliases = {
+      pn = "pnpm";
+      vim = "nvim";
+      cat = "bat";
+      ts = "tmux-session";
+      ds = "dev-shell";
+      dsl = "dev-shell laravel";
+      dsk = "dev-shell kubernetes";
+      o = "xdg-open";
+      spf = "search-package-files";
+      ss = "sesh-sessions";
+
+      g = "git";
+      gdf = "git diff";
+      gst = "git status";
+      gpl = "git pull";
+      gph = "git push";
+
+      k = "kubectl";
+      kga = "kubectl get all";
+      kgp = "kubectl get pods";
+      kdp = "kubectl describe pod";
+      kcuc = "kubectl config use-context";
+      krr = "kubectl rollout restart";
+
+      dep = "vendor/bin/dep";
+
+      sail = "vendor/bin/sail";
+      s = "vendor/bin/sail";
+      sud = "vendor/bin/sail up -d";
+      sdown = "vendor/bin/sail down";
+      art = "vendor/bin/sail artisan";
+      sa = "vendor/bin/sail artisan";
+      sc = "vendor/bin/sail composer";
+      sp = "vendor/bin/sail php";
+      sn = "vendor/bin/sail npm";
+      st = "vendor/bin/sail tinker";
+      sd = "vendor/bin/sail debug";
+      sda = "vendor/bin/sail debug artisan";
+    };
 
     packages = with pkgs; [
       inputs.opencode.oh-my-opencode
@@ -80,7 +125,20 @@ in {
     };
   };
 
-  programs = {
+  programs = let
+    # lsd stands in for coreutils ls in the posix shells only — nushell keeps
+    # its own structured `ls`.
+    lsAliases = {
+      ls = "lsd";
+      l = "ls -l";
+      la = "ls -a";
+      lla = "ls -la";
+      lt = "ls --tree";
+    };
+  in {
+    bash.shellAliases = lsAliases;
+    zsh.shellAliases = lsAliases;
+
     carapace.enable = true;
     zoxide.enable = true;
     helix.enable = true;
