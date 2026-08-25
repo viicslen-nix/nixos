@@ -27,16 +27,6 @@
 
               plugins = [
                 {
-                  name = "powerlevel10k-config";
-                  src = ./plugins;
-                  file = "p10k.zsh";
-                }
-                {
-                  name = "zsh-powerlevel10k";
-                  src = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/";
-                  file = "powerlevel10k.zsh-theme";
-                }
-                {
                   name = "fzf-tab";
                   src = inputs.fzf-tab;
                   file = "fzf-tab.plugin.zsh";
@@ -66,23 +56,6 @@
                   "zoxide"
                   "zsh-interactive-cd"
                 ];
-              };
-
-              shellAliases = {
-                ls = "lsd";
-                l = "ls -l";
-                la = "ls -a";
-                lla = "ls -la";
-                lt = "ls --tree";
-                pn = "pnpm";
-                cat = "bat";
-                vim = "nvim";
-                ts = "tmux-session";
-                ds = "dev-shell";
-                dsl = "dev-shell laravel";
-                dsk = "dev-shell kubernetes";
-                o = "xdg-open";
-                spf = "search-package-files";
               };
             };
 
