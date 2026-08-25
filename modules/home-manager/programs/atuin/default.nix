@@ -26,6 +26,13 @@
               inline_height = 0;
               keymap_mode = "vim-normal";
               filter_mode_shell_up_key_binding = "session";
+
+              # ponytail: ctrl-r/ctrl-s only exist in atuin's emacs keymap, so
+              # vim-normal has no way to cycle filter/search mode. Re-add them.
+              keymap.vim_normal = {
+                "ctrl-r" = "cycle-filter-mode";
+                "ctrl-s" = "cycle-search-mode";
+              };
             };
           };
         }
