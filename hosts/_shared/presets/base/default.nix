@@ -171,6 +171,12 @@ in {
           just
           lazygit
           busybox
+
+          # environment.shells advertises /run/current-system/sw/bin/nu, and
+          # editors (PhpStorm, Cursor) cache that absolute path; the account
+          # shell is zsh now, so nushell has to be installed explicitly.
+          nushell
+
           pkgs.inputs.packages.scripts.system-update
           pkgs.inputs.packages.scripts.system-upgrade
         ]
