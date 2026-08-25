@@ -15,7 +15,6 @@ with lib; {
     nixosModules.hardware.nvidia
     nixosModules.hardware.bluetooth
     nixosModules.hardware.razer
-    nixosModules.programs.mullvad
     nixosModules.containers.vitess
     nixosModules.features.miami-bus-tracker
   ];

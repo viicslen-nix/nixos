@@ -76,7 +76,7 @@
         '';
         example = lib.literalExpression ''
           [
-            pkgs.mullvad-vpn
+            pkgs.jetbrains-toolbox
             {
               package = pkgs._1password-gui;
               args = ["--silent"];
