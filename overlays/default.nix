@@ -34,6 +34,21 @@ in {
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: _prev: {
+    # nixpkgs dropped libdisplay-info_0_2 on 2026-08-04 ("unused"), but
+    # niri-flake still builds niri against 0.2 and asserts the version, so
+    # pkgs.niri-unstable stops evaluating without it. Rebuild 0.2.0 from the
+    # 0.3 expression; drop this once niri-flake moves to libdisplay-info_0_3.
+    libdisplay-info_0_2 = _prev.libdisplay-info_0_3.overrideAttrs (_: {
+      version = "0.2.0";
+      src = _prev.fetchFromGitLab {
+        domain = "gitlab.freedesktop.org";
+        owner = "emersion";
+        repo = "libdisplay-info";
+        tag = "0.2.0";
+        hash = "sha256-6xmWBrPHghjok43eIDGeshpUEQTuwWLXNHg7CnBUt3Q=";
+      };
+    });
+
     # dpcontracts' README doctest (pulled in via nix-alien → pylddwrap → icontract)
     # calls asyncio.get_event_loop(), which no longer implicitly creates a loop on
     # python 3.14, failing the build. Skip that check.
