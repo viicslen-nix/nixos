@@ -9,7 +9,6 @@
 in {
   imports = with homeModules.programs; [
     zsh
-    iris
     tmux
     herdr
     btop
