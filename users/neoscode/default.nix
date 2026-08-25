@@ -42,7 +42,6 @@ in {
   home = {
     username = osConfig.users.users.${user}.name;
     homeDirectory = osConfig.users.users.${user}.home;
-    enableShellIntegration = true;
 
     # Every shell gets these: home-manager feeds home.shellAliases into bash,
     # zsh, fish and nushell alike.
