@@ -1,6 +1,7 @@
 {
   flake.modules.homeManager.wezterm = {
     lib,
+    pkgs,
     config,
     ...
   }:
@@ -62,6 +63,10 @@
             end)
 
             return {
+              -- Account shell is zsh (Superset wraps it); nu stays the
+              -- interactive shell here.
+              default_prog = { '${lib.getExe pkgs.nushell}' },
+
               font_size = 11.0,
               line_height = 1.25,
 
