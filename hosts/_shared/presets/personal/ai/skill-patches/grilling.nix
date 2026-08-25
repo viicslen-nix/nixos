@@ -20,7 +20,7 @@
       Then wait for the user's answers before the next round.'';
   }
   {
-    from = "Each question should be formatted like so:";
+    from = "Format a round like so:";
     to = "Where no such tool exists, fall back to asking in prose, formatted like so:";
   }
 ]
