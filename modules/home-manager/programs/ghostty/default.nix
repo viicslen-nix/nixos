@@ -25,6 +25,10 @@
           enableBashIntegration = true;
           package = pkgs.inputs.ghostty.default;
           settings = {
+            # The account shell is zsh so Superset gets a shell it can wrap;
+            # keep nu as the interactive one here.
+            command = lib.getExe pkgs.nushell;
+
             auto-update = "off";
 
             adjust-cell-height = "40%";

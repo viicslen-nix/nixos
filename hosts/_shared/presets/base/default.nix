@@ -46,7 +46,7 @@ in {
         initialPassword = lib.mkIf (value.password == "") name;
         hashedPassword = lib.mkIf (value.password != "") value.password;
         extraGroups = ["networkmanager" "wheel" "adbusers" name];
-        shell = pkgs.nushell;
+        shell = pkgs.zsh;
         useDefaultShell = false;
       }))
       users;
