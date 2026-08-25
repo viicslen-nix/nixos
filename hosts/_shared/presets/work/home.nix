@@ -169,8 +169,14 @@ in {
       package = pkgs.inputs.packages.kubernetes.krr;
     };
     ai = {
-      commands.skill-assessment-review = ./ai/skill-assessment-review.md;
-      skills.prod-db-operations = ./ai/prod-db-operations.md;
+      commands = {
+        skill-assessment-review = ./ai/skill-assessment-review.md;
+        work-summary = ./ai/work-summary.md;
+      };
+      skills = {
+        prod-db-operations = ./ai/prod-db-operations.md;
+        cicd-pipeline = ./ai/cicd-pipeline.md;
+      };
       mcps = with lib;
       with pkgs; {
         prod-db.command = getExe prod-db-mcp;
