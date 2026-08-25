@@ -174,8 +174,9 @@ in {
         work-summary = ./ai/work-summary.md;
       };
       skills = {
+        ci-pipeline = ./ai/ci-pipeline.md;
+        cd-pipeline = ./ai/cd-pipeline.md;
         prod-db-operations = ./ai/prod-db-operations.md;
-        cicd-pipeline = ./ai/cicd-pipeline.md;
       };
       mcps = with lib;
       with pkgs; {
