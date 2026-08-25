@@ -67,22 +67,7 @@
             ];
           };
 
-          xdg = {
-            enable = mkDefault true;
-
-            desktopEntries.firefox-direct = {
-              name = "Firefox (Direct)";
-              icon = "${pkgs.firefox}/share/icons/hicolor/256x256/apps/firefox.png";
-              genericName = "Web Browser";
-              exec = "${pkgs.mullvad}/bin/mullvad-exclude ${pkgs.firefox}/bin/firefox";
-              terminal = false;
-              categories = ["Application" "Network" "WebBrowser"];
-              mimeType = ["text/html" "text/xml"];
-              settings = {
-                StartupWMClass = "firefox";
-              };
-            };
-          };
+          xdg.enable = mkDefault true;
         }
         (persistence.mkPersistence config {
           directories = [".mozilla"];

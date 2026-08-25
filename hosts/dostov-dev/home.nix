@@ -46,11 +46,6 @@
 
   home.autostart = [
     {
-      package = pkgs.mullvad-vpn;
-      args = ["--silent"];
-      delay = 5;
-    }
-    {
       package = pkgs.jetbrains-toolbox;
       delay = 5;
     }

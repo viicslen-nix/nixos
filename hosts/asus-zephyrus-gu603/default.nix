@@ -18,7 +18,6 @@ with lib; {
     nixosModules.hardware.nvidia
     nixosModules.hardware.display
     nixosModules.hardware.razer
-    nixosModules.programs.mullvad
     nixosModules.functionality.gaming
 
     # Imported for its options; disabled below.
