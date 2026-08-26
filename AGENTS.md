@@ -244,6 +244,25 @@ already happened. Treat every heavy Nix invocation as dangerous.
   rewrite that file at runtime, so those edits land in `settings.json.backup`
   and are dropped on the next activation. Change settings in Nix, not in the TUI.
 
+- **mcp-gateway scrubs the backend environment.** It spawns stdio backends with
+  only `HOME`, `PATH`, `PWD`, `SHLVL` and `TMPDIR` plus the backend's own `env:`
+  block; there is no inherit/passthrough switch. An agenix secret path is
+  `${XDG_RUNTIME_DIR}/agenix/<name>`, so a wrapper that reads one must
+  re-derive that variable itself (`''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}`)
+  or the path collapses to `/agenix/<name>`. Compounding it, `export
+  VAR="$(cat …)"` returns *export's* exit status, not the substitution's, so
+  the failed read sails past `set -e` and the server starts on an **empty
+  credential** — assign first, then export. This is exactly how prod-db broke:
+  it died on `Access denied … (using password: NO)` while grafana silently
+  served an empty token and still listed its 65 tools.
+- **Debugging a dead gateway backend.** Backend stderr is *not* journaled, and
+  the gateway only reports `Backend timeout: Request timed out`, so the real
+  error is invisible. Don't reproduce by running the wrapper from your shell or
+  from `/proc/<gateway-pid>/environ` — both have the full environment the
+  backend never gets, so a broken wrapper passes. Instead run a throwaway
+  gateway on a spare port with a config naming just that backend, its command
+  wrapped in a script that `exec`s the real one with `2>` redirected to a file.
+
 ## Keep docs current
 
 These docs drift. When your change makes them wrong, fix them in the same task
