@@ -3,7 +3,6 @@
   pkgs,
   config,
   nixosModules,
-  homeModules,
   ...
 }:
 with lib; {
@@ -13,11 +12,7 @@ with lib; {
   ];
 
   config = {
-    home-manager.sharedModules = [
-      ./home.nix
-      homeModules.programs.ai
-      homeModules.programs.claude-code
-    ];
+    home-manager.sharedModules = [./home.nix];
 
     # Optimization: Prevent systemd from waiting for network online
     # (Optional but recommended for faster boot with VPNs)
