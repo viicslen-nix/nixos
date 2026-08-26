@@ -18,6 +18,17 @@
       chmod +x $out/bin/toolbox
     '';
 
+  # mcp-gateway spawns stdio backends with a scrubbed environment — only
+  # HOME/PATH/PWD/SHLVL/TMPDIR, plus whatever the backend's own `env` block
+  # names. An agenix secret path is `${XDG_RUNTIME_DIR}/agenix/<name>`, so
+  # under the gateway that expands to `/agenix/<name>`, the `cat` fails, and
+  # `export VAR="$(…)"` swallows the failure (bash returns export's status,
+  # not the substitution's) — leaving the server running on an *empty*
+  # credential. That is why prod-db died on "Access denied … (using password:
+  # NO)" while grafana just served an empty token. Re-derive the value here so
+  # every wrapper works whether it's spawned by the gateway or by a shell.
+  xdgRuntimeDir = ''export XDG_RUNTIME_DIR="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"'';
+
   # Read-only MCP access to the production MariaDB read replica. Brings the
   # SSH tunnel up (MariaDB binds to the Linode private address only), then
   # serves it over stdio. The password comes from an agenix secret
@@ -25,6 +36,8 @@
   # (no 1Password unlock prompt) and it never lands in ~/.claude.json.
   prod-db-mcp = pkgs.writeShellScriptBin "prod-db-mcp" ''
     set -euo pipefail
+
+    ${xdgRuntimeDir}
 
     PORT="''${MYSQL_PORT:-33061}"
 
@@ -46,7 +59,12 @@
     export MYSQL_PORT="$PORT"
     export MYSQL_USER="''${MYSQL_USER:-mcp_readonly}"
     export MYSQL_DATABASE="''${MYSQL_DATABASE:-mylisterhub_central}"
-    export MYSQL_PASSWORD="$(cat ${config.age.secrets.prod-db-mysql-password.path})"
+    # Assign, then export: `export VAR="$(…)"` returns export's status, so a
+    # failed read would sail past `set -e` and reach toolbox as an empty
+    # password — surfacing as a confusing "Access denied" instead of the real
+    # "secret missing".
+    MYSQL_PASSWORD="$(cat ${config.age.secrets.prod-db-mysql-password.path})"
+    export MYSQL_PASSWORD
     exec ${mcp-toolbox}/bin/toolbox --prebuilt mysql --stdio
   '';
 
@@ -55,7 +73,9 @@
   # from the agenix secret at spawn time instead.
   grafana-mcp = pkgs.writeShellScriptBin "grafana-mcp" ''
     set -euo pipefail
-    export GRAFANA_SERVICE_ACCOUNT_TOKEN="$(cat ${config.age.secrets.grafana-service-account-token.path})"
+    ${xdgRuntimeDir}
+    GRAFANA_SERVICE_ACCOUNT_TOKEN="$(cat ${config.age.secrets.grafana-service-account-token.path})"
+    export GRAFANA_SERVICE_ACCOUNT_TOKEN
     exec ${lib.getExe pkgs.mcp-grafana} "$@"
   '';
 in {
