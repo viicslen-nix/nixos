@@ -4,7 +4,38 @@
   osConfig,
   homeModules,
   ...
-}: {
+}: let
+  # Login layout: vivaldi on Browser (DP-1); legcord + ghostty stacked 50/50 in
+  # one column on Communication (DP-2). The window-rules below place vivaldi and
+  # legcord — a rule can pin a window to a workspace but cannot drop it into an
+  # existing column, so only the ghostty half needs a script.
+  loginLayout = pkgs.writeShellScript "niri-login-layout" ''
+    set -u
+    PATH=${lib.makeBinPath [pkgs.jq pkgs.coreutils]}:$PATH
+
+    # ponytail: polls instead of reading niri's event stream. Login is the only
+    # caller and no ghostty is running yet, so the first match is our window.
+    await() {
+      for _ in $(seq 100); do
+        id=$(niri msg --json windows |
+          jq -r --arg a "$1" 'map(select(.app_id == $a)) | .[0].id // empty')
+        [ -n "$id" ] && { echo "$id"; return 0; }
+        sleep 0.2
+      done
+      return 1
+    }
+
+    vivaldi &
+    legcord &
+    await legcord >/dev/null || exit 0
+
+    ghostty &
+    gid=$(await com.mitchellh.ghostty) || exit 0
+    niri msg action move-window-to-workspace --window-id "$gid" --focus false Communication
+    niri msg action consume-or-expel-window-left --id "$gid"
+    niri msg action set-window-height --id "$gid" 50%
+  '';
+in {
   imports = with homeModules; [
     programs.ray
     programs.kitty
@@ -78,6 +109,28 @@
         open-on-output = "DP-2";
       };
     };
+
+    window-rules = [
+      {
+        matches = [{app-id = "^vivaldi";}];
+        open-on-workspace = "Browser";
+      }
+      {
+        matches = [{app-id = "^legcord$";}];
+        open-on-workspace = "Communication";
+      }
+      {
+        # Pinned only — nothing launches these at login.
+        matches = [
+          {app-id = "^jetbrains-phpstorm$";}
+          {app-id = "^t3code$";}
+          {app-id = "(?i)^superset$";}
+        ];
+        open-on-workspace = "Editor";
+      }
+    ];
+
+    spawn-at-startup = [{sh = "${loginLayout}";}];
 
     binds = {
       "Mod+F1".action.spawn = ["zen-browser"];
