@@ -51,6 +51,11 @@
       };
 
       config = mkIf cfg.enable {
+        # Claude Code and the hook installers replace the symlink with a real
+        # file at runtime, so activation backs it up every time; without `force`
+        # the next one aborts on the stale `settings.json.backup`.
+        home.file."${config.home.homeDirectory}/.claude/settings.json".force = true;
+
         programs.claude-code.settings =
           recursiveUpdate {
             model = "opus[1m]";
