@@ -33,7 +33,6 @@ with lib; {
       ./home.nix
       homeModules.programs.k9s
       homeModules.programs.krr
-      homeModules.programs.t3code
     ];
 
     modules = {
