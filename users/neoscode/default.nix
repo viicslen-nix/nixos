@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  config,
   osConfig,
   homeModules,
   ...
@@ -24,6 +25,7 @@ in {
     git
     jujutsu
     sesh
+    vivaldi
   ];
 
   age = {
@@ -205,11 +207,11 @@ in {
 
   modules = {
     functionality.defaults = with pkgs; {
-      terminal = pkgs.inputs.ghostty.default;
       editor = vscode-fhs;
       fileManager = nautilus;
-      browser = vivaldi;
       passwordManager = _1password-gui;
+      terminal = pkgs.inputs.ghostty.default;
+      browser = config.modules.programs.vivaldi.finalPackage;
     };
     programs = {
       worktrunk.tmux.enable = true;
@@ -227,6 +229,27 @@ in {
       sesh = {
         enableNushellIntegration = true;
         enableTmuxIntegration = true;
+      };
+      vivaldi = {
+        jsMods = [
+          "ModConfig.js"
+          "TabManager.js"
+          "VividPeek.js"
+          "PinnedTabRestore.js"
+          "InteractionFeedback.js"
+        ];
+        cssMods = [
+          "PeekTabbar.css"
+          "BetterAnimation.css"
+          "VividPeek.css"
+          "VividQC.css"
+          "RemoveClutter.css"
+          "PinnedTabRestore.css"
+          "InteractionFeedback.css"
+          "DownloadPanel.css"
+          "Extensions.css"
+          "FavouriteTabs.css"
+        ];
       };
     };
   };
