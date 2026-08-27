@@ -41,33 +41,8 @@ in {
     programs.kitty
     programs.tinkerwell
     programs.zen-browser
-    programs.vivaldi
     programs.webapps
   ];
-
-  # Subset of the Awesome-Vivaldi pack. CSS order is the cascade, so it follows
-  # upstream's Import.css; FavouriteTabs sits last, where upstream keeps it.
-  modules.programs.vivaldi = {
-    jsMods = [
-      "ModConfig.js"
-      "TabManager.js"
-      "VividPeek.js"
-      "PinnedTabRestore.js"
-      "InteractionFeedback.js"
-    ];
-    cssMods = [
-      "PeekTabbar.css"
-      "BetterAnimation.css"
-      "VividPeek.css"
-      "VividQC.css"
-      "RemoveClutter.css"
-      "PinnedTabRestore.css"
-      "InteractionFeedback.css"
-      "DownloadPanel.css"
-      "Extensions.css"
-      "FavouriteTabs.css"
-    ];
-  };
 
   home.file.".config/hypr/pyprland.toml".text = lib.mkAfter ''
     [monitors.placement."LW9AA0048525"]
