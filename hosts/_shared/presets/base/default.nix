@@ -222,6 +222,9 @@ in {
         outputs.overlays.unstable-packages
         outputs.overlays.flake-inputs
 
+        # After flake-inputs: it patches an attr that overlay creates.
+        outputs.overlays.superset-fork
+
         inputs.nix-alien.overlays.default
         inputs.nix-cachyos-kernel.overlays.pinned
         inputs.llm-agents.overlays.shared-nixpkgs

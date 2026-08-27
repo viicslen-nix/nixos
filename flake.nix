@@ -191,6 +191,10 @@
       url = "github:max-sixty/worktrunk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Private. Resolvable because `access-tokens` is wired in the base preset;
+    # deliberately does not follow nixpkgs — it ships a prebuilt AppImage and
+    # pins its own nixpkgs for the autoPatchelf inputs.
+    superset-desktop.url = "github:viicslen/superset-desktop";
     gitura = {
       url = "github:viicslen/gitura";
       inputs.nixpkgs.follows = "nixpkgs";
