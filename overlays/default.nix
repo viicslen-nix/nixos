@@ -30,6 +30,28 @@ in {
     flake = inputs.nixpkgs-stable;
   };
 
+  # Swap the Superset desktop app for this user's fork (thread-style sidebar).
+  # An overlay rather than a changed reference, so every consumer of
+  # `pkgs.inputs.packages.superset.desktop` gets it and the swap is one line to
+  # undo. Must be applied *after* `flake-inputs`, which is what creates
+  # `pkgs.inputs` in the first place.
+  #
+  # The fork's `superset-desktop` attr — not `superset` — because the Superset
+  # CLI installs `bin/superset` and both land in the same profile.
+  superset-fork = _final: prev: let
+    fork = inputs.superset-desktop.packages.${prev.stdenv.hostPlatform.system}.superset-desktop;
+  in {
+    inputs =
+      prev.inputs
+      // {
+        packages =
+          prev.inputs.packages
+          // {
+            superset = prev.inputs.packages.superset // {desktop = fork;};
+          };
+      };
+  };
+
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
