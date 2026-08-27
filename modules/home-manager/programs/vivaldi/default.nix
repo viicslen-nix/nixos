@@ -107,6 +107,19 @@
               '';
           });
 
+      # Vivaldi names its desktop entry after the *channel* — `vivaldi-snapshot`
+      # / `vivaldi-stable` — never after the package. Anything deriving a
+      # `.desktop` name from this package (`functionality.defaults`' mime
+      # handlers) has nothing to go on otherwise: runCommand sets `name` but no
+      # `pname`, so the lookup lands on null. The stock package does carry
+      # `pname = "vivaldi"`, but that fallback only ever produced a
+      # `vivaldi.desktop` that does not exist — a broken association that failed
+      # quietly instead of loudly.
+      desktopFileName =
+        if isSnapshot
+        then "vivaldi-snapshot"
+        else "vivaldi-stable";
+
       vivaldiWithMods = let
         binaryName = vivaldiBinaryName;
       in
@@ -114,6 +127,7 @@
           nativeBuildInputs = [pkgs.makeWrapper];
           # Lower priority number = higher precedence (resolves buildEnv conflicts)
           meta = (moddedPackage.meta or {}) // {priority = 4;};
+          passthru = (moddedPackage.passthru or {}) // {inherit desktopFileName;};
         } ''
           mkdir -p $out/bin
           makeWrapper ${moddedPackage}/bin/${binaryName} $out/bin/${binaryName} \
@@ -134,6 +148,15 @@
             substituteInPlace "$desktop" \
               --replace-fail "${moddedPackage}/bin/${binaryName}" "$out/bin/${binaryName}"
           done
+
+          # `desktopFileName` is what the mime handlers point at, and a name
+          # upstream renamed would leave them dangling at a file that isn't
+          # there — the exact failure this replaced.
+          [ -e "$out/share/applications/${desktopFileName}.desktop" ] || {
+            echo "vivaldi: no ${desktopFileName}.desktop; package ships:" >&2
+            ls "$out/share/applications" >&2
+            exit 1
+          }
         '';
     in {
       options.modules.${namespace}.${name} = {
@@ -146,6 +169,20 @@
             The Vivaldi package to use as the base.
             This package will be overridden with proprietaryCodecs and enableWidevine.
           '';
+        };
+
+        # The package actually installed: `package` with the mod pack baked into
+        # its resources and the launch flags wrapped around it. Anything that
+        # *launches* Vivaldi — `functionality.defaults.browser`, a compositor
+        # keybind — must point here and not at `package`, or it execs the
+        # unmodded binary by absolute store path and silently bypasses both the
+        # mods and the flags.
+        finalPackage = mkOption {
+          type = types.package;
+          readOnly = true;
+          default = vivaldiWithMods;
+          defaultText = literalExpression "cfg.package with the mod pack injected and the launch flags wrapped";
+          description = mdDoc "The package actually installed, after the mods and the wrapper.";
         };
 
         enableWayland = mkOption {
@@ -238,11 +275,11 @@
             })
             cfg.extraMods;
 
-          home.packages = [vivaldiWithMods];
+          home.packages = [cfg.finalPackage];
 
           programs.chromium = {
             enable = true;
-            package = vivaldiWithMods;
+            package = cfg.finalPackage;
             extensions = [
               {id = "cjpalhdlnbpafiamejdnhcphjbkeiagm";}
               {id = "edibdbjcniadpccecjdfdjjppcpchdlm";}
