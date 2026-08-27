@@ -188,6 +188,17 @@ Three things make it work:
   needs that token** — without it, evaluation fails at the flake input, not at
   the package.
 
+On a **brand-new host** this has a bootstrap order problem: the first rebuild
+has to build the fork package, which needs `GITHUB_TOKEN` in the nix-daemon's
+environment, which only exists after that rebuild activates. Break the cycle
+once, before the first rebuild:
+
+```bash
+sudo systemctl set-environment GITHUB_TOKEN="$(gh auth token)"
+sudo systemctl restart nix-daemon
+```
+
+Subsequent rebuilds need nothing — activation writes `/run/nix-daemon-env`.
 ### 🎮 Gaming
 
 Import `nixosModules.functionality.gaming` for the safe desktop gaming stack: Steam,
