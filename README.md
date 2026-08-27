@@ -198,6 +198,47 @@ This configuration uses `agenix` for secrets management:
 - Encrypted with age
 - Referenced in `secrets/default.nix`
 
+Every secret is encrypted to **one portable key**, `~/.ssh/agenix`, rather than
+to per-host SSH host keys. Bringing up a new host therefore needs no
+re-encryption round trip — copy that key in and every secret decrypts.
+`base` sets `age.identityPaths` accordingly.
+
+### GitHub token for private flakes
+
+`secrets/github/nix-token.age` holds one PAT — just the token, no trailing
+newline, no surrounding syntax — and `base` wires it, so private repos work on
+any host with no hand-written `~/.config/nix/nix.conf`. Nix wants that token on
+two paths that never see each other:
+
+| Consumer | Covers | File |
+| --- | --- | --- |
+| `nix-daemon`'s `EnvironmentFile` | `pkgs.fetchurl` inside a **fixed-output derivation**, e.g. a private release asset | `/run/nix-daemon-env`, `GITHUB_TOKEN=…`, `root:root 0400` |
+| `access-tokens` in `/etc/nix/nix.conf` | flake **inputs** — `nix run github:owner/private-repo` | `/run/nix-access-tokens`, nix.conf syntax, `root:users 0440`, `!include`d |
+
+`fetchurl` reads `impureEnvVars` from the **daemon's** environment, not yours —
+exporting the token before `nix run` does nothing. Flake inputs are the mirror
+image: fetched by the *client*, which never sees the daemon's environment. One
+setting cannot serve both, hence two files.
+
+`system.activationScripts.nixTokenFiles` shapes both from the one secret. They
+cannot be `writeText`ed instead: `/nix/store` is world-readable (`drwxrwxr-t`)
+and store paths are substitutable, so a token baked into a derivation would leak
+to every local user and to any cache the closure reaches — the whole reason
+agenix exists. Only the *script* is declarative; the token joins it at
+activation, into tmpfs, so neither file persists.
+
+`/run/nix-access-tokens` is group-readable because a root-only file would break
+`nix run` for the user who needs it. Any local user in `users` can read the
+token — the same exposure as the plaintext `~/.config/nix/nix.conf` it replaces.
+
+Rotate:
+
+```bash
+gh auth token | tr -d '\n' \
+  | age -r "$(grep -o 'ssh-ed25519 [^"]*' secrets/default.nix | head -1)" \
+        -o secrets/github/nix-token.age
+```
+
 ## ⚙️ Hardware Support
 
 ### 🎮 Graphics

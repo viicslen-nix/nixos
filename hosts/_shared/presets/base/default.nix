@@ -11,6 +11,10 @@
 }:
 with lib; let
   flakeLocation = "/etc/nixos";
+
+  # Shaped from the agenix secret at activation; tmpfs, so neither persists.
+  nixAccessTokens = "/run/nix-access-tokens";
+  nixDaemonEnv = "/run/nix-daemon-env";
 in {
   imports = [
     inputs.home-manager.nixosModules.default
@@ -229,6 +233,66 @@ in {
       };
     };
 
+    # Every secret here is encrypted to one portable key the user carries
+    # (~/.ssh/agenix), never to per-host SSH host keys. That is what keeps a new
+    # host zero-setup: drop the key in and every secret decrypts, with no
+    # re-encryption round trip to add the machine as a recipient.
+    age = {
+      identityPaths =
+        map (name: "/home/${name}/.ssh/agenix") (attrNames users)
+        ++ ["/etc/ssh/ssh_host_ed25519_key"];
+
+      # Just the PAT, no trailing newline and no surrounding syntax. Nix needs
+      # it in two different file formats; both are shaped from this one below,
+      # so a rotation is `gh auth token | age …` and cannot go half-applied.
+      secrets.nix-token.file = ../../../../secrets/github/nix-token.age;
+    };
+
+    # The shaped files cannot be `writeText`ed: /nix/store is world-readable
+    # (drwxrwxr-t) and store paths are substitutable, so a token baked into a
+    # derivation leaks to every local user and to any cache the closure reaches.
+    # Only the *script* is declarative; the token joins it at activation.
+    #
+    # `deps` on agenix's empty marker script, and `if` rather than an early
+    # `exit` — activation snippets are concatenated into one script, so exiting
+    # here would skip every snippet after it. Write-then-rename so a reader
+    # never catches a half-written token.
+    system.activationScripts.nixTokenFiles = {
+      deps = ["agenix"];
+      text = ''
+        # mode, group, destination; content on stdin. Created 0400 and only then
+        # relaxed, and renamed into place, so no reader ever sees a partial or
+        # briefly over-permissive token.
+        shapeToken() {
+          ( umask 0277
+            ${pkgs.coreutils}/bin/cat > "$3.tmp" )
+          ${pkgs.coreutils}/bin/chgrp "$2" "$3.tmp"
+          ${pkgs.coreutils}/bin/chmod "$1" "$3.tmp"
+          ${pkgs.coreutils}/bin/mv -f "$3.tmp" "$3"
+        }
+
+        if [ -r ${config.age.secrets.nix-token.path} ]; then
+          token=$(${pkgs.coreutils}/bin/cat ${config.age.secrets.nix-token.path})
+
+          # `pkgs.fetchurl` reads its `impureEnvVars` from the nix-daemon's
+          # environment, not your shell's — this is the only way a fixed-output
+          # derivation can authenticate to a private GitHub release asset.
+          printf 'GITHUB_TOKEN=%s\n' "$token" \
+            | shapeToken 0400 root ${nixDaemonEnv}
+
+          # Flake *inputs* are the mirror image: fetched by the client process,
+          # which never sees the daemon's environment. Group-readable, because a
+          # root-only file would break `nix run` for the user who needs it.
+          printf 'access-tokens = github.com=%s\n' "$token" \
+            | shapeToken 0440 users ${nixAccessTokens}
+
+          unset token
+        fi
+      '';
+    };
+
+    systemd.services.nix-daemon.serviceConfig.EnvironmentFile = "-${nixDaemonEnv}";
+
     nix = {
       # This will add each flake input as a registry
       # To make nix3 commands consistent with your flake
@@ -237,6 +301,12 @@ in {
       # This will additionally add your inputs to the system's legacy channels
       # Making legacy nix commands consistent as well, awesome!
       nixPath = ["/etc/nix/path"];
+
+      # `!include` is the tolerant form — nix skips the file if it is not there
+      # yet (first boot, before agenix has run) instead of refusing to start.
+      extraOptions = ''
+        !include ${nixAccessTokens}
+      '';
 
       settings = {
         trusted-users = attrNames users;

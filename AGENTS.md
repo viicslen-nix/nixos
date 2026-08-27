@@ -255,6 +255,17 @@ already happened. Treat every heavy Nix invocation as dangerous.
   credential** — assign first, then export. This is exactly how prod-db broke:
   it died on `Access denied … (using password: NO)` while grafana silently
   served an empty token and still listed its 65 tools.
+- **Private GitHub needs the token on two paths, in two formats.** Flake
+  *inputs* are fetched by the **client** from `access-tokens` in
+  `/etc/nix/nix.conf`; `pkgs.fetchurl` in a fixed-output derivation reads
+  `impureEnvVars` from the **nix-daemon's** environment, so exporting
+  `GITHUB_TOKEN` in your shell does nothing for it. `secrets/github/nix-token.age`
+  holds the bare PAT and `system.activationScripts.nixTokenFiles` in `base`
+  shapes both files (`/run/nix-daemon-env`, `/run/nix-access-tokens`). Don't
+  "simplify" that to `writeText`: `/nix/store` is world-readable and
+  substitutable, so a token in a derivation leaks. The script must stay
+  `deps = ["agenix"]` and guard with `if`, not `exit` — activation snippets are
+  concatenated into one script, and it runs under `set -e`.
 - **Debugging a dead gateway backend.** Backend stderr is *not* journaled, and
   the gateway only reports `Backend timeout: Request timed out`, so the real
   error is invisible. Don't reproduce by running the wrapper from your shell or
