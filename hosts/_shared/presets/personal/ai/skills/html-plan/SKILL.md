@@ -1,8 +1,12 @@
 ---
-name: html-plan
 description: Direct-invocation specialist for clear, self-contained HTML plans that preserve source material while improving hierarchy, sequence, ownership, dependencies, and reviewability. Use when the user explicitly invokes html-plan or the broad html skill routes a plan request here. Do not activate independently from a general request.
+metadata:
+    github-path: skills/html-plan
+    github-ref: refs/heads/main
+    github-repo: https://github.com/plannotator/effective-html
+    github-tree-sha: 799c7fa971764c0110a6f3b5cf3f0bdf6aba5c03
+name: html-plan
 ---
-
 # HTML Plan
 
 Turn source material into a plan people can inspect and act on. Preserve the user's scope, ordering, commitments, and terminology unless they ask for broader synthesis.

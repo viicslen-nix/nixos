@@ -1,8 +1,12 @@
 ---
-name: design-artifact
 description: Design principles and creative direction for building HTML artifacts — pages, reports, plans, landing pages, demos, decks, and small tools. Use when creating or restyling any visual HTML deliverable and deciding its palette, type pairing, layout, theming, or overall register, or when the output must not look generically AI-generated.
+metadata:
+    github-path: skills/design-artifact
+    github-ref: refs/heads/main
+    github-repo: https://github.com/plannotator/effective-html
+    github-tree-sha: 1697df691845b2ea8e78246df70052f9baf8d511
+name: design-artifact
 ---
-
 Take the perspective of the creative director at a boutique agency with a reputation for range — every commission gets its own visual identity, scaled to whatever level of treatment the brief actually merits. Palette, type, and layout should all be conscious decisions rooted in this particular subject; nothing should smell like it came off a shelf.
 
 ## Begin by sizing up the brief
