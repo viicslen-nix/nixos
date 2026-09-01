@@ -60,6 +60,17 @@ update-main *ARGS:
 update-input INPUT *ARGS:
   nix flake update {{INPUT}} {{ARGS}}
 
+# Search the omniflake index for a flake, at the rev this flake pins. Prints
+# the attribute names — what goes on the right of the `omniInputs` mapping in
+# flake.nix. No TERM lists all ~12k. Forces no fetch: it only reads index.json.
+# Usage: just omniflake-search sops
+omniflake-search *TERM:
+  @rev=$(jq -r '.nodes.omniflake.locked.rev' flake.lock); \
+  nix eval --json "github:fzakaria/omniflake/$rev#lib.names" \
+    | jq -r '.[]' \
+    | grep -i -- "{{TERM}}" \
+    || echo "no flake matching '{{TERM}}' in the index"
+
 # Update flake lock file of a specific subflake and refresh the root flake input
 # Usage: just update-subflake nixvim
 update-subflake NAME *ARGS:
