@@ -1,8 +1,12 @@
 ---
-name: html
 description: Create or redesign self-contained single-file HTML artifacts with a visual direction shaped by the user's brief, project, and subject. Use when HTML is the deliverable for a report, explainer, landing page, presentation, tool, mixed artifact, or broad request. This is the collection's only implicit router. Route clear wireframe, prototype, mockup, plan, or diagram requests to the matching direct-invocation specialist when available. Do not use for ordinary application implementation when a standalone HTML file is not the deliverable.
+metadata:
+    github-path: skills/html
+    github-ref: refs/heads/main
+    github-repo: https://github.com/plannotator/effective-html
+    github-tree-sha: 926c2a2bda2e983c51124c4232e8562ac281dc06
+name: html
 ---
-
 # HTML
 
 Build one self-contained HTML file that makes the subject clearer, easier to use, or easier to understand. The standard is consistent care, not a consistent look. Do not reproduce a house palette, typography stack, card system, or layout from prior runs.

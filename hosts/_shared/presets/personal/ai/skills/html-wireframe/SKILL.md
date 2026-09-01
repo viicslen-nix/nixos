@@ -1,8 +1,12 @@
 ---
-name: html-wireframe
 description: Direct-invocation specialist for low-fidelity, self-contained HTML wireframes that test information hierarchy, content, navigation, task flow, and responsive structure before visual design. Use when the user explicitly invokes html-wireframe or the broad html skill routes a wireframe request here. Do not activate independently from a general request. Do not use for polished mockups or production-like interaction; use html-prototype for those.
+metadata:
+    github-path: skills/html-wireframe
+    github-ref: refs/heads/main
+    github-repo: https://github.com/plannotator/effective-html
+    github-tree-sha: 8556dc5ca76c4128531598b2efbc955e1c5ab63a
+name: html-wireframe
 ---
-
 # HTML Wireframe
 
 Turn a product question into a low-fidelity HTML artifact that is easy to inspect, change, and discuss. The wireframe should help reviewers decide what belongs on the screen and how the task should work. It should not look like a finished product.

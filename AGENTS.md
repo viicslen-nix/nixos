@@ -239,13 +239,24 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `flake = false` input (`mattpocock-skills`), bumped with `just update-input`.
   Repos that carry a lot of non-skill weight are vendored instead — there is no
   sparse fetch for a non-flake input, so an input would copy the whole thing
-  into the store (effective-html is 22M for 148K of skills). `just vendor-skills`
-  sparse-checks out the subtree listed in `scripts/skill-sources.tsv` into
-  `hosts/_shared/presets/personal/ai/skills/`, stamping each directory with
-  `.vendored-from` so the next run can prune what upstream deleted. **`git add`
-  the result before evaluating** — the flake source is `git+file://`, so
-  untracked skills are invisible to `nix eval` and to a rebuild, and the failure
-  looks like the skill silently not existing.
+  into the store (effective-html is 22M for 148K of skills). `just vendor-skills
+  <owner/repo> [skill|--all]` shells out to `gh skill install --dir` (preview
+  command, `gh skill`/`gh skills`) — naming a skill (or its in-repo path) takes
+  just that one, `--all` takes the collection, neither prompts. `gh` allows only
+  one name per run and rejects `--all` beside it, so a subset means repeating the
+  recipe. It drops them in
+  `hosts/_shared/presets/personal/ai/skills/`; `just update-skills` re-pulls
+  every one, `just skills` lists them with their origin. There is no manifest:
+  `gh` records `github-repo`/`github-path`/`github-ref`/`github-tree-sha` in
+  each skill's own **SKILL.md frontmatter**, which is what `update` and `list`
+  read back. Consequences: a skill written here by hand has no such metadata, so
+  `update` warns and skips it (harmless — but don't hand-edit a vendored
+  `SKILL.md`, the next update overwrites it; patch it via `patchSkill` instead);
+  there is no `gh skill uninstall`, so retiring a collection is `rm -rf` on the
+  directories `just skills` attributes to it; and **`git add` the result before
+  evaluating** — the flake source is `git+file://`, so untracked skills are
+  invisible to `nix eval` and to a rebuild, and the failure looks like the skill
+  silently not existing. The recipes `git add` for you.
 - **AI skill helpers live in the `lib` subflake.** `flakes/lib/skills.nix`
   exports `mkSkillAttrSet` / `mkMarkdownAttrSet` (local directory → attrset),
   `fromInput` (coerce `"${input}/sub"` back to a real path), `selectFromInput`

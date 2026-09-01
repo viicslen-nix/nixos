@@ -1,8 +1,12 @@
 ---
-name: html-diagram
 description: Direct-invocation specialist for self-contained HTML diagrams whose layout, notation, and interaction clarify relationships, sequence, topology, state, hierarchy, or quantitative structure. Use when the user explicitly invokes html-diagram or the broad html skill routes a diagram request here. Do not activate independently from a general request.
+metadata:
+    github-path: skills/html-diagram
+    github-ref: refs/heads/main
+    github-repo: https://github.com/plannotator/effective-html
+    github-tree-sha: 9d773f19558970f4074244f1dd6aa0e499209045
+name: html-diagram
 ---
-
 # HTML Diagram
 
 Build the smallest visual model that makes the relationship easier to understand than prose alone. Match the notation and visual language to the user's project and subject. Do not force every topic into the same SVG boxes and arrows.
