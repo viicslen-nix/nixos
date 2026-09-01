@@ -309,6 +309,14 @@ already happened. Treat every heavy Nix invocation as dangerous.
   credential** — assign first, then export. This is exactly how prod-db broke:
   it died on `Access denied … (using password: NO)` while grafana silently
   served an empty token and still listed its 65 tools.
+- **A remote (HTTP) MCP backend takes its credential from a header, not a
+  wrapper.** `gateway.yaml` is generated into `/nix/store`, so a literal token
+  in `mcps.<name>.headers` is world-readable. Instead write
+  `headers."X-Foo" = "\''${VAR}"` and point `gateway.settings.env_files` at an
+  agenix **dotenv** secret (`VAR=…`); mcp-gateway loads `env_files` before it
+  expands `''${VAR}`/`''${VAR:-default}` in `headers` and `env` (nothing else —
+  `http_url` is *not* expanded). That is how `google_stitch` gets its
+  `X-Goog-Api-Key`.
 - **Private GitHub needs the token on two paths, in two formats.** Flake
   *inputs* are fetched by the **client** from `access-tokens` in
   `/etc/nix/nix.conf`; `pkgs.fetchurl` in a fixed-output derivation reads

@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
 let
   inherit (inputs.self.lib.skills)
     mkMarkdownAttrSet
@@ -42,6 +42,11 @@ let
   };
 in
 {
+  # Dotenv file (`STITCH_API_KEY=…`). mcp-gateway loads its `env_files` before
+  # it expands ${…} in backend headers, so the key never lands in the
+  # world-readable gateway.yaml in /nix/store.
+  age.secrets.stitch-api-key.file = ../../../../../secrets/stitch/api-key.age;
+
   modules.programs.claude-code = {
     marketplaces = {
       mempalace = "MemPalace/mempalace";
@@ -64,6 +69,7 @@ in
   modules.programs.ai = {
     enable = true;
     gateway.enable = true;
+    gateway.settings.env_files = [config.age.secrets.stitch-api-key.path];
     superset.enable = true;
     mempalace.enable = true;
     coderabbit.enable = true;
@@ -77,8 +83,12 @@ in
     mcps = {
       # OAuth-protected too, but its authorization server is
       # accounts.google.com, which has no registration_endpoint — it needs a
-      # client_id/secret from a Google Cloud OAuth app, so it stays anonymous.
-      google_stitch.url = "https://stitch.googleapis.com/mcp";
+      # client_id/secret from a Google Cloud OAuth app, so it authenticates with
+      # a Stitch API key instead (Stitch settings → API key → Create key).
+      google_stitch = {
+        url = "https://stitch.googleapis.com/mcp";
+        headers."X-Goog-Api-Key" = "\${STITCH_API_KEY}";
+      };
       context7 = {
         url = "https://mcp.context7.com/mcp";
         oauth.enabled = true;
