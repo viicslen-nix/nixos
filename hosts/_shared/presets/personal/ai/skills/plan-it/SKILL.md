@@ -1,36 +1,39 @@
 ---
-name: plan-it
+allowed-tools: Read Write Edit Bash Glob Grep WebFetch
 description: HTML-first persistent planning skill. Generates a single self-contained plan.html with interactive phases, drag-and-drop tickets, sliders, mockups, and embedded JSON state. Survives /clear via session catchup, tamper-protected by SHA-256, mirrors across 17 IDEs, ships 10 templates across Thariq's 9 categories, exports back to Markdown on demand. Use when asked to "plan it", "make me an html plan", "show me the plan", "render the plan", or when starting any multi-step task that needs a navigable artifact instead of a markdown wall.
-user-invocable: true
-allowed-tools: "Read Write Edit Bash Glob Grep WebFetch"
 hooks:
-  UserPromptSubmit:
-    - hooks:
-        - type: command
-          command: "if [ -f plan.html ]; then PY=$(command -v python3 || command -v python); HELPER=\"${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/skills/plan-it}/scripts/plan-hook.py\"; if [ -z \"$PY\" ] || [ ! -f \"$HELPER\" ]; then HELPER=$(ls \"$HOME/.claude/skills/plan-it/scripts/plan-hook.py\" \"$HOME/.claude/plugins/marketplaces/plan-it/scripts/plan-hook.py\" 2>/dev/null | head -1); fi; if [ -n \"$PY\" ] && [ -n \"$HELPER\" ] && [ -f \"$HELPER\" ]; then \"$PY\" \"$HELPER\" inject --mode summary --lines 30; else echo '[plan-it] plan.html present but helper script not found. Run /plan to re-init.'; fi; fi"
-  PreToolUse:
-    - matcher: "Write|Edit|Bash|Read|Glob|Grep"
-      hooks:
-        - type: command
-          command: "if [ -f plan.html ]; then PY=$(command -v python3 || command -v python); HELPER=\"${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/skills/plan-it}/scripts/plan-hook.py\"; if [ -z \"$PY\" ] || [ ! -f \"$HELPER\" ]; then HELPER=$(ls \"$HOME/.claude/skills/plan-it/scripts/plan-hook.py\" \"$HOME/.claude/plugins/marketplaces/plan-it/scripts/plan-hook.py\" 2>/dev/null | head -1); fi; if [ -n \"$PY\" ] && [ -n \"$HELPER\" ] && [ -f \"$HELPER\" ]; then \"$PY\" \"$HELPER\" inject --mode active-phase --lines 15; fi; fi"
-  PostToolUse:
-    - matcher: "Write|Edit"
-      hooks:
-        - type: command
-          command: "if [ -f plan.html ]; then echo '[plan-it] Update plan.html embedded JSON with what you just did (progress_log + phase status). The data lives in <script type=\"application/json\" id=\"plan-data\">. Do not edit the render layer.'; fi"
-  Stop:
-    - hooks:
-        - type: command
-          command: "if [ -f plan.html ]; then PY=$(command -v python3 || command -v python); HELPER=\"${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/skills/plan-it}/scripts/plan-hook.py\"; if [ -z \"$PY\" ] || [ ! -f \"$HELPER\" ]; then HELPER=$(ls \"$HOME/.claude/skills/plan-it/scripts/plan-hook.py\" \"$HOME/.claude/plugins/marketplaces/plan-it/scripts/plan-hook.py\" 2>/dev/null | head -1); fi; if [ -n \"$PY\" ] && [ -n \"$HELPER\" ] && [ -f \"$HELPER\" ]; then \"$PY\" \"$HELPER\" check-complete; fi; fi"
-  PreCompact:
-    - matcher: "*"
-      hooks:
-        - type: command
-          command: "if [ -f plan.html ]; then echo '[plan-it] PreCompact: context compaction about to occur.'; echo 'Before compaction completes: ensure plan.html embedded JSON captures recent progress_log entries and current_phase status.'; echo 'plan.html remains on disk and will be re-read after compaction.'; PY=$(command -v python3 || command -v python); HELPER=\"${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/skills/plan-it}/scripts/plan-hook.py\"; if [ -z \"$PY\" ] || [ ! -f \"$HELPER\" ]; then HELPER=$(ls \"$HOME/.claude/skills/plan-it/scripts/plan-hook.py\" \"$HOME/.claude/plugins/marketplaces/plan-it/scripts/plan-hook.py\" 2>/dev/null | head -1); fi; if [ -n \"$PY\" ] && [ -n \"$HELPER\" ] && [ -f \"$HELPER\" ]; then \"$PY\" \"$HELPER\" attestation; fi; fi; exit 0"
+    PostToolUse:
+        - hooks:
+            - command: if [ -f plan.html ]; then echo '[plan-it] Update plan.html embedded JSON with what you just did (progress_log + phase status). The data lives in <script type="application/json" id="plan-data">. Do not edit the render layer.'; fi
+              type: command
+          matcher: Write|Edit
+    PreCompact:
+        - hooks:
+            - command: 'if [ -f plan.html ]; then echo ''[plan-it] PreCompact: context compaction about to occur.''; echo ''Before compaction completes: ensure plan.html embedded JSON captures recent progress_log entries and current_phase status.''; echo ''plan.html remains on disk and will be re-read after compaction.''; PY=$(command -v python3 || command -v python); HELPER="${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/skills/plan-it}/scripts/plan-hook.py"; if [ -z "$PY" ] || [ ! -f "$HELPER" ]; then HELPER=$(ls "$HOME/.claude/skills/plan-it/scripts/plan-hook.py" "$HOME/.claude/plugins/marketplaces/plan-it/scripts/plan-hook.py" 2>/dev/null | head -1); fi; if [ -n "$PY" ] && [ -n "$HELPER" ] && [ -f "$HELPER" ]; then "$PY" "$HELPER" attestation; fi; fi; exit 0'
+              type: command
+          matcher: '*'
+    PreToolUse:
+        - hooks:
+            - command: if [ -f plan.html ]; then PY=$(command -v python3 || command -v python); HELPER="${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/skills/plan-it}/scripts/plan-hook.py"; if [ -z "$PY" ] || [ ! -f "$HELPER" ]; then HELPER=$(ls "$HOME/.claude/skills/plan-it/scripts/plan-hook.py" "$HOME/.claude/plugins/marketplaces/plan-it/scripts/plan-hook.py" 2>/dev/null | head -1); fi; if [ -n "$PY" ] && [ -n "$HELPER" ] && [ -f "$HELPER" ]; then "$PY" "$HELPER" inject --mode active-phase --lines 15; fi; fi
+              type: command
+          matcher: Write|Edit|Bash|Read|Glob|Grep
+    Stop:
+        - hooks:
+            - command: if [ -f plan.html ]; then PY=$(command -v python3 || command -v python); HELPER="${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/skills/plan-it}/scripts/plan-hook.py"; if [ -z "$PY" ] || [ ! -f "$HELPER" ]; then HELPER=$(ls "$HOME/.claude/skills/plan-it/scripts/plan-hook.py" "$HOME/.claude/plugins/marketplaces/plan-it/scripts/plan-hook.py" 2>/dev/null | head -1); fi; if [ -n "$PY" ] && [ -n "$HELPER" ] && [ -f "$HELPER" ]; then "$PY" "$HELPER" check-complete; fi; fi
+              type: command
+    UserPromptSubmit:
+        - hooks:
+            - command: if [ -f plan.html ]; then PY=$(command -v python3 || command -v python); HELPER="${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/skills/plan-it}/scripts/plan-hook.py"; if [ -z "$PY" ] || [ ! -f "$HELPER" ]; then HELPER=$(ls "$HOME/.claude/skills/plan-it/scripts/plan-hook.py" "$HOME/.claude/plugins/marketplaces/plan-it/scripts/plan-hook.py" 2>/dev/null | head -1); fi; if [ -n "$PY" ] && [ -n "$HELPER" ] && [ -f "$HELPER" ]; then "$PY" "$HELPER" inject --mode summary --lines 30; else echo '[plan-it] plan.html present but helper script not found. Run /plan to re-init.'; fi; fi
+              type: command
 metadata:
-  version: "0.2.0"
+    github-path: skills/plan-it
+    github-ref: refs/tags/v0.1.1
+    github-repo: https://github.com/OthmanAdi/plan-it
+    github-tree-sha: 8f6d9976cd6ac320476d998715184919f1e560e7
+    version: 0.1.1
+name: plan-it
+user-invocable: true
 ---
-
 # plan-it
 
 HTML-first persistent planning. Work like Thariq: ship a single navigable artifact instead of a markdown wall the human will skip.
@@ -79,11 +82,11 @@ plan.html      = the canonical surface — visual to humans, structured to agent
 
 The JSON data layer travels everywhere. The render layer is the human's UX.
 
-## Plan-data JSON schema (v0.2.0)
+## Plan-data JSON schema (v0.1.1)
 
 ```json
 {
-  "schema_version": "0.2.0",
+  "schema_version": "0.1.1",
   "plan_title": "...",
   "goal": "...",
   "current_phase": 1,
@@ -91,20 +94,12 @@ The JSON data layer travels everywhere. The render layer is the human's UX.
   "ownership": "agent",
   "created_at": "ISO 8601",
   "updated_at": "ISO 8601",
-  "gate": {"enforce_evidence": false, "require_approval": false},
   "phases": [
     {
       "id": 1,
       "title": "...",
       "status": "pending|in_progress|complete|blocked",
-      "approval": {
-        "state": "pending|approved|rejected|changes_requested",
-        "approach": "...", "blast_radius": ["..."],
-        "confidence": "high|medium|low", "cost_estimate": "light|medium|heavy",
-        "decided_at": null, "decided_by": null, "note": ""
-      },
       "items": [{"text": "...", "done": false, "owner": null}],
-      "evidence": [{"command": "...", "output": "...", "exit_code": 0, "probe": "...", "checked_at": "ISO 8601"}],
       "milestones": ["..."]
     }
   ],
@@ -112,24 +107,11 @@ The JSON data layer travels everywhere. The render layer is the human's UX.
   "progress_log": [...],
   "decisions": [...],
   "errors": [...],
-  "history": [{"ts": "ISO 8601", "kind": "created|approved|rejected|completed|sealed", "phase": null, "summary": "...", "prev_hash": "...", "hash": "..."}],
-  "integrity": {"algo": "SHA-256", "value": null, "sealed_at": null, "scope": "plan-data-v1", "sections": {"phases": "...", "gate": "...", "history": "..."}},
   "attestation_sha256": null
 }
 ```
 
-Every v0.2.0 field is optional and additive. A pre-0.2.0 plan (no `gate`, `integrity`, `evidence`, or `approval`) behaves byte-identically to before: no gate, no badge, no new advisories. `ownership` is optional (`"agent"`, `"user"`, `"shared"`).
-
-## Trust layer (v0.2.0)
-
-plan.html is a verified, two-way trust surface, not just a render. Four cohering pieces, all expressed in the flagship `implementation-plan` template and enforced in the deterministic hook layer:
-
-- **Completion evidence with an opt-in gate.** A phase carries `evidence[]` = the command run, its verbatim output, and a re-runnable `probe` (all three are required for the gate to count it). The Stop hook flags any phase marked `complete` without an evidence pack. When `gate.enforce_evidence` is true it blocks the stop (the agent must supply proof or reopen the phase). The gate checks that proof is PRESENT and RE-RUNNABLE; it does not, and cannot, decide the pasted output is genuine. The probe is for the human or CI to re-run. No LLM judges itself done, and the gate never auto-runs a probe (that would be an RCE footgun).
-- **Approval cards (two-way).** Each phase can show a proposed `approach`, `blast_radius`, and the agent's `confidence`/`cost_estimate` (labelled an estimate, not measured). The human approves or rejects inside the page; the decision and timestamp are written to the JSON and the hook surfaces them so the agent sees them. A rejected phase visually locks every downstream phase.
-- **Integrity badge (authenticated).** `/plan-attest` writes a SHA-256 content seal into `integrity`. The browser recomputes it live (vendored SHA-256, offline) and shows verified / edited-since-seal / not-sealed, naming which sections changed. Separately, the existing whole-file sidecar hash still gates hook injection on tamper.
-- **History (credible).** `history[]` is an append-only, hash-chained log. Every seal and decision is logged.
-
-**Honesty boundary (state it, never exceed it):** the seal is tamper-EVIDENT, not tamper-proof. It proves the content matches the last seal; divergence is visible. A determined agent can re-run `/plan-attest` to re-seal forged state, so re-sealing is a deliberate act and every seal is logged in `history`. Say "verified against seal", never "guaranteed" or "tamper-proof". `gate.enforce_evidence` and `gate.require_approval` are meant to be human-set; if sealed, flipping them shows as a `gate` divergence.
+`ownership` is optional, default unset. Accepts `"agent"`, `"user"`, or `"shared"`. v0.1.1 documents the field for forward-compat; v0.2.0 will gate UI affordances on it. Plan authors can start tagging plans now without breaking back-compat.
 
 ## Available commands
 
@@ -224,10 +206,6 @@ If you already use planning-with-files (the markdown predecessor at https://gith
 - **Path resolution fails on Windows Git Bash.** The hook bodies use `$HOME` for fallback path resolution. If your install path is non-standard, set `CLAUDE_PLUGIN_ROOT` env var.
 - **Multiple parallel plans.** Set `PLAN_ID=<slug>` env var. plan-it then reads `.planning/<slug>/plan.html` instead of `plan.html`. Use `/plan-status` to see active plan.
 - **Token cost ~2-3× of equivalent markdown.** Trade-off documented. Run `/plan-export markdown` if you need lower-cost chained-agent intermediate output.
-- **Badge says "edited since seal" while you are still working.** Expected. The seal is a checkpoint; any change after it diverges until the next `/plan-attest`. Re-attest at review points, not on every edit.
-- **The evidence gate is not blocking.** It is opt-in. Set `gate.enforce_evidence` to true in the plan JSON to make a `complete`-without-evidence phase block the Stop hook. Off by default so existing plans are unaffected.
-- **Badge is "not sealed" forever.** The content seal is written by `/plan-attest`. Until you run it, the badge is neutral and the plan is unsealed. The trust UI ships in the `implementation-plan` template; other templates render their normal view.
-- **Badge says "edited since seal" on a plan you did not touch.** Keep plan-data numbers as integers within 2^53. A float (`1.0`) or a larger integer can serialize differently in the browser than in Python and trip a false "edited" badge. It is a display issue, not a forgery: the value is numerically identical, so it cannot hide a real content change.
 
 ## References
 
