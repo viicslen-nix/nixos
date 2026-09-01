@@ -106,6 +106,60 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **Update recipes.** `just update` updates every subflake *and* all root
   inputs; `just update-main` = root inputs only; `just update-input <x>` /
   `just update-subflake <x>` for one.
+- **omniflake.** 20 dependencies are no longer flake inputs: they are pins in
+  [omniflake](https://github.com/fzakaria/omniflake)'s `index.json`, fetched
+  lazily at evaluation. The mapping (local name → index attribute) is the
+  `omniInputs` set in `flake.nix`; it is merged into `inputs` before
+  `mkFlake`, so `inputs.<name>` and `pkgs.inputs.<name>` are unchanged
+  everywhere else and `nix.registry` still lists them (omniflake's loader sets
+  `_type = "flake"`). Consequences: `just update-input omniflake` bumps all 20
+  at once — home-manager included, so an HM bump is now an omniflake bump —
+  and `just update-input disko` no longer resolves; `nix flake metadata` will
+  not show them; the index keys on the *repository* name, so
+  `vscode-server` is `nixos-vscode-server`, `git-hooks` is `git-hooks-nix`,
+  `base16` is `base16-nix`, `jovian` is `jovian-nixos`, `llm-agents` is
+  `llm-agents-nix` and `zen-browser` is `zen-browser-flake`. `stylix` keeps its
+  name but the index holds `nix-community/stylix`, the repo `danth/stylix` was
+  transferred to — same project, not a fork. Unification is by
+  input *name* at every depth via `lib.withOverrides`, which is where the old
+  `follows` lines went — including `systems = systems-linux`, so the
+  darwin-stripping workaround still reaches `llm-agents`. An input stays real
+  when something must `follows` it (`nixpkgs`, `systems-linux`), when it
+  bootstraps `mkFlake` (`flake-parts`), when it is `flake = false`
+  (the index holds flakes only), or when it simply is not indexed.
+- **home-manager comes from omniflake, and unifies by self-reference.** The
+  override set passes `inherit (omni) home-manager`, so plasma-manager,
+  agenix and zen-browser all reach the one copy without home-manager being an
+  input. It terminates because overrides apply to a flake's *inputs*, never to
+  the flake being loaded — the same shape as omniflake's own `lib.unifyAll`.
+  This was only possible after dropping the dead `home-manager` input from
+  `flakes/zed` (declared, never read), which was the last `follows` line
+  pointing at it. Verified: one rev across ours/plasma/agenix/zen.
+- **Removing an `inputs.<x>.nixpkgs.follows` does not restore the old pin.**
+  `nix flake lock` re-resolves that input from its `original` — a floating
+  branch or channel URL — so dropping a follows moves the dependency
+  *forward*, often past what its author tested or its cache was built
+  against. Bit twice here (`tuicr`, `ghostty`). To put one back exactly, use
+  `nix flake lock --override-input <x>/nixpkgs <the locked url/rev from git>`;
+  note that writes a node with `lastModified` 1980 and no `rev`, so restore
+  those two fields with `jq` if you want the lock byte-faithful. Verify with
+  the *store path*, not the lock: it must match what the cache has.
+- **crates.io 403s nix's User-Agent from this host.** A bare `curl` of
+  `https://crates.io/api/v1/crates/<c>/<v>/download` returns **403**; the same
+  URL with a browser UA returns 200, as does `static.crates.io`. nixpkgs'
+  `importCargoLock` fetches the blocked URL, so any Rust package that has to
+  *re-vendor* its crates dies on
+  `error: cannot download download-<crate> from any mirror`. Already-realised
+  store paths and cached vendor FODs mask it, so it only shows up when
+  something forces a rebuild — bumping a Rust input, or repinning one's
+  nixpkgs. This is why `tuicr` keeps its own nixpkgs pin; it is also waiting
+  to bite the next `just update` that moves a Rust input.
+- **The subflakes stay on their own inputs.** Only 5 of the ~35 inputs across
+  `flakes/*` are in the index (emacs→`emacs-overlay`, lib→`systems`,
+  neovim→`nvf`, niri→`niri-flake`, nixvim→`nixvim`), and adding omniflake to a
+  subflake costs six lock nodes to remove one — a net loss in every case.
+  `nvf` and `nixvim` are also deliberately pinned to a branch/tag the index
+  does not carry. Don't "finish the migration" there.
 - **Bumping local packages.** The recipes live in the subflake
   (`flakes/packages/Justfile`, implemented by `flakes/packages/scripts/packages.sh`);
   the root `Justfile` only aliases them. `just packages` lists the attrs; `just

@@ -15,13 +15,11 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
-    # Dev tooling (formatter + pre-commit), wired as flake-parts modules
-    treefmt-nix = {
-      url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    git-hooks = {
-      url = "github:cachix/git-hooks.nix";
+    # ~12k pinned flakes behind one input; see the `omni` binding in `outputs`
+    # for which of this repo's dependencies come through it. Bump them all with
+    # `just update-input omniflake`.
+    omniflake = {
+      url = "github:fzakaria/omniflake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -35,45 +33,6 @@
       url = "path:./flakes/lib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Hardware
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-
-    # Registry
-    flake-registry = {
-      url = "github:NixOS/flake-registry";
-      flake = false;
-    };
-
-    # Disko
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # WSL
-    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
-    vscode-server.url = "github:nix-community/nixos-vscode-server";
-
-    # Home manager
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    plasma-manager = {
-      url = "github:nix-community/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    # ISO builder
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Impermanence
-    impermanence.url = "github:nix-community/impermanence";
 
     # Shell
     laravel-sail = {
@@ -92,14 +51,20 @@
       url = "github:janoamaral/tokyo-night-tmux";
       flake = false;
     };
-    zjstatus.url = "github:dj95/zjstatus";
+    zjstatus = {
+      url = "github:dj95/zjstatus";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # 1Password
     tmux-1password = {
       url = "github:yardnsm/tmux-1password";
       flake = false;
     };
-    one-password-shell-plugins.url = "github:1Password/shell-plugins";
+    one-password-shell-plugins = {
+      url = "github:1Password/shell-plugins";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Hyprland
     hyprland = {
@@ -118,11 +83,18 @@
       url = "path:./flakes/dms";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ambxst.url = "github:Axenide/Ambxst";
+    ambxst = {
+      url = "github:Axenide/Ambxst";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # OpenCode
     opencode = {
       url = "path:./flakes/opencode";
+      # Share this flake's omniflake so opencode's home-manager is the same
+      # copy as everything else, and no extra nodes are locked for it.
+      inputs.omniflake.follows = "omniflake";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.packages.follows = "packages";
     };
 
@@ -137,17 +109,15 @@
     zed = {
       url = "path:./flakes/zed";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
       inputs.packages.follows = "packages";
     };
 
-    # Nvim
-    neovim = {
-      url = "path:./flakes/neovim";
-      inputs.packages.follows = "packages";
-    };
+    # Nvim. `flakes/neovim` is still a maintained subflake but nothing here
+    # consumes it — 5556fbc replaced it with nixvim. Re-add as an input when
+    # something needs it again.
     nixvim = {
       url = "path:./flakes/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.packages.follows = "packages";
     };
 
@@ -161,36 +131,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Theming
-    stylix.url = "github:danth/stylix";
-    base16.url = "github:SenchoPens/base16.nix";
     tt-schemes = {
       url = "github:tinted-theming/schemes";
       flake = false;
     };
-    rofi-themes = {
-      url = "github:newmanls/rofi-themes-collection";
-      flake = false;
-    };
-    rofi-collections = {
-      url = "github:Murzchnvok/rofi-collection";
-      flake = false;
-    };
-
-    # Package sets
-    nur.url = "github:nix-community/NUR";
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel";
-    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
 
     # Community packages
-    agenix.url = "github:ryantm/agenix";
-    llm-agents = {
-      url = "github:numtide/llm-agents.nix";
-      inputs.systems.follows = "systems-linux";
-    };
-    worktrunk = {
-      url = "github:max-sixty/worktrunk";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # Private. Resolvable because `access-tokens` is wired in the base preset;
     # deliberately does not follow nixpkgs — it ships a prebuilt AppImage and
     # pins its own nixpkgs for the autoPatchelf inputs.
@@ -199,16 +145,21 @@
       url = "github:viicslen/gitura";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Left on its own nixpkgs on purpose: `ghostty.cachix.org` is a configured
+    # substituter, and its builds are keyed to the nixpkgs ghostty pins. Ours
+    # matches it today only by coincidence (one day apart), so following would
+    # turn every future ghostty into a from-source zig build. Costs 7 lock nodes.
     ghostty.url = "github:ghostty-org/ghostty";
-    lan-mouse.url = "github:feschber/lan-mouse";
-    nix-alien.url = "github:thiagokokada/nix-alien";
-    tuicr.url = "github:agavra/tuicr";
-    zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
+    lan-mouse = {
+      url = "github:feschber/lan-mouse";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    jovian = {
-      url = "github:Jovian-Experiments/Jovian-NixOS";
+    # Left on its own nixpkgs: pinning it to ours forces a cargo re-vendor, and
+    # crates.io 403s nix's curl User-Agent from here, so the rebuild dies on
+    # `cannot download download-adler2-2.0.1 from any mirror`. Costs 7 lock nodes.
+    tuicr.url = "github:agavra/tuicr";
+    worktrunk = {
+      url = "github:max-sixty/worktrunk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     jj-starship = {
@@ -226,8 +177,56 @@
     };
   };
 
-  outputs = inputs @ {flake-parts, ...}:
-    flake-parts.lib.mkFlake {inherit inputs;} {
+  outputs = inputs @ {flake-parts, ...}: let
+    # Every indexed flake under one override policy. Unification is by input
+    # *name* at every depth — the job the `follows` lines used to do, done at
+    # evaluation time instead of lock time. `systems` is the linux-only list
+    # for the same reason `systems-linux` exists at all.
+    #
+    # `home-manager` overrides to omniflake's own copy, so the graph still
+    # holds exactly one without home-manager being an input here. The self
+    # reference resolves because overrides apply to a flake's *inputs*, never
+    # to the flake being loaded — `omni.home-manager` is only forced while
+    # loading something that has a home-manager input. Same shape as
+    # omniflake's own `lib.unifyAll`.
+    omni = inputs.omniflake.lib.withOverrides (
+      inputs.omniflake.lib.foundations
+      // {
+        inherit (inputs) flake-parts;
+        inherit (omni) home-manager;
+        systems = inputs.systems-linux;
+      }
+    );
+
+    # Local input name -> omniflake attribute name; the index keys on the
+    # repository name, which is not always what this repo calls the input.
+    # Merged into `inputs` below, so every `inputs.<name>` and
+    # `pkgs.inputs.<name>` reference keeps working unchanged — and none of
+    # these appear in flake.lock any more.
+    omniInputs = builtins.mapAttrs (_: name: omni.${name}) {
+      agenix = "agenix";
+      base16 = "base16-nix";
+      disko = "disko";
+      git-hooks = "git-hooks-nix";
+      home-manager = "home-manager";
+      impermanence = "impermanence";
+      jovian = "jovian-nixos";
+      llm-agents = "llm-agents-nix";
+      nix-alien = "nix-alien";
+      nix-cachyos-kernel = "nix-cachyos-kernel";
+      nixos-generators = "nixos-generators";
+      nixos-hardware = "nixos-hardware";
+      nixos-wsl = "nixos-wsl";
+      nixpkgs-wayland = "nixpkgs-wayland";
+      nur = "nur";
+      plasma-manager = "plasma-manager";
+      stylix = "stylix";
+      treefmt-nix = "treefmt-nix";
+      vscode-server = "nixos-vscode-server";
+      zen-browser = "zen-browser-flake";
+    };
+  in
+    flake-parts.lib.mkFlake {inputs = inputs // omniInputs;} {
       # Every file under ./parts is a flake-parts module and is picked up
       # automatically — drop a new file in to add a concern, no wiring needed.
       imports =
