@@ -65,59 +65,69 @@ in {
     ];
   };
 
-  programs.niri.settings = lib.mkIf osConfig.programs.niri.enable {
-    workspaces = {
-      "browser" = {
-        name = "Browser";
-        open-on-output = "DP-1";
+  programs = {
+    niri.settings = lib.mkIf osConfig.programs.niri.enable {
+      workspaces = {
+        "browser" = {
+          name = "Browser";
+          open-on-output = "DP-1";
+        };
+        "editor" = {
+          name = "Editor";
+          open-on-output = "DP-1";
+        };
+        "communication" = {
+          name = "Communication";
+          open-on-output = "DP-2";
+        };
+        "system" = {
+          name = "System";
+          open-on-output = "DP-2";
+        };
       };
-      "editor" = {
-        name = "Editor";
-        open-on-output = "DP-1";
-      };
-      "communication" = {
-        name = "Communication";
-        open-on-output = "DP-2";
-      };
-      "system" = {
-        name = "System";
-        open-on-output = "DP-2";
+
+      window-rules = [
+        {
+          matches = [{app-id = "^vivaldi";}];
+          open-on-workspace = "Browser";
+        }
+        {
+          matches = [{app-id = "^legcord$";}];
+          open-on-workspace = "Communication";
+        }
+        {
+          # Pinned only — nothing launches these at login.
+          matches = [
+            {app-id = "^jetbrains-phpstorm$";}
+            {app-id = "^t3code$";}
+            {app-id = "(?i)^superset$";}
+          ];
+          open-on-workspace = "Editor";
+        }
+      ];
+
+      spawn-at-startup = [{sh = "${loginLayout}";}];
+
+      binds = {
+        "Mod+F1".action.spawn = ["zen-browser"];
+        "Mod+F2".action.spawn = ["phpstorm"];
+        "Mod+F3".action.spawn = ["legcode" "--split=top" "kitty" "--split=bottom"];
+        "Mod+F4".action.spawn = ["code" "--split=top" "kitty" "--split=bottom"];
       };
     };
 
-    window-rules = [
-      {
-        matches = [{app-id = "^vivaldi";}];
-        open-on-workspace = "Browser";
-      }
-      {
-        matches = [{app-id = "^legcord$";}];
-        open-on-workspace = "Communication";
-      }
-      {
-        # Pinned only — nothing launches these at login.
-        matches = [
-          {app-id = "^jetbrains-phpstorm$";}
-          {app-id = "^t3code$";}
-          {app-id = "(?i)^superset$";}
-        ];
-        open-on-workspace = "Editor";
-      }
+    dank-material-shell.niri.includes.filesToInclude = [
+      "custom"
     ];
 
-    spawn-at-startup = [{sh = "${loginLayout}";}];
-
-    binds = {
-      "Mod+F1".action.spawn = ["zen-browser"];
-      "Mod+F2".action.spawn = ["phpstorm"];
-      "Mod+F3".action.spawn = ["legcode" "--split=top" "kitty" "--split=bottom"];
-      "Mod+F4".action.spawn = ["code" "--split=top" "kitty" "--split=bottom"];
+    opencode.settings.provider.ollama = {
+      name = "Ollama";
+      npm = "@ai-sdk/openai-compatible";
+      models."qwen3.5".name = "Qwen 3.5";
+      options.baseUrl = "http://localhost:11434/v1";
     };
   };
 
-  programs.dank-material-shell.niri.includes.filesToInclude = [
-    "custom"
-  ];
 
   services = {
     tailscale-systray = {
