@@ -103,7 +103,8 @@ update-skills *ARGS:
 # List the vendored skills with the repo and ref each came from
 skills:
   @gh skill list --dir {{SKILLS_DIR}} --json skillName,sourceURL,version \
-    --jq '.[] | select(.sourceURL != "") | "\(.skillName)\t\(.sourceURL)@\(.version)"'
+    --jq '["SKILL","REPO","REF"], (.[] | select(.sourceURL != "") | [.skillName, (.sourceURL | sub("https://github.com/"; "")), .version]) | @tsv' \
+    | column -t -s $'\t'
 
 # List the local package attrs in flakes/packages (as `just bump` takes them)
 packages:
