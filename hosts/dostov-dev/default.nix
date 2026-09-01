@@ -93,6 +93,17 @@ with lib; {
         AllowUsers = ["neoscode"];
       };
     };
+
+    ollama = {
+      enable = true;
+      package = pkgs.ollama-cuda;
+      loadModels = ["qwen3.5:9b"];
+      environmentVariables = {
+        OLLAMA_FLASH_ATTENTION = "1";
+        OLLAMA_CONTEXT_LENGTH = "8192";
+        OLLAMA_KV_CACHE_TYPE = "q8_0";
+      };
+    };
   };
 
   programs = {
