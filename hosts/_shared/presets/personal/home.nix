@@ -23,6 +23,17 @@ with lib; {
       wrap_lines = false;
       line_numbers = true;
       transparent_background = false;
+
+      # Defaults are already vim-ish (j/k, g/G, d/u, [/]); this fills the gaps.
+      # Binding a key takes it from whatever held it as a default, so
+      # toggleLineNumbers needs a new home once `l` scrolls right.
+      keybindings = {
+        "hunk.review.scrollCodeLeft" = ["h" "left" "shift+left"];
+        "hunk.review.scrollCodeRight" = ["l" "right" "shift+right"];
+        "hunk.view.toggleLineNumbers" = "ctrl+l";
+        "hunk.review.pageDown" = ["ctrl+f" "pagedown" "space"];
+        "hunk.review.pageUp" = ["ctrl+b" "pageup" "shift+space"];
+      };
     };
   };
 
