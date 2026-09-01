@@ -2,7 +2,6 @@
   lib,
   pkgs,
   inputs,
-  nixosModules,
   users,
   ...
 }:
@@ -53,7 +52,6 @@ with lib; {
   };
 
   services = {
-    # This host runs niri; "gnome" was never a registered session here.
     displayManager.defaultSession = "niri";
 
     # Disable the built-in keyboard
