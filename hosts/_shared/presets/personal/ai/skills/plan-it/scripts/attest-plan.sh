@@ -73,24 +73,6 @@ case "$ACTION" in
     fi
     ;;
   store)
-    # v0.2.0: write the browser-verifiable content seal into the plan-data JSON
-    # BEFORE hashing, so the whole-file attestation covers the sealed file. Best
-    # effort: if Python or the helper is missing, fall back to whole-file-only
-    # attestation (pre-0.2.0 behavior) rather than failing the lock.
-    # Probe-execute each candidate so a non-working shim (e.g. the Windows
-    # Store python3 alias on Git Bash) is rejected in favor of a real one.
-    PY=""
-    for cand in python3 python; do
-      if command -v "$cand" >/dev/null 2>&1 && "$cand" -c "import sys" >/dev/null 2>&1; then
-        PY="$cand"; break
-      fi
-    done
-    HELPER="$(dirname "$0")/plan-hook.py"
-    if [ -n "$PY" ] && [ -f "$HELPER" ]; then
-      "$PY" "$HELPER" seal || echo "[plan-it] content-seal step skipped; continuing with whole-file attestation" >&2
-    else
-      echo "[plan-it] no working Python found for content-seal; whole-file attestation only" >&2
-    fi
     HASH=$(compute_hash "$PLAN_PATH")
     if [ -z "$HASH" ]; then
       exit 3

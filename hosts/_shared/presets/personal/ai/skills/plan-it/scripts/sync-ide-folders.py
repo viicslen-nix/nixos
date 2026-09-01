@@ -34,6 +34,7 @@ ADAPTERS = [
     ".gemini/skills/plan-it",
     ".kiro/skills/plan-it",
     ".pi/skills/plan-it",
+    "clawhub-upload",
     # canonical English skill bundle also gets the same scripts + templates
     "skills/plan-it",
 ]

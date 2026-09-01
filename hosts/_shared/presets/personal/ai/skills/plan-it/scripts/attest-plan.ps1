@@ -63,25 +63,6 @@ if ($Clear) {
     return
 }
 
-# v0.2.0: write the browser-verifiable content seal into the plan-data JSON
-# BEFORE hashing, so the whole-file attestation covers the sealed file. Best
-# effort: missing Python falls back to whole-file-only attestation. Probe-execute
-# each candidate so the Windows Store python3 alias is rejected for a real one.
-$Py = $null
-foreach ($cand in @("python", "python3")) {
-    $c = Get-Command $cand -ErrorAction SilentlyContinue
-    if ($c) {
-        & $c.Source -c "import sys" 2>$null
-        if ($LASTEXITCODE -eq 0) { $Py = $c.Source; break }
-    }
-}
-$Helper = Join-Path $PSScriptRoot "plan-hook.py"
-if ($Py -and (Test-Path $Helper)) {
-    try { & $Py $Helper seal } catch { Write-Host "[plan-it] content-seal step skipped; continuing with whole-file attestation" }
-} else {
-    Write-Host "[plan-it] no working Python found for content-seal; whole-file attestation only"
-}
-
 $Hash = (Get-FileHash -Path $PlanPath -Algorithm SHA256).Hash.ToLower()
 $AttestDir = Split-Path -Parent $AttestPath
 if ($AttestDir -and -not (Test-Path $AttestDir)) {

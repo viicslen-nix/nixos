@@ -18,11 +18,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# Parity-locked file set (15 files).
+# Parity-locked file set (16 files for v0.1.0).
 # Language variants (ar/de/es/zh/zht) removed in v0.1.0 because the bodies
 # were not actually translated. They return in v0.2.0 with real translations.
 PARITY_FILES = [
-    # 12 SKILL.md files (1 canonical + 11 IDE adapters)
+    # 13 SKILL.md files (1 canonical + 11 IDE adapters + clawhub bundle)
     "skills/plan-it/SKILL.md",
     ".codex/skills/plan-it/SKILL.md",
     ".cursor/skills/plan-it/SKILL.md",
@@ -35,6 +35,7 @@ PARITY_FILES = [
     ".gemini/skills/plan-it/SKILL.md",
     ".kiro/skills/plan-it/SKILL.md",
     ".pi/skills/plan-it/SKILL.md",
+    "clawhub-upload/SKILL.md",
     # 3 manifests
     ".claude-plugin/plugin.json",
     ".claude-plugin/marketplace.json",
