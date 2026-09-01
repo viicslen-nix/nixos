@@ -123,6 +123,10 @@ just update-main
 just update-input nixpkgs
 just update-subflake niri
 
+# Search the omniflake index for a flake to add to `omniInputs` in flake.nix
+# (no argument lists all ~12k). `just update-input omniflake` bumps them all.
+just omniflake-search sops
+
 # List the local packages in flakes/packages
 just packages
 
