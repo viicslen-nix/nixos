@@ -30,6 +30,10 @@ let
     "skills/productivity/grilling"
     "skills/productivity/handoff"
     "skills/productivity/wait-what"
+    # Upstream renamed this from writing-great-skills and split its GLOSSARY.md
+    # into SKILL-MECHANICS.md (mattpocock/skills 1fc6573e), so the key here
+    # changed with it.
+    "skills/productivity/writing-for-agents"
   ];
 
   # The same upstream skills, with the local edits in ./skill-patches rewritten
