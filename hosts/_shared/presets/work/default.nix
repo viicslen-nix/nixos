@@ -113,6 +113,9 @@ with lib; {
         phpWithExtensions.packages.composer
         nodejs_22
         bun
+        # vite+ ("The Unified Toolchain for the Web"); binary is `vp`.
+        # Not in nixpkgs — reached through omniflake's index.
+        pkgs.inputs.nix-vite-plus.default
         go
         gosec
         pkg-config

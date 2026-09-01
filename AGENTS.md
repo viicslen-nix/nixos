@@ -106,13 +106,13 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **Update recipes.** `just update` updates every subflake *and* all root
   inputs; `just update-main` = root inputs only; `just update-input <x>` /
   `just update-subflake <x>` for one.
-- **omniflake.** 20 dependencies are no longer flake inputs: they are pins in
+- **omniflake.** 21 dependencies are no longer flake inputs: they are pins in
   [omniflake](https://github.com/fzakaria/omniflake)'s `index.json`, fetched
   lazily at evaluation. The mapping (local name → index attribute) is the
   `omniInputs` set in `flake.nix`; it is merged into `inputs` before
   `mkFlake`, so `inputs.<name>` and `pkgs.inputs.<name>` are unchanged
   everywhere else and `nix.registry` still lists them (omniflake's loader sets
-  `_type = "flake"`). Consequences: `just update-input omniflake` bumps all 20
+  `_type = "flake"`). Consequences: `just update-input omniflake` bumps all 21
   at once — home-manager included, so an HM bump is now an omniflake bump —
   and `just update-input disko` no longer resolves; `nix flake metadata` will
   not show them; the index keys on the *repository* name, so

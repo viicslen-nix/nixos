@@ -214,6 +214,7 @@
       llm-agents = "llm-agents-nix";
       nix-alien = "nix-alien";
       nix-cachyos-kernel = "nix-cachyos-kernel";
+      nix-vite-plus = "nix-vite-plus";
       nixos-generators = "nixos-generators";
       nixos-hardware = "nixos-hardware";
       nixos-wsl = "nixos-wsl";
