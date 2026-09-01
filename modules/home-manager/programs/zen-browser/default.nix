@@ -54,7 +54,7 @@
         inputs.zen-browser.homeModules.beta
       ];
 
-      options.modules.${namespace}.${name}.enable = mkEnableOption (mdDoc "zen-browser");
+      options.modules.${namespace}.${name}.enable = mkEnabledOption (mdDoc "zen-browser");
 
       config = mkIf cfg.enable (mkMerge [
         {
