@@ -323,11 +323,21 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **A remote (HTTP) MCP backend takes its credential from a header, not a
   wrapper.** `gateway.yaml` is generated into `/nix/store`, so a literal token
   in `mcps.<name>.headers` is world-readable. Instead write
-  `headers."X-Foo" = "\''${VAR}"` and point `gateway.settings.env_files` at an
-  agenix **dotenv** secret (`VAR=…`); mcp-gateway loads `env_files` before it
-  expands `''${VAR}`/`''${VAR:-default}` in `headers` and `env` (nothing else —
-  `http_url` is *not* expanded). That is how `google_stitch` gets its
-  `X-Goog-Api-Key`.
+  `headers."X-Foo" = "\''${VAR}"` — mcp-gateway expands
+  `''${VAR}`/`''${VAR:-default}` in `headers` and `env` (nothing else;
+  `http_url` is *not* expanded) — and put `VAR=…` in an agenix **dotenv**
+  secret fed to the unit:
+  `systemd.user.services.mcp-gateway.Service.EnvironmentFile = "%t/agenix/<name>";`.
+  That is how `google_stitch` gets its `X-Goog-Api-Key`.
+  **Not `gateway.settings.env_files`**: home-manager's agenix reports
+  `age.secrets.<n>.path` as the *literal* `''${XDG_RUNTIME_DIR}/agenix/<n>` for a
+  shell to expand, and the gateway's loader expands only `~`, so it skips the
+  unresolved path in silence. The variable then stays unset and `expand_string`,
+  having no default, substitutes the **empty string** — the backend still starts
+  and still lists its tools, because `initialize` and `tools/list` are usually
+  ungated, and only `tools/call` comes back 401. systemd's `%t` is
+  `XDG_RUNTIME_DIR`, and an `EnvironmentFile` without a `-` prefix makes a
+  missing secret fail the unit instead of serving an empty credential.
 - **Private GitHub needs the token on two paths, in two formats.** Flake
   *inputs* are fetched by the **client** from `access-tokens` in
   `/etc/nix/nix.conf`; `pkgs.fetchurl` in a fixed-output derivation reads
