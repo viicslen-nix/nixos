@@ -1,4 +1,4 @@
-{ config, inputs, ... }:
+{ inputs, ... }:
 let
   inherit (inputs.self.lib.skills)
     mkMarkdownAttrSet
@@ -46,10 +46,19 @@ let
   };
 in
 {
-  # Dotenv file (`STITCH_API_KEY=…`). mcp-gateway loads its `env_files` before
-  # it expands ${…} in backend headers, so the key never lands in the
-  # world-readable gateway.yaml in /nix/store.
+  # Dotenv file (`STITCH_API_KEY=…`) feeding the ${…} in the google_stitch
+  # backend's header, so the key never lands in the world-readable gateway.yaml
+  # in /nix/store.
+  #
+  # Not the gateway's own `env_files`: home-manager's agenix reports
+  # `.path` as the *literal* `${XDG_RUNTIME_DIR}/agenix/<name>` for a shell to
+  # expand, and the gateway's loader expands only `~`. It would skip the
+  # unresolved path, leave the variable unset, and — `expand_string` having no
+  # default — send an **empty** header, which Stitch answers with a 401. systemd
+  # expands `%t` to XDG_RUNTIME_DIR itself, and refuses to start the unit if the
+  # file is missing, so a failed read is loud instead of silent.
   age.secrets.stitch-api-key.file = ../../../../../secrets/stitch/api-key.age;
+  systemd.user.services.mcp-gateway.Service.EnvironmentFile = "%t/agenix/stitch-api-key";
 
   modules.programs.claude-code = {
     marketplaces = {
@@ -73,7 +82,6 @@ in
   modules.programs.ai = {
     enable = true;
     gateway.enable = true;
-    gateway.settings.env_files = [config.age.secrets.stitch-api-key.path];
     superset.enable = true;
     mempalace.enable = true;
     coderabbit.enable = true;
