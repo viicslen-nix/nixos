@@ -64,7 +64,10 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **parts/** — the root flake is a [flake-parts](https://flake.parts) flake.
   `flake.nix` only declares inputs; every `.nix` file under `parts/` is a
   flake-parts module and is auto-imported (`systems`, `lib`, `overlays`,
-  `dev-shells`, `modules`, `hosts`). Add a concern by dropping in a file.
+  `dev-shells`, `modules`, `hosts`) via `vlib.umport { path = ./parts;
+  recursive = false; }`. Add a concern by dropping in a file — but note the
+  non-recursive call means a *subdirectory* of `parts/` is imported as a whole
+  (flake-parts resolves its `default.nix`), not walked file by file.
 - **module discovery** — `parts/modules.nix` collects every `default.nix` under
   `modules/{nixos,home-manager}` at any depth. A path component starting with
   `_` is skipped, which is how non-module helpers opt out (e.g.
@@ -76,11 +79,13 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `defaultSystems`, `genSystems`, `pkgsFor`, and the namespaced helper sets
   `options` (`mkEnabledOption`, `mkDefaultAttrs`), `discovery` (`discover`,
   `mkTree`, `assertUnique`), `overlays` (`mkFlakeInputsOverlay`,
-  `mkChannelOverlay`), `persistence`, `skills`. Reachable in modules as
+  `mkChannelOverlay`), `omni` (`mkInputs`), `persistence`,
+  `skills`. Reachable in modules as
   `inputs.self.lib`; from a `parts/` module use `inputs.viicslen-lib.lib`
-  instead, since `parts/lib.nix` is what defines `self.lib`. Its `hosts.nix`,
-  `modules.nix` and `umport.nix` have **no callers in this repo** — `parts/`
-  and `discovery.nix` do that work now.
+  instead, since `parts/lib.nix` is what defines `self.lib`. Its `hosts.nix` and
+  `modules.nix` have **no callers in this repo** — `parts/` and `discovery.nix`
+  do that work now. `umport` has exactly one: `flake.nix` imports `parts/` with
+  it (`recursive = false`).
 - **overlays** — `overlays/default.nix` exposes `pkgs.unstable`, `pkgs.stable`,
   `pkgs.local`, `pkgs.inputs.<flake>`, and package `modifications`.
 - **modules** — everything under `modules/nixos` and `modules/home-manager` is
@@ -108,9 +113,13 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `just update-subflake <x>` for one.
 - **omniflake.** 21 dependencies are no longer flake inputs: they are pins in
   [omniflake](https://github.com/fzakaria/omniflake)'s `index.json`, fetched
-  lazily at evaluation. The mapping (local name → index attribute) is the
-  `omniInputs` set in `flake.nix`; it is merged into `inputs` before
-  `mkFlake`, so `inputs.<name>` and `pkgs.inputs.<name>` are unchanged
+  lazily at evaluation. The wiring lives in `flakes/lib/omni.nix`
+  (`inputs.viicslen-lib.lib.omni`), which exports exactly one function:
+  `mkInputs` takes the mapping, the override policy and `ownNixpkgs`, builds
+  both loaders internally and resolves the lot. So `flake.nix` holds only data —
+  the override policy and the local name → index attribute `mapping` — and no
+  loader plumbing; keep it that way. The result is merged into
+  `inputs` before `mkFlake`, so `inputs.<name>` and `pkgs.inputs.<name>` are unchanged
   everywhere else and `nix.registry` still lists them (omniflake's loader sets
   `_type = "flake"`). Consequences: `just update-input omniflake` bumps all 21
   at once — home-manager included, so an HM bump is now an omniflake bump —
@@ -121,20 +130,42 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `llm-agents-nix` and `zen-browser` is `zen-browser-flake`. `stylix` keeps its
   name but the index holds `nix-community/stylix`, the repo `danth/stylix` was
   transferred to — same project, not a fork. Unification is by
-  input *name* at every depth via `lib.withOverrides`, which is where the old
+  input *name* at every depth via `omni.mkInputs`, which is where the old
   `follows` lines went — including `systems = systems-linux`, so the
   darwin-stripping workaround still reaches `llm-agents`. An input stays real
   when something must `follows` it (`nixpkgs`, `systems-linux`), when it
   bootstraps `mkFlake` (`flake-parts`), when it is `flake = false`
   (the index holds flakes only), or when it simply is not indexed.
 - **home-manager comes from omniflake, and unifies by self-reference.** The
-  override set passes `inherit (omni) home-manager`, so plasma-manager,
+  override policy is a function of the loader it builds and passes
+  `inherit (flakes) home-manager`, so plasma-manager,
   agenix and zen-browser all reach the one copy without home-manager being an
   input. It terminates because overrides apply to a flake's *inputs*, never to
   the flake being loaded — the same shape as omniflake's own `lib.unifyAll`.
   This was only possible after dropping the dead `home-manager` input from
   `flakes/zed` (declared, never read), which was the last `follows` line
   pointing at it. Verified: one rev across ours/plasma/agenix/zen.
+- **Unifying nixpkgs silently voids an upstream's binary cache.** `foundations`
+  replaces nixpkgs in every indexed subflake at every depth, so a flake whose
+  author publishes prebuilt artifacts no longer evaluates to the paths that
+  cache holds — the substituter is queried, misses, and nix builds from source
+  with no diagnostic beyond a long build. `omni.mkInputs`'s `ownNixpkgs`
+  argument is the escape hatch: those index attributes resolve through a
+  second loader with nixpkgs dropped from the override set, so they keep
+  their author's pin — and still share the one home-manager. Declare it on
+  the matching cache entry in
+  `caches.nix`, not in `flake.nix` — the routing is derived. `llm-agents` is
+  listed there because its `codex` is a
+  `rustPlatform` build of codex-rs whose own `package.nix` notes late-stage
+  rustc peaking at **~12 GiB** — it OOM'd this host once — and numtide
+  publishes it to `cache.numtide.com`, already a substituter with its key
+  already trusted. Diagnose by comparing store paths, never by reading
+  nix.conf: eval the package both ways
+  (`nix eval github:<owner>/<repo>/<rev>#packages.x86_64-linux.<pkg>.outPath`
+  vs the same attr through a host config) and check the upstream one with
+  `nix path-info --store <cache> <path>`. Unpinning costs a second copy of
+  nixpkgs in the eval and in that package's runtime closure, so it only pays
+  when the upstream cache is actually configured — otherwise it buys nothing.
 - **Removing an `inputs.<x>.nixpkgs.follows` does not restore the old pin.**
   `nix flake lock` re-resolves that input from its `original` — a floating
   branch or channel URL — so dropping a follows moves the dependency
@@ -186,10 +217,34 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `tag = "v${version}"` (or `"v${finalAttrs.version}"`), never a literal
   `rev = "v3.2.1"` — with a literal rev, nix-update rewrites `version` only, so
   the package silently keeps building the old source at the old hash.
-- **Binary caches.** Substituters live in the `base` preset plus the `desktop`
-  preset. The bleeding-edge `nixpkgs-wayland` overlay and its cache are scoped to
-  `desktop` (graphical hosts only) — don't move them back into `base`, or
-  WSL/headless hosts recompile the whole Wayland closure from source.
+- **Binary caches are declared once, in `caches.nix`.** One entry per cache
+  (`url`, `key`, `scope`, optional `ownNixpkgs`); the `base` and `desktop`
+  presets call `caches.substituters <scope>` / `caches.trustedKeys <scope>`, so
+  add a cache there, never in a preset. `scope = "desktop"` is what keeps the
+  bleeding-edge `nixpkgs-wayland` cache and its overlay off headless/WSL hosts —
+  don't promote one to `"base"` or they recompile the whole Wayland closure.
+  `ownNixpkgs` lists the omniflake index attributes that cache serves, and
+  `flake.nix` passes those to `omni.mkInputs` as `ownNixpkgs`, so declaring the
+  cache is the only step. Caches from a *subflake's* own `nixConfig` (niri) are
+  separate and still appear in the merged `nix.conf`.
+- **A flake's `nixConfig` cannot be computed.** Both the set and every value
+  must be literal: a `let … in` there fails with `expected a set but got a
+  thunk`, and even a literal set with a computed value fails with `flake
+  configuration setting 'extra-substituters' is a thunk`. So the root
+  `flake.nix` cannot import `caches.nix` for its `nixConfig` — that block is a
+  hand-kept copy, and `caches.nix` guards it by `readFile`ing `./flake.nix` and
+  failing the eval with the missing URLs (plain text, no IFD, no cycle). Two
+  further limits: it is *generated* by `just sync-caches` (which imports
+  `caches.nix` with `checkDrift = false`, or the assertion would block the
+  recipe that clears it) and spliced between the `# BEGIN/END generated`
+  markers, so edit `caches.nix` and re-run rather than touching the block;
+  `nixConfig` is also *ignored* unless the caller passes
+  `--accept-flake-config` (warns `ignoring untrusted flake configuration
+  setting` even for a user in `trusted-users`, and `accept-flake-config`
+  defaults to false), and turning that on globally would let any flake you
+  build add its own substituters *and* trusted keys — so don't. The presets are
+  what actually configure these hosts; the flake `nixConfig` is only for
+  building this flake on a machine that has not been rebuilt yet.
 - **`useGlobalPkgs`.** `home-manager.useGlobalPkgs = true`, so any hm-level
   `nixpkgs.overlays` / `nixpkgs.config` is **ignored at runtime** and only emits
   a deprecation warning. Apply overlays at the system level, not in hm modules.

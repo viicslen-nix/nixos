@@ -99,6 +99,23 @@ update-skills *ARGS:
   gh skill update --all --dir {{SKILLS_DIR}} {{ARGS}}
   git add {{SKILLS_DIR}}
 
+# Regenerate flake.nix's nixConfig block from caches.nix. Needed because nix
+# rejects a computed flake config value — the list and its strings must both be
+# syntactic — so this is the one place the table cannot simply be imported.
+sync-caches:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  block=$(nix eval --impure --raw --expr \
+    'let lib = (builtins.getFlake "nixpkgs").lib;
+     in (import ./caches.nix { inherit lib; checkDrift = false; }).nixConfigBlock')
+  awk -v block="$block" '
+    /# BEGIN generated from caches.nix/ { print; printf "%s\n", block; skip = 1; next }
+    /# END generated/                   { skip = 0 }
+    !skip                               { print }
+  ' flake.nix > flake.nix.new
+  mv flake.nix.new flake.nix
+  echo "flake.nix nixConfig regenerated from caches.nix"
+
 # Hand-written skills have no origin, and are omitted
 # List the vendored skills with the repo and ref each came from
 skills:

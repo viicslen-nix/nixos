@@ -15,8 +15,8 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
-    # ~12k pinned flakes behind one input; see the `omni` binding in `outputs`
-    # for which of this repo's dependencies come through it. Bump them all with
+    # ~12k pinned flakes behind one input; see the `omniInputs` mapping in
+    # `outputs` for which of this repo's dependencies come through it. Bump with
     # `just update-input omniflake`.
     omniflake = {
       url = "github:fzakaria/omniflake";
@@ -178,61 +178,97 @@
   };
 
   outputs = inputs @ {flake-parts, ...}: let
-    # Every indexed flake under one override policy. Unification is by input
-    # *name* at every depth — the job the `follows` lines used to do, done at
-    # evaluation time instead of lock time. `systems` is the linux-only list
-    # for the same reason `systems-linux` exists at all.
-    #
-    # `home-manager` overrides to omniflake's own copy, so the graph still
-    # holds exactly one without home-manager being an input here. The self
-    # reference resolves because overrides apply to a flake's *inputs*, never
-    # to the flake being loaded — `omni.home-manager` is only forced while
-    # loading something that has a home-manager input. Same shape as
-    # omniflake's own `lib.unifyAll`.
-    omni = inputs.omniflake.lib.withOverrides (
-      inputs.omniflake.lib.foundations
-      // {
-        inherit (inputs) flake-parts;
-        inherit (omni) home-manager;
-        systems = inputs.systems-linux;
-      }
-    );
+    inherit (inputs.nixpkgs) lib;
 
-    # Local input name -> omniflake attribute name; the index keys on the
-    # repository name, which is not always what this repo calls the input.
-    # Merged into `inputs` below, so every `inputs.<name>` and
-    # `pkgs.inputs.<name>` reference keeps working unchanged — and none of
-    # these appear in flake.lock any more.
-    omniInputs = builtins.mapAttrs (_: name: omni.${name}) {
-      agenix = "agenix";
-      base16 = "base16-nix";
-      disko = "disko";
-      git-hooks = "git-hooks-nix";
-      home-manager = "home-manager";
-      impermanence = "impermanence";
-      jovian = "jovian-nixos";
-      llm-agents = "llm-agents-nix";
-      nix-alien = "nix-alien";
-      nix-cachyos-kernel = "nix-cachyos-kernel";
-      nix-vite-plus = "nix-vite-plus";
-      nixos-generators = "nixos-generators";
-      nixos-hardware = "nixos-hardware";
-      nixos-wsl = "nixos-wsl";
-      nixpkgs-wayland = "nixpkgs-wayland";
-      nur = "nur";
-      plasma-manager = "plasma-manager";
-      stylix = "stylix";
-      treefmt-nix = "treefmt-nix";
-      vscode-server = "nixos-vscode-server";
-      zen-browser = "zen-browser-flake";
+    caches = import ./caches.nix {inherit lib;};
+
+    # The 21 dependencies that come from omniflake's index rather than
+    # flake.lock, resolved into `inputs` before `mkFlake`. The plumbing lives in
+    # flakes/lib/omni.nix; what stays here is the policy and the list.
+    #
+    # `overrides` takes the loader so `home-manager` can unify to the loader's
+    # own copy — that self-reference is what keeps exactly one home-manager in
+    # the graph without home-manager being an input. `systems` is the linux-only
+    # list for the same reason `systems-linux` exists at all. `ownNixpkgs` comes
+    # from caches.nix: declaring a cache there is what routes its flakes off the
+    # unified nixpkgs, so nothing has to name them a second time.
+    #
+    # `mapping` is local input name -> index attribute; the two sides differ
+    # because the index keys on the *repository* name. Find the right-hand side
+    # with `just omniflake-search <term>`.
+    omniInputs = inputs.viicslen-lib.lib.omni.mkInputs {
+      inherit (inputs) omniflake;
+      inherit (caches) ownNixpkgs;
+
+      overrides = flakes: {
+        inherit (inputs) flake-parts;
+        inherit (flakes) home-manager;
+        systems = inputs.systems-linux;
+      };
+
+      mapping = {
+        agenix = "agenix";
+        base16 = "base16-nix";
+        disko = "disko";
+        git-hooks = "git-hooks-nix";
+        home-manager = "home-manager";
+        impermanence = "impermanence";
+        jovian = "jovian-nixos";
+        llm-agents = "llm-agents-nix";
+        nix-alien = "nix-alien";
+        nix-cachyos-kernel = "nix-cachyos-kernel";
+        nix-vite-plus = "nix-vite-plus";
+        nixos-generators = "nixos-generators";
+        nixos-hardware = "nixos-hardware";
+        nixos-wsl = "nixos-wsl";
+        nixpkgs-wayland = "nixpkgs-wayland";
+        nur = "nur";
+        plasma-manager = "plasma-manager";
+        stylix = "stylix";
+        treefmt-nix = "treefmt-nix";
+        vscode-server = "nixos-vscode-server";
+        zen-browser = "zen-browser-flake";
+      };
     };
   in
     flake-parts.lib.mkFlake {inputs = inputs // omniInputs;} {
       # Every file under ./parts is a flake-parts module and is picked up
       # automatically — drop a new file in to add a concern, no wiring needed.
-      imports =
-        map (name: ./parts + "/${name}")
-        (builtins.filter (name: builtins.match ".*\\.nix" name != null)
-          (builtins.attrNames (builtins.readDir ./parts)));
+      # Non-recursive on purpose: parts/ is flat, and a nested directory should
+      # be imported by the part that owns it, not silently by the flake root.
+      imports = inputs.viicslen-lib.lib.umport {
+        path = ./parts;
+        recursive = false;
+      };
     };
+
+  # Generated from caches.nix by `just sync-caches` — do not edit by hand.
+  # nix cannot evaluate this: a flake config value must be a *syntactic* list of
+  # *syntactic* strings (Value::isTrivial forces only ExprAttrs/ExprLambda/
+  # ExprList, so `map …`/`import …` stay thunks, and the list branch then
+  # requires every element to already be nString). caches.nix asserts these
+  # match and tells you to re-run the recipe when they don't.
+  # Only takes effect with `--accept-flake-config`; the presets are what
+  # configure the hosts here. This is for building the flake on a machine that
+  # has not been rebuilt yet.
+  nixConfig = {
+    # BEGIN generated from caches.nix
+    extra-substituters = [
+      "https://ghostty.cachix.org"
+      "https://attic.xuyh0120.win/lantian"
+      "https://nix-community.cachix.org"
+      "https://cache.nixos-cuda.org"
+      "https://nixpkgs-wayland.cachix.org"
+      "https://cache.numtide.com"
+    ];
+    extra-trusted-public-keys = [
+      "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
+      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+      "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
+      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+    ];
+    # END generated
+  };
 }
