@@ -12,6 +12,8 @@
 with lib; let
   flakeLocation = "/etc/nixos";
 
+  caches = import ../../../../caches.nix {inherit lib;};
+
   # Shaped from the agenix secret at activation; tmpfs, so neither persists.
   nixAccessTokens = "/run/nix-access-tokens";
   nixDaemonEnv = "/run/nix-daemon-env";
@@ -320,19 +322,11 @@ in {
         # Deduplicate and optimize nix store
         auto-optimise-store = true;
 
-        # Use community binary cache
-        substituters = [
-          "https://nix-community.cachix.org"
-          "https://attic.xuyh0120.win/lantian"
-          "https://cache.numtide.com"
-          "https://cache.nixos-cuda.org"
-        ];
-        trusted-public-keys = [
-          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-          "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
-          "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
-          "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
-        ];
+        # Extra binary caches. The table lives in caches.nix at the repo root —
+        # add one there, not here, so the flake's own nixConfig and the
+        # own-nixpkgs routing stay in step with it.
+        substituters = caches.substituters "base";
+        trusted-public-keys = caches.trustedKeys "base";
 
         # Limit the number of parallel jobs to avoid OOM
         # max-jobs = lib.mkDefault 16;

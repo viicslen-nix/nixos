@@ -8,6 +8,8 @@
   ...
 }:
 with lib; let
+  caches = import ../../../../caches.nix {inherit lib;};
+
   fonts = with pkgs; [
     noto-fonts
     noto-fonts-cjk-sans
@@ -112,16 +114,11 @@ in {
     nixpkgs.overlays = [inputs.nixpkgs-wayland.overlay];
 
     # Binary caches so the overlay and the ghostty flake substitute instead of
-    # building from source.
+    # building from source. Declared in caches.nix at the repo root with
+    # scope = "desktop", which is what keeps them off headless/WSL hosts.
     nix.settings = {
-      substituters = [
-        "https://nixpkgs-wayland.cachix.org"
-        "https://ghostty.cachix.org"
-      ];
-      trusted-public-keys = [
-        "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
-        "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
-      ];
+      substituters = caches.substituters "desktop";
+      trusted-public-keys = caches.trustedKeys "desktop";
     };
 
     environment = {
