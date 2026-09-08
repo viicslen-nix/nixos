@@ -23,17 +23,14 @@ in {
     inputs.nur.modules.nixos.default
     inputs.agenix.nixosModules.default
 
-    # Universal, always-on modules. `impermanence` is imported for the options
-    # the persistence helpers read; it stays disabled unless a host enables it.
+    # Keep `impermanence`: it declares the options the persistence helpers read.
     nixosModules.core.localization
     nixosModules.core.network
     nixosModules.core.sound
     nixosModules.services.impermanence
   ];
 
-  # Marker set by the `desktop` preset so other presets (work, personal) can
-  # gate GUI-only bits to graphical hosts. Declared here in `base` because it is
-  # always imported, so reading it never hits an undeclared option.
+  # Declare it here, not in `desktop`: only `base` is always imported.
   options.modules.presets.desktop.enable =
     mkEnableOption "graphical desktop host (set by the desktop preset)";
 
@@ -71,12 +68,7 @@ in {
         enable = true;
         nix-direnv.enable = true;
 
-        # nix-direnv's "direnv: export +AR +AS +..." line is a single ~1.1KB
-        # string listing every variable the dev shell touched. On a 100-column
-        # terminal it wraps to a dozen rows, and the prompt hook reprints it on
-        # every cd, so `clear` leaves the prompt stranded mid-screen. Keep the
-        # short status lines that say direnv is doing something; drop the dump.
-        # `programs.direnv.silent = true` would suppress all of it instead.
+        # Not `silent = true` — that would drop the useful status lines too.
         settings.global.log_filter = "^(loading|using|nix-direnv)";
       };
 
@@ -105,9 +97,7 @@ in {
 
       # Universal home-manager config, applied to every user on every host.
       sharedModules = [
-        # Always available: `defaults`/`autostart` declare options other modules
-        # read, and `impermanence` supplies the options the persistence helpers
-        # consult (it stays disabled unless a host turns it on).
+        # Keep all three: they declare options other modules read, even disabled.
         homeModules.functionality.defaults
         homeModules.functionality.autostart
         homeModules.functionality.impermanence
@@ -178,9 +168,7 @@ in {
           lazygit
           busybox
 
-          # environment.shells advertises /run/current-system/sw/bin/nu, and
-          # editors (PhpStorm, Cursor) cache that absolute path; the account
-          # shell is zsh now, so nushell has to be installed explicitly.
+          # Keep explicit: environment.shells advertises nu, but the shell is zsh.
           nushell
 
           pkgs.inputs.packages.scripts.system-update
@@ -238,30 +226,17 @@ in {
       };
     };
 
-    # Every secret here is encrypted to one portable key the user carries
-    # (~/.ssh/agenix), never to per-host SSH host keys. That is what keeps a new
-    # host zero-setup: drop the key in and every secret decrypts, with no
-    # re-encryption round trip to add the machine as a recipient.
+    # Encrypt every secret to the portable ~/.ssh/agenix key, never to host keys.
     age = {
       identityPaths =
         map (name: "/home/${name}/.ssh/agenix") (attrNames users)
         ++ ["/etc/ssh/ssh_host_ed25519_key"];
 
-      # Just the PAT, no trailing newline and no surrounding syntax. Nix needs
-      # it in two different file formats; both are shaped from this one below,
-      # so a rotation is `gh auth token | age …` and cannot go half-applied.
+      # Bare PAT only — no trailing newline, no surrounding syntax.
       secrets.nix-token.file = ../../../../secrets/github/nix-token.age;
     };
 
-    # The shaped files cannot be `writeText`ed: /nix/store is world-readable
-    # (drwxrwxr-t) and store paths are substitutable, so a token baked into a
-    # derivation leaks to every local user and to any cache the closure reaches.
-    # Only the *script* is declarative; the token joins it at activation.
-    #
-    # `deps` on agenix's empty marker script, and `if` rather than an early
-    # `exit` — activation snippets are concatenated into one script, so exiting
-    # here would skip every snippet after it. Write-then-rename so a reader
-    # never catches a half-written token.
+    # Never `writeText` the token; keep `deps`/`if` — an `exit` skips later snippets.
     system.activationScripts.nixTokenFiles = {
       deps = ["agenix"];
       text = ''
@@ -307,8 +282,7 @@ in {
       # Making legacy nix commands consistent as well, awesome!
       nixPath = ["/etc/nix/path"];
 
-      # `!include` is the tolerant form — nix skips the file if it is not there
-      # yet (first boot, before agenix has run) instead of refusing to start.
+      # Keep `!include`, not `include` — the file is absent until agenix runs.
       extraOptions = ''
         !include ${nixAccessTokens}
       '';
@@ -322,9 +296,7 @@ in {
         # Deduplicate and optimize nix store
         auto-optimise-store = true;
 
-        # Extra binary caches. The table lives in caches.nix at the repo root —
-        # add one there, not here, so the flake's own nixConfig and the
-        # own-nixpkgs routing stay in step with it.
+        # Add a cache in caches.nix at the repo root, never here.
         substituters = caches.substituters "base";
         trusted-public-keys = caches.trustedKeys "base";
 

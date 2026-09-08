@@ -1,10 +1,4 @@
 # NixOS configurations for all hosts.
-#
-# The host list, and the presets each host receives, are declared in
-# ../hosts/default.nix. Hosts and presets reach the registered modules through
-# the `nixosModules` / `homeModules` specialArgs, e.g.
-#
-#   {nixosModules, ...}: { imports = with nixosModules; [docker steam]; }
 {
   inputs,
   lib,
@@ -20,14 +14,7 @@
   shared = hostsConfig.shared or {};
   hosts = hostsConfig.hosts or {};
 
-  # Every module reaches the repo-wide option helpers through its ordinary `lib`
-  # argument, rather than each one importing them. home-manager derives its own
-  # `extendedLib` from the lib it is handed (nixos/common.nix), so this covers
-  # home-manager modules too.
-  #
-  # Caveat: modules exported via `flake.modules.*` now assume this extension. An
-  # outside consumer importing them must extend their lib the same way, or reach
-  # the helpers directly at `inputs.viicslen-lib.lib.options`.
+  # This is what puts the option helpers in every module's ordinary `lib` — don't drop it.
   extendedLib = lib.extend (_final: _prev: inputs.viicslen-lib.lib.options);
 
   mkHost = hostName: hostConfig:

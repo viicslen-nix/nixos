@@ -40,10 +40,7 @@ in {
       // appHotkey "launch-browser" "Meta+B" "Launch Browser" defaults.browser
       // appHotkey "launch-file-manager" "Meta+E" "Launch File Manager" defaults.fileManager;
 
-    # KWin equivalents of the niri binds. Scrollable "columns" map to KWin
-    # window focus; niri workspaces map to KDE virtual desktops.
-    # ponytail: which-key menus (Mod+W/Z/A, screenshot/record) have no KWin
-    # equivalent and are dropped; Mod+T floating toggle has no stable action name.
+    # ponytail: the niri binds with no KWin equivalent are dropped on purpose, not missing.
     shortcuts.kwin = {
       "Window Close" = "Meta+Q";
       "Window Maximize" = "Meta+F";

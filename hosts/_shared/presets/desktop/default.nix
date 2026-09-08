@@ -108,14 +108,10 @@ in {
       configHome = "/home/neoscode";
     };
 
-    # Bleeding-edge Wayland packages (waybar, swww, portals, utils, ...).
-    # Scoped to graphical desktop hosts — headless/WSL hosts don't need it and
-    # would otherwise recompile the overlaid closure from source on every update.
+    # Keep this out of `base` — headless hosts would rebuild the whole closure.
     nixpkgs.overlays = [inputs.nixpkgs-wayland.overlay];
 
-    # Binary caches so the overlay and the ghostty flake substitute instead of
-    # building from source. Declared in caches.nix at the repo root with
-    # scope = "desktop", which is what keeps them off headless/WSL hosts.
+    # Add a cache in caches.nix with scope = "desktop", never here.
     nix.settings = {
       substituters = caches.substituters "desktop";
       trusted-public-keys = caches.trustedKeys "desktop";

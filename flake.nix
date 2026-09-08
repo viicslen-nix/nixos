@@ -15,9 +15,6 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
-    # ~12k pinned flakes behind one input; see the `omniInputs` mapping in
-    # `outputs` for which of this repo's dependencies come through it. Bump with
-    # `just update-input omniflake`.
     omniflake = {
       url = "github:fzakaria/omniflake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -98,17 +95,12 @@
       inputs.packages.follows = "packages";
     };
 
-    # Agent CLIs (codex, claude-code, copilot-cli, antigravity, t3code, …).
-    # Leave `nixpkgs` un-overridden: locking it from llm-agents' own flake.lock
-    # is what keeps cache.numtide.com hitting.
+    # Leave `nixpkgs` un-overridden — it is what keeps cache.numtide.com hitting.
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.systems.follows = "systems-linux";
     };
 
-    # Upstream AI harness skills; bump with `just update-input mattpocock-skills`.
-    # Collections too large to carry whole are vendored instead — see
-    # scripts/skill-sources.tsv and `just vendor-skills`.
     mattpocock-skills = {
       url = "github:mattpocock/skills";
       flake = false;
@@ -120,9 +112,6 @@
       inputs.packages.follows = "packages";
     };
 
-    # Nvim. `flakes/neovim` is still a maintained subflake but nothing here
-    # consumes it — 5556fbc replaced it with nixvim. Re-add as an input when
-    # something needs it again.
     nixvim = {
       url = "path:./flakes/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -145,26 +134,19 @@
     };
 
     # Community packages
-    # Private. Resolvable because `access-tokens` is wired in the base preset;
-    # deliberately does not follow nixpkgs — it ships a prebuilt AppImage and
-    # pins its own nixpkgs for the autoPatchelf inputs.
+    # Don't make superset-desktop follow nixpkgs — it pins its own for the autoPatchelf inputs.
     superset-desktop.url = "github:viicslen/superset-desktop";
     gitura = {
       url = "github:viicslen/gitura";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Left on its own nixpkgs on purpose: `ghostty.cachix.org` is a configured
-    # substituter, and its builds are keyed to the nixpkgs ghostty pins. Ours
-    # matches it today only by coincidence (one day apart), so following would
-    # turn every future ghostty into a from-source zig build. Costs 7 lock nodes.
+    # Leave ghostty on its own nixpkgs — following ours makes every build a from-source zig build.
     ghostty.url = "github:ghostty-org/ghostty";
     lan-mouse = {
       url = "github:feschber/lan-mouse";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Left on its own nixpkgs: pinning it to ours forces a cargo re-vendor, and
-    # crates.io 403s nix's curl User-Agent from here, so the rebuild dies on
-    # `cannot download download-adler2-2.0.1 from any mirror`. Costs 7 lock nodes.
+    # Leave tuicr on its own nixpkgs — pinning it to ours forces a cargo re-vendor crates.io 403s.
     tuicr.url = "github:agavra/tuicr";
     worktrunk = {
       url = "github:max-sixty/worktrunk";
@@ -190,30 +172,18 @@
 
     caches = import ./caches.nix {inherit lib;};
 
-    # The 20 dependencies that come from omniflake's index rather than
-    # flake.lock, resolved into `inputs` before `mkFlake`. The plumbing lives in
-    # flakes/lib/omni.nix; what stays here is the policy and the list.
-    #
-    # `overrides` takes the loader so `home-manager` can unify to the loader's
-    # own copy — that self-reference is what keeps exactly one home-manager in
-    # the graph without home-manager being an input. `systems` is the linux-only
-    # list for the same reason `systems-linux` exists at all. `ownNixpkgs` comes
-    # from caches.nix: declaring a cache there is what routes its flakes off the
-    # unified nixpkgs, so nothing has to name them a second time.
-    #
-    # `mapping` is local input name -> index attribute; the two sides differ
-    # because the index keys on the *repository* name. Find the right-hand side
-    # with `just omniflake-search <term>`.
     omniInputs = inputs.viicslen-lib.lib.omni.mkInputs {
       inherit (inputs) omniflake;
       inherit (caches) ownNixpkgs;
 
+      # `flakes` is the loader's own set — don't swap `home-manager` for an input, there is none.
       overrides = flakes: {
         inherit (inputs) flake-parts;
         inherit (flakes) home-manager;
         systems = inputs.systems-linux;
       };
 
+      # Right-hand side is the *repository* name, not ours; find it with `just omniflake-search <term>`.
       mapping = {
         agenix = "agenix";
         base16 = "base16-nix";
@@ -239,10 +209,7 @@
     };
   in
     flake-parts.lib.mkFlake {inputs = inputs // omniInputs;} {
-      # Every file under ./parts is a flake-parts module and is picked up
-      # automatically — drop a new file in to add a concern, no wiring needed.
-      # Non-recursive on purpose: parts/ is flat, and a nested directory should
-      # be imported by the part that owns it, not silently by the flake root.
+      # Keep `recursive = false` — a nested directory is imported by the part that owns it.
       imports = inputs.viicslen-lib.lib.umport {
         path = ./parts;
         recursive = false;
@@ -250,14 +217,6 @@
     };
 
   # Generated from caches.nix by `just sync-caches` — do not edit by hand.
-  # nix cannot evaluate this: a flake config value must be a *syntactic* list of
-  # *syntactic* strings (Value::isTrivial forces only ExprAttrs/ExprLambda/
-  # ExprList, so `map …`/`import …` stay thunks, and the list branch then
-  # requires every element to already be nString). caches.nix asserts these
-  # match and tells you to re-run the recipe when they don't.
-  # Only takes effect with `--accept-flake-config`; the presets are what
-  # configure the hosts here. This is for building the flake on a machine that
-  # has not been rebuilt yet.
   nixConfig = {
     # BEGIN generated from caches.nix
     extra-substituters = [

@@ -9,8 +9,7 @@ let
 
   mattpocock = inputs.mattpocock-skills;
 
-  # Skills taken verbatim from github:mattpocock/skills. Curated by name — that
-  # repo carries more than we want (in-progress/, misc/, deprecated/).
+  # Curated by name — the upstream repo also carries in-progress/misc/deprecated.
   upstreamSkills = selectFromInput mattpocock [
     "skills/engineering/codebase-design"
     "skills/engineering/diagnosing-bugs"
@@ -30,15 +29,9 @@ let
     "skills/productivity/grilling"
     "skills/productivity/handoff"
     "skills/productivity/wait-what"
-    # Upstream renamed this from writing-great-skills and split its GLOSSARY.md
-    # into SKILL-MECHANICS.md (mattpocock/skills 1fc6573e), so the key here
-    # changed with it.
     "skills/productivity/writing-for-agents"
   ];
 
-  # The same upstream skills, with the local edits in ./skill-patches rewritten
-  # in — so `just update-input mattpocock-skills` keeps flowing, and a reword
-  # that moves an anchor fails the build instead of silently reverting.
   patchedSkills = {
     grilling = patchSkill
       "${mattpocock}/skills/productivity/grilling/SKILL.md"
@@ -46,18 +39,8 @@ let
   };
 in
 {
-  # Dotenv file (`STITCH_API_KEY=…`) feeding the ${…} in the google_stitch
-  # backend's header, so the key never lands in the world-readable gateway.yaml
-  # in /nix/store.
-  #
-  # Not the gateway's own `env_files`: home-manager's agenix reports
-  # `.path` as the *literal* `${XDG_RUNTIME_DIR}/agenix/<name>` for a shell to
-  # expand, and the gateway's loader expands only `~`. It would skip the
-  # unresolved path, leave the variable unset, and — `expand_string` having no
-  # default — send an **empty** header, which Stitch answers with a 401. systemd
-  # expands `%t` to XDG_RUNTIME_DIR itself, and refuses to start the unit if the
-  # file is missing, so a failed read is loud instead of silent.
   age.secrets.stitch-api-key.file = ../../../../../secrets/stitch/api-key.age;
+  # Not the gateway's `env_files` — it can't expand the path, sending an empty header.
   systemd.user.services.mcp-gateway.Service.EnvironmentFile = "%t/agenix/stitch-api-key";
 
   modules.programs.claude-code = {
@@ -86,17 +69,11 @@ in
     mempalace.enable = true;
     coderabbit.enable = true;
     context = ./AGENTS.md;
-    # Three layers, last wins: upstream verbatim, then the patched copies, then
-    # a directory under ./skills, which shadows either outright. That directory
-    # also holds the vendored collections (`just vendor-skills`), which are
-    # plain checked-in skills as far as this is concerned.
+    # Order matters — last wins, and ./skills shadows both upstream layers.
     skills = upstreamSkills // patchedSkills // mkSkillAttrSet ./skills;
     commands = mkMarkdownAttrSet ./commands;
     mcps = {
-      # OAuth-protected too, but its authorization server is
-      # accounts.google.com, which has no registration_endpoint — it needs a
-      # client_id/secret from a Google Cloud OAuth app, so it authenticates with
-      # a Stitch API key instead (Stitch settings → API key → Create key).
+      # Not `oauth.enabled` — accounts.google.com has no registration_endpoint.
       google_stitch = {
         url = "https://stitch.googleapis.com/mcp";
         headers."X-Goog-Api-Key" = "\${STITCH_API_KEY}";

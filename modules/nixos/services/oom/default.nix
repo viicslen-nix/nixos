@@ -66,28 +66,15 @@
       };
 
       config = mkIf cfg.enable {
-        # Enable earlyoom to prevent system freezes.
-        #
-        # This is the only guard that works once the box is already thrashing:
-        # it polls free RAM *and free swap* from userspace and SIGTERMs the
-        # largest process, where the kernel OOM killer never fires at all
-        # (31G of swap means it always has somewhere to page to) and oomd needs
-        # 30s of sustained cgroup PSI plus enough CPU to act on it.
-        #
-        # Swap here is roughly the size of RAM, so freeSwapThreshold has to be
-        # high: earlyoom acts only when free memory AND free swap are both under
-        # their thresholds, and with 31G of swap a 10% swap floor means waiting
-        # until 28G has already been paged out — long past the livelock.
         services.earlyoom = {
           enable = true;
           enableNotifications = true;
           freeMemThreshold = 8;
           freeMemKillThreshold = 4;
+          # Swap is roughly RAM-sized here; a normal 10% swap floor never fires in time.
           freeSwapThreshold = 50;
           freeSwapKillThreshold = 25;
-          # NOTE: extraArgs goes through lib.escapeShellArgs, so a flag and its
-          # value must be separate list entries. "--prefer '^(x)$'" as one
-          # string arrives as a single argv and earlyoom fails to start.
+          # extraArgs goes through lib.escapeShellArgs — never join a flag and its value into one string.
           extraArgs = [
             "--prefer"
             "^(${concatStringsSep "|" cfg.prefer})$"
@@ -114,11 +101,7 @@
             # list and oomd's 90%-swap-used rule applies to nothing at all.
             ManagedOOMSwap = "kill";
 
-            # Hard bound on the rebuild. Nothing capped nix-daemon before
-            # (MemoryMax=infinity), so a runaway eval or a wide parallel build
-            # could take the whole 31G and livelock the desktop. MemoryHigh
-            # throttles it into reclaim first; MemoryMax kills it and leaves
-            # ~17G for the session instead of taking the machine down.
+            # Don't raise these — the headroom left over is what keeps the desktop alive during a rebuild.
             MemoryHigh = "10G";
             MemoryMax = "14G";
           };

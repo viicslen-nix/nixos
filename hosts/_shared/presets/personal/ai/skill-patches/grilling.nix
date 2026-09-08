@@ -1,14 +1,4 @@
-# Local delta on github:mattpocock/skills — skills/productivity/grilling.
-#
-# Upstream has the agent print numbered questions as prose and wait for the
-# user to type answers back. Every harness we run it in has an interactive
-# question tool instead, so put the round through that and keep the prose block
-# as the documented fallback.
-#
-# Anchors are plain ASCII spans that have survived every upstream reword so
-# far. `patchSkill` asserts they still exist, so a reword breaks the build
-# rather than silently reverting grilling to vanilla. Paragraphs are single
-# unwrapped lines to match the surrounding upstream prose.
+# Anchor `from` on plain ASCII spans that survive an upstream reword.
 [
   {
     from = "Ask the whole frontier in one round: number each question and give your recommended answer. Then wait for the user's answers before the next round.";

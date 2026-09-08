@@ -1,9 +1,4 @@
 # Dev shells, per system.
-#
-# Built via `vlib.pkgsFor` (allowUnfree, no extra overlays) rather than
-# flake-parts' `perSystem.pkgs`, so they match the pre-flake-parts layout. The
-# pre-commit hooks (parts/git-hooks.nix) install on shell entry. The formatter
-# is owned by parts/treefmt.nix.
 {inputs, ...}: let
   vlib = inputs.viicslen-lib.lib;
 in {
@@ -20,6 +15,7 @@ in {
           })
       ) (import ../dev-shells {
         inherit inputs system;
+        # `vlib.pkgsFor`, not flake-parts' `perSystem.pkgs` — keeps the pre-flake-parts layout.
         pkgs = vlib.pkgsFor system;
       });
   };

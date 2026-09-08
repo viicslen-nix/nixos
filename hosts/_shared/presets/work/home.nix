@@ -4,8 +4,7 @@
   lib,
   ...
 }: let
-  # Google's MCP server for databases. Distributed as a prebuilt static Go
-  # binary, so it needs no patchelf — it runs on NixOS as-is.
+  # Prebuilt static Go binary — no patchelf needed.
   mcp-toolbox =
     pkgs.runCommand "mcp-toolbox-1.8.0" {
       src = pkgs.fetchurl {
@@ -18,22 +17,9 @@
       chmod +x $out/bin/toolbox
     '';
 
-  # mcp-gateway spawns stdio backends with a scrubbed environment — only
-  # HOME/PATH/PWD/SHLVL/TMPDIR, plus whatever the backend's own `env` block
-  # names. An agenix secret path is `${XDG_RUNTIME_DIR}/agenix/<name>`, so
-  # under the gateway that expands to `/agenix/<name>`, the `cat` fails, and
-  # `export VAR="$(…)"` swallows the failure (bash returns export's status,
-  # not the substitution's) — leaving the server running on an *empty*
-  # credential. That is why prod-db died on "Access denied … (using password:
-  # NO)" while grafana just served an empty token. Re-derive the value here so
-  # every wrapper works whether it's spawned by the gateway or by a shell.
+  # Re-derive it — mcp-gateway spawns backends with XDG_RUNTIME_DIR unset.
   xdgRuntimeDir = ''export XDG_RUNTIME_DIR="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"'';
 
-  # Read-only MCP access to the production MariaDB read replica. Brings the
-  # SSH tunnel up (MariaDB binds to the Linode private address only), then
-  # serves it over stdio. The password comes from an agenix secret
-  # decrypted at activation, so MCP clients can spawn this non-interactively
-  # (no 1Password unlock prompt) and it never lands in ~/.claude.json.
   prod-db-mcp = pkgs.writeShellScriptBin "prod-db-mcp" ''
     set -euo pipefail
 
@@ -68,9 +54,7 @@
     exec ${mcp-toolbox}/bin/toolbox --prebuilt mysql --stdio
   '';
 
-  # Same trick as prod-db-mcp: the token can't live in the MCP `env` block
-  # (that lands in a world-readable JSON config, and in the repo), so read it
-  # from the agenix secret at spawn time instead.
+  # Never put the token in the MCP `env` block — that lands in a readable JSON.
   grafana-mcp = pkgs.writeShellScriptBin "grafana-mcp" ''
     set -euo pipefail
     ${xdgRuntimeDir}
@@ -138,15 +122,12 @@ in {
         User = "pelagrino";
       };
 
-      # Tunnel for the read-only MCP database server (see ~/.local/bin/prod-db-mcp).
-      # MariaDB binds to the Linode private address only, so 3306 is unreachable
-      # from outside the datacenter — the forward target is that private IP.
+      # The forward target must stay the private IP — 3306 is datacenter-only.
       "db-prod-read-tunnel" = {
         HostName = "db-prod-read";
         User = "root";
         LocalForward = "33061 192.168.201.159:3306";
-        # Fail the ssh call outright if the forward can't bind, instead of
-        # succeeding and leaving every query to fail with connection-refused.
+        # Keep: without it a failed forward still exits 0 and every query breaks.
         ExitOnForwardFailure = "yes";
         ServerAliveInterval = 30;
         ServerAliveCountMax = 3;
