@@ -39,10 +39,8 @@
       scope = "base";
       url = "https://cache.numtide.com";
       key = "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g=";
-      # codex is a rustPlatform build of codex-rs whose own package.nix notes
-      # late-stage rustc peaking at ~12 GiB. numtide publishes it prebuilt, so
-      # llm-agents.nix must keep its own nixpkgs or every rebuild compiles it.
-      ownNixpkgs = ["llm-agents-nix"];
+      # Serves llm-agents.nix, whose codex is a ~12 GiB rustc build from source
+      # on a miss. No `ownNixpkgs`: it is a real input now, not an index entry.
     };
 
     nixos-cuda = {

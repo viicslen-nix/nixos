@@ -98,6 +98,14 @@
       inputs.packages.follows = "packages";
     };
 
+    # Agent CLIs (codex, claude-code, copilot-cli, antigravity, t3code, …).
+    # Leave `nixpkgs` un-overridden: locking it from llm-agents' own flake.lock
+    # is what keeps cache.numtide.com hitting.
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.systems.follows = "systems-linux";
+    };
+
     # Upstream AI harness skills; bump with `just update-input mattpocock-skills`.
     # Collections too large to carry whole are vendored instead — see
     # scripts/skill-sources.tsv and `just vendor-skills`.
@@ -182,7 +190,7 @@
 
     caches = import ./caches.nix {inherit lib;};
 
-    # The 21 dependencies that come from omniflake's index rather than
+    # The 20 dependencies that come from omniflake's index rather than
     # flake.lock, resolved into `inputs` before `mkFlake`. The plumbing lives in
     # flakes/lib/omni.nix; what stays here is the policy and the list.
     #
@@ -214,7 +222,6 @@
         home-manager = "home-manager";
         impermanence = "impermanence";
         jovian = "jovian-nixos";
-        llm-agents = "llm-agents-nix";
         nix-alien = "nix-alien";
         nix-cachyos-kernel = "nix-cachyos-kernel";
         nix-vite-plus = "nix-vite-plus";
