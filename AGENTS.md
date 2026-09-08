@@ -45,6 +45,21 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - Fix root causes, not symptoms — grep every caller before patching one path.
 - If a change is shown not to work, roll it back before layering another fix.
   Don't stack speculative fixes.
+- **Read `CONTEXT.md` before you touch a directory.** A directory may hold a
+  `CONTEXT.md` carrying the story behind its files — what was tried, why the
+  obvious shape is wrong, what it cost. Nothing loads it for you and no comment
+  points at it: check for one in the directory you are editing and in each
+  parent up to the repo root, as part of reading the code, every time.
+- **Context goes in `CONTEXT.md`, not in the code.** Write the *why* there,
+  in the directory it concerns — the repo root included — creating the file
+  when a directory earns one. This file holds the rules, vocabulary and
+  workflows an agent follows; `CONTEXT.md` holds the story behind what is
+  already written. Keep each fact in exactly one of the two.
+- **Comments in `.nix` files are one line, at the trap they guard.** A line
+  that must not be "simplified" — a `follows` that must stay absent, a label
+  order baked into a systemd unit, a literal nix cannot compute — carries a
+  one-line warning where an editor will hit it. The reasoning behind it lives
+  in `CONTEXT.md`; the comment says what not to do, not where to read more.
 
 ## Vocabulary
 
@@ -418,6 +433,8 @@ These docs drift. When your change makes them wrong, fix them in the same task
 
 - **README.md** — update when you add/remove a host, desktop environment, dev
   shell, or `just` recipe, or otherwise change user-facing architecture.
+- **CONTEXT.md** — the one in the directory you changed, when the change makes
+  its story wrong. No file there yet and the change has a story? Start one.
 - **AGENTS.md (this file)** — update when you discover a new gotcha, add or
   rename a preset/subflake, or change a workflow an agent must follow. Keep it
   accurate over exhaustive; verify a claim (that a file, flag, or recipe exists)
