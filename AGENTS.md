@@ -111,7 +111,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **Update recipes.** `just update` updates every subflake *and* all root
   inputs; `just update-main` = root inputs only; `just update-input <x>` /
   `just update-subflake <x>` for one.
-- **omniflake.** 21 dependencies are no longer flake inputs: they are pins in
+- **omniflake.** 20 dependencies are no longer flake inputs: they are pins in
   [omniflake](https://github.com/fzakaria/omniflake)'s `index.json`, fetched
   lazily at evaluation. The wiring lives in `flakes/lib/omni.nix`
   (`inputs.viicslen-lib.lib.omni`), which exports exactly one function:
@@ -121,18 +121,18 @@ already happened. Treat every heavy Nix invocation as dangerous.
   loader plumbing; keep it that way. The result is merged into
   `inputs` before `mkFlake`, so `inputs.<name>` and `pkgs.inputs.<name>` are unchanged
   everywhere else and `nix.registry` still lists them (omniflake's loader sets
-  `_type = "flake"`). Consequences: `just update-input omniflake` bumps all 21
+  `_type = "flake"`). Consequences: `just update-input omniflake` bumps all 20
   at once — home-manager included, so an HM bump is now an omniflake bump —
   and `just update-input disko` no longer resolves; `nix flake metadata` will
   not show them; the index keys on the *repository* name, so
   `vscode-server` is `nixos-vscode-server`, `git-hooks` is `git-hooks-nix`,
-  `base16` is `base16-nix`, `jovian` is `jovian-nixos`, `llm-agents` is
-  `llm-agents-nix` and `zen-browser` is `zen-browser-flake`. `stylix` keeps its
-  name but the index holds `nix-community/stylix`, the repo `danth/stylix` was
+  `base16` is `base16-nix`, `jovian` is `jovian-nixos` and `zen-browser` is
+  `zen-browser-flake`. `stylix` keeps its name but the index holds
+  `nix-community/stylix`, the repo `danth/stylix` was
   transferred to — same project, not a fork. Unification is by
   input *name* at every depth via `omni.mkInputs`, which is where the old
   `follows` lines went — including `systems = systems-linux`, so the
-  darwin-stripping workaround still reaches `llm-agents`. An input stays real
+  darwin-stripping workaround reaches every indexed flake. An input stays real
   when something must `follows` it (`nixpkgs`, `systems-linux`), when it
   bootstraps `mkFlake` (`flake-parts`), when it is `flake = false`
   (the index holds flakes only), or when it simply is not indexed.
@@ -154,12 +154,11 @@ already happened. Treat every heavy Nix invocation as dangerous.
   second loader with nixpkgs dropped from the override set, so they keep
   their author's pin — and still share the one home-manager. Declare it on
   the matching cache entry in
-  `caches.nix`, not in `flake.nix` — the routing is derived. `llm-agents` is
-  listed there because its `codex` is a
-  `rustPlatform` build of codex-rs whose own `package.nix` notes late-stage
-  rustc peaking at **~12 GiB** — it OOM'd this host once — and numtide
-  publishes it to `cache.numtide.com`, already a substituter with its key
-  already trusted. Diagnose by comparing store paths, never by reading
+  `caches.nix`, not in `flake.nix` — the routing is derived. **No cache
+  declares one today** — `llm-agents-nix` was the only user and is a real input
+  again (see CONTEXT.md) — so `ownNixpkgs` resolves to `[]` and the second
+  loader is never forced; the mechanism stays for the next cached upstream.
+  Diagnose by comparing store paths, never by reading
   nix.conf: eval the package both ways
   (`nix eval github:<owner>/<repo>/<rev>#packages.x86_64-linux.<pkg>.outPath`
   vs the same attr through a host config) and check the upstream one with
