@@ -52,6 +52,50 @@
               }
             end
 
+            -- Retro bar, so it inherits the window background (and its opacity)
+            -- plus stylix's `colors.tab_bar`; the fancy bar would paint an
+            -- opaque `window_frame` strip over the blur instead.
+            wezterm.on('format-tab-title', function(tab, _, _, cfg, hover, max_width)
+              local bar = cfg.colors.tab_bar
+              -- stylix paints the active tab in base00, a shade off the bar's
+              -- own base01 -- invisible. Take the accent from the scheme
+              -- instead, falling back to stylix if the palette isn't resolved.
+              local pal = cfg.resolved_palette or {}
+              local accent = pal.ansi and pal.ansi[5] or bar.inactive_tab_hover.bg_color
+
+              local bg, fg, intensity
+              if tab.is_active then
+                bg, fg, intensity = accent, pal.background or bar.background, 'Bold'
+              elseif hover then
+                bg, fg, intensity = bar.inactive_tab.bg_color, bar.inactive_tab.fg_color, 'Normal'
+              else
+                bg, fg, intensity = bar.background, bar.inactive_tab.fg_color, 'Half'
+              end
+
+              local title = tab.tab_title
+              if title == nil or #title == 0 then
+                title = tab.active_pane.title
+              end
+              -- 5 = the index and the padding around it. `max_width` can be
+              -- tighter than that, and a negative length makes
+              -- `truncate_right` throw -- which wezterm swallows into a silent
+              -- fallback to the unstyled default title.
+              title = wezterm.truncate_right(title, math.max(max_width - 5, 1))
+
+              -- Padded blocks rather than powerline caps: an emoji in the
+              -- title measures narrower than it renders, the tab overflows its
+              -- width, and the trailing cap is the cell that gets clipped.
+              return {
+                { Background = { Color = bg } },
+                { Foreground = { Color = fg } },
+                { Attribute = { Intensity = intensity } },
+                { Text = ' ' .. tab.tab_index + 1 .. ' ' .. title .. ' ' },
+                { Background = { Color = bar.background } },
+                { Foreground = { Color = bar.background } },
+                { Text = ' ' },
+              }
+            end)
+
             local toggle_decorations = wezterm.action_callback(function(window)
               local overrides = window:get_config_overrides() or {}
               if overrides.window_decorations == 'TITLE|RESIZE' then
@@ -74,8 +118,11 @@
               wayland_window_background_blur = true,
 
               window_decorations = 'RESIZE',
-              -- tmux owns windows; wezterm's bar would only duplicate them.
-              enable_tab_bar = false,
+              enable_tab_bar = true,
+              use_fancy_tab_bar = false,
+              hide_tab_bar_if_only_one_tab = false,
+              tab_bar_at_bottom = false,
+              tab_max_width = 32,
 
               check_for_updates = false,
               window_close_confirmation = 'AlwaysPrompt',
