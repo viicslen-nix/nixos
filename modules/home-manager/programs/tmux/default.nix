@@ -19,9 +19,7 @@
       config.programs.tmux = mkIf cfg.enable {
         enable = true;
 
-        # Pin the pane shell instead of inheriting $SHELL: the account shell is
-        # zsh (Superset wraps it), and a stale $SHELL makes tmux fall back to
-        # /bin/sh.
+        # Keep this pinned; inheriting a stale $SHELL makes tmux fall back to /bin/sh.
         shell = lib.getExe pkgs.nushell;
 
         shortcut = "Space";

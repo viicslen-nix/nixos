@@ -1,6 +1,4 @@
-# Formatting, via treefmt-nix. Provides `nix fmt` (multi-language) and a
-# `checks.formatting` gate. This owns `formatter`, so dev-shells.nix no longer
-# sets it.
+# Formatting, via treefmt-nix. This owns `formatter` — don't set it in dev-shells.nix too.
 {inputs, ...}: {
   imports = [inputs.treefmt-nix.flakeModule];
 

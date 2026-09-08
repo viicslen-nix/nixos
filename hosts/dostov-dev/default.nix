@@ -42,11 +42,7 @@ with lib; {
     hostName = "dostov-dev";
   };
 
-  # 32 threads but only 31G of RAM — about 1G per thread, which is lean for
-  # compiling. max-jobs = 12 with cores = 0 let nix run 12 derivations at once
-  # and hand each one all 32 cores, so the worst case was hundreds of concurrent
-  # compilers on a box that cannot feed them. 4 x 8 saturates the CPU exactly
-  # once without the memory multiplier.
+  # Don't raise these or set cores = 0 — 31G cannot feed 32 threads of compiler.
   nix.settings = {
     max-jobs = lib.mkDefault 4;
     cores = lib.mkDefault 8;

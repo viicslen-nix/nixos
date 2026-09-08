@@ -2,9 +2,6 @@
 {inputs, ...}: let
   inherit (inputs.viicslen-lib.lib.overlays) mkFlakeInputsOverlay mkChannelOverlay;
 in {
-  # For every flake input, aliases 'pkgs.inputs.${flake}' to
-  # 'inputs.${flake}.packages.${pkgs.system}' or
-  # 'inputs.${flake}.legacyPackages.${pkgs.system}'
   flake-inputs = mkFlakeInputsOverlay inputs;
 
   # This one brings our custom packages from the 'pkgs' directory
@@ -30,15 +27,9 @@ in {
     flake = inputs.nixpkgs-stable;
   };
 
-  # Swap the Superset desktop app for this user's fork (thread-style sidebar).
-  # An overlay rather than a changed reference, so every consumer of
-  # `pkgs.inputs.packages.superset.desktop` gets it and the swap is one line to
-  # undo. Must be applied *after* `flake-inputs`, which is what creates
-  # `pkgs.inputs` in the first place.
-  #
-  # The fork's `superset-desktop` attr — not `superset` — because the Superset
-  # CLI installs `bin/superset` and both land in the same profile.
+  # Must be applied *after* `flake-inputs`, which is what creates `pkgs.inputs`.
   superset-fork = _final: prev: let
+    # The fork's `superset-desktop` attr, not `superset` — the CLI installs `bin/superset` too.
     fork = inputs.superset-desktop.packages.${prev.stdenv.hostPlatform.system}.superset-desktop;
   in {
     inputs =
@@ -52,14 +43,8 @@ in {
       };
   };
 
-  # This one contains whatever you want to overlay
-  # You can change versions, add patches, set compilation flags, anything really.
-  # https://nixos.wiki/wiki/Overlays
   modifications = final: _prev: {
-    # nixpkgs dropped libdisplay-info_0_2 on 2026-08-04 ("unused"), but
-    # niri-flake still builds niri against 0.2 and asserts the version, so
-    # pkgs.niri-unstable stops evaluating without it. Rebuild 0.2.0 from the
-    # 0.3 expression; drop this once niri-flake moves to libdisplay-info_0_3.
+    # Keep until niri-flake moves to libdisplay-info_0_3 — pkgs.niri-unstable needs 0.2.
     libdisplay-info_0_2 = _prev.libdisplay-info_0_3.overrideAttrs (_: {
       version = "0.2.0";
       src = _prev.fetchFromGitLab {
@@ -71,9 +56,7 @@ in {
       };
     });
 
-    # dpcontracts' README doctest (pulled in via nix-alien → pylddwrap → icontract)
-    # calls asyncio.get_event_loop(), which no longer implicitly creates a loop on
-    # python 3.14, failing the build. Skip that check.
+    # Skips a doctest that fails on python 3.14; without it nix-alien won't build.
     pythonPackagesExtensions =
       (_prev.pythonPackagesExtensions or [])
       ++ [

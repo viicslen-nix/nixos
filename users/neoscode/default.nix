@@ -93,9 +93,7 @@ in {
       inputs.packages.python.mempalace
     ];
 
-    # ssh refuses to open a control socket if the ControlPath directory is
-    # missing, which breaks any host using ControlMaster. See the ControlPath
-    # declaration in programs.ssh.settings below.
+    # Don't drop: ssh will not open a control socket if this directory is missing.
     file.".ssh/controlmasters/.keep".text = "";
 
     autostart = [
@@ -127,10 +125,7 @@ in {
   };
 
   programs = let
-    # Superset builds its PTY env from a scrubbed login-shell snapshot, which
-    # carries no WAYLAND_DISPLAY — so wl-copy/wl-paste, and with them Claude
-    # Code's image paste, have no compositor to talk to. Point them back at the
-    # session socket when one exists.
+    # Don't drop: superset's scrubbed PTY env carries no WAYLAND_DISPLAY.
     reattachWayland = ''
       if [ -z "$WAYLAND_DISPLAY" ]; then
         : "''${XDG_RUNTIME_DIR:=/run/user/$(id -u)}"

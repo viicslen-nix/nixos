@@ -24,9 +24,7 @@ with lib; {
       line_numbers = true;
       transparent_background = false;
 
-      # Defaults are already vim-ish (j/k, g/G, d/u, [/]); this fills the gaps.
-      # Binding a key takes it from whatever held it as a default, so
-      # toggleLineNumbers needs a new home once `l` scrolls right.
+      # Binding a key steals it from its default holder — rehome, don't drop.
       keybindings = {
         "hunk.review.scrollCodeLeft" = ["h" "left" "shift+left"];
         "hunk.review.scrollCodeRight" = ["l" "right" "shift+right"];
@@ -39,8 +37,6 @@ with lib; {
 
   services.flameshot.enable = mkIf osConfig.modules.presets.desktop.enable true;
 
-  # Not `llm-agents.t3code-desktop` — that is a symlinkJoin of the *stock*
-  # `t3code.desktop`, so it never sees the module's T3 Connect patch. The
-  # module installs the desktop output of this same package instead.
+  # Not `llm-agents.t3code-desktop` — it misses the module's T3 Connect patch.
   modules.programs.t3code.package = pkgs.inputs.llm-agents.t3code;
 }

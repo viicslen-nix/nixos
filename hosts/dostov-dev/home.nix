@@ -5,10 +5,7 @@
   homeModules,
   ...
 }: let
-  # Login layout: vivaldi on Browser (DP-1); legcord + ghostty stacked 50/50 in
-  # one column on Communication (DP-2). The window-rules below place vivaldi and
-  # legcord — a rule can pin a window to a workspace but cannot drop it into an
-  # existing column, so only the ghostty half needs a script.
+  # A window rule cannot drop a window into an existing column — hence this script.
   loginLayout = pkgs.writeShellScript "niri-login-layout" ''
     set -u
     PATH=${lib.makeBinPath [pkgs.jq pkgs.coreutils]}:$PATH
@@ -127,7 +124,6 @@ in {
       options.baseUrl = "http://localhost:11434/v1";
     };
   };
-
 
   services = {
     tailscale-systray = {

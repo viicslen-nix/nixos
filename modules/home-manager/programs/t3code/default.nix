@@ -14,27 +14,7 @@
 
       cfg = config.modules.${namespace}.${name};
 
-      # `cfg.package` is the *stock* t3code; both fixes below are applied here,
-      # so pointing the option at another packaging of it (nixpkgs, or
-      # numtide/llm-agents.nix, which has the same two gaps) still gets them.
-      #
-      # 1. A source build bakes in no cloud config: `scripts/lib/
-      #    public-config.ts` feeds the repo's `.env` into both vite builds, so
-      #    without it the server and the web client carry empty Clerk/relay
-      #    literals and the client's `hasCloudPublicConfig()` goes false, which
-      #    is what strips the T3 Connect block from Settings › Connections.
-      #    (The `connect` subcommand still registers either way — it just has
-      #    no relay to reach.) Upstream's documented fix for source builds is
-      #    to copy `.env.example` — public identifiers, not secrets — into
-      #    place, so take that verbatim rather than restating the values here.
-      #    Costs a full rebuild of the pnpm/electron tree.
-      # 2. The relay client T3 Connect tunnels through is the one piece not
-      #    covered by `.env`: upstream downloads its own cloudflared on first
-      #    `t3 connect link`. Point it at the Nix one instead.
-      #
-      # Both land on the unwrapped derivation — the only layer whose shape is
-      # the same across packagings — and the outer wrapper just execs it, so
-      # the env var survives.
+      # Both fixes must land on the unwrapped derivation, not on the outer wrapper.
       withConnect = base:
         base.override {
           t3code-unwrapped = base.unwrapped.overrideAttrs (old: {
@@ -69,10 +49,7 @@
           '';
         };
 
-        # The desktop app has to come from this same derivation. Installing a
-        # stock `t3code-desktop` alongside it silently splits the two: the CLI
-        # gets T3 Connect and the app — which spawns its own backend out of its
-        # own output, not the `serve` unit — does not.
+        # Never install a stock `t3code-desktop` alongside this; the app must come from here.
         finalPackage = mkOption {
           type = types.package;
           readOnly = true;
@@ -127,10 +104,7 @@
             [cfg.finalPackage]
             ++ optional osConfig.modules.presets.desktop.enable cfg.finalPackage.desktop;
 
-          # Upstream's own `t3 service install` writes a unit that runs a
-          # self-updating launcher, which npm-installs new versions over
-          # itself — declare the server directly instead. Starting it is also
-          # what provisions a `t3 connect link` that is still pending.
+          # Don't swap this for `t3 service install`: its unit runs a self-updating launcher.
           systemd.user.services.${name} = mkIf cfg.serve.enable {
             Unit = {
               Description = "T3 Code server";

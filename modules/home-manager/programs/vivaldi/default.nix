@@ -28,19 +28,12 @@
 
       extraCssMods = filter (hasSuffix ".css") (attrNames cfg.extraMods);
 
-      # The mods have to live *inside* the package: Vivaldi's launcher resolves
-      # its own directory through `readlink -f "$0"`, and Chromium finds
-      # resources/ next to the real binary, so a patched copy wrapped around the
-      # original store path is simply never read.
-      # Based on https://github.com/budlabs/vivaldi-autoinject-custom-js-ui
+      # The mods must go *inside* the package; a wrapper around the original is never read.
       moddedPackage =
         if !cfg.enableMods
         then vivaldiPackage
         else
           vivaldiPackage.overrideAttrs (oldAttrs: {
-            # Awesome-Vivaldi's layout: the loader sits at the resources root and
-            # discovers everything under user_mods/ at runtime, so one script tag
-            # covers every mod (see the modpack's install.sh).
             postFixup =
               (oldAttrs.postFixup or "")
               + ''
@@ -107,14 +100,7 @@
               '';
           });
 
-      # Vivaldi names its desktop entry after the *channel* — `vivaldi-snapshot`
-      # / `vivaldi-stable` — never after the package. Anything deriving a
-      # `.desktop` name from this package (`functionality.defaults`' mime
-      # handlers) has nothing to go on otherwise: runCommand sets `name` but no
-      # `pname`, so the lookup lands on null. The stock package does carry
-      # `pname = "vivaldi"`, but that fallback only ever produced a
-      # `vivaldi.desktop` that does not exist — a broken association that failed
-      # quietly instead of loudly.
+      # Named after the channel, never the package; the mime handlers read this.
       desktopFileName =
         if isSnapshot
         then "vivaldi-snapshot"
@@ -171,12 +157,7 @@
           '';
         };
 
-        # The package actually installed: `package` with the mod pack baked into
-        # its resources and the launch flags wrapped around it. Anything that
-        # *launches* Vivaldi — `functionality.defaults.browser`, a compositor
-        # keybind — must point here and not at `package`, or it execs the
-        # unmodded binary by absolute store path and silently bypasses both the
-        # mods and the flags.
+        # Anything that launches Vivaldi must point here, never at `package`.
         finalPackage = mkOption {
           type = types.package;
           readOnly = true;

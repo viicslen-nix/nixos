@@ -16,15 +16,7 @@
 
       chromium = "${cfg.package}/bin/chromium";
 
-      # Violentmonkey is force-installed at the NixOS layer via
-      # `programs.chromium.extensions` (ExtensionInstallForcelist) in the host config;
-      # nixpkgs chromium reads that policy from /etc/chromium/policies/managed.
-
-      # webapp-<name>: chromeless --app window. --class sets the Wayland app_id so
-      # niri can float it. Uses the default chromium profile so the force-installed
-      # Violentmonkey (see host config) is present. Userscripts are added inside
-      # Violentmonkey (paste from ~/.config/webapps/<name>.user.js) — a userscript
-      # manager stores scripts in its own DB, so there is no zero-click seed.
+      # Don't pass --user-data-dir: the force-installed Violentmonkey lives in the default profile.
       mkLauncher = app:
         pkgs.writeShellScriptBin "webapp-${app.name}" ''
           exec ${chromium} --class=webapp-${app.name} --ozone-platform-hint=auto \
