@@ -3446,11 +3446,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1787842568,
-        "narHash": "sha256-34+B15VdrDUxxU9LePpS0Nt0W8+sJBzr3amfpQ/oREU=",
+        "lastModified": 1788971713,
+        "narHash": "sha256-9Vq3P2x6gB1xZuBsMuewhVBAHif7mikERHQ/lp6mI+E=",
         "owner": "viicslen",
         "repo": "superset-desktop",
-        "rev": "ee9437a7de8f5cd8da49166ebce8bea1b2128889",
+        "rev": "e7934bf14755d30e3a4c9cb665fcad237b49d820",
         "type": "github"
       },
       "original": {
