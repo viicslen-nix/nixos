@@ -243,6 +243,19 @@
             wins the cascade.
           '';
         };
+
+        preferences = mkOption {
+          type = types.attrs;
+          default = {};
+          example = literalExpression ''
+            {vivaldi.tabs.show_pinned_group = false;}
+          '';
+          description = ''
+            Settings merged into the profile's `Default/Preferences` on
+            activation, for prefs Vivaldi reads but exposes no UI toggle for.
+            Vivaldi rewrites that file on exit, so it must not be running.
+          '';
+        };
       };
 
       config = mkIf cfg.enable (mkMerge [
@@ -268,6 +281,22 @@
             ];
           };
         }
+
+        (mkIf (cfg.preferences != {}) {
+          home.activation.vivaldiPreferences = hm.dag.entryAfter ["writeBoundary"] ''
+            prefs="$HOME/${cfg.profileDir}/Default/Preferences"
+            # Vivaldi rewrites Preferences wholesale on exit, so a merge while it
+            # runs is discarded; skip rather than pretend it applied.
+            if ${pkgs.procps}/bin/pgrep -u "$(id -u)" -f -- "--user-data-dir=$HOME/${cfg.profileDir}" >/dev/null 2>&1; then
+              warnEcho "vivaldi: running, leaving Preferences alone"
+            elif [ -e "$prefs" ]; then
+              # `*` is jq's recursive object merge, so only the named keys move.
+              ${pkgs.jq}/bin/jq -S --argjson patch ${escapeShellArg (builtins.toJSON cfg.preferences)} \
+                '. * $patch' "$prefs" >"$prefs.hm-new" && run mv -f "$prefs.hm-new" "$prefs"
+              rm -f "$prefs.hm-new"
+            fi
+          '';
+        })
 
         # Persistence support
         (persistence.mkPersistence config {
