@@ -226,6 +226,10 @@ in {
         enableTmuxIntegration = true;
       };
       vivaldi = {
+        # 8.3's pinned-tab row moves pinned tabs out of .tab-strip, which is
+        # where FavouriteTabs.css builds its grid; no settings UI toggles it.
+        # preferences.vivaldi.tabs.show_pinned_group = false;
+
         jsMods = [
           "ModConfig.js"
           "TabManager.js"
@@ -243,7 +247,7 @@ in {
           "InteractionFeedback.css"
           "DownloadPanel.css"
           "Extensions.css"
-          "FavouriteTabs.css"
+          # "FavouriteTabs.css"
         ];
       };
     };
