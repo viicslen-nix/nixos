@@ -158,6 +158,11 @@
               delete = "wt remove --force -D  {{ args }}";
               workspace = "wt switch --base=@ --create  {{ args }}";
               since-main = "git log --oneline {{ default_branch }}..HEAD";
+              prune = ''
+                for branch in $(wt list --format=json --no-progressive | ${getExe pkgs.jq} -r '.items[] | select(.display.state == "integrated") | .branch'); do
+                  wt remove {{ args }} "$branch" || wt remove --no-hooks {{ args }} "$branch"
+                done
+              '';
               mv = ''
                 if git diff --quiet HEAD && test -z "$(git ls-files --others --exclude-standard)"; then
                   wt switch --create {{ to }} --execute="{{ args }}"
