@@ -36,8 +36,17 @@ with lib; {
       homeModules.programs.krr
     ];
 
+    # Cert is public and feeds the build-time bundle; only the key is a secret.
+    age.secrets.mkcert-rootCA-key.file = ../../../../secrets/mkcert/rootCA-key.age;
+
     modules = {
       services.opencode-web.enable = true;
+
+      programs.mkcert.rootCA = {
+        enable = true;
+        certPath = ../../../../secrets/mkcert/rootCA.pem;
+        keyPath = config.age.secrets.mkcert-rootCA-key.path;
+      };
 
       # Shared work servers (identical across every work host).
       core.network.hosts = {
