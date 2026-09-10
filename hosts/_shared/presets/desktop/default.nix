@@ -64,7 +64,12 @@ in {
       libinput.enable = true;
 
       # Enable Avahi for network discovery
-      avahi.enable = true;
+      avahi = {
+        enable = true;
+        # Without nssmdns4 avahi runs but `.local` never resolves — network printers stay invisible.
+        nssmdns4 = true;
+        openFirewall = true;
+      };
 
       # Configure keymap in X11
       xserver.xkb = {
