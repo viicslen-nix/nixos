@@ -172,6 +172,7 @@ with lib; {
   modules = {
     desktop.niri.enable = true;
     containers.settings = {
+      backend = "podman";
       nvidiaSupport = true;
     };
 
