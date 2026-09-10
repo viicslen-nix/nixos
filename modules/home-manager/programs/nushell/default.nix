@@ -14,6 +14,8 @@
     in {
       options.modules.${namespace}.${name} = {
         enable = mkEnabledOption (mdDoc "nushell");
+
+        enableContainerIntegration = mkEnabledOption (mdDoc "`docker`/`podman` wrappers that render as nushell tables");
       };
 
       config = mkIf cfg.enable {
@@ -31,6 +33,8 @@
 
             extraConfig = ''
               ${(builtins.unsafeDiscardStringContext (builtins.readFile ./config.nu))}
+
+              ${optionalString cfg.enableContainerIntegration (builtins.unsafeDiscardStringContext (builtins.readFile ./containers.nu))}
 
               source ${inputs.nu-scripts}/custom-completions/nix/nix-completions.nu
             '';
