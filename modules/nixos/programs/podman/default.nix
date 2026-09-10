@@ -34,24 +34,36 @@
 
       config = mkIf cfg.enable (mkMerge [
         {
-          environment.systemPackages = with pkgs; [
-            dive # look into image layers
-            podman-tui # status of containers in the terminal
-            podman-compose # start group of containers for dev
-            docker-compose # works against the docker-compatible socket below
-          ];
+          environment = {
+            systemPackages = with pkgs; [
+              dive # look into image layers
+              podman-tui # status of containers in the terminal
+              podman-compose # start group of containers for dev
+              docker-compose # works against the docker-compatible socket below
+              docker-credential-helpers # ~/.docker/config.json still names a credsStore
+            ];
+
+            sessionVariables = {
+              # Default is rootless, a second namespace the oci-containers stack
+              # is invisible from — traefik cannot route to a compose project it
+              # cannot see. Isolation comes from per-container userns instead.
+              CONTAINER_HOST = "unix:///run/podman/podman.sock";
+              DOCKER_HOST = "unix:///run/docker.sock";
+            };
+          };
 
           virtualisation = {
             containers = {
               enable = true;
-              # Defining `settings` at all drops the upstream default table, so restate the paths.
-              storage.settings = mkIf (containers.storageDriver != null) {
-                storage = {
-                  driver = containers.storageDriver;
-                  graphroot = "/var/lib/containers/storage";
-                  runroot = "/run/containers/storage";
-                };
-              };
+
+              # podman rejects short image names outright; docker implies docker.io.
+              # Write the v2 key directly — `registries.search` is deprecated and emits v1.
+              registries.settings.unqualified-search-registries = ["docker.io" "quay.io"];
+
+              # `docker compose` is podman shelling out to docker-compose; don't narrate it.
+              containersConf.settings.engine.compose_warning_logs = false;
+
+              storage.settings.storage.driver = mkIf (containers.storageDriver != null) containers.storageDriver;
             };
 
             docker.enable = false;
