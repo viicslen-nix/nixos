@@ -14,32 +14,21 @@
       namespace = "programs";
 
       cfg = config.modules.${namespace}.${name};
+
+      # Engine-agnostic knobs live once, on the containers module.
+      containers = config.modules.containers.settings;
     in {
       options.modules.${namespace}.${name} = {
-        enable = mkEnabledOption (mdDoc "docker");
-
-        nvidiaSupport = mkOption {
+        enable = mkOption {
           type = types.bool;
-          default = false;
-          description = "Enable support for NVIDIA GPUs";
+          default = containers.backend == "docker";
+          description = "Enable docker. Follows `modules.containers.settings.backend`.";
         };
 
         networkInterface = mkOption {
           type = types.str;
           default = "docker0";
           description = "The network interface to allow in the firewall";
-        };
-
-        allowTcpPorts = mkOption {
-          type = types.listOf types.int;
-          default = [80 443];
-          description = "The TCP ports to allow in the firewall";
-        };
-
-        storageDriver = mkOption {
-          type = types.str;
-          default = "overlay2";
-          description = "The storage driver to use";
         };
       };
 
@@ -60,7 +49,11 @@
             docker = {
               enable = true;
               autoPrune.enable = true;
-              inherit (cfg) storageDriver;
+              # docker calls the default driver `overlay2`; podman calls it `overlay`.
+              storageDriver =
+                if containers.storageDriver == null
+                then "overlay2"
+                else containers.storageDriver;
               package = pkgs.docker.override {
                 buildxSupport = true;
               };
@@ -77,7 +70,7 @@
 
           networking = {
             firewall.trustedInterfaces = [cfg.networkInterface];
-            firewall.allowedTCPPorts = cfg.allowTcpPorts;
+            firewall.allowedTCPPorts = containers.allowTcpPorts;
 
             hosts."127.0.0.1" = [
               "kubernetes.docker.internal"
@@ -85,7 +78,7 @@
             ];
           };
 
-          hardware.nvidia-container-toolkit.enable = cfg.nvidiaSupport;
+          hardware.nvidia-container-toolkit.enable = containers.nvidiaSupport;
         }
         (persistence.mkHmPersistence {
           inherit config options;

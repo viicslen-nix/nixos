@@ -106,6 +106,12 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **modules** — everything under `modules/nixos` and `modules/home-manager` is
   auto-imported (`autoImportRecursive`); a new module is available once its file
   exists, then enabled per host/user.
+- **`modules.containers.settings`** — the one place the container engine is
+  configured: `backend` (`"docker"` / `"podman"`) plus the engine-agnostic
+  `nvidiaSupport`, `storageDriver` and `allowTcpPorts`. `programs.docker` /
+  `programs.podman` each default `enable` to `backend == "<self>"` and read the
+  rest from here, so both can be imported and a host sets only these. Don't add
+  a per-engine `enable = true` or duplicate a knob onto `programs.<engine>`.
 - **nh** — `nh os …`, the rebuild helper wrapped by the `just upgrade` recipe.
 - **just** — the task runner; `Justfile` holds the canonical recipes. Don't
   hand-roll `nixos-rebuild` / `nix flake update` when a recipe already exists.

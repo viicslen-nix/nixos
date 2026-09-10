@@ -15,6 +15,7 @@ with lib; {
     nixosModules.programs.corepack
     nixosModules.programs.mkcert
     nixosModules.programs.docker
+    nixosModules.programs.podman
 
     # Container stack. The `containers` base module declares the shared
     # settings each container module reads, and the containers consult mkcert.
@@ -46,30 +47,27 @@ with lib; {
         "db-prod-read" = "45.79.151.62";
       };
 
-      programs = {
-        # Docker with the common dev port set. Hosts add hardware-specific bits
-        # (nvidiaSupport, storageDriver). WSL force-disables the daemon itself.
-        docker = {
-          allowTcpPorts = [
-            # Traefik
-            80
-            443
-            8080
+      # Both engines are imported; each enables itself from `backend` and reads
+      # these shared knobs. Hosts add the hardware-specific bits (nvidiaSupport,
+      # storageDriver). WSL force-disables the daemon itself.
+      containers.settings.allowTcpPorts = [
+        # Traefik
+        80
+        443
+        8080
 
-            # PHPStorm Xdebug
-            9003
+        # PHPStorm Xdebug
+        9003
 
-            # Portainer
-            9443
+        # Portainer
+        9443
 
-            # MySQL
-            3306
+        # MySQL
+        3306
 
-            # Ray
-            23517
-          ];
-        };
-      };
+        # Ray
+        23517
+      ];
     };
 
     programs.zsh.shellAliases = {
