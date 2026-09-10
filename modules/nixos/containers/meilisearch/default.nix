@@ -32,13 +32,16 @@
               "127.0.0.1:7700:7700"
             ];
             volumes = [
-              "meiliseach:/meili_data"
+              "meiliseach:/meili_data:idmap"
             ];
             extraOptions = [
               "--network=local"
             ];
             environment = {
               MEILI_NO_ANALYTICS = "true";
+              # The image is `:latest`, so an engine jump would otherwise refuse
+              # to open the existing index instead of migrating it.
+              MEILI_UPGRADE_DB = "true";
             };
             log-driver = config.modules.containers.settings.log-driver;
           };
