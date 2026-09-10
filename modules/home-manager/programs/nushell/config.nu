@@ -61,6 +61,13 @@ def "nuk delete" [resource key pattern] {
 
 $env.config = {
     show_banner: false,
+    table: {
+        # Default is `wrapping`, which spills one long cell over several lines.
+        trim: {
+            methodology: "truncating",
+            truncating_suffix: "…",
+        },
+    },
     completions: {
         external: {
             enable: true
@@ -68,3 +75,4 @@ $env.config = {
         }
     },
 }
+
