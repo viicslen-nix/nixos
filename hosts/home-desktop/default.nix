@@ -123,13 +123,11 @@ with lib; {
       };
     };
 
-    programs = {
-      docker = {
-        nvidiaSupport = true;
-        storageDriver = "btrfs";
-      };
-
-      onePassword.autostart = true;
+    containers.settings = {
+      nvidiaSupport = true;
+      storageDriver = "btrfs";
     };
+
+    programs.onePassword.autostart = true;
   };
 }

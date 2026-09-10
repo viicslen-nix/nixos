@@ -169,11 +169,9 @@ with lib; {
       };
     };
 
-    programs = {
-      docker = {
-        nvidiaSupport = true;
-        storageDriver = "btrfs";
-      };
+    containers.settings = {
+      nvidiaSupport = true;
+      storageDriver = "btrfs";
     };
   };
 }

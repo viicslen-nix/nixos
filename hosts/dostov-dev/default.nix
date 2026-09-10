@@ -170,8 +170,9 @@ with lib; {
   ];
 
   modules = {
-    desktop = {
-      niri.enable = true;
+    desktop.niri.enable = true;
+    containers.settings = {
+      nvidiaSupport = true;
     };
 
     core = {
@@ -203,8 +204,6 @@ with lib; {
           "*.mylisterhub.test"
         ];
       };
-
-      docker.nvidiaSupport = true;
     };
   };
 }
