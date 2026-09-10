@@ -114,6 +114,27 @@ with lib; {
     wireshark.enable = true;
   };
 
+  # The 6605DN is IPP 1.1 only, so `model = "everywhere"` cannot drive it — it needs this PPD.
+  services.printing.drivers = [
+    (pkgs.runCommand "xerox-wc6605dn-ppd" {} ''
+      install -Dm444 ${./xerox-wc6605dn.ppd} $out/share/cups/model/Xerox-WorkCentre-6605DN.ppd
+    '')
+  ];
+
+  hardware.printers = {
+    ensurePrinters = [
+      {
+        name = "Xerox-WorkCentre-6605DN";
+        location = "Office";
+        # Raw PDL port, not ipp:// — this firmware's IPP stack drops Get-Printer-Attributes.
+        # mDNS name, not the DHCP address: it is derived from the MAC and never moves.
+        deviceUri = "socket://XRX9C934E127ECD.local:9100";
+        model = "Xerox-WorkCentre-6605DN.ppd";
+      }
+    ];
+    ensureDefaultPrinter = "Xerox-WorkCentre-6605DN";
+  };
+
   environment.systemPackages = with pkgs; [
     # Browsers
     google-chrome
