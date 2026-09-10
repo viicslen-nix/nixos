@@ -193,19 +193,12 @@ with lib; {
     };
 
     programs = {
-      mkcert = {
-        rootCA = {
-          enable = false;
-          # certPath = config.age.secrets.mkcert-rootCA.path;
-          # keyPath = config.age.secrets.mkcert-rootCA-key.path;
-        };
-        domains = [
-          "erpnext.test"
-          "selldiam.test"
-          "mylisterhub.test"
-          "*.mylisterhub.test"
-        ];
-      };
+      mkcert.domains = [
+        "erpnext.test"
+        "selldiam.test"
+        "mylisterhub.test"
+        "*.mylisterhub.test"
+      ];
     };
   };
 }

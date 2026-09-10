@@ -237,6 +237,13 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `tag = "v${version}"` (or `"v${finalAttrs.version}"`), never a literal
   `rev = "v3.2.1"` — with a literal rev, nix-update rewrites `version` only, so
   the package silently keeps building the old source at the old hash.
+- **mkcert has one shared CA: cert plain, key encrypted.** `secrets/mkcert/rootCA.pem`
+  is committed as-is (public, must be a store path for `security.pki`);
+  `rootCA-key.age` is the secret. The `work` preset wires both into
+  `modules.programs.mkcert.rootCA`; the module also imports the CA into each
+  user's `~/.pki/nssdb`, which is the only store Chromium/Electron read.
+  `CAROOT` is set session-wide, so user-side `mkcert` calls issue from it too.
+  See `modules/nixos/programs/mkcert/CONTEXT.md`.
 - **Binary caches are declared once, in `caches.nix`.** One entry per cache
   (`url`, `key`, `scope`, optional `ownNixpkgs`); the `base` and `desktop`
   presets call `caches.substituters <scope>` / `caches.trustedKeys <scope>`, so

@@ -14,36 +14,28 @@
       namespace = "programs";
 
       cfg = config.modules.${namespace}.${name};
+      caRoot = "${cfg.certDir}/ca";
+      certutil = "${pkgs.nssTools}/bin/certutil";
     in {
       options.modules.${namespace}.${name} = {
         enable = mkEnabledOption (mdDoc name);
         rootCA = {
-          enable = mkEnableOption "Enable mkcert root CA certificate.";
+          enable = mkEnableOption "a shared, pre-generated mkcert root CA";
 
+          # The cert is public: keep it plain in the repo so it can also feed the
+          # build-time system bundle. Only the key is a secret.
           certPath = mkOption {
             type = types.nullOr types.path;
             default = null;
-            description = mdDoc ''
-              Path to a pre-generated mkcert root CA certificate (rootCA.pem).
-              This should point to a file in your repository (can be age/sops encrypted).
-              If null, the CA must already exist in certDir/ca/rootCA.pem.
-            '';
-            example = literalExpression ''
-              ./secrets/mkcert-rootCA.pem
-            '';
+            description = mdDoc "Store path of the shared rootCA.pem (a plain file in the repo).";
+            example = literalExpression "./secrets/mkcert/rootCA.pem";
           };
 
           keyPath = mkOption {
-            type = types.nullOr types.path;
+            type = types.nullOr types.str;
             default = null;
-            description = mdDoc ''
-              Path to a pre-generated mkcert root CA key (rootCA-key.pem).
-              This should point to a file in your repository (can be age/sops encrypted).
-              If null, the key must already exist in certDir/ca/rootCA-key.pem.
-            '';
-            example = literalExpression ''
-              ./secrets/mkcert-rootCA-key.pem
-            '';
+            description = mdDoc "Runtime path of the shared rootCA-key.pem (an agenix secret).";
+            example = literalExpression "config.age.secrets.mkcert-rootCA-key.path";
           };
         };
 
@@ -68,8 +60,16 @@
 
       config = mkIf cfg.enable (mkMerge [
         {
+          assertions = [
+            {
+              assertion = cfg.rootCA.enable -> (cfg.rootCA.certPath != null && cfg.rootCA.keyPath != null);
+              message = "modules.programs.mkcert.rootCA needs both certPath and keyPath.";
+            }
+          ];
+
           environment.systemPackages = [
             pkgs.mkcert
+            pkgs.nssTools
             (pkgs.writeShellScriptBin "mkcert-dev" ''
               domain=$1
 
@@ -86,10 +86,10 @@
             '')
           ];
 
-          # Only add to system trust store if rootCA is enabled and cert path is provided
-          security.pki.certificateFiles = mkIf (cfg.rootCA.enable && cfg.rootCA.certPath != null) [
-            cfg.rootCA.certPath
-          ];
+          security.pki.certificateFiles = mkIf cfg.rootCA.enable [cfg.rootCA.certPath];
+
+          # Every mkcert call — plain, `mkcert-dev`, `generate-cert` — signs with the shared CA.
+          environment.sessionVariables.CAROOT = mkIf cfg.rootCA.enable caRoot;
 
           systemd.tmpfiles.rules = mkIf (cfg.domains != []) [
             "d ${cfg.certDir} 0755 root root -"
@@ -106,17 +106,16 @@
               Type = "oneshot";
               RemainAfterExit = true;
             };
-            environment = mkMerge [
-              (mkIf (cfg.rootCA.enable && cfg.rootCA.certPath != null) {
-                CAROOT = dirOf cfg.rootCA.certPath;
-              })
-              (mkIf (!cfg.rootCA.enable || cfg.rootCA.certPath == null) {
-                CAROOT = "${cfg.certDir}/ca";
-              })
-            ];
+            environment.CAROOT = caRoot;
             script = ''
               mkdir -p ${cfg.certDir}
               cd ${cfg.certDir}
+
+              ${optionalString cfg.rootCA.enable ''
+                # mkcert wants cert and key side by side under CAROOT.
+                install -Dm644 ${cfg.rootCA.certPath} ${caRoot}/rootCA.pem
+                install -Dm640 -g users ${cfg.rootCA.keyPath} ${caRoot}/rootCA-key.pem
+              ''}
 
               # Generate certificates for each domain
               ${concatMapStringsSep "\n" (domain: ''
@@ -127,6 +126,27 @@
             '';
           };
         }
+
+        # Chromium and Electron ignore /etc/ssl on Linux; they trust ~/.pki/nssdb.
+        (mkIf (builtins.hasAttr "home-manager" options) {
+          home-manager.users = genAttrs (attrNames users) (_: {lib, ...}: {
+            home.activation.mkcertNss = lib.hm.dag.entryAfter ["writeBoundary"] ''
+              ca=${
+              if cfg.rootCA.enable
+              then cfg.rootCA.certPath
+              else "${caRoot}/rootCA.pem"
+            }
+              db="$HOME/.pki/nssdb"
+              if [ -r "$ca" ]; then
+                mkdir -p "$db"
+                [ -f "$db/cert9.db" ] || run ${certutil} -N --empty-password -d "sql:$db"
+                run ${certutil} -D -d "sql:$db" -n "mkcert (${caRoot})" 2>/dev/null || true
+                run ${certutil} -A -d "sql:$db" -t C,, -n "mkcert (${caRoot})" -i "$ca"
+              fi
+            '';
+          });
+        })
+
         (persistence.mkHmPersistence {
           inherit config options;
           users = attrNames users;
