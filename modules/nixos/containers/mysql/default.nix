@@ -32,8 +32,8 @@
               "127.0.0.1:3306:3306"
             ];
             volumes = [
-              "percona-mysql:/var/lib/mysql"
-              "percona-mysql-config:/etc/my.cnf.d"
+              "percona-mysql:/var/lib/mysql:idmap"
+              "percona-mysql-config:/etc/my.cnf.d:idmap"
             ];
             networks = [
               "local"

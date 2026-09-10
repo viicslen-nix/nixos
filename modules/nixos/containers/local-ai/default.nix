@@ -29,7 +29,7 @@
             hostname = "local-ai";
             image = "localai/localai:latest-aio-gpu-nvidia-cuda-12";
             volumes = [
-              "localai-models:/build/models"
+              "localai-models:/build/models:idmap"
             ];
             environment = {
               DEBUG = "true";

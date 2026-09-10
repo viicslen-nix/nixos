@@ -35,7 +35,7 @@
               "--network=local"
             ];
             volumes = [
-              "pgdata:/var/lib/postgresql/data"
+              "pgdata:/var/lib/postgresql/data:idmap"
             ];
             environment = {
               POSTGRES_PASSWORD = "secret";
