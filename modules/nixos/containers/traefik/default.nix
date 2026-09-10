@@ -72,6 +72,11 @@
           enable = true;
           settings = {
             address = ["/.test/127.0.0.1"];
+
+            # Only the host resolves through dnsmasq. Left on 0.0.0.0 it also owns
+            # :53 on podman's bridge, and aardvark-dns then cannot start.
+            bind-interfaces = true;
+            listen-address = ["127.0.0.1" "::1"];
           };
         };
 
