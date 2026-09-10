@@ -86,7 +86,7 @@
               "127.0.0.1:${vtgate}:${vtgate}"
             ];
             volumes = optionals cfg.persistData [
-              "vttestserver-data:/vt/vtdataroot"
+              "vttestserver-data:/vt/vtdataroot:idmap"
             ];
             environment = {
               PORT = toString cfg.port;

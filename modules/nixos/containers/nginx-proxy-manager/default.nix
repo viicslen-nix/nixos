@@ -34,8 +34,8 @@
               "127.0.0.1:81:81"
             ];
             volumes = [
-              "nginx-proxy-manager:/data"
-              "letsencrypt:/etc/letsencrypt"
+              "nginx-proxy-manager:/data:idmap"
+              "letsencrypt:/etc/letsencrypt:idmap"
             ];
             extraOptions = [
               "--network=local"

@@ -36,7 +36,7 @@
               "--network=local"
             ];
             volumes = [
-              "qdrant-data:/qdrant/storage"
+              "qdrant-data:/qdrant/storage:idmap"
               "${builtins.toString ./config}:/qdrant/config"
             ];
             log-driver = config.modules.containers.settings.log-driver;

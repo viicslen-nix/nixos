@@ -101,6 +101,29 @@
 
           hardware.nvidia-container-toolkit.enable = containers.nvidiaSupport;
         }
+        # `--userns=auto` carves each container's range out of the `containers`
+        # user's subuid/subgid allocation; without an entry podman fails with
+        # "not enough unused IDs in user namespace". Base sits clear of the
+        # per-login-user ranges nixpkgs hands out from 100000 up.
+        (mkIf (config.modules.containers.settings.userns != null) {
+          users.groups.containers = {};
+          users.users.containers = {
+            isSystemUser = true;
+            group = "containers";
+            subUidRanges = [
+              {
+                startUid = 2000000;
+                count = 1048576;
+              }
+            ];
+            subGidRanges = [
+              {
+                startGid = 2000000;
+                count = 1048576;
+              }
+            ];
+          };
+        })
         (persistence.mkHmPersistence {
           inherit config options;
           users = attrNames users;

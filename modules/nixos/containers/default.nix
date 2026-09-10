@@ -1,6 +1,7 @@
 {
   flake.modules.nixos.containers = {
     lib,
+    pkgs,
     config,
     ...
   }:
@@ -56,6 +57,22 @@
               The TCP ports the container backend opens in the firewall.
             '';
           };
+
+          userns = mkOption {
+            type = types.nullOr types.str;
+            default = null;
+            example = "auto";
+            description = ''
+              User namespace for the container backend (podman only) — `"auto"`
+              maps each container's root onto its own unprivileged host UID
+              range. Containers that bind-mount the engine socket are skipped
+              automatically, since a mapped root cannot read it.
+
+              Turning this on offsets on-disk ownership inside every volume, so
+              existing volume data is unreadable until it is recreated or its
+              mounts carry `:idmap`. Leave `null` until that is handled.
+            '';
+          };
         };
       };
 
@@ -84,6 +101,27 @@
 
           virtualisation.oci-containers.backend = cfg.settings.backend;
         }
+
+        # podman reads CONTAINERS_CONF_OVERRIDE per process, so this reaches the
+        # oci-containers units without touching /etc — rootless podman, and the
+        # user's compose projects with it, keep the host namespace.
+        (mkIf (cfg.settings.userns != null && cfg.settings.backend == "podman") {
+          systemd.services = let
+            usernsConf = pkgs.writeText "userns.conf" ''
+              [containers]
+              userns = "${cfg.settings.userns}"
+            '';
+
+            # A mapped root cannot read the root-owned engine socket.
+            mountsEngineSocket = container:
+              any (v: hasInfix "docker.sock" v || hasInfix "podman.sock" v) container.volumes;
+          in
+            mapAttrs' (containerName: container:
+              nameValuePair "podman-${containerName}" {
+                environment.CONTAINERS_CONF_OVERRIDE = mkIf (!mountsEngineSocket container) "${usernsConf}";
+              })
+            config.virtualisation.oci-containers.containers;
+        })
       ];
     };
 }
