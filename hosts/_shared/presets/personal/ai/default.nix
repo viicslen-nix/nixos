@@ -48,6 +48,7 @@ in
       mempalace = "MemPalace/mempalace";
       ponytail = "DietrichGebert/ponytail";
       worktrunk = "max-sixty/worktrunk";
+      workmux = "raine/workmux";
     };
 
     plugins = {
@@ -58,6 +59,8 @@ in
       "phpstorm-plugin@phpstorm-marketplace" = true;
       "ponytail@ponytail" = true;
       "worktrunk@worktrunk" = true;
+      # `workmux setup --hooks` can't install these — settings.json is a store symlink.
+      "workmux-status@workmux" = true;
       "playground@claude-plugins-official" = true;
     };
   };
