@@ -390,6 +390,20 @@ already happened. Treat every heavy Nix invocation as dangerous.
   Claude Code itself, and the mempalace/ponytail/superset hook installers,
   rewrite that file at runtime, so those edits land in `settings.json.backup`
   and are dropped on the next activation. Change settings in Nix, not in the TUI.
+  **When an upstream tool ships its hooks as a Claude plugin, enable the plugin
+  instead of declaring the hook block** — `modules.programs.claude-code`'s
+  `marketplaces` + `plugins` get the hooks *and* that repo's skills for two
+  lines, and survive the tool's own installer being unable to write the symlink.
+  `workmux-status@workmux` is the worked example.
+- **worktrunk creates worktrees; workmux attaches to them.** Both tools do both
+  jobs, so the split is enforced by config, not convention: `modules.programs.workmux`
+  sets `mode: session` + `window_prefix: ""` so workmux's target name matches
+  worktrunk's `repo@branch` directory and it adopts the existing session rather
+  than opening a duplicate. Don't route worktree *creation* through `workmux add`
+  — it slugifies handles, stripping the `@`, so it cannot reproduce that shape.
+  The reverse is safe: workmux reads `git worktree list` (basename, then branch)
+  and never consults `worktree_dir` outside `add`, so it sees every worktrunk
+  worktree wherever it sits. See `modules/home-manager/programs/{workmux,worktrunk}/CONTEXT.md`.
 
 - **mcp-gateway scrubs the backend environment.** It spawns stdio backends with
   only `HOME`, `PATH`, `PWD`, `SHLVL` and `TMPDIR` plus the backend's own `env:`
