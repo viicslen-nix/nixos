@@ -156,6 +156,12 @@ project, on every worktree but the primary — so it just repeats the first half
 of `worktree`. Dropping it is the whole reason this key is set; the rest of the
 list is upstream's default order. The key needs workmux >= 0.1.260.
 
+`preview_size` trades preview height for table rows. At the default this repo
+shows 16 worktrees against the 25 it has, so most sit below the fold; at 25 it
+shows 28. `sort_mode` is *not* a lever despite appearing in the same block — it
+seeds the agent list only, and the Worktrees tab persists its own
+`worktree_sort_mode` from the `s` key, so setting it in config changes nothing.
+
 It does **not** widen the branch. `worktree` renders as `<handle> →<branch>` and
 is capped at roughly 25 columns: rendering the tab with `worktree_columns:
 [worktree]` alone in a 160-column pane still truncates. The freed width goes to
