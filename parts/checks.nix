@@ -29,6 +29,7 @@ in {
           pkgs.runCommand "check-workmux-worktrunk" {
             wm = neoscode.xdg.configFile."workmux/config.yaml".source;
             wt = neoscode.xdg.configFile."worktrunk/config.toml".source;
+            tmux = pkgs.writeText "tmux.conf" neoscode.programs.tmux.extraConfig;
           } ''
             set -eu
 
@@ -59,6 +60,10 @@ in {
               || fail 'the wt tmux alias must hand the branch to workmux open'
 
             grep -qF 'workmux close' "$wt" || fail 'pre-remove must close the workmux target'
+
+            # Dropping -s is silent: the sidebar still works, it just adds a pane to
+            # every window of every session, including ones with no worktree at all.
+            grep -qF "workmux sidebar -s'" "$tmux" || fail 'the sidebar key must stay session-scoped'
 
             touch "$out"
           '';

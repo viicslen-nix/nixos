@@ -211,6 +211,7 @@ in {
     };
     programs = {
       worktrunk.tmux.enable = true;
+      workmux.tmux.enable = true;
 
       git = {
         user = osConfig.users.users.${user}.description;

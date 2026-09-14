@@ -16,6 +16,10 @@
       options.modules.${namespace}.${name} = {
         enable = mkEnabledOption (mdDoc name);
 
+        tmux = {
+          enable = mkEnableOption (mdDoc "tmux keys for the sidebar and agent jumping");
+        };
+
         package = mkOption {
           type = types.package;
           default = pkgs.inputs.llm-agents.workmux;
@@ -57,6 +61,14 @@
         xdg.configFile."workmux/config.yaml" = mkIf (cfg.settings != {}) {
           source = yamlFormat.generate "workmux-config" cfg.settings;
         };
+
+        programs.tmux.extraConfig = mkIf cfg.tmux.enable (mkAfter ''
+          # `t` was tmux's clock-mode; `T` is sesh. `L` duplicated `^`, bound in tmux.conf.
+          # Keep `-s`, or the sidebar adds a pane to every window of every session.
+          bind-key t run-shell '${getExe cfg.package} sidebar -s'
+          bind-key Tab run-shell '${getExe cfg.package} last-agent'
+          bind-key L run-shell '${getExe cfg.package} last-done'
+        '');
       };
     };
 }

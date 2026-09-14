@@ -62,6 +62,28 @@ Status tracking itself needs none of the above wiring: `set-window-status`
 resolves its target from the pane alone and has no worktree or window-ownership
 concept, so it reports correctly from any tmux window.
 
+## `tmux.enable` — the keys, and why these three
+
+workmux installs no tmux bindings of its own; upstream only documents suggested
+ones. The three here are its suggestions with two deviations.
+
+`prefix + t` rather than upstream's `C-t`, because the only control keys bound
+in this config are `C-h C-l C-n C-o C-p C-Space C-z` and their arrow variants,
+so there is no chord pressure to escape — and `t` sits better beside `W`, the
+dashboard key in the worktrunk module. What it displaces is tmux's built-in
+`clock-mode`. Lowercase matters: `T` is the sesh picker.
+
+`L` is upstream's key and displaces tmux's default `switch-client -l`, which is
+free to take because `tmux.conf` already binds `^` to exactly that.
+
+The `-s` on the sidebar is the deviation that matters, and `parts/checks.nix`
+pins it: without it the sidebar is global, and enabling it adds a pane to every
+window of every session plus a hook that does the same to new ones — including
+sessions holding no worktree at all.
+
+Upstream also suggests a `C-s` dashboard binding; it is deliberately absent,
+since `W` already opens the dashboard and its tabs switch from inside.
+
 ## Hooks — `post_create` and `pre_remove: []`
 
 workmux has three hooks to worktrunk's ten — `post_create`, `pre_merge`,
