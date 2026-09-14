@@ -45,6 +45,10 @@ in {
             # Beside the repo, never inside it.
             grep -qF 'worktree_dir: ../' "$wm" || fail 'worktree_dir must be outside the repo'
 
+            # Dropping the key does not disable the hook — it restores upstream's
+            # node_modules fast-delete, which runs behind worktrunk's own pre-remove.
+            grep -qxF 'pre_remove: []' "$wm" || fail 'pre_remove must stay explicitly empty'
+
             # By branch, not by the sanitized dir name — only a branch match finds the primary worktree.
             grep -qF 'workmux open "{% raw %}{{ branch }}{% endraw %}"' "$wt" \
               || fail 'the wt tmux alias must hand the branch to workmux open'
