@@ -22,8 +22,8 @@ keeps that cache hitting.
 These two exist to make workmux's tmux target names identical to the ones
 worktrunk's `worktree-path` produces. With `mode: session` the target is a
 session rather than a window, and with an empty prefix the session name is the
-bare worktree directory basename — `repo@branch`, matching
-`../{{ repo }}@{{ branch | sanitize }}`.
+bare worktree directory basename — which, now that both tools create
+`../worktrees/<repo>/<branch>`, is the branch.
 
 That naming is what lets workmux *adopt* a session worktrunk already created
 instead of opening a rival one: a worktree carrying no `workmux.worktree.*` git
@@ -96,18 +96,19 @@ upstream's default of a `<project>__worktrees` sibling per repo, which scatters
 one such directory next to each clone. `{project}` is the project root's
 directory name and may sit anywhere in the path, not just at the front.
 
-It cannot be made to match worktrunk's `../{{ repo }}@{{ branch | sanitize }}`
-exactly, and the difference is structural rather than cosmetic: `worktree_dir`
-names a *parent directory* and the leaf is always the handle, so there is no
-per-branch template. `worktree_prefix` does not close the gap either — it takes
-no `{project}` (the literal `{project}-` slugifies to `project-`), and slugify
-strips the `@` regardless, so `myrepo@` becomes `myrepo-`.
+worktrunk's `worktree-path` is pointed at the same tree, so both tools create
+`../worktrees/<repo>/<branch>` and a worktree is in the same place whichever one
+made it. The two templates are pinned separately in `parts/checks.nix` because
+the syntaxes differ — worktrunk takes a full per-branch path, workmux only a
+parent whose leaf is always the handle — so they cannot be compared directly and
+would otherwise drift apart silently.
 
-Both layouts sit beside the repo rather than inside it, and workmux reads both,
-so they coexist. The one visible seam is session naming: a worktrunk worktree's
-handle is `repo@branch` and a workmux one's is the bare branch, so their
-sessions read `repo@feature-x` and `feature-x`. Closing that would mean pointing
-worktrunk at `../{{ repo }}__worktrees/{{ branch | sanitize }}` and setting
-`window_prefix = "{project}@"` — don't do it piecemeal, because that prefix
-applied to worktrunk's current layout produces `repo@repo@branch` for every
-worktree that already exists.
+That shared layout is why `window_prefix` stays empty. The handle is the leaf
+directory, which is now the bare branch, so sessions read `feature-x` and the
+primary worktree keeps its clean `myrepo`. Setting `window_prefix` to
+`"{project}@"` would qualify the feature sessions as `myrepo@feature-x` but
+double the primary into `myrepo@myrepo`, since a static prefix cannot tell the
+two apart. Nothing else recovers the qualifier: a `@` reaches a session name
+only through the worktree directory name, and every workmux path that names a
+directory slugifies it — `--name 'myrepo@feat'` lands at `myrepo-feat`, and
+`--target-name` is slugified *and* re-prefixed.
