@@ -62,11 +62,21 @@ Status tracking itself needs none of the above wiring: `set-window-status`
 resolves its target from the pane alone and has no worktree or window-ownership
 concept, so it reports correctly from any tmux window.
 
-## `pre_remove: []`
+## Hooks — `post_create` and `pre_remove: []`
 
 workmux has three hooks to worktrunk's ten — `post_create`, `pre_merge`,
-`pre_remove`, all blocking, with no background `post_*` equivalent. Two of the
-three are dormant here because worktrunk owns worktree creation and teardown.
+`pre_remove`, all blocking, with no background `post_*` equivalent. Note the
+naming inverts: workmux's `post_create` and worktrunk's `pre-start` fire at the
+same moment, after the worktree exists and before the window opens.
+
+`post_create` runs `direnv allow` because direnv keys its allow list by path, so
+a new worktree's `.envrc` is unauthorized even though the file is tracked. It is
+guarded with `test -f .envrc` because this is the *global* hook and fires for
+every repo, not just the ones using direnv. It reaches only worktrees workmux
+itself creates; worktrunk-created ones are covered by its own project-scoped
+`pre-start`.
+
+`pre_merge` is dormant — worktrunk owns merging.
 
 `pre_remove` is the exception, and the reason it is pinned to an empty list
 rather than left out: its default auto-detects Node projects and fast-deletes
