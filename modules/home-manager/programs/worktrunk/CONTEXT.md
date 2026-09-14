@@ -14,12 +14,16 @@ them to tmux, and own merge/remove. They are split here by which half each is
 - **workmux attaches and observes.** It owns the tmux target and the agent
   status icons, dashboard and sidebar.
 
-The split is forced, not chosen: `workmux add` slugifies handles, which strips
-`@`, so it can never produce worktrunk's `repo@branch` directory shape. The
-reverse direction works because workmux resolves worktrees from
-`git worktree list` — basename first, then branch — and never consults its own
-`worktree_dir` on the read path. So it sees every worktree worktrunk makes,
-wherever they sit.
+The split is by capability, not territory: both tools now create into
+`../worktrees/<repo>/<branch>`, so a worktree made by either is in the same
+place and carries the same handle. What worktrunk keeps is the richer lifecycle
+— ten hooks to workmux's three, commit generation, the merge pipeline.
+
+workmux finding worktrunk's worktrees is not a coincidence of layout: it
+resolves from `git worktree list` — basename first, then branch — and never
+consults its own `worktree_dir` on the read path, so it would see them wherever
+they sat. The shared path matters for *creation*, which is why the two
+templates are pinned against each other in `parts/checks.nix`.
 
 ## What the `tmux` option used to be
 

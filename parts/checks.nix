@@ -42,8 +42,13 @@ in {
             # adopting worktrunk's session and opens a duplicate beside it.
             grep -qxF "window_prefix: '''" "$wm" || fail 'window_prefix must stay empty'
 
-            # Beside the repo, never inside it.
-            grep -qF 'worktree_dir: ../' "$wm" || fail 'worktree_dir must be outside the repo'
+            # Both tools create into one tree beside the repo, never inside it. The two
+            # templates differ in syntax, so each is pinned rather than compared.
+            grep -qxF 'worktree_dir: ../worktrees/{project}' "$wm" \
+              || fail 'workmux must create under ../worktrees/<project>'
+
+            grep -qF 'worktree-path = "../worktrees/{{ repo }}/{{ branch | sanitize }}"' "$wt" \
+              || fail 'worktrunk must create under ../worktrees/<repo>'
 
             # Dropping the key does not disable the hook — it restores upstream's
             # node_modules fast-delete, which runs behind worktrunk's own pre-remove.

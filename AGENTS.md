@@ -395,15 +395,19 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `marketplaces` + `plugins` get the hooks *and* that repo's skills for two
   lines, and survive the tool's own installer being unable to write the symlink.
   `workmux-status@workmux` is the worked example.
-- **worktrunk creates worktrees; workmux attaches to them.** Both tools do both
-  jobs, so the split is enforced by config, not convention: `modules.programs.workmux`
-  sets `mode: session` + `window_prefix: ""` so workmux's target name matches
-  worktrunk's `repo@branch` directory and it adopts the existing session rather
-  than opening a duplicate. Don't route worktree *creation* through `workmux add`
-  — it slugifies handles, stripping the `@`, so it cannot reproduce that shape.
-  The reverse is safe: workmux reads `git worktree list` (basename, then branch)
-  and never consults `worktree_dir` outside `add`, so it sees every worktrunk
-  worktree wherever it sits. See `modules/home-manager/programs/{workmux,worktrunk}/CONTEXT.md`.
+- **worktrunk and workmux create into one shared tree.** Both are pointed at
+  `../worktrees/<repo>/<branch>` — worktrunk via `worktree-path`, workmux via
+  `worktree_dir` — so a worktree is in the same place and carries the same
+  handle whichever made it. The templates differ in syntax (worktrunk takes a
+  full per-branch path, workmux only a parent), so they can't be compared and
+  are pinned separately by `checks.workmux-worktrunk`; change one and the check
+  tells you about the other. `window_prefix` stays empty because the handle is
+  the leaf: sessions read `feature-x`, and the primary worktree keeps its bare
+  `repo`. Don't "qualify" them with `window_prefix = "{project}@"` — it doubles
+  the primary into `repo@repo`, and nothing else recovers a `@`, since every
+  workmux path that names a directory slugifies it. workmux reads worktrees from
+  `git worktree list` regardless of layout, so only *creation* depends on this.
+  See `modules/home-manager/programs/{workmux,worktrunk}/CONTEXT.md`.
 
 - **mcp-gateway scrubs the backend environment.** It spawns stdio backends with
   only `HOME`, `PATH`, `PWD`, `SHLVL` and `TMPDIR` plus the backend's own `env:`
