@@ -41,7 +41,7 @@
             merge.squash = false;
             commit.generation.command = "${commitScript}";
             # Keep in step with `modules.programs.workmux.settings.worktree_dir`.
-            worktree-path = "../worktrees/{{ repo }}/{{ branch | sanitize }}";
+            worktree-path = "../.worktrees/{{ repo }}/{{ branch | sanitize }}";
             list = {
               summary = false;
               json-schema = 2;

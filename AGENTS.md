@@ -396,7 +396,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   lines, and survive the tool's own installer being unable to write the symlink.
   `workmux-status@workmux` is the worked example.
 - **worktrunk and workmux create into one shared tree.** Both are pointed at
-  `../worktrees/<repo>/<branch>` — worktrunk via `worktree-path`, workmux via
+  `../.worktrees/<repo>/<branch>` — worktrunk via `worktree-path`, workmux via
   `worktree_dir` — so a worktree is in the same place and carries the same
   handle whichever made it. The templates differ in syntax (worktrunk takes a
   full per-branch path, workmux only a parent), so they can't be compared and

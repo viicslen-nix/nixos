@@ -45,11 +45,11 @@ in {
 
             # Both tools create into one tree beside the repo, never inside it. The two
             # templates differ in syntax, so each is pinned rather than compared.
-            grep -qxF 'worktree_dir: ../worktrees/{project}' "$wm" \
-              || fail 'workmux must create under ../worktrees/<project>'
+            grep -qxF 'worktree_dir: ../.worktrees/{project}' "$wm" \
+              || fail 'workmux must create under ../.worktrees/<project>'
 
-            grep -qF 'worktree-path = "../worktrees/{{ repo }}/{{ branch | sanitize }}"' "$wt" \
-              || fail 'worktrunk must create under ../worktrees/<repo>'
+            grep -qF 'worktree-path = "../.worktrees/{{ repo }}/{{ branch | sanitize }}"' "$wt" \
+              || fail 'worktrunk must create under ../.worktrees/<repo>'
 
             # Dropping the key does not disable the hook — it restores upstream's
             # node_modules fast-delete, which runs behind worktrunk's own pre-remove.
