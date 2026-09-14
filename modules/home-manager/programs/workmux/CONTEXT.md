@@ -23,7 +23,7 @@ These two exist to make workmux's tmux target names identical to the ones
 worktrunk's `worktree-path` produces. With `mode: session` the target is a
 session rather than a window, and with an empty prefix the session name is the
 bare worktree directory basename — which, now that both tools create
-`../worktrees/<repo>/<branch>`, is the branch.
+`../.worktrees/<repo>/<branch>`, is the branch.
 
 That naming is what lets workmux *adopt* a session worktrunk already created
 instead of opening a rival one: a worktree carrying no `workmux.worktree.*` git
@@ -121,14 +121,19 @@ upstream's default.
 ## `worktree_dir` — sibling of the repo, not inside it
 
 Only `workmux add` reads this; `open`, `list` and `resurrect` all resolve from
-`git worktree list` and ignore it entirely. `../worktrees/{project}` collects
+`git worktree list` and ignore it entirely. `../.worktrees/{project}` collects
 every repo's worktrees under one directory beside the checkouts, rather than
 upstream's default of a `<project>__worktrees` sibling per repo, which scatters
 one such directory next to each clone. `{project}` is the project root's
 directory name and may sit anywhere in the path, not just at the front.
 
+The leading dot is not cosmetic: the checkouts live in `~/Development`, which
+already holds a repo *named* `worktrees` (`viicslen/worktrees`). Undotted, every
+worktree would be created inside that project's working tree, showing up as
+untracked directories in it — its `.gitignore` does not cover them.
+
 worktrunk's `worktree-path` is pointed at the same tree, so both tools create
-`../worktrees/<repo>/<branch>` and a worktree is in the same place whichever one
+`../.worktrees/<repo>/<branch>` and a worktree is in the same place whichever one
 made it. The two templates are pinned separately in `parts/checks.nix` because
 the syntaxes differ — worktrunk takes a full per-branch path, workmux only a
 parent whose leaf is always the handle — so they cannot be compared directly and

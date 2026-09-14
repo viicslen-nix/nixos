@@ -15,7 +15,7 @@ them to tmux, and own merge/remove. They are split here by which half each is
   status icons, dashboard and sidebar.
 
 The split is by capability, not territory: both tools now create into
-`../worktrees/<repo>/<branch>`, so a worktree made by either is in the same
+`../.worktrees/<repo>/<branch>`, so a worktree made by either is in the same
 place and carries the same handle. What worktrunk keeps is the richer lifecycle
 — ten hooks to workmux's three, commit generation, the merge pipeline.
 

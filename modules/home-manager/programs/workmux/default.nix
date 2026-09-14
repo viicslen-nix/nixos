@@ -34,7 +34,7 @@
             mode = "session";
             window_prefix = "";
             # One shared tree beside the repo, not upstream's per-repo sibling default.
-            worktree_dir = "../worktrees/{project}";
+            worktree_dir = "../.worktrees/{project}";
             # Empty, not absent — the default fast-deletes node_modules on removal.
             pre_remove = [];
             # direnv keys its allow list by path, so every new worktree needs its own.
