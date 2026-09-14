@@ -31,6 +31,8 @@
             window_prefix = "";
             # Spelled out rather than left to the default, which upstream may move.
             worktree_dir = "../{project}__worktrees";
+            # Empty, not absent — the default fast-deletes node_modules on removal.
+            pre_remove = [];
             # Without this, first run prompts and tries to write this read-only config.
             nerdfont = true;
           };

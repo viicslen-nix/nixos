@@ -62,6 +62,21 @@ Status tracking itself needs none of the above wiring: `set-window-status`
 resolves its target from the pane alone and has no worktree or window-ownership
 concept, so it reports correctly from any tmux window.
 
+## `pre_remove: []`
+
+workmux has three hooks to worktrunk's ten — `post_create`, `pre_merge`,
+`pre_remove`, all blocking, with no background `post_*` equivalent. Two of the
+three are dormant here because worktrunk owns worktree creation and teardown.
+
+`pre_remove` is the exception, and the reason it is pinned to an empty list
+rather than left out: its default auto-detects Node projects and fast-deletes
+`node_modules`. That path is reachable from the dashboard bound to `prefix + W`
+— `r` removes a worktree and `R` sweeps several — and a removal taken that way
+bypasses worktrunk's own `pre-remove`, so the project hooks that clean up after
+a worktree never run. Emptying the list keeps `wt` the only thing that deletes a
+worktree. Note that *omitting* the key does not disable the hook; it restores
+upstream's default.
+
 ## `worktree_dir` — sibling of the repo, not inside it
 
 Only `workmux add` reads this; `open`, `list` and `resurrect` all resolve from
