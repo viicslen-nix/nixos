@@ -53,10 +53,19 @@ mempalace and superset hit.
 Upstream also publishes the identical hooks as a Claude Code plugin, so the
 personal AI preset enables `workmux-status@workmux` from the `raine/workmux`
 marketplace instead. That brings the `SessionStart`/`UserPromptSubmit`/
-`PostToolUse`/`Notification`/`Stop` hooks *and* the six shipped skills with no
-Nix hook block at all. The plugin's hook commands invoke a bare `workmux`, which
-is why the module puts the package in `home.packages` rather than only
-referencing its store path.
+`PostToolUse`/`Notification`/`Stop` hooks with no Nix hook block at all. The
+plugin's hook commands invoke a bare `workmux`, which is why the module puts the
+package in `home.packages` rather than only referencing its store path.
+
+The plugin manifest declares hooks only — it carries no skills, so
+`setup --skills` is the other half of `setup` that has to be replaced rather
+than simply skipped. The six skills are vendored into the personal AI preset
+instead (`just vendor-skills raine/workmux --all`), which is what reaches
+opencode, antigravity and copilot as well; the plugin would only ever have
+served Claude Code. Running `setup --skills` writes them as real directories
+under `~/.claude/skills/`, where they collide with the generated symlinks on the
+next activation — remove them rather than letting home-manager rename them to
+`<name>.backup`.
 
 Status tracking itself needs none of the above wiring: `set-window-status`
 resolves its target from the pane alone and has no worktree or window-ownership
