@@ -29,8 +29,8 @@
             # Both keys, or the session is `wm-<name>` and workmux stops adopting worktrunk's.
             mode = "session";
             window_prefix = "";
-            # Spelled out rather than left to the default, which upstream may move.
-            worktree_dir = "../{project}__worktrees";
+            # One shared tree beside the repo, not upstream's per-repo sibling default.
+            worktree_dir = "../worktrees/{project}";
             # Empty, not absent — the default fast-deletes node_modules on removal.
             pre_remove = [];
             # direnv keys its allow list by path, so every new worktree needs its own.
