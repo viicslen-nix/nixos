@@ -33,6 +33,8 @@
             worktree_dir = "../{project}__worktrees";
             # Empty, not absent — the default fast-deletes node_modules on removal.
             pre_remove = [];
+            # direnv keys its allow list by path, so every new worktree needs its own.
+            post_create = ["test -f .envrc && ${getExe config.programs.direnv.package} allow || true"];
             # Without this, first run prompts and tries to write this read-only config.
             nerdfont = true;
           };
