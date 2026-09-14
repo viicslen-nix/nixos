@@ -41,6 +41,9 @@
             post_create = ["test -f .envrc && ${getExe config.programs.direnv.package} allow || true"];
             # Without this, first run prompts and tries to write this read-only config.
             nerdfont = true;
+            # Upstream's default minus `project`, which repeats the handle on every
+            # worktree but the primary instead of naming the project.
+            dashboard.worktree_columns = ["number" "worktree" "git" "pr" "mux" "age" "agent"];
           };
           description = ''
             Configuration written to {file}`$XDG_CONFIG_HOME/workmux/config.yaml`.
