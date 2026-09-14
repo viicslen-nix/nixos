@@ -90,10 +90,11 @@ upstream's default.
 ## `worktree_dir` — sibling of the repo, not inside it
 
 Only `workmux add` reads this; `open`, `list` and `resurrect` all resolve from
-`git worktree list` and ignore it entirely. `../{project}__worktrees` is what
-upstream's default already resolves to — it is written out so a default that
-moves in one of workmux's near-daily releases can't silently relocate
-worktrees into the repo.
+`git worktree list` and ignore it entirely. `../worktrees/{project}` collects
+every repo's worktrees under one directory beside the checkouts, rather than
+upstream's default of a `<project>__worktrees` sibling per repo, which scatters
+one such directory next to each clone. `{project}` is the project root's
+directory name and may sit anywhere in the path, not just at the front.
 
 It cannot be made to match worktrunk's `../{{ repo }}@{{ branch | sanitize }}`
 exactly, and the difference is structural rather than cosmetic: `worktree_dir`
