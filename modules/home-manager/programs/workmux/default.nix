@@ -43,7 +43,11 @@
             nerdfont = true;
             # Upstream's default minus `project`, which repeats the handle on every
             # worktree but the primary instead of naming the project.
-            dashboard.worktree_columns = ["number" "worktree" "git" "pr" "mux" "age" "agent"];
+            dashboard = {
+              worktree_columns = ["number" "worktree" "git" "pr" "mux" "age" "agent"];
+              # The repo carries more worktrees than one screen; trade preview for rows.
+              preview_size = 25;
+            };
           };
           description = ''
             Configuration written to {file}`$XDG_CONFIG_HOME/workmux/config.yaml`.
