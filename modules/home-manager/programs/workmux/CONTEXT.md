@@ -62,8 +62,26 @@ Status tracking itself needs none of the above wiring: `set-window-status`
 resolves its target from the pane alone and has no worktree or window-ownership
 concept, so it reports correctly from any tmux window.
 
-## `worktree_dir` is deliberately unset
+## `worktree_dir` — sibling of the repo, not inside it
 
-It only affects `workmux add`, and worktrunk owns worktree creation here (see
-`../worktrunk/CONTEXT.md`). Setting it would imply workmux creates worktrees
-too, which would put them somewhere worktrunk does not look.
+Only `workmux add` reads this; `open`, `list` and `resurrect` all resolve from
+`git worktree list` and ignore it entirely. `../{project}__worktrees` is what
+upstream's default already resolves to — it is written out so a default that
+moves in one of workmux's near-daily releases can't silently relocate
+worktrees into the repo.
+
+It cannot be made to match worktrunk's `../{{ repo }}@{{ branch | sanitize }}`
+exactly, and the difference is structural rather than cosmetic: `worktree_dir`
+names a *parent directory* and the leaf is always the handle, so there is no
+per-branch template. `worktree_prefix` does not close the gap either — it takes
+no `{project}` (the literal `{project}-` slugifies to `project-`), and slugify
+strips the `@` regardless, so `myrepo@` becomes `myrepo-`.
+
+Both layouts sit beside the repo rather than inside it, and workmux reads both,
+so they coexist. The one visible seam is session naming: a worktrunk worktree's
+handle is `repo@branch` and a workmux one's is the bare branch, so their
+sessions read `repo@feature-x` and `feature-x`. Closing that would mean pointing
+worktrunk at `../{{ repo }}__worktrees/{{ branch | sanitize }}` and setting
+`window_prefix = "{project}@"` — don't do it piecemeal, because that prefix
+applied to worktrunk's current layout produces `repo@repo@branch` for every
+worktree that already exists.

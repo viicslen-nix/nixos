@@ -29,6 +29,8 @@
             # Both keys, or the session is `wm-<name>` and workmux stops adopting worktrunk's.
             mode = "session";
             window_prefix = "";
+            # Spelled out rather than left to the default, which upstream may move.
+            worktree_dir = "../{project}__worktrees";
             # Without this, first run prompts and tries to write this read-only config.
             nerdfont = true;
           };
