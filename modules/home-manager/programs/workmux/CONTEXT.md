@@ -148,3 +148,17 @@ two apart. Nothing else recovers the qualifier: a `@` reaches a session name
 only through the worktree directory name, and every workmux path that names a
 directory slugifies it — `--name 'myrepo@feat'` lands at `myrepo-feat`, and
 `--target-name` is slugified *and* re-prefixed.
+
+## `dashboard.worktree_columns` — and what it cannot fix
+
+The Worktrees tab's `project` column shows the worktree *handle*, not the
+project, on every worktree but the primary — so it just repeats the first half
+of `worktree`. Dropping it is the whole reason this key is set; the rest of the
+list is upstream's default order. The key needs workmux >= 0.1.260.
+
+It does **not** widen the branch. `worktree` renders as `<handle> →<branch>` and
+is capped at roughly 25 columns: rendering the tab with `worktree_columns:
+[worktree]` alone in a 160-column pane still truncates. The freed width goes to
+`git`, not to `worktree`. So for a worktree whose handle is already long — every
+t3code one is `t3code-<8 hex>` — the branch is always cut off, and no
+configuration recovers it. The tab is a status view, not a worktree picker.
