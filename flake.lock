@@ -445,6 +445,22 @@
         "type": "github"
       }
     },
+    "exo": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1768606981,
+        "narHash": "sha256-080NIKZa8GhNNMAF7wmUkORetSd4NraPAOIcLw0cgAk=",
+        "owner": "debuggyo",
+        "repo": "Exo",
+        "rev": "d8ca44a3c4e71777ec70eef3f886b3fdd0b5f614",
+        "type": "github"
+      },
+      "original": {
+        "owner": "debuggyo",
+        "repo": "Exo",
+        "type": "github"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -2363,6 +2379,48 @@
         "type": "github"
       }
     },
+    "ignis": {
+      "inputs": {
+        "ignis-gvc": "ignis-gvc",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785596441,
+        "narHash": "sha256-ax/XBrQEOAJI0vHa5ywdcu846flL8f7kmsQ59HAau3w=",
+        "owner": "ignis-sh",
+        "repo": "ignis",
+        "rev": "97b7b5b17a16f574092b1584d7f5e24417455571",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ignis-sh",
+        "repo": "ignis",
+        "type": "github"
+      }
+    },
+    "ignis-gvc": {
+      "inputs": {
+        "nixpkgs": [
+          "ignis",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1754064086,
+        "narHash": "sha256-ft5KvY2OYrWF+jEsfBL/Zx8Iuo2C10C6COk8wHwZw34=",
+        "owner": "ignis-sh",
+        "repo": "ignis-gvc",
+        "rev": "f2c9f10d8b49cc38106a2f07a51ea959c6aa4e63",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ignis-sh",
+        "repo": "ignis-gvc",
+        "type": "github"
+      }
+    },
     "import-tree": {
       "locked": {
         "lastModified": 1763762820,
@@ -3354,6 +3412,7 @@
         "ambxst": "ambxst",
         "dms": "dms",
         "emacs": "emacs",
+        "exo": "exo",
         "flake-parts": "flake-parts_2",
         "fzf-tab": "fzf-tab",
         "ghost-backup": "ghost-backup",
@@ -3361,6 +3420,7 @@
         "gitura": "gitura",
         "hunk": "hunk",
         "hyprland": "hyprland",
+        "ignis": "ignis",
         "jj-starship": "jj-starship",
         "lan-mouse": "lan-mouse",
         "laravel-sail": "laravel-sail",

@@ -84,6 +84,15 @@
       url = "github:ST-SARAVANAPRIYAN/Nilastia";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ignis = {
+      url = "github:ignis-sh/ignis";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # Ships no flake — the shell is an ignis config directory plus matugen templates.
+    exo = {
+      url = "github:debuggyo/Exo";
+      flake = false;
+    };
     ambxst = {
       url = "github:Axenide/Ambxst";
       inputs.nixpkgs.follows = "nixpkgs";
