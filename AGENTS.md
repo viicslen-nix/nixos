@@ -175,10 +175,13 @@ already happened. Treat every heavy Nix invocation as dangerous.
   second loader with nixpkgs dropped from the override set, so they keep
   their author's pin — and still share the one home-manager. Declare it on
   the matching cache entry in
-  `caches.nix`, not in `flake.nix` — the routing is derived. **No cache
-  declares one today** — `llm-agents-nix` was the only user and is a real input
-  again (see CONTEXT.md) — so `ownNixpkgs` resolves to `[]` and the second
-  loader is never forced; the mechanism stays for the next cached upstream.
+  `caches.nix`, not in `flake.nix` — the routing is derived. The one user today
+  is `lantian` → `nix-cachyos-kernel`: xddxdd publishes the CachyOS kernels to
+  that attic, and unifying nixpkgs moved the path off it, so every rebuild
+  compiled a kernel. Note its `overlays.pinned` does **not** protect you — it
+  reads `self.legacyPackages`, which omniflake had already rebuilt against our
+  nixpkgs. (`llm-agents-nix` used to be the other one; it is a real input again,
+  see CONTEXT.md.)
   Diagnose by comparing store paths, never by reading
   nix.conf: eval the package both ways
   (`nix eval github:<owner>/<repo>/<rev>#packages.x86_64-linux.<pkg>.outPath`
@@ -203,8 +206,14 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `error: cannot download download-<crate> from any mirror`. Already-realised
   store paths and cached vendor FODs mask it, so it only shows up when
   something forces a rebuild — bumping a Rust input, or repinning one's
-  nixpkgs. This is why `tuicr` keeps its own nixpkgs pin; it is also waiting
-  to bite the next `just update` that moves a Rust input.
+  nixpkgs. This is why `tuicr` keeps its own nixpkgs pin. Fixed globally in the
+  `base` preset: `systemd.services.nix-daemon.environment.NIX_CURL_FLAGS =
+  "-A Mozilla/5.0"` — fetchurl lists `NIX_CURL_FLAGS` in `impureEnvVars` and
+  appends it *after* its own `--user-agent`, so it wins. The value must contain
+  no spaces: the builder expands `$NIX_CURL_FLAGS` unquoted. Before the first
+  rebuild that carries it, bootstrap the running daemon the same way as the
+  GitHub token (`sudo systemctl set-environment NIX_CURL_FLAGS=…` +
+  `systemctl restart nix-daemon`).
 - **The subflakes stay on their own inputs.** Only 5 of the ~35 inputs across
   `flakes/*` are in the index (emacs→`emacs-overlay`, lib→`systems`,
   neovim→`nvf`, niri→`niri-flake`, nixvim→`nixvim`), and adding omniflake to a
