@@ -100,12 +100,18 @@ workmux has three hooks to worktrunk's ten — `post_create`, `pre_merge`,
 naming inverts: workmux's `post_create` and worktrunk's `pre-start` fire at the
 same moment, after the worktree exists and before the window opens.
 
-`post_create` runs `direnv allow` because direnv keys its allow list by path, so
-a new worktree's `.envrc` is unauthorized even though the file is tracked. It is
-guarded with `test -f .envrc` because this is the *global* hook and fires for
-every repo, not just the ones using direnv. It reaches only worktrees workmux
-itself creates; worktrunk-created ones are covered by its own project-scoped
-`pre-start`.
+`post_create` is deliberately unset. It used to run `direnv allow`, because
+direnv keys its allow list by path and a new worktree's `.envrc` is
+unauthorized even though the file is tracked. The problem is that this is the
+*global* hook: it fired in every repo, so it added whatever `.envrc` the
+checked-out branch happened to carry to direnv's allow list with no prompt, and
+a branch that edits `.envrc` then gets it executed on the next shell entry.
+
+direnv approval is per project instead, the shape worktrunk already uses.
+worktrunk-created worktrees — the overwhelming majority — are covered by its
+project-scoped `pre-start`, and a repo that wants the same for `workmux add`
+carries `post_create` in its own `.workmux.yaml`. Unlike `pre_remove` below,
+dropping `post_create` leaves no upstream default behind.
 
 `pre_merge` is dormant — worktrunk owns merging.
 
