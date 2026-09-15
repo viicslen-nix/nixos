@@ -41,10 +41,24 @@ stays on whichever shell is selected — it runs before the session, not inside
 it. Nilastia ships no greeter, so switching to it does not cost the login
 screen.
 
-## Keybinds are not switched
+## Keybinds follow the shell, and the shell owns them
 
-dms rewrites niri's `config.kdl` through its `niri.includes` hack; that is gated
-off when another shell runs, so niri falls back to the binds in
-`flakes/niri/config/binds`. Nilastia's own IPC binds are not wired up — it
-exposes them as `quickshell -c … ipc call …` spawns, and they would have to be
-added to the niri config to be reachable.
+The two shells deliver binds by different routes, which is why they never
+collide. dms rewrites niri's `config.kdl` through its `niri.includes` hack, so
+its binds live in a generated `dms/binds.kdl`; that hack is gated off when
+another shell runs. Nilastia instead contributes to
+`programs.niri.settings.binds` from its own home-manager module, under the same
+`mkIf` as the shell itself — so the keys exist only while it is selected, and
+`flakes/niri/config/binds` never learns a shell name.
+
+That placement is the point: a bind belongs to the thing it drives. A third
+shell adds its own binds in its own module and touches nothing here.
+
+Nilastia's five (`Mod+Space` launcher, `Mod+G` dashboard, `Mod+Shift+Q` session,
+`Mod+Shift+N` nexus, `Mod+Alt+L` lock) were chosen from keys the base niri
+config leaves free, so no `mkForce` is involved — if a future bind collides the
+module system will say so rather than silently pick a winner.
+
+`Mod+Shift+S` is deliberately *not* taken for nilastia's screenshot picker: the
+existing menu in `flakes/niri/config/binds/screenshots.nix` works under either
+shell, and overriding a working bind to duplicate it buys nothing.
