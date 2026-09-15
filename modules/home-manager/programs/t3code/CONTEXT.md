@@ -44,3 +44,30 @@ is still pending.
 `t3 connect login`/`link` persist their authorization in `~/.t3`, alongside the
 project database — losing it means re-authorizing every boot, hence the
 persistence entry.
+
+## t3code cannot join the shared worktree tree
+
+worktrunk and workmux are both pointed at `../.worktrees/<repo>/<branch>`
+(see `../workmux/CONTEXT.md`). t3code is deliberately left out of that, because
+its worktree location is hardcoded:
+
+```ts
+// apps/server/src/vcs/GitVcsDriverCore.ts
+const worktreePath = input.path ?? path.join(worktreesDir, repoName, sanitizedBranch);
+// worktreesDir = join(baseDir, "worktrees"), baseDir = T3CODE_HOME ?? ~/.t3
+```
+
+There is no setting, no `t3.json` key and no per-project override for it — the
+worktree-adjacent settings that do exist (`newWorktreesStartFromOrigin`,
+`defaultThreadEnvMode`, `runOnWorktreeCreate`) are behavioural. The RPC input
+carries an optional explicit `path`, but every first-party caller passes `null`
+and no UI surfaces it.
+
+The only lever is `--base-dir` / `T3CODE_HOME`, and it is the wrong one: it
+relocates the whole data directory — `userdata`, `caches`, the auth tokens and
+project database this module persists as `.t3` — and it names the *parent* of
+`worktrees`, so aiming it at the checkout directory would both collide with the
+`worktrees` repo living there and scatter `userdata` beside the clones.
+
+The shape already agrees (`<root>/worktrees/<repo>/<branch>`, slashes in the
+branch turned to dashes); only the root differs. Leave it at `~/.t3`.

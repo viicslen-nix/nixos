@@ -132,10 +132,10 @@
           home-manager.users = genAttrs (attrNames users) (_: {lib, ...}: {
             home.activation.mkcertNss = lib.hm.dag.entryAfter ["writeBoundary"] ''
               ca=${
-              if cfg.rootCA.enable
-              then cfg.rootCA.certPath
-              else "${caRoot}/rootCA.pem"
-            }
+                if cfg.rootCA.enable
+                then cfg.rootCA.certPath
+                else "${caRoot}/rootCA.pem"
+              }
               db="$HOME/.pki/nssdb"
               if [ -r "$ca" ]; then
                 mkdir -p "$db"

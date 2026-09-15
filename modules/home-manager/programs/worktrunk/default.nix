@@ -22,115 +22,7 @@
         grep -v '^#' "$f"
       '';
 
-      tmuxWorktreePickerScript = pkgs.writeShellScript "worktrunk-tmux-worktree-picker" ''
-        set -eu
-
-        GIT='${lib.getExe pkgs.git}'
-        TV='${lib.getExe pkgs.television}'
-        WT='${lib.getExe config.programs.worktrunk.package}'
-
-        repo_root=$($GIT rev-parse --show-toplevel 2>/dev/null || true)
-        if [ -z "$repo_root" ]; then
-          printf 'Not inside a git repository.\n' >&2
-          exit 1
-        fi
-
-        git_common_dir=$($GIT -C "$repo_root" rev-parse --git-common-dir 2>/dev/null || true)
-        if [ -z "$git_common_dir" ]; then
-          printf 'Unable to determine git common directory.\n' >&2
-          exit 1
-        fi
-
-        case "$git_common_dir" in
-          /*) ;;
-          *) git_common_dir="$repo_root/$git_common_dir" ;;
-        esac
-
-        repo_name=$(basename "$(dirname "$git_common_dir")")
-
-        current_branch=$($GIT branch --show-current 2>/dev/null || true)
-
-        while true; do
-          selection_raw=$($GIT -C "$repo_root" worktree list --porcelain \
-            | awk -v repo="$repo_name" '
-                $1 == "worktree" {
-                  path = substr($0, 10)
-                  branch = "detached"
-                  next
-                }
-
-                $1 == "branch" {
-                  branch = $2
-                  sub("^refs/heads/", "", branch)
-                  printf "%s@%s\t%s\n", repo, branch, path
-                  next
-                }
-
-                $1 == "detached" {
-                  printf "%s@detached\t%s\n", repo, path
-                }
-              ' \
-            | $TV \
-                --expect='ctrl-d' \
-                --input-header='worktrees (enter: switch, ctrl-d: delete)' \
-            | tr -d '\r')
-
-          if [ -z "$selection_raw" ]; then
-            exit 0
-          fi
-
-          action_key="enter"
-          selection="$selection_raw"
-
-          case "$selection_raw" in
-            *$'\n'*)
-              action_key="''${selection_raw%%$'\n'*}"
-              selection="''${selection_raw#*$'\n'}"
-              ;;
-          esac
-
-          selection="$(printf '%s' "$selection" | tr -d '\n')"
-
-          if [ -z "$selection" ]; then
-            exit 0
-          fi
-
-          selection_path="''${selection#*$'\t'}"
-
-          if [ "$action_key" = "ctrl-d" ]; then
-            if [ "$selection_path" = "$repo_root" ]; then
-              continue
-            fi
-
-            $WT remove --force -D "$selection_path"
-            continue
-          fi
-
-          target_branch=$($GIT -C "$selection_path" branch --show-current 2>/dev/null || true)
-
-          if [ -z "$target_branch" ] || [ "$target_branch" = "$current_branch" ]; then
-            exit 0
-          fi
-
-          $WT tmux "$target_branch"
-          exit 0
-        done
-      '';
-
-      postSwitchScript = pkgs.writeShellScript "worktrunk-post-switch" ''
-        S=$1
-        W=$2
-
-        if ! tmux has-session -t "$S" 2>/dev/null; then
-          tmux new-session -d -s "$S" -c "$W"
-        fi
-
-        if [ -n "$TMUX" ]; then
-          tmux switch-client -t "$S"
-        else
-          tmux attach-session -t "$S"
-        fi
-      '';
+      workmux = getExe config.modules.${namespace}.workmux.package;
     in {
       imports = [
         inputs.worktrunk.homeModules.default
@@ -148,7 +40,8 @@
           default = {
             merge.squash = false;
             commit.generation.command = "${commitScript}";
-            worktree-path = "../{{ repo }}@{{ branch | sanitize }}";
+            # Keep in step with `modules.programs.workmux.settings.worktree_dir`.
+            worktree-path = "../.worktrees/{{ repo }}/{{ branch | sanitize }}";
             list = {
               summary = false;
               json-schema = 2;
@@ -209,8 +102,9 @@
 
         xdg.configFile."worktrunk/config.toml" = let
           tmuxSettings = optionalAttrs cfg.tmux.enable {
-            pre-remove.tmux = "tmux kill-session -t {{ repo }}@{{ branch | sanitize }} 2>/dev/null || true";
-            aliases.tmux = "wt switch {{ args }} --no-cd --execute='${postSwitchScript} \"{% raw %}{{ repo }}@{{ branch | sanitize }}{% endraw %}\" {% raw %}{{ worktree_path }}{% endraw %}'";
+            pre-remove.tmux = "${workmux} close || true";
+            # `{{ branch }}`, not the sanitized dir name — only a branch match finds the primary worktree.
+            aliases.tmux = "wt switch {{ args }} --no-cd --execute='${workmux} open \"{% raw %}{{ branch }}{% endraw %}\"'";
           };
           mergedSettings = recursiveUpdate cfg.settings tmuxSettings;
         in
@@ -219,7 +113,7 @@
           };
 
         programs.tmux.extraConfig = mkIf cfg.tmux.enable (mkAfter ''
-          bind-key W new-window -n worktrees -c "#{pane_current_path}" '${tmuxWorktreePickerScript}'
+          bind-key W new-window -n worktrees -c "#{pane_current_path}" '${workmux} dashboard -t worktrees'
         '');
       };
     };
