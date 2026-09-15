@@ -16,6 +16,8 @@
       scope = "base";
       url = "https://attic.xuyh0120.win/lantian";
       key = "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=";
+      # xddxdd's own cache: unifying nixpkgs would miss it and compile a kernel.
+      ownNixpkgs = ["nix-cachyos-kernel"];
     };
 
     numtide = {
