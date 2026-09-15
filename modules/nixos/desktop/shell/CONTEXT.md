@@ -109,6 +109,23 @@ warning, and the binaries are `awww` / `awww-daemon`, so a unit calling
 in `matugen/config.toml` — a single occurrence, covered by a one-line
 `writeShellScriptBin` shim rather than by rewriting a linked config file.
 
+**Exo expects three files it does not ship.** `ignis/user_settings.py` builds an
+`OptionsManager`, whose `__init__` calls `load_from_file` unconditionally — no
+existence check — and the stylesheets `@use "../colors"` and
+`"../preview-colors"`. None of `user_settings.json`, `colors.scss` or
+`preview-colors.scss` is in the repo; `exoinstall.py` generates them on first
+run, which is why they are also its `protected_files`. The module reproduces
+that bootstrap in a `home.activation` entry that only ever *creates* what is
+missing, because those files are Exo's own mutable state afterwards.
+
+`colors.scss` is generated in a derivation rather than during activation.
+Running Exo's real `matugen/config.toml` would emit ten templates across
+`$HOME`, `pkill -SIGUSR1 kitty` and call `gsettings`, and a non-zero exit there
+would fail the whole rebuild. The derivation instead feeds matugen a minimal
+config holding only the ignis template. Two things it needs: matugen rejects a
+config with no `[config]` table, and off a terminal it refuses to pick between
+multiple source colors unless given `--prefer`.
+
 **Upstream drift is the live risk.** Exo's README requires Ignis "git/dev", and
 Exo's last commit is months behind the Ignis the flake resolves to. Nothing
 pins them to each other, so an Ignis bump can break Exo with a Python
