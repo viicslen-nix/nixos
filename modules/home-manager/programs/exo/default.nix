@@ -98,8 +98,9 @@
               run install -m644 ${pkgs.writeText "user_settings.json" "{}"} "$cfg/user_settings.json"
             fi
 
-            if [ ! -e "$cfg/preview-colors.scss" ]; then
-              run install -m644 ${inputs.exo}/exodefaults/preview-colors.scss "$cfg/preview-colors.scss"
+            # styles/, not alongside colors.scss: previews.scss imports it without `../`.
+            if [ ! -e "$cfg/styles/preview-colors.scss" ]; then
+              run install -m644 ${inputs.exo}/exodefaults/preview-colors.scss "$cfg/styles/preview-colors.scss"
             fi
 
             if [ ! -e "$cfg/colors.scss" ]; then
