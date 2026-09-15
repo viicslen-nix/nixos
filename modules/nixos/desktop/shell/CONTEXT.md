@@ -1,8 +1,8 @@
 # Desktop shell selection
 
 `modules.desktop.shell` picks which shell autostarts in a graphical session.
-Today that is `dms` (DankMaterialShell, a subflake) or `nilastia` (a Caelestia
-fork for niri), plus `none`.
+Today that is `dms` (DankMaterialShell, a subflake), `nilastia` (a Caelestia
+fork for niri) or `exo` (Material 3, built on Ignis), plus `none`.
 
 ## Why the compositors don't name the shell
 
@@ -19,6 +19,23 @@ name. `none` starts the target and nothing follows.
 
 Adding a third shell is therefore: a home-manager module that binds its service
 to `desktop-shell.target`, plus a value in the enum. No compositor change.
+
+The target is `After` **and** `BindsTo` `graphical-session.target`, and that is
+load-bearing. A shell reads `WAYLAND_DISPLAY` from the systemd *user manager*
+environment, which the compositor only imports on its way to
+`graphical-session.target` — and a service inherits that environment at spawn
+time, so starting one second too early is permanent for that process. Exo hit
+exactly this: home-manager activation started `desktop-shell.target` at
+00:57:10 while niri reached `graphical-session.target` at 00:57:13, and
+`ignis init` came up three seconds early with no `WAYLAND_DISPLAY`. It then
+raised `DisplayNotFoundError`, **stayed running**, and never restarted — so
+`systemctl --user status` reported `active (running)` with no shell on screen
+and `NRestarts=0`. `After` alone does not help here, because ordering only
+constrains units inside one transaction; `BindsTo` is what refuses the start
+outside a session. Diagnose this class of failure by reading
+`/proc/<pid>/environ`, not `systemctl show -p Environment` — the latter lists
+only what the unit file sets, and an inherited-environment bug leaves it empty
+either way.
 
 ## The trap: a subflake's home-manager wrapper must forward `osConfig`
 
@@ -62,3 +79,59 @@ module system will say so rather than silently pick a winner.
 `Mod+Shift+S` is deliberately *not* taken for nilastia's screenshot picker: the
 existing menu in `flakes/niri/config/binds/screenshots.nix` works under either
 shell, and overriding a working bind to duplicate it buys nothing.
+
+## Exo is not a Nix-native shell, and that shows
+
+dms and nilastia both ship home-manager modules. Exo ships none — no flake, no
+`.nix` file anywhere. What it is, structurally, is an [Ignis](https://github.com/ignis-sh/ignis)
+config directory plus a set of matugen templates, so it rides as a
+`flake = false` input and the real packaging work is done by Ignis's own
+home-manager module.
+
+Two consequences worth knowing before editing `modules/home-manager/programs/exo`:
+
+**`programs.ignis.configDir` is deliberately not used.** It resolves to
+`xdg.configFile."ignis".source = <dir>`, which links the *directory*, making
+`~/.config/ignis` a read-only store symlink. Exo writes inside that directory
+at runtime — `user_settings.py` hardcodes
+`~/.config/ignis/user_settings.json`, and `matugen/config.toml` sends its
+`[templates.ignis]` output to `~/.config/ignis/colors.scss` on every wallpaper
+change. Under a directory symlink both writes fail and the shell loses its
+settings and its dynamic theming. Setting `xdg.configFile."ignis"` with
+`recursive = true` instead links each file individually into a real, writable
+directory, so the generated files can sit beside the linked ones. The same
+applies to `~/.config/matugen`.
+
+**nixpkgs renamed `swww` to `awww`.** The package Exo wants for wallpapers is
+`pkgs.awww`; `pkgs.swww` still resolves through an alias but prints an eval
+warning, and the binaries are `awww` / `awww-daemon`, so a unit calling
+`swww-daemon` dies with `status=203/EXEC`. Exo also hardcodes `command = "swww"`
+in `matugen/config.toml` — a single occurrence, covered by a one-line
+`writeShellScriptBin` shim rather than by rewriting a linked config file.
+
+**Upstream drift is the live risk.** Exo's README requires Ignis "git/dev", and
+Exo's last commit is months behind the Ignis the flake resolves to. Nothing
+pins them to each other, so an Ignis bump can break Exo with a Python
+traceback rather than an eval error — `journalctl --user -u exo` is where that
+surfaces, since a failing `ignis init` just restarts.
+
+Exo also has no lock screen on niri: it themes hyprlock, which is a Hyprland
+component, and its own binds reach only Launcher, QuickCenter, PowerMenu and
+Settings.
+
+## One keymap across shells
+
+The shells expose different feature sets under different names, but the four
+common concepts are bound to the same keys, so the muscle memory survives a
+switch. Only one shell is ever enabled, so there is no collision.
+
+| Key | dms | nilastia | exo |
+| --- | --- | --- | --- |
+| `Mod+Space` | own binds.kdl | launcher | Launcher |
+| `Mod+G` | own binds.kdl | dashboard | QuickCenter |
+| `Mod+Shift+Q` | own binds.kdl | session | PowerMenu |
+| `Mod+Shift+N` | own binds.kdl | nexus | Settings |
+
+`Mod+A` is Exo's upstream default for QuickCenter and is **not** used here —
+`flakes/niri/config/binds` already binds it. Exo's upstream `Mod+D` launcher
+and `Mod+I` settings are likewise passed over in favour of the shared keys.
