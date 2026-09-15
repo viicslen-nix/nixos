@@ -106,6 +106,12 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **modules** — everything under `modules/nixos` and `modules/home-manager` is
   auto-imported (`autoImportRecursive`); a new module is available once its file
   exists, then enabled per host/user.
+- **`modules.desktop.shell`** — which shell autostarts in a graphical session
+  (`dms`, `nilastia`, `none`). Compositors start the empty
+  `desktop-shell.target` and never name a shell; each shell binds its own
+  service to that target, and only the selected one is defined. Declared in
+  `modules/nixos/desktop/shell`, which the `desktop` preset imports. The
+  dank-greeter is independent of it. See that directory's `CONTEXT.md`.
 - **`modules.containers.settings`** — the one place the container engine is
   configured: `backend` (`"docker"` / `"podman"`) plus the engine-agnostic
   `nvidiaSupport`, `storageDriver` and `allowTcpPorts`. `programs.docker` /
@@ -400,6 +406,15 @@ already happened. Treat every heavy Nix invocation as dangerous.
   rewrite that file at runtime, so those edits land in `settings.json.backup`
   and are dropped on the next activation. Change settings in Nix, not in the TUI.
 
+- **A subflake's home-manager wrapper must forward `osConfig` explicitly.**
+  `flakes/dms/flake.nix` wraps its module as
+  `{config, lib, pkgs, options, ...}: import ./hm.nix {inherit config lib pkgs options inputs;}`.
+  That forward list is exhaustive, so an `osConfig` the module needs never
+  arrives and an `osConfig ? {}` fallback inside absorbs the loss in silence —
+  the gate reads the default and the module stays fully enabled. Bit once
+  wiring `modules.desktop.shell`: dms ignored the selection while nilastia also
+  came up. Check the wrapper before trusting any gate a subflake HM module
+  reads off the NixOS config.
 - **mcp-gateway scrubs the backend environment.** It spawns stdio backends with
   only `HOME`, `PATH`, `PWD`, `SHLVL` and `TMPDIR` plus the backend's own `env:`
   block; there is no inherit/passthrough switch. An agenix secret path is

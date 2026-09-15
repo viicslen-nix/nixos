@@ -38,6 +38,7 @@ in {
 
     # Graphical-host modules. Importing a module activates it; a host can still
     # opt out with `<module>.enable = false` (lenovo does this for oom).
+    nixosModules.desktop.shell
     nixosModules.features.app-images
     nixosModules.core.theming
     nixosModules.services.oom
@@ -106,7 +107,11 @@ in {
       };
     };
 
-    # DankMaterialShell greeter — only on the niri hosts.
+    # dms's NixOS half; its home-manager half gates itself on the same option.
+    dms.autoEnable = config.modules.desktop.shell == "dms";
+
+    # DankMaterialShell greeter — the greeter is shell-independent, so it stays
+    # on whichever shell `modules.desktop.shell` selects.
     programs.dms-greeter = mkIf config.modules.desktop.niri.enable {
       enable = true;
       compositor.name = "niri";
