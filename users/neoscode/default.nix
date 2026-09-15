@@ -22,6 +22,7 @@ in {
     nushell
     starship
     worktrunk
+    nilastia
     git
     jujutsu
     sesh
