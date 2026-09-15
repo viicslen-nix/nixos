@@ -9,6 +9,7 @@ description: use when the user asks to monitor, watch, or babysit a PR
 - Only process checks and review comments that are **newer than the latest push**.
 - Keep an eye on changes to `main` and rebase as needed to keep the branch fresh.
 - Loop continuously until all CI checks pass green and all required approvals are secured.
+- Stop immediately if the PR is closed or merged, even with checks or approvals outstanding, and report that terminal state.
 
 ## Handling Feedback & Failures
 - **Verify every bot finding against the source code** before modifying code.
