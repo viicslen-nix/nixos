@@ -3133,6 +3133,26 @@
         "type": "github"
       }
     },
+    "noctalia_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789436433,
+        "narHash": "sha256-/Dy5P/7nCIss+uAhdF+8I59ww5WQUF4EBs1QJCB1aec=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia",
+        "rev": "e4eb0ff97743c1d07d0f5a0d5770b277b6485b03",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia",
+        "type": "github"
+      }
+    },
     "nu-scripts": {
       "flake": false,
       "locked": {
@@ -3432,6 +3452,7 @@
         "nixpkgs-stable": "nixpkgs-stable_3",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixvim": "nixvim",
+        "noctalia": "noctalia_2",
         "nu-scripts": "nu-scripts",
         "omniflake": "omniflake",
         "one-password-shell-plugins": "one-password-shell-plugins",

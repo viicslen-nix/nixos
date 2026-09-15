@@ -24,6 +24,7 @@ in {
     worktrunk
     nilastia
     exo
+    noctalia
     git
     jujutsu
     sesh
