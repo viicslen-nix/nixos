@@ -22,6 +22,7 @@ in {
     nushell
     starship
     worktrunk
+    workmux
     git
     jujutsu
     sesh
@@ -210,6 +211,7 @@ in {
     };
     programs = {
       worktrunk.tmux.enable = true;
+      workmux.tmux.enable = true;
 
       git = {
         user = osConfig.users.users.${user}.description;
