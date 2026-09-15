@@ -2,7 +2,7 @@
 
 `modules.desktop.shell` picks which shell autostarts in a graphical session.
 Today that is `dms` (DankMaterialShell, a subflake), `nilastia` (a Caelestia
-fork for niri) or `exo` (Material 3, built on Ignis), plus `none`.
+fork for niri), `exo` (Material 3, built on Ignis) or `noctalia`, plus `none`.
 
 ## Why the compositors don't name the shell
 
@@ -142,13 +142,35 @@ The shells expose different feature sets under different names, but the four
 common concepts are bound to the same keys, so the muscle memory survives a
 switch. Only one shell is ever enabled, so there is no collision.
 
-| Key | dms | nilastia | exo |
-| --- | --- | --- | --- |
-| `Mod+Space` | own binds.kdl | launcher | Launcher |
-| `Mod+G` | own binds.kdl | dashboard | QuickCenter |
-| `Mod+Shift+Q` | own binds.kdl | session | PowerMenu |
-| `Mod+Shift+N` | own binds.kdl | nexus | Settings |
+| Key | dms | nilastia | exo | noctalia |
+| --- | --- | --- | --- | --- |
+| `Mod+Space` | own binds.kdl | launcher | Launcher | `panel-toggle launcher` |
+| `Mod+G` | own binds.kdl | dashboard | QuickCenter | `panel-toggle control-center` |
+| `Mod+Shift+Q` | own binds.kdl | session | PowerMenu | `panel-toggle session` |
+| `Mod+Shift+N` | own binds.kdl | nexus | Settings | `settings-toggle` |
+| `Mod+Alt+L` | own binds.kdl | lock | — | `session lock` |
+
+Exo is the gap in that last row: it themes hyprlock, a Hyprland component, so
+it has no lock of its own under niri.
 
 `Mod+A` is Exo's upstream default for QuickCenter and is **not** used here —
 `flakes/niri/config/binds` already binds it. Exo's upstream `Mod+D` launcher
 and `Mod+I` settings are likewise passed over in favour of the shared keys.
+
+## Noctalia is the easy case
+
+It is worth contrasting with Exo. Noctalia ships `nix/home-module.nix`,
+`nix/nixos-module.nix` and `nix/package.nix`, is actively maintained, and needs
+no seeding, no config-directory workaround and no runtime dependency wrangling:
+the module is the enum value, `programs.noctalia.enable`, a unit retarget and
+the binds.
+
+The one wrinkle is how it binds its service. Upstream uses
+`config.wayland.systemd.target` for `PartOf`/`After`/`WantedBy`, which is a
+single home-manager option shared by *every* wayland user service. Pointing
+that at `desktop-shell.target` would drag unrelated services along with it, so
+the module overrides the three fields on `systemd.user.services.noctalia`
+instead — the same shape `flakes/dms/hm.nix` uses.
+
+`noctalia msg <command>` is the IPC entry point, and `noctalia-dev/noctalia-greeter`
+exists if the dank-greeter is ever swapped out.

@@ -88,6 +88,10 @@
       url = "github:ignis-sh/ignis";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    noctalia = {
+      url = "github:noctalia-dev/noctalia";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # Ships no flake — the shell is an ignis config directory plus matugen templates.
     exo = {
       url = "github:debuggyo/Exo";
