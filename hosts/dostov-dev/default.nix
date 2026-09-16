@@ -172,7 +172,12 @@ with lib; {
   modules = {
     desktop = {
       niri.enable = true;
-      hyprland.enable = true;
+      hyprland = {
+        enable = true;
+        layout = "scrolling";
+      };
+
+      shell = "caelestia";
     };
     containers.settings = {
       backend = "podman";
