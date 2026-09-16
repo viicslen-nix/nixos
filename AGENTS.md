@@ -107,7 +107,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   auto-imported (`autoImportRecursive`); a new module is available once its file
   exists, then enabled per host/user.
 - **`modules.desktop.shell`** — which shell autostarts in a graphical session
-  (`dms`, `nilastia`, `exo`, `noctalia`, `none`). Compositors start the empty
+  (`dms`, `caelestia`, `exo`, `noctalia`, `none`; `caelestia` runs its Nilastia fork under niri). Compositors start the empty
   `desktop-shell.target` and never name a shell; each shell binds its own
   service to that target, and only the selected one is defined. Declared in
   `modules/nixos/desktop/shell`, which the `desktop` preset imports. The
