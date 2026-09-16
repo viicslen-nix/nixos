@@ -103,6 +103,30 @@
         "type": "github"
       }
     },
+    "caelestia-cli": {
+      "inputs": {
+        "caelestia-shell": [
+          "nilastia"
+        ],
+        "nixpkgs": [
+          "nilastia",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784950224,
+        "narHash": "sha256-kAblkqaFzElLUXjA1Mh/FAWW2643bF2ZVINJjLx/MA0=",
+        "owner": "caelestia-dots",
+        "repo": "cli",
+        "rev": "c788ba3ab83767b0fd44dcb323875121c313e674",
+        "type": "github"
+      },
+      "original": {
+        "owner": "caelestia-dots",
+        "repo": "cli",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1780099841,
@@ -303,6 +327,22 @@
       "original": {
         "owner": "nix-community",
         "repo": "emacs-overlay",
+        "type": "github"
+      }
+    },
+    "exo": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1768606981,
+        "narHash": "sha256-080NIKZa8GhNNMAF7wmUkORetSd4NraPAOIcLw0cgAk=",
+        "owner": "debuggyo",
+        "repo": "Exo",
+        "rev": "d8ca44a3c4e71777ec70eef3f886b3fdd0b5f614",
+        "type": "github"
+      },
+      "original": {
+        "owner": "debuggyo",
+        "repo": "Exo",
         "type": "github"
       }
     },
@@ -856,6 +896,48 @@
       },
       "parent": []
     },
+    "ignis": {
+      "inputs": {
+        "ignis-gvc": "ignis-gvc",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785596441,
+        "narHash": "sha256-ax/XBrQEOAJI0vHa5ywdcu846flL8f7kmsQ59HAau3w=",
+        "owner": "ignis-sh",
+        "repo": "ignis",
+        "rev": "97b7b5b17a16f574092b1584d7f5e24417455571",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ignis-sh",
+        "repo": "ignis",
+        "type": "github"
+      }
+    },
+    "ignis-gvc": {
+      "inputs": {
+        "nixpkgs": [
+          "ignis",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1754064086,
+        "narHash": "sha256-ft5KvY2OYrWF+jEsfBL/Zx8Iuo2C10C6COk8wHwZw34=",
+        "owner": "ignis-sh",
+        "repo": "ignis-gvc",
+        "rev": "f2c9f10d8b49cc38106a2f07a51ea959c6aa4e63",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ignis-sh",
+        "repo": "ignis-gvc",
+        "type": "github"
+      }
+    },
     "import-tree": {
       "locked": {
         "lastModified": 1763762820,
@@ -953,6 +1035,23 @@
         "type": "github"
       }
     },
+    "m3shapes": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1781017666,
+        "narHash": "sha256-kfHyzZaPHgqZML48OA+5JwBOsLdQJ2ci/aGPShvUB4Y=",
+        "owner": "soramanew",
+        "repo": "m3shapes",
+        "rev": "bdc327b29f95394a732baf3c9b19658ba23755b6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "soramanew",
+        "repo": "m3shapes",
+        "rev": "bdc327b29f95394a732baf3c9b19658ba23755b6",
+        "type": "github"
+      }
+    },
     "mattpocock-skills": {
       "flake": false,
       "locked": {
@@ -1011,6 +1110,29 @@
         "owner": "nix-community",
         "ref": "master",
         "repo": "naersk",
+        "type": "github"
+      }
+    },
+    "nilastia": {
+      "inputs": {
+        "caelestia-cli": "caelestia-cli",
+        "m3shapes": "m3shapes",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "quickshell": "quickshell_2"
+      },
+      "locked": {
+        "lastModified": 1789374342,
+        "narHash": "sha256-swqRIQ9Ad/zX4nH9I9TaobZQ+Qc/UyutnRPb0JqT3kU=",
+        "owner": "ST-SARAVANAPRIYAN",
+        "repo": "Nilastia",
+        "rev": "24702cbb38763510d92d3fea0a77828b80ebabd9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ST-SARAVANAPRIYAN",
+        "repo": "Nilastia",
         "type": "github"
       }
     },
@@ -1476,6 +1598,26 @@
         "type": "github"
       }
     },
+    "noctalia": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789436433,
+        "narHash": "sha256-/Dy5P/7nCIss+uAhdF+8I59ww5WQUF4EBs1QJCB1aec=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia",
+        "rev": "e4eb0ff97743c1d07d0f5a0d5770b277b6485b03",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia",
+        "type": "github"
+      }
+    },
     "nu-scripts": {
       "flake": false,
       "locked": {
@@ -1635,11 +1777,33 @@
         "type": "github"
       }
     },
+    "quickshell_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nilastia",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784799776,
+        "narHash": "sha256-6AM0doj8hSNav9qkX4dOHOp1LSjegdQ+VmzDz9MnWAs=",
+        "ref": "refs/heads/master",
+        "rev": "10b439fc6e3fd65c15fe1c486271b31da05ed023",
+        "revCount": 833,
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      }
+    },
     "root": {
       "inputs": {
         "ambxst": "ambxst",
         "dms": "dms",
         "emacs": "emacs",
+        "exo": "exo",
         "flake-parts": "flake-parts_2",
         "fzf-tab": "fzf-tab",
         "ghost-backup": "ghost-backup",
@@ -1647,16 +1811,19 @@
         "gitura": "gitura",
         "hunk": "hunk",
         "hyprland": "hyprland",
+        "ignis": "ignis",
         "jj-starship": "jj-starship",
         "lan-mouse": "lan-mouse",
         "laravel-sail": "laravel-sail",
         "llm-agents": "llm-agents",
         "mattpocock-skills": "mattpocock-skills",
+        "nilastia": "nilastia",
         "niri": "niri",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-stable": "nixpkgs-stable_3",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixvim": "nixvim",
+        "noctalia": "noctalia",
         "nu-scripts": "nu-scripts",
         "omniflake": "omniflake",
         "one-password-shell-plugins": "one-password-shell-plugins",

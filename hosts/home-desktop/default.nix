@@ -53,7 +53,7 @@ with lib; {
     discord
     uv
     rpi-imager
-    pkgs.inputs.ambxst.default
+    orca-slicer
   ];
 
   services.tailscale = {
@@ -76,6 +76,7 @@ with lib; {
 
     desktop = {
       niri.enable = true;
+      shell = "noctalia";
 
       hyprland = {
         enable = false;
