@@ -42,11 +42,13 @@ in {
     programs.thunderbird
   ];
 
-  home.file.".config/hypr/pyprland.toml".text = lib.mkAfter ''
-    [monitors.placement."LW9AA0048525"]
-    rightOf = "DP-1"
-    transform = 1
-  '';
+  xdg.configFile = lib.mkIf osConfig.programs.hyprland.enable {
+    "pypr/config.toml".text = lib.mkAfter ''
+      [monitors.placement."LW9AA0048525"]
+      rightOf = "DP-1"
+      transform = 1
+    '';
+  };
 
   home.autostart = [
     {

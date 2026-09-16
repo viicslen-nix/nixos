@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  osConfig,
   homeModules,
   ...
 }: {
@@ -69,6 +70,20 @@
           };
         };
       };
+
+      "pypr/config.toml" = lib.mkIf osConfig.programs.hyprland.enable {
+        text = lib.mkAfter ''
+          [monitors.placement."G276HL"]
+          topOf = "eDP-1"
+
+          [monitors.placement."G274F"]
+          leftOf = "eDP-1"
+
+          [monitors.placement."Acer CB281HK"]
+          topOf = "G274F"
+          scale = 1.875000
+        '';
+      };
     };
   };
 
@@ -91,21 +106,9 @@
     "org/gnome/desktop/wm/preferences".button-layout = lib.mkForce ":minimize,maximize,close";
   };
 
-  wayland.windowManager.hyprland.settings = {
+  wayland.windowManager.hyprland.settings = lib.mkIf osConfig.programs.hyprland.enable {
     monitor = [
       "eDP-1,2560x1600@60,0x0,1.6"
     ];
   };
-
-  home.file.".config/hypr/pyprland.toml".text = lib.mkAfter ''
-    [monitors.placement."G276HL"]
-    topOf = "eDP-1"
-
-    [monitors.placement."G274F"]
-    leftOf = "eDP-1"
-
-    [monitors.placement."Acer CB281HK"]
-    topOf = "G274F"
-    scale = 1.875000
-  '';
 }
