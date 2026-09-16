@@ -3,11 +3,11 @@
 Why `modules.programs.t3code` rebuilds the stock package before installing it,
 and why the server is declared by hand.
 
-## `withConnect` — the two gaps in every packaging of t3code
+## `withConnect` — the gaps in every packaging of t3code
 
-`cfg.package` is the *stock* t3code; both fixes are applied in the module, so
-pointing the option at another packaging of it (nixpkgs, or
-numtide/llm-agents.nix, which has the same two gaps) still gets them.
+`cfg.package` is the *stock* t3code; all three fixes are applied in the module,
+so pointing the option at another packaging of it (nixpkgs, or
+numtide/llm-agents.nix, which has the same gaps) still gets them.
 
 1. **A source build bakes in no cloud config.** `scripts/lib/public-config.ts`
    feeds the repo's `.env` into both vite builds, so without it the server and
@@ -21,9 +21,18 @@ numtide/llm-agents.nix, which has the same two gaps) still gets them.
 2. **The relay client T3 Connect tunnels through** is the one piece not covered
    by `.env`: upstream downloads its own cloudflared on first `t3 connect
    link`. `cloudflaredPackage` points it at the Nix one instead.
+3. **SnapShots refuse git builds of niri.** The desktop app gates the feature
+   on the compositor's IPC `Version` matching `^(niri )?<major>.<minor>` and
+   being at least 25.11. niri-flake sets `NIRI_BUILD_VERSION_STRING` to
+   `unstable <date> (commit <rev>)`, which does not match, so a niri a year
+   past 25.11 gets "SnapShots require Niri 25.11 or newer". The patch widens
+   the regex to also read `unstable YYYY-MM` — the year clears the gate, while
+   a real release is still compared as before. It is skipped when the file is
+   absent (versions before 0.0.42 have no SnapShots), but fails the build if
+   the file is there and the regex has moved, instead of silently no-opping.
 
-Both land on the unwrapped derivation — the only layer whose shape is the same
-across packagings — and the outer wrapper just execs it, so the env var
+All three land on the unwrapped derivation — the only layer whose shape is the
+same across packagings — and the outer wrapper just execs it, so the env var
 survives.
 
 The version is patched elsewhere. `overlays/default.nix`'s `t3code-version`
