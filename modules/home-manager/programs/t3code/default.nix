@@ -74,6 +74,16 @@
           '';
         };
 
+        snapShotShortcut = mkOption {
+          type = types.nullOr types.str;
+          default = "Ctrl+Shift+2";
+          description = mdDoc ''
+            niri key combination that triggers a T3 Code SnapShot. Declared
+            here because T3 Code cannot write the Nix-generated niri config.
+            Only applied when niri is enabled; `null` binds nothing.
+          '';
+        };
+
         serve = {
           enable = mkEnabledOption (mdDoc "the T3 Code server as a systemd user service");
 
@@ -109,6 +119,23 @@
           home.packages =
             [cfg.finalPackage]
             ++ optional osConfig.modules.presets.desktop.enable cfg.finalPackage.desktop;
+
+          programs.niri.settings.binds = mkIf (osConfig.programs.niri.enable && cfg.snapShotShortcut != null) {
+            ${cfg.snapShotShortcut} = {
+              repeat = false;
+              action.spawn = [
+                (getExe' pkgs.glib "gdbus")
+                "call"
+                "--session"
+                "--dest"
+                "com.t3tools.T3Code.SnapShot"
+                "--object-path"
+                "/com/t3tools/SnapShot"
+                "--method"
+                "com.t3tools.SnapShot.Capture"
+              ];
+            };
+          };
 
           # Don't swap this for `t3 service install`: its unit runs a self-updating launcher.
           systemd.user.services.${name} = mkIf cfg.serve.enable {
