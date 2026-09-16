@@ -23,6 +23,9 @@ in {
     starship
     worktrunk
     workmux
+    nilastia
+    exo
+    noctalia
     git
     jujutsu
     sesh
