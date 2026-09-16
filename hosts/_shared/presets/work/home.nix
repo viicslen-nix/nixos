@@ -68,7 +68,16 @@ in {
     grafana-service-account-token.file = ../../../../secrets/grafana/service-account-token.age;
   };
 
-  home.packages = [mcp-toolbox prod-db-mcp grafana-mcp];
+  home.packages = [
+    mcp-toolbox
+    prod-db-mcp
+    grafana-mcp
+    # llm-agents installs the CLI only as `agy`.
+    (pkgs.runCommand "antigravity-alias" {} ''
+      mkdir -p $out/bin
+      ln -s ${lib.getExe config.programs.antigravity-cli.package} $out/bin/antigravity
+    '')
+  ];
 
   programs = {
     ssh.settings = {
