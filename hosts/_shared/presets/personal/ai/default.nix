@@ -36,6 +36,9 @@ let
     grilling = patchSkill
       "${mattpocock}/skills/productivity/grilling/SKILL.md"
       (import ./skill-patches/grilling.nix);
+    implement = patchSkill
+      "${mattpocock}/skills/engineering/implement/SKILL.md"
+      (import ./skill-patches/implement.nix);
   };
 in
 {
