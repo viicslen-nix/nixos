@@ -54,3 +54,18 @@ and the inner template has to survive that pass to be rendered again by
 `workmux close` defaults to the current directory, and `pre-remove` already runs
 inside the worktree being removed. It stays `|| true` because `pre-remove`
 blocks — a failed close would otherwise abort the removal.
+
+## The close is skipped under a workmux removal
+
+The hook exists for `wt remove`, where nothing else closes the session. A
+repo's `.workmux.yaml` can also route workmux's own `pre_remove` into worktrunk
+(`mylisterhub-main-app`'s `scripts/worktree-hooks down` runs
+`wt hook pre-remove`), and then this close runs *inside* a workmux removal.
+workmux already closes the target itself — and when the removal is started
+from the dashboard in the worktree's own session, it defers that until it has
+switched away. The hook's close got there first, killed the session hosting
+the dashboard, and left the worktree and branch in place with nothing logged
+after `running pre-remove hooks`.
+
+workmux exports `WM_HANDLE` to its hooks and it survives through
+`worktree-hooks` and `wt hook`, so the hook skips the close when it is set.
