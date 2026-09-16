@@ -238,6 +238,7 @@
     # BEGIN generated from caches.nix
     extra-substituters = [
       "https://ghostty.cachix.org"
+      "https://hyprland.cachix.org"
       "https://attic.xuyh0120.win/lantian"
       "https://nix-community.cachix.org"
       "https://cache.nixos-cuda.org"
@@ -246,6 +247,7 @@
     ];
     extra-trusted-public-keys = [
       "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="

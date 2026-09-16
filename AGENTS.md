@@ -125,23 +125,35 @@ already happened. Treat every heavy Nix invocation as dangerous.
 ## Gotchas & workflows
 
 - **Submodules + locking.** `flake.nix` sets `self.submodules = true`, so a
-  *local* `path:.` build reads each subflake's dirty working tree. **No
-  `path:./flakes/<x>` input carries a narHash in `flake.lock`** (verified for all
-  ten), so committing inside the submodule is enough — a root re-lock changes
-  nothing and `nix flake update <name>` produces an empty diff. `just
-  update-subflake <name>` is still worth running when you want the subflake's
-  *own* inputs bumped; its second step is a no-op for the root lock.
-  The exception is a change to the subflake's **input set**: the root lock
-  holds its own copy of every transitive node (the subflake's `flake.lock` is
-  not read), so adding or removing a subflake input needs a root re-lock —
-  dropping the hyprland subflake's inputs removed 63 root nodes.
-  What does bite: the flake source is `git+file://`, so a **new** file in a
+  *local* `path:.` build reads each subflake's dirty working tree. No
+  `path:./flakes/<x>` input carries a narHash in `flake.lock`, so a change to a
+  subflake's *files* needs only a commit inside the submodule. Its *inputs* do
+  not work that way: **hosts build the root lock's pins, never the
+  subflake's.** The root `flake.lock` holds its own copy of every transitive
+  node a subflake doesn't `follows` away, and reads the subflake's `flake.lock`
+  only when it (re-)locks that input — `nix flake update <name>` copies the
+  subflake's pins over. So a bump committed to `flakes/<x>/flake.lock` changes
+  nothing a host builds until the root runs `nix flake update <x>`, and the
+  same re-lock is what adds or drops nodes when a subflake's input set changes
+  (dropping the hyprland subflake's inputs removed 63 root nodes). The drift is
+  silent: the root's dms node sat at `8594a41` while `flakes/dms` had moved to
+  `c8ec045`. Compare
+  `jq -r --arg i <input> '.nodes[.nodes["<root-input>"].inputs[$i]].locked.rev' flake.lock`
+  with
+  `jq -r --arg i <input> '.nodes[.nodes[.root].inputs[$i]].locked.rev' flakes/<dir>/flake.lock`;
+  `<root-input>` is the directory name except for `flakes/lib`, which the root
+  calls `viicslen-lib`. A `follows` input has no node of its own and cannot
+  drift.
+  Also: the flake source is `git+file://`, so a **new** file in a
   subflake is invisible until `git add`ed — `nix build` fails with
   `does not provide attribute 'packages.<system>.<name>'` rather than anything
   pointing at the real cause.
 - **Update recipes.** `just update` updates every subflake *and* all root
   inputs; `just update-main` = root inputs only; `just update-input <x>` /
-  `just update-subflake <x>` for one.
+  `just update-subflake <x>` for one. `update-subflake`'s second step, the root
+  `nix flake update <x>`, is the one hosts see — per **Submodules + locking**
+  (except `lib`, whose root input is `viicslen-lib`: that step matches nothing,
+  so follow it with `just update-input viicslen-lib`).
 - **omniflake.** 20 dependencies are no longer flake inputs: they are pins in
   [omniflake](https://github.com/fzakaria/omniflake)'s `index.json`, fetched
   lazily at evaluation. The wiring lives in `flakes/lib/omni.nix`
@@ -270,9 +282,14 @@ already happened. Treat every heavy Nix invocation as dangerous.
   bleeding-edge `nixpkgs-wayland` cache and its overlay off headless/WSL hosts —
   don't promote one to `"base"` or they recompile the whole Wayland closure.
   `ownNixpkgs` lists the omniflake index attributes that cache serves, and
-  `flake.nix` passes those to `omni.mkInputs` as `ownNixpkgs`, so declaring the
-  cache is the only step. Caches from a *subflake's* own `nixConfig` (niri) are
-  separate and still appear in the merged `nix.conf`.
+  `flake.nix` passes those to `omni.mkInputs` as `ownNixpkgs`, so that routing
+  needs nothing beyond the declaration. Any new cache still needs `just
+  sync-caches` (next bullet), or every eval fails the drift check. Caches from
+  a *subflake's* own `nixConfig` (niri) are separate and still appear in the
+  merged `nix.conf`. A cache added here is not
+  in the running daemon's `nix.conf` until a rebuild, so the first rebuild that
+  needs it passes `--option extra-substituters <url> --option
+  extra-trusted-public-keys <key>`.
 - **A flake's `nixConfig` cannot be computed.** Both the set and every value
   must be literal: a `let … in` there fails with `expected a set but got a
   thunk`, and even a literal set with a computed value fails with `flake
@@ -368,8 +385,9 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `flake.nix`; `default.nix` is a legacy entrypoint nothing imports, and editing
   only it leaves the helper invisible as `attribute 'skills' missing`. Note `just
   update-subflake lib` bumps the subflake's own nixpkgs pin, which is inert here
-  because the root `follows` — and its root-lock step is a no-op, per
-  **Submodules + locking** above.
+  because the root `follows` it. Only `systems` reaches the root lock, and the
+  recipe's second step does not carry it: run `just update-input viicslen-lib`
+  (**Update recipes** above).
 - **Skills are pathlike-or-string.** `modules.programs.ai.skills` values reach
   home-manager's `claude-code` module, whose `mkSkillEntry` branches on
   `lib.hm.strings.isPathLike content && lib.pathIsDirectory content` to decide
