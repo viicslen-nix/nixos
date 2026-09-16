@@ -59,6 +59,7 @@ in {
               || fail 'the wt tmux alias must hand the branch to workmux open'
 
             grep -qF 'workmux close' "$wt" || fail 'pre-remove must close the workmux target'
+            grep -qF 'WM_HANDLE' "$wt" || fail 'pre-remove must leave a workmux removal to close its own target'
 
             # Dropping -s is silent — the sidebar then adds a pane to every window of every session.
             grep -qF "workmux sidebar -s'" "$tmux" || fail 'the sidebar key must stay session-scoped'
