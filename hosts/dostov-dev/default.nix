@@ -170,7 +170,10 @@ with lib; {
   ];
 
   modules = {
-    desktop.niri.enable = true;
+    desktop = {
+      niri.enable = true;
+      hyprland.enable = true;
+    };
     containers.settings = {
       backend = "podman";
       userns = "auto";
