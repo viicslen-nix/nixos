@@ -416,6 +416,15 @@ already happened. Treat every heavy Nix invocation as dangerous.
   the primary into `repo@repo`, and nothing else recovers a `@`, since every
   workmux path that names a directory slugifies it. workmux reads worktrees from
   `git worktree list` regardless of layout, so only *creation* depends on this.
+  `panes` must stay **declared**: with neither `panes` nor `windows` set,
+  workmux picks its layout by probing for a `CLAUDE.md` in the project root and
+  silently runs `claude` in the focused pane of every worktree it opens. Every
+  repo here has one, so dropping the key restarts that — `checks.workmux-worktrunk`
+  asserts it.
+  workmux is also **patched** (`worktree-column-width.patch`, the dashboard
+  column cap), so its derivation no longer matches `cache.numtide.com` and a
+  bump builds the Rust crate from source — budget for that, and drop the patch
+  if upstream takes it.
   See `modules/home-manager/programs/{workmux,worktrunk}/CONTEXT.md`.
 
 - **mcp-gateway scrubs the backend environment.** It spawns stdio backends with

@@ -22,7 +22,10 @@
 
         package = mkOption {
           type = types.package;
-          default = pkgs.inputs.llm-agents.workmux;
+          default = pkgs.inputs.llm-agents.workmux.overrideAttrs (prev: {
+            # Costs the numtide cache: a patched drv builds from source on every bump.
+            patches = (prev.patches or []) ++ [./worktree-column-width.patch];
+          });
           defaultText = literalExpression "pkgs.inputs.llm-agents.workmux";
           description = mdDoc "The workmux package to use; it is not in nixpkgs.";
         };
@@ -35,6 +38,8 @@
             window_prefix = "";
             # One shared tree beside the repo, not upstream's per-repo sibling default.
             worktree_dir = "../.worktrees/{project}";
+            # A repo with a CLAUDE.md otherwise gets upstream's agent pane, which runs `claude` on open.
+            panes = [{focus = true;}];
             # Empty, not absent — the default fast-deletes node_modules on removal.
             pre_remove = [];
             # Without this, first run prompts and tries to write this read-only config.
