@@ -125,6 +125,10 @@ already happened. Treat every heavy Nix invocation as dangerous.
   nothing and `nix flake update <name>` produces an empty diff. `just
   update-subflake <name>` is still worth running when you want the subflake's
   *own* inputs bumped; its second step is a no-op for the root lock.
+  The exception is a change to the subflake's **input set**: the root lock
+  holds its own copy of every transitive node (the subflake's `flake.lock` is
+  not read), so adding or removing a subflake input needs a root re-lock —
+  dropping the hyprland subflake's inputs removed 63 root nodes.
   What does bite: the flake source is `git+file://`, so a **new** file in a
   subflake is invisible until `git add`ed — `nix build` fails with
   `does not provide attribute 'packages.<system>.<name>'` rather than anything
