@@ -58,7 +58,7 @@ in {
             grep -qF 'workmux open "{% raw %}{{ branch }}{% endraw %}"' "$wt" \
               || fail 'the wt tmux alias must hand the branch to workmux open'
 
-            grep -qF 'workmux close' "$wt" || fail 'pre-remove must close the workmux target'
+            grep -qF 'workmux close "$(basename' "$wt" || fail 'pre-remove must name the workmux target, or close kills the caller'
             grep -qF 'WM_HANDLE' "$wt" || fail 'pre-remove must leave a workmux removal to close its own target'
 
             # Dropping -s is silent — the sidebar then adds a pane to every window of every session.

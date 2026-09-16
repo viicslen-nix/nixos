@@ -103,7 +103,8 @@
         xdg.configFile."worktrunk/config.toml" = let
           tmuxSettings = optionalAttrs cfg.tmux.enable {
             # Skip under workmux: its removal closes the session itself, possibly from inside it.
-            pre-remove.tmux = "[ -n \"\${WM_HANDLE:-}\" ] || ${workmux} close || true";
+            # Name the handle: a bare `close` resolves from the caller's tmux pane, not the cwd.
+            pre-remove.tmux = "[ -n \"\${WM_HANDLE:-}\" ] || ${workmux} close \"$(basename \"$PWD\")\" || true";
             # `{{ branch }}`, not the sanitized dir name — only a branch match finds the primary worktree.
             aliases.tmux = "wt switch {{ args }} --no-cd --execute='${workmux} open \"{% raw %}{{ branch }}{% endraw %}\"'";
           };

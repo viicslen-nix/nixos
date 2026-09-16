@@ -49,11 +49,19 @@ is rendered once by the alias engine (which is what substitutes `{{ args }}`),
 and the inner template has to survive that pass to be rendered again by
 `wt switch` with the worktree in context.
 
-## `pre-remove` takes no argument
+## `pre-remove` names the handle
 
-`workmux close` defaults to the current directory, and `pre-remove` already runs
-inside the worktree being removed. It stays `|| true` because `pre-remove`
-blocks — a failed close would otherwise abort the removal.
+`workmux close` with no argument claims to default to the current directory, but
+it resolves from the calling tmux pane. `pre-remove` runs with its cwd in the
+worktree being removed and the pane still in the session that ran `wt remove` —
+so `wt prune` from the primary worktree's session killed that session on the
+first integrated worktree, taking `wt` down with it (the log ends at
+`pre-remove user:tmux`; the project hooks never ran). Reproduced on a throwaway
+`tmux -L` server: bare `close` killed the caller, `close <handle>` did not.
+
+The handle is the worktree's basename, taken from `$PWD`. It stays `|| true`
+because `pre-remove` blocks — a failed close (e.g. no open session, which is
+most t3code worktrees) would otherwise abort the removal.
 
 ## The close is skipped under a workmux removal
 
