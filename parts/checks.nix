@@ -47,6 +47,10 @@ in {
             grep -qF 'worktree-path = "../.worktrees/{{ repo }}/{{ branch | sanitize }}"' "$wt" \
               || fail 'worktrunk must create under ../.worktrees/<repo>'
 
+            # Absent, a repo with a CLAUDE.md silently gets an agent pane that runs `claude` on open.
+            grep -qxF 'panes:' "$wm" || fail 'panes must be declared, not inferred from CLAUDE.md'
+            ! grep -qF '<agent>' "$wm" || fail 'no pane may launch the agent'
+
             # Dropping the key restores upstream's node_modules fast-delete, it does not disable the hook.
             grep -qxF 'pre_remove: []' "$wm" || fail 'pre_remove must stay explicitly empty'
 

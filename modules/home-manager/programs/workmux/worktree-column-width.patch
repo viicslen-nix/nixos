@@ -1,0 +1,121 @@
+Widen the dashboard's Worktree column, and lead with the branch.
+
+The cell rendered `<handle> →<branch>` truncated at a fixed 25 columns,
+with the column clamped to the same, so the branch was cut off at any
+terminal width -- freed width went to `git` instead. Derive the cap from
+the pane (half its width, bounded 25..80) and thread it through.
+
+Also render `<branch> → <handle>`: the branch is the identity worth
+reading, so it should be what survives a truncation, and the arrow reads
+better spaced.
+
+Submitted upstream: <not yet filed>
+--- a/src/command/dashboard/ui/worktree.rs
++++ b/src/command/dashboard/ui/worktree.rs
+@@ -29,6 +29,9 @@
+ 
+     let show_check_counts = app.config.dashboard.show_check_counts();
+ 
++    // `branch → handle` needs far more than a fixed 25; bounded so it cannot eat the table.
++    let worktree_max_width = (area.width as usize / 2).clamp(25, 80);
++
+     // Show the GitHub column when at least one worktree has a PR or checks.
+     let show_pr_column = app.worktrees.iter().any(|worktree| {
+         worktree.pr_info.is_some() || app.get_checks_for_worktree(worktree).is_some()
+@@ -52,15 +55,15 @@
+             let project = agent::extract_project_name(&wt.path);
+ 
+             // Main worktree: show branch name (handle is just the repo dir name)
+-            // Other worktrees: show branch inline when it differs from the handle
++            // Other worktrees: show the handle inline when it differs from the branch
+             let worktree_display = if wt.is_main {
+                 wt.branch.clone()
+             } else if wt.branch != wt.handle {
+-                format!("{} \u{2192}{}", wt.handle, wt.branch)
++                format!("{} \u{2192} {}", wt.branch, wt.handle)
+             } else {
+                 wt.handle.clone()
+             };
+-            let worktree_display = truncate(&worktree_display, 25);
++            let worktree_display = truncate(&worktree_display, worktree_max_width);
+ 
+             // Git status
+             let git_status = app.git_statuses.get(&wt.path);
+@@ -124,6 +127,7 @@
+     let table = build_worktree_table(
+         &columns,
+         row_data,
++        worktree_max_width,
+         format::ResourceHeaderState {
+             palette: &app.palette,
+             spinner_frame: app.spinner_frame,
+@@ -196,6 +200,7 @@
+ fn build_worktree_table(
+     columns: &[WorktreeColumn],
+     row_data: Vec<WorktreeRowData>,
++    worktree_max_width: usize,
+     header_state: format::ResourceHeaderState<'_>,
+ ) -> Table<'static> {
+     let palette = header_state.palette;
+@@ -219,7 +224,8 @@
+         .iter()
+         .map(|r| r.worktree_display.clone())
+         .collect();
+-    let max_worktree_width = format::calc_column_width(&worktree_names, 8, 25, 1);
++    let max_worktree_width =
++        format::calc_column_width(&worktree_names, 8, worktree_max_width, 1);
+     let max_git_width = row_data
+         .iter()
+         .map(|row| {
+@@ -287,7 +293,7 @@
+         .collect();
+ 
+     let highlight_symbol = Text::from(Line::from(Span::styled(
+-        "▌ ",
++        "â ",
+         Style::default().fg(palette.info),
+     )));
+     Table::new(rows, constraints)
+@@ -616,6 +622,7 @@
+         let table = build_worktree_table(
+             columns,
+             rows,
++            (width as usize / 2).clamp(25, 80),
+             format::ResourceHeaderState {
+                 palette: &palette,
+                 spinner_frame: 0,
+@@ -649,7 +656,7 @@
+         );
+         assert_eq!(
+             line(&buffer, 1),
+-            "1  proj    wt        +1    #7    ●    2h   working"
++            "1  proj    wt        +1    #7    â    2h   working"
+         );
+     }
+ 
+@@ -668,7 +675,7 @@
+         );
+         assert_eq!(
+             line(&buffer, 1),
+-            "working 2h   ●    #7    +1    wt        proj    1"
++            "working 2h   â    #7    +1    wt        proj    1"
+         );
+     }
+ 
+@@ -683,7 +690,7 @@
+     #[test]
+     fn agent_width_uses_display_cells_and_fits_header() {
+         use WorktreeColumn::*;
+-        for (agent, expected) in [("", "Agent Mux"), ("作業中です", "Agent      Mux")] {
++        for (agent, expected) in [("", "Agent Mux"), ("ä½æ¥­ä¸­ã§ã", "Agent      Mux")] {
+             let mut data = row();
+             data.agent_line = Line::from(agent);
+             let buffer = render(&[Agent, Mux], vec![data], 40, None);
+@@ -737,6 +744,6 @@
+         assert_eq!(buffer[(7, 2)].bg, palette.highlight_row_bg);
+         assert_eq!(buffer[(2, 1)].fg, palette.success);
+         assert_eq!(buffer[(2, 2)].fg, palette.dimmed);
+-        assert_eq!(buffer[(0, 2)].symbol(), "▌");
++        assert_eq!(buffer[(0, 2)].symbol(), "â");
+     }
+ }

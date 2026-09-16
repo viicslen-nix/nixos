@@ -168,9 +168,56 @@ shows 28. `sort_mode` is *not* a lever despite appearing in the same block — i
 seeds the agent list only, and the Worktrees tab persists its own
 `worktree_sort_mode` from the `s` key, so setting it in config changes nothing.
 
-It does **not** widen the branch. `worktree` renders as `<handle> →<branch>` and
-is capped at roughly 25 columns: rendering the tab with `worktree_columns:
-[worktree]` alone in a 160-column pane still truncates. The freed width goes to
-`git`, not to `worktree`. So for a worktree whose handle is already long — every
-t3code one is `t3code-<8 hex>` — the branch is always cut off, and no
-configuration recovers it. The tab is a status view, not a worktree picker.
+It does **not** widen the branch — nothing in the config does. That took a patch,
+below.
+
+## The `worktree` column is patched wider
+
+Upstream renders the cell as `<handle> →<branch>`, which for a worktree whose handle is
+already long — every t3code one is `t3code-<8 hex>` — cut the branch off at any
+terminal width. Two hardcoded `25`s in `src/command/dashboard/ui/worktree.rs`
+did it: `truncate(&worktree_display, 25)` on the cell, and
+`calc_column_width(&worktree_names, 8, 25, 1)` on the column. Neither reads the
+pane, so in a wide terminal the freed width went to `git` instead. Verified by
+rendering the tab with `worktree_columns: [worktree]` alone in a 300-column
+pane: still cut at 25.
+
+`worktree-column-width.patch` derives the cap from the pane instead — half its
+width, bounded 25..80 so it can neither regress nor crowd out the other columns
+— and threads it into `build_worktree_table`. The same patch flips the cell to
+`<branch> → <handle>`: the branch is the identity worth reading, so it should be
+the half that survives a truncation, and the handle it now sheds is the
+sanitized copy of that same branch on every worktree but the t3code ones. Not
+filed upstream yet; if a release picks it up, drop the patch rather than
+carrying both.
+
+The cost is the numtide cache. `overrideAttrs` changes the derivation hash, so
+`cache.numtide.com` no longer has the output and every workmux bump builds the
+Rust crate from source. That is the trade the package section above otherwise
+argues *against*; it is accepted here only because this dashboard is the
+worktree picker bound to `prefix + W`, and a truncated branch makes it useless
+for that. Drop the patch and the build goes back to a substitution.
+
+## `panes` — declared, so no agent auto-starts
+
+Pressing Enter on a worktree in the dashboard used to launch `claude` in it.
+Nothing in this config asked for that: with neither `panes` nor `windows` set,
+workmux picks its pane layout by *probing the repo* — `Config::resolve` uses
+`agent_default_panes()` (whose focused pane runs the `<agent>` placeholder,
+defaulting to `claude`) when the project root holds a `CLAUDE.md`, and the
+plain `default_panes()` otherwise. Every repo here has a `CLAUDE.md`, so every
+repo got the agent layout.
+
+Enter is not the only door — the dashboard's jump, `workmux open` and the
+`wt tmux` alias all route through `workflow::open` with
+`run_pane_commands: true`. So the fix is the layout, not a key: declaring
+`panes` at all suppresses the probe. One focused pane with no command gives a
+plain shell, which is what worktrunk's old `postSwitchScript` did.
+
+This deliberately omits the second `clear` pane that upstream's
+`default_panes()` splits off; a spare shell per worktree was not wanted. Note
+the setting is global, so `workmux add` no longer starts an agent either —
+launch one by hand, or set `panes` in a project's own `.workmux.yaml`.
+`parts/checks.nix` asserts both that `panes` is present and that no `<agent>`
+placeholder survives into the generated config, because the failure mode is
+silent: drop the key and agents quietly start spawning again.
