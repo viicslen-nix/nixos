@@ -26,6 +26,13 @@ Both land on the unwrapped derivation — the only layer whose shape is the same
 across packagings — and the outer wrapper just execs it, so the env var
 survives.
 
+The version is patched elsewhere. `overlays/default.nix`'s `t3code-version`
+bumps llm-agents' pin ahead of what that input carries, and it has to reach
+into that packaging's internals to do it — an argument name, two phase
+literals — so it cannot live here, where `cfg.package` may be any packaging.
+What is missing from all of them stays in this module; what is specific to one
+of them stays in the overlay.
+
 ## `finalPackage`, and why the desktop app comes from it
 
 The desktop app has to come from this same derivation. Installing a stock

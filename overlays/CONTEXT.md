@@ -40,3 +40,32 @@ this once niri-flake moves to `libdisplay-info_0_3`.
 dpcontracts' README doctest (pulled in via nix-alien → pylddwrap → icontract)
 calls `asyncio.get_event_loop()`, which no longer implicitly creates a loop on
 python 3.14, failing the build. The extension skips that check.
+
+## `t3code-version`
+
+llm-agents' t3code trails upstream (0.0.40 against 0.0.42 releases), and the
+version is a `let` binding inside its `unwrapped.nix` — not an argument — so
+there is nothing to `override`. The overlay rebuilds it in place: new `src`,
+new `pnpmDeps`/`cargoDeps` hashes, and `replaceStrings` over `preBuild` and
+`installPhase`, which carry the old version and the old resource-monitor store
+path as literals. Applied after `flake-inputs`, like `superset-fork`.
+
+Two things a bump past 0.0.40 needs beyond hashes:
+
+- **Electron 44.** Upstream's `preBuild` compares the major it expects against
+  the one nixpkgs hands it and fails the build on a mismatch, so `electron_43`
+  is overridden with `electron_44` — taken from llm-agents' own nixpkgs, the
+  only one here new enough to carry it.
+- **A seeded SPDX cache.** 0.0.42's web build generates a third-party licence
+  manifest and downloads the licence texts it does not find under
+  `.generated/third-party-licenses/spdx/<list version>`, which is gitignored —
+  so in the sandbox it dies on `getaddrinfo EAI_AGAIN
+  raw.githubusercontent.com`. `postPatch` copies the seven texts the config
+  asks for into that directory. The list revision, the list version and the
+  set of licence ids all live in `scripts/lib/third-party-licenses.ts` and
+  `third-party-licenses.config.json`; re-read both on a bump.
+
+Overriding at all voids `cache.numtide.com` for this package — the store path
+no longer matches what numtide built — so t3code is a from-source build
+(electron, a pnpm monorepo and a Rust helper) until llm-agents catches up.
+Drop the overlay then.
