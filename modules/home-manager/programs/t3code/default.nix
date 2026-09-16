@@ -22,6 +22,12 @@
               (old.postPatch or "")
               + ''
                 cp .env.example .env
+
+                # niri-flake labels git builds `unstable <date>`, which this gate cannot read.
+                if [ -f apps/desktop/src/snapShot/NiriSnapShot.ts ]; then
+                  substituteInPlace apps/desktop/src/snapShot/NiriSnapShot.ts \
+                    --replace-fail '/^(?:niri )?(\d+)\.(\d+)/' '/^(?:niri )?(?:unstable )?(\d+)[.-](\d+)/'
+                fi
               '';
 
             postInstall =
