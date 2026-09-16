@@ -39,6 +39,7 @@ in {
     programs.tinkerwell
     programs.zen-browser
     programs.webapps
+    programs.thunderbird
   ];
 
   home.file.".config/hypr/pyprland.toml".text = lib.mkAfter ''
