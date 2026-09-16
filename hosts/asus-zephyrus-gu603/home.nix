@@ -70,20 +70,6 @@
           };
         };
       };
-
-      "pypr/config.toml" = lib.mkIf osConfig.programs.hyprland.enable {
-        text = lib.mkAfter ''
-          [monitors.placement."G276HL"]
-          topOf = "eDP-1"
-
-          [monitors.placement."G274F"]
-          leftOf = "eDP-1"
-
-          [monitors.placement."Acer CB281HK"]
-          topOf = "G274F"
-          scale = 1.875000
-        '';
-      };
     };
   };
 
@@ -108,7 +94,28 @@
 
   wayland.windowManager.hyprland.settings = lib.mkIf osConfig.programs.hyprland.enable {
     monitor = [
-      "eDP-1,2560x1600@60,0x0,1.6"
+      {
+        output = "eDP-1";
+        mode = "2560x1600@60";
+        position = "0x0";
+        scale = 1.6;
+      }
+      # desc: is a prefix match on "make model serial" — don't drop the make.
+      {
+        output = "desc:Acer Technologies G276HL";
+        position = "0x-1080";
+        scale = 1;
+      }
+      {
+        output = "desc:Microstep G274F";
+        position = "-1920x0";
+        scale = 1;
+      }
+      {
+        output = "desc:Acer Technologies Acer CB281HK";
+        position = "-1920x-1152";
+        scale = 1.875;
+      }
     ];
   };
 }

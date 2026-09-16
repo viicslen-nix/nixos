@@ -45,6 +45,12 @@
       url = "https://ghostty.cachix.org";
       key = "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns=";
     };
+
+    hyprland = {
+      scope = "desktop";
+      url = "https://hyprland.cachix.org";
+      key = "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=";
+    };
   };
 
   all = lib.attrValues caches;
