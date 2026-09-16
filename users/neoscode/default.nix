@@ -23,7 +23,7 @@ in {
     starship
     worktrunk
     workmux
-    nilastia
+    caelestia
     exo
     noctalia
     git

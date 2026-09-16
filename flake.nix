@@ -80,6 +80,10 @@
       url = "path:./flakes/dms";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    caelestia = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nilastia = {
       url = "github:ST-SARAVANAPRIYAN/Nilastia";
       inputs.nixpkgs.follows = "nixpkgs";

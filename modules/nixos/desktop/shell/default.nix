@@ -9,7 +9,7 @@
       name = "shell";
     in {
       options.modules.${namespace}.${name} = mkOption {
-        type = types.enum ["dms" "nilastia" "exo" "noctalia" "none"];
+        type = types.enum ["dms" "caelestia" "exo" "noctalia" "none"];
         default = "dms";
         description = mdDoc ''
           Which desktop shell autostarts in a graphical session.

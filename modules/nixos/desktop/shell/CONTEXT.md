@@ -1,8 +1,8 @@
 # Desktop shell selection
 
 `modules.desktop.shell` picks which shell autostarts in a graphical session.
-Today that is `dms` (DankMaterialShell, a subflake), `nilastia` (a Caelestia
-fork for niri), `exo` (Material 3, built on Ignis) or `noctalia`, plus `none`.
+Today that is `dms` (DankMaterialShell, a subflake), `caelestia` (Caelestia under
+Hyprland, its Nilastia fork under niri), `exo` (Material 3, built on Ignis) or `noctalia`, plus `none`.
 
 ## Why the compositors don't name the shell
 
@@ -55,7 +55,7 @@ gate.
 
 `programs.dms-greeter` (dank-greeter) is configured in the `desktop` preset and
 stays on whichever shell is selected — it runs before the session, not inside
-it. Nilastia ships no greeter, so switching to it does not cost the login
+it. Caelestia ships no greeter, so switching to it does not cost the login
 screen.
 
 ## Keybinds follow the shell, and the shell owns them
@@ -63,26 +63,27 @@ screen.
 The two shells deliver binds by different routes, which is why they never
 collide. dms rewrites niri's `config.kdl` through its `niri.includes` hack, so
 its binds live in a generated `dms/binds.kdl`; that hack is gated off when
-another shell runs. Nilastia instead contributes to
-`programs.niri.settings.binds` from its own home-manager module, under the same
+another shell runs. Caelestia instead contributes to
+`programs.niri.settings.binds` and Hyprland's `settings.bind` from its own
+home-manager module, under the same
 `mkIf` as the shell itself — so the keys exist only while it is selected, and
 `flakes/niri/config/binds` never learns a shell name.
 
 That placement is the point: a bind belongs to the thing it drives. A third
 shell adds its own binds in its own module and touches nothing here.
 
-Nilastia's five (`Mod+Space` launcher, `Mod+G` dashboard, `Mod+Shift+Q` session,
+Caelestia's five on niri (`Mod+Space` launcher, `Mod+G` dashboard, `Mod+Shift+Q` session,
 `Mod+Shift+N` nexus, `Mod+Alt+L` lock) were chosen from keys the base niri
 config leaves free, so no `mkForce` is involved — if a future bind collides the
 module system will say so rather than silently pick a winner.
 
-`Mod+Shift+S` is deliberately *not* taken for nilastia's screenshot picker: the
+`Mod+Shift+S` is deliberately *not* taken for Caelestia's screenshot picker: the
 existing menu in `flakes/niri/config/binds/screenshots.nix` works under either
 shell, and overriding a working bind to duplicate it buys nothing.
 
 ## Exo is not a Nix-native shell, and that shows
 
-dms and nilastia both ship home-manager modules. Exo ships none — no flake, no
+dms and Caelestia both ship home-manager modules. Exo ships none — no flake, no
 `.nix` file anywhere. What it is, structurally, is an [Ignis](https://github.com/ignis-sh/ignis)
 config directory plus a set of matugen templates, so it rides as a
 `flake = false` input and the real packaging work is done by Ignis's own
@@ -142,10 +143,10 @@ The shells expose different feature sets under different names, but the four
 common concepts are bound to the same keys, so the muscle memory survives a
 switch. Only one shell is ever enabled, so there is no collision.
 
-| Key | dms | nilastia | exo | noctalia |
+| Key | dms | caelestia | exo | noctalia |
 | --- | --- | --- | --- | --- |
 | `Mod+Space` | own binds.kdl | launcher | Launcher | `panel-toggle launcher` |
-| `Mod+G` | own binds.kdl | dashboard | QuickCenter | `panel-toggle control-center` |
+| `Mod+G` | own binds.kdl | dashboard (`Mod+Ctrl+G` on Hyprland) | QuickCenter | `panel-toggle control-center` |
 | `Mod+Shift+Q` | own binds.kdl | session | PowerMenu | `panel-toggle session` |
 | `Mod+Shift+N` | own binds.kdl | nexus | Settings | `settings-toggle` |
 | `Mod+Alt+L` | own binds.kdl | lock | — | `session lock` |
@@ -174,3 +175,28 @@ instead — the same shape `flakes/dms/hm.nix` uses.
 
 `noctalia msg <command>` is the IPC entry point, and `noctalia-dev/noctalia-greeter`
 exists if the dank-greeter is ever swapped out.
+
+## Caelestia is one choice, two builds
+
+Nilastia is a niri port of Caelestia, so it is not a separate enum value:
+`shell = "caelestia"` runs Nilastia under niri and upstream Caelestia under
+Hyprland, where Caelestia is the one that works. The module picks
+`programs.caelestia.package` from the host's compositors. On a host with both,
+it uses a `caelestia-shell` wrapper that runs one or the other based on
+`$XDG_CURRENT_DESKTOP` (`niri` or `Hyprland`), which both compositors import
+into the user manager before `graphical-session.target`.
+
+Only Caelestia's home-manager module is imported. Nilastia's is a byte-for-byte
+copy that declares the same `programs.caelestia` options, and flake-parts wraps
+`flake.modules` entries without a `key`, so importing both fails with a
+duplicate-option error instead of being deduplicated.
+
+The Hyprland binds call `caelestia-shell ipc call …` through `exec_cmd`, like
+the niri binds. They don't use Caelestia's `global` shortcuts: its `launcher`
+shortcut opens on key *release* (the Super-tap gesture), so a plain press
+bind never opens it. `SUPER+G` is hyprsplit's there, so the dashboard moves to
+`SUPER+CTRL+G`.
+
+Neither flake has a binary cache we use: quickshell, the QML plugin and
+m3shapes build locally for each flake, and on a host with both compositors
+that happens twice.
