@@ -49,42 +49,8 @@ in {
     }
   ];
 
-  wayland.windowManager.hyprland.settings = lib.mkIf osConfig.programs.hyprland.enable {
-    monitor = [
-      {
-        output = "DP-1";
-        mode = "1920x1080@59.99";
-        position = "1080x420";
-        scale = 1;
-        vrr = 0;
-      }
-      {
-        output = "DP-2";
-        mode = "1920x1080@59.99";
-        position = "0x0";
-        scale = 1;
-        transform = 1;
-        vrr = 0;
-      }
-    ];
-  };
-
   programs = {
     niri.settings = lib.mkIf osConfig.programs.niri.enable {
-      outputs = {
-        "DP-2" = {
-          position = {
-            x = 0;
-            y = 0;
-          };
-          transform.rotation = 90;
-        };
-        "DP-1".position = {
-          x = 1080;
-          y = 420;
-        };
-      };
-
       workspaces = {
         "browser" = {
           name = "Browser";
