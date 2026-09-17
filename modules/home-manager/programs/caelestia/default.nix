@@ -29,6 +29,12 @@
         exec ${getExe caelestia} "$@"
       '';
 
+      # Replaces the default logind Terminate, which kills niri-session but leaves niri.service holding graphical-session.target.
+      logout = pkgs.writeShellScript "caelestia-logout" ''
+        ${optionalString onNiri ''[ "''${XDG_CURRENT_DESKTOP-}" = niri ] && exec ${getExe osConfig.programs.niri.package} msg action quit --skip-confirmation''}
+        exec ${getExe osConfig.programs.uwsm.package} stop
+      '';
+
       shell = getExe config.programs.caelestia.package;
       hyprIpc = keys: args: opts: {
         _args = [keys (generators.mkLuaInline "hl.dsp.exec_cmd(${generators.toLua {} "${shell} ipc call ${args}"})")] ++ optional (opts != {}) opts;
@@ -63,6 +69,22 @@
               target = "desktop-shell.target";
             };
           };
+        }
+
+        {
+          xdg.configFile."caelestia/logout".source = logout;
+
+          # Not programs.caelestia.settings: the shell saves shell.json itself, so it must stay a writable file.
+          home.activation.caelestiaLogout = hm.dag.entryAfter ["writeBoundary"] ''
+            f="${config.xdg.configHome}/caelestia/shell.json"
+            [ -e "$f" ] || run install -Dm644 ${pkgs.writeText "shell.json" "{}"} "$f"
+            filter='if (.session.commands.logout // ["logout"]) == ["logout"] then .session.commands.logout = [$c] else . end'
+            c="${config.xdg.configHome}/caelestia/logout"
+            if ! ${getExe pkgs.jq} -e --arg c "$c" "($filter) == ." "$f" >/dev/null; then
+              new=$(${getExe pkgs.jq} --arg c "$c" "$filter" "$f")
+              run install -m644 /dev/stdin "$f" <<<"$new"
+            fi
+          '';
         }
 
         # The shell owns its own binds; niri never learns which shell is running.
