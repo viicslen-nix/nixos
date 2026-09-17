@@ -3,6 +3,7 @@
     lib,
     pkgs,
     config,
+    options,
     osConfig,
     inputs,
     ...
@@ -64,6 +65,14 @@
           description = mdDoc "The package actually installed, after both fixes above.";
         };
 
+        # Off when the `serve` unit is the server: the app cannot attach to it and spawns a second backend on the same database.
+        desktopApp = mkOption {
+          type = types.bool;
+          default = osConfig.modules.presets.desktop.enable && !cfg.serve.enable;
+          defaultText = literalExpression "osConfig.modules.presets.desktop.enable && !cfg.serve.enable";
+          description = mdDoc "Install the Electron desktop app. Use the `webapps` entry against the served port instead when `serve` is on.";
+        };
+
         cloudflaredPackage = mkOption {
           type = types.package;
           default = pkgs.cloudflared;
@@ -118,9 +127,9 @@
           # is only useful on a graphical host.
           home.packages =
             [cfg.finalPackage]
-            ++ optional osConfig.modules.presets.desktop.enable cfg.finalPackage.desktop;
+            ++ optional cfg.desktopApp cfg.finalPackage.desktop;
 
-          programs.niri.settings.binds = mkIf (osConfig.programs.niri.enable && cfg.snapShotShortcut != null) {
+          programs.niri.settings.binds = mkIf (osConfig.programs.niri.enable && cfg.desktopApp && cfg.snapShotShortcut != null) {
             ${cfg.snapShotShortcut} = {
               repeat = false;
               action.spawn = [
@@ -171,6 +180,17 @@
         # the project database — losing it means re-authorizing every boot.
         (persistence.mkPersistence config {
           directories = [".t3"];
+        })
+
+        # Test `options`, not `config`: gating the attr name on config.…webapps.enable recurses.
+        (optionalAttrs (options.modules.programs ? webapps) {
+          modules.programs.webapps.apps = mkIf (config.modules.programs.webapps.enable && cfg.serve.enable) [
+            {
+              name = "t3code";
+              url = "http://127.0.0.1:${toString cfg.serve.port}";
+              floating = false;
+            }
+          ];
         })
       ]);
     };

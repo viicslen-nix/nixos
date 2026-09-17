@@ -16,6 +16,8 @@
 
       chromium = "${cfg.package}/bin/chromium";
 
+      floatingApps = filter (app: app.floating) cfg.apps;
+
       # Don't pass --user-data-dir: the force-installed Violentmonkey lives in the default profile.
       mkLauncher = app:
         pkgs.writeShellScriptBin "webapp-${app.name}" ''
@@ -67,21 +69,29 @@
                   at ~/.config/webapps/<name>.user.js so it can be pasted into Violentmonkey.
                 '';
               };
+              floating = mkOption {
+                type = types.bool;
+                default = true;
+                description = "Open as a floating half-width window in niri; false tiles it like a regular app.";
+              };
             };
           });
-          default = [
+          default = [];
+          description = "Web apps to expose as chromeless windows. Other modules append their own entries here.";
+        };
+      };
+
+      config = mkIf cfg.enable (mkMerge [
+        {
+          # A definition, not the option default, so entries other modules add merge instead of replacing it.
+          modules.programs.webapps.apps = [
             {
               name = "whatsapp";
               url = "https://web.whatsapp.com";
               injectScript = ./whatsapp-focus.user.js;
             }
           ];
-          description = "Web apps to expose as floating windows. Add one entry per app.";
-        };
-      };
 
-      config = mkIf cfg.enable (mkMerge [
-        {
           home.packages = (map mkLauncher cfg.apps) ++ [manageLauncher cfg.package];
 
           # Copy on disk for pasting into Violentmonkey (VM has no file-based seeding).
@@ -100,13 +110,22 @@
               };
             };
 
-          # Float every webapp-* window in niri.
-          programs.niri.settings.window-rules = mkIf osConfig.programs.niri.enable [
+          # An empty `matches` would match every window, hence the non-empty guard.
+          programs.niri.settings.window-rules = mkIf (osConfig.programs.niri.enable && floatingApps != []) [
             {
-              matches = [{app-id = "^webapp-";}];
+              matches = map (app: {app-id = "^webapp-${app.name}$";}) floatingApps;
               open-floating = true;
               open-focused = true;
               default-column-width = {proportion = 0.5;};
+            }
+          ];
+
+          wayland.windowManager.hyprland.settings.window_rule = mkIf (osConfig.programs.hyprland.enable && floatingApps != []) [
+            {
+              match.class = "^webapp-(${concatMapStringsSep "|" (app: app.name) floatingApps})$";
+              float = true;
+              center = true;
+              size = ["monitor_w*0.5" "monitor_h*0.8"];
             }
           ];
         }

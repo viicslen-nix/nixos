@@ -165,8 +165,6 @@ with lib; {
     vial
     uv
     wireshark
-
-    pkgs.inputs.packages.app-images.t3code
   ];
 
   modules = {
