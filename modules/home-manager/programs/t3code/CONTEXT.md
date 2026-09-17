@@ -50,6 +50,28 @@ and the app — which spawns its own backend out of its own output, not the
 `serve` unit — does not. `out` is the CLI; the Electron app is the `desktop`
 output, and it is only useful on a graphical host.
 
+## The desktop app and the `serve` unit cannot coexist (`desktopApp`)
+
+The Electron app has no attach mode (upstream #6097, thin-client PR #9376
+unmerged as of 0.0.42): it always spawns its own backend, finds 3773 busy,
+takes 3774 and opens the same `~/.t3/userdata/state.sqlite`. Both servers then
+reconcile "orphaned" threads, so one thread gets a `claude --resume` under
+each — duplicate work on the same thread, plus `database is locked`, plus the
+T3 Connect relay re-pointed at whichever server started last. Env switches
+were checked and none exist: `T3CODE_DESKTOP_WS_URL` is only in a passthrough
+list, and the primary-backend start is unconditional. The only attach path is
+the app's *SSH environment*, which is not worth an sshd-to-localhost hack.
+
+So `desktopApp` defaults off whenever `serve` is on, and the local UI is a
+`webapps` entry this module appends — a chromeless chromium window on the
+served port, tiled rather than floating. It is declared here, not in
+`webapps`, because it exists only while `serve` does. `webapps` is not
+imported everywhere `t3code` is, so the definition is wrapped in
+`optionalAttrs (options.modules.programs ? webapps)`: an undeclared option is
+an error even under `mkIf`, and gating the attribute *name* on
+`config.…webapps.enable` instead is infinite recursion. Revisit when #9376
+lands.
+
 ## The systemd unit is written here, not by `t3 service install`
 
 Upstream's own `t3 service install` writes a unit that runs a self-updating

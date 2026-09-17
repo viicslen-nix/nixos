@@ -9,6 +9,17 @@ Violentmonkey is force-installed at the NixOS layer via
 `programs.chromium.extensions` (`ExtensionInstallForcelist`) in the host config;
 nixpkgs chromium reads that policy from `/etc/chromium/policies/managed`.
 
+## Other modules append entries
+
+`apps` defaults to `[]`; WhatsApp is a *definition* inside this module's own
+config block, so another module's `modules.programs.webapps.apps = [ … ]`
+merges with it instead of replacing it (a host setting the option would have
+silently dropped WhatsApp otherwise). `t3code` appends its own entry that way
+— see `../t3code/CONTEXT.md` for why the Electron app is not used. That entry
+is `floating = false` — an IDE, not a chat popup — which is why the niri and
+Hyprland float rules are built from the floating entries instead of matching
+`^webapp-`.
+
 ## The launchers
 
 `webapp-<name>` is a chromeless `--app` window. `--class` sets the Wayland
