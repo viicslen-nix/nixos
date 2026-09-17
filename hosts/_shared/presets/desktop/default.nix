@@ -39,6 +39,7 @@ in {
     # Graphical-host modules. Importing a module activates it; a host can still
     # opt out with `<module>.enable = false` (lenovo does this for oom).
     nixosModules.desktop.shell
+    nixosModules.desktop.monitors
     nixosModules.features.app-images
     nixosModules.core.theming
     nixosModules.services.oom
