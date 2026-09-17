@@ -269,6 +269,13 @@ already happened. Treat every heavy Nix invocation as dangerous.
   resolve; `just bump-outdated` bumps exactly what `just outdated` flags.
   Remember to commit in the submodule; `git add` any new file first, or the
   flake cannot see it.
+- **`openwiki` carries a generated `package-lock.json`.** The registry tarball
+  ships none, so `by-name/openwiki/package-lock.json` is produced by running
+  `npm install --package-lock-only --ignore-scripts` against the published
+  `package.json` with `devDependencies` and `scripts` stripped (npm errors with
+  `Cannot read properties of null (reading 'edgesOut')` if they stay). A bump
+  must regenerate it before `npmDepsHash`, or the deps FOD still pins the old
+  tree. better-sqlite3 compiles from source here, so budget for that too.
 - **Local packages must interpolate the version into the tag.** Write
   `tag = "v${version}"` (or `"v${finalAttrs.version}"`), never a literal
   `rev = "v3.2.1"` — with a literal rev, nix-update rewrites `version` only, so

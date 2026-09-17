@@ -26,3 +26,15 @@ narrow warm-start to just those.
 cwd-relative `gateway.yaml`; only `serve` falls back to
 `~/.config/mcp-gateway/gateway.yaml`. This env var is the one knob that points
 all of them at the generated config from any directory.
+
+## `openwiki.nix` — why an integration, not its own module
+
+OpenWiki's `integrations install <host>` does exactly two things: add an
+`openwiki mcp --host <host>` stdio server to the host's MCP config, and copy
+`integrations/openwiki/SKILL.md` into its skills directory. Both of those are
+already `modules.programs.ai`'s job, and its writes land in `~/.claude.json` /
+`~/.claude/skills`, which this repo owns and overwrites on activation — so the
+installer would be undone every rebuild. Declaring the pair here fans it out to
+every enabled CLI for free. The CLI itself (`openwiki --init`, `visualize`) is
+an ordinary package and carries no configuration, so it needs no module of its
+own; the integration puts it on `PATH`.

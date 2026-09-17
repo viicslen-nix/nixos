@@ -74,6 +74,7 @@ in
     superset.enable = true;
     mempalace.enable = true;
     coderabbit.enable = true;
+    openwiki.enable = true;
     context = ./AGENTS.md;
     # Order matters — last wins, and ./skills shadows both upstream layers.
     skills = upstreamSkills // patchedSkills // mkSkillAttrSet ./skills;

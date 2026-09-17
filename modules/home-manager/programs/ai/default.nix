@@ -30,6 +30,14 @@
           isAttrs
           ;
       };
+      openwikiIntegration = import ./integrations/openwiki.nix {
+        inherit
+          lib
+          cfg
+          pkgs
+          isAttrs
+          ;
+      };
       mcpGatewayIntegration = import ./integrations/mcp-gateway.nix {
         inherit lib cfg pkgs config;
         mcps = effectiveMcps;
@@ -77,7 +85,10 @@
       hasGithubCopilotCliOption = hasAttrByPath ["programs" "github-copilot-cli" "agents"] options;
       hasGithubCopilotCliSkillsOption = hasAttrByPath ["programs" "github-copilot-cli" "skills"] options;
 
-      effectiveMcps = cfg.mcps // optionalAttrs cfg.mempalace.enable mempalaceIntegration.mcps;
+      effectiveMcps =
+        cfg.mcps
+        // optionalAttrs cfg.mempalace.enable mempalaceIntegration.mcps
+        // optionalAttrs cfg.openwiki.enable openwikiIntegration.mcps;
       effectiveCommands =
         cfg.commands
         // optionalAttrs cfg.mempalace.enable mempalaceIntegration.commands
@@ -95,6 +106,7 @@
           cfg.skills
           // optionalAttrs cfg.mempalace.enable mempalaceIntegration.skills
           // optionalAttrs cfg.coderabbit.enable coderabbitIntegration.skills
+          // optionalAttrs cfg.openwiki.enable openwikiIntegration.skills
         else cfg.skills;
 
       mkDefaultAttrs = attrs: mapAttrs (_: mkDefault) attrs;
@@ -218,6 +230,7 @@
 
         inherit (mempalaceIntegration.options) mempalace;
         inherit (coderabbitIntegration.options) coderabbit;
+        inherit (openwikiIntegration.options) openwiki;
         inherit (supersetIntegration.options) superset;
         inherit (mcpGatewayIntegration.options) gateway;
       };
@@ -253,7 +266,8 @@
             ++ optional (!hasGithubCopilotCliSkillsOption && cfg.targets.github-copilot-cli && hasGlobalSkills)
             "`modules.programs.ai.skills` is set, but `programs.github-copilot-cli.skills` is unavailable."
             ++ mempalaceIntegration.warnings
-            ++ coderabbitIntegration.warnings;
+            ++ coderabbitIntegration.warnings
+            ++ openwikiIntegration.warnings;
 
           # With the gateway on, clients see only the gateway; the real servers
           # become its backends.
@@ -303,6 +317,7 @@
             skills = mkIf (hasGlobalSkills && hasGithubCopilotCliSkillsOption) (mkDefaultSkills effectiveSkills);
           };
         })
+        openwikiIntegration.config
         mcpGatewayIntegration.config
       ]);
     };
