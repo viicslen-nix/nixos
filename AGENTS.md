@@ -112,6 +112,11 @@ already happened. Treat every heavy Nix invocation as dangerous.
   service to that target, and only the selected one is defined. Declared in
   `modules/nixos/desktop/shell`, which the `desktop` preset imports. The
   dank-greeter is independent of it. See that directory's `CONTEXT.md`.
+- **`modules.desktop.monitors`** — output layout keyed by connector name
+  (`position`, `scale`, `rotation`), translated into both niri `outputs` and
+  Hyprland `monitor`. Declared in `modules/nixos/desktop/monitors`, imported by
+  the `desktop` preset. Rotation is applied before positioning, so a portrait
+  output is 1080 wide.
 - **`modules.containers.settings`** — the one place the container engine is
   configured: `backend` (`"docker"` / `"podman"`) plus the engine-agnostic
   `nvidiaSupport`, `storageDriver` and `allowTcpPorts`. `programs.docker` /
