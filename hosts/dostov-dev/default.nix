@@ -178,6 +178,14 @@ with lib; {
       };
 
       shell = "caelestia";
+
+      monitors = {
+        DP-2.rotation = 90;
+        DP-1.position = {
+          x = 1080;
+          y = 635;
+        };
+      };
     };
     containers.settings = {
       backend = "podman";
