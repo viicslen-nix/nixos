@@ -189,6 +189,7 @@
               name = "t3code";
               url = "http://127.0.0.1:${toString cfg.serve.port}";
               floating = false;
+              icon = "${cfg.finalPackage.desktop}/share/icons/hicolor/scalable/apps/t3code.svg";
             }
           ];
         })

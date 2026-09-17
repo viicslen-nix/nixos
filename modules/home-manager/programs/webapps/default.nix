@@ -38,6 +38,7 @@
           settings.StartupWMClass = "webapp-${app.name}";
           terminal = false;
           categories = ["Network"];
+          icon = mkIf (app.icon != null) app.icon;
         };
     in {
       options.modules.${namespace}.${name} = {
@@ -74,6 +75,11 @@
                 default = true;
                 description = "Open as a floating half-width window in niri; false tiles it like a regular app.";
               };
+              icon = mkOption {
+                type = types.nullOr (types.either types.str types.path);
+                default = null;
+                description = "Desktop entry icon: a themed icon name or a path to an image file.";
+              };
             };
           });
           default = [];
@@ -89,6 +95,10 @@
               name = "whatsapp";
               url = "https://web.whatsapp.com";
               injectScript = ./whatsapp-focus.user.js;
+              icon = pkgs.fetchurl {
+                url = "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg";
+                hash = "sha256-3WpNssOUyhGqirCHNp8vUKEub4dOSdt7HVYJ0Kj7KMo=";
+              };
             }
           ];
 
