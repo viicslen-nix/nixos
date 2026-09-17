@@ -133,6 +133,7 @@ with lib; {
 
         # Tools (CLI/TUI)
         gh
+        uv
         glab
         awscli
         kubectl
