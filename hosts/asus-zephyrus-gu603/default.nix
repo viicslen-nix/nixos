@@ -3,6 +3,7 @@
   pkgs,
   inputs,
   users,
+  nixosModules,
   ...
 }:
 with lib; {
