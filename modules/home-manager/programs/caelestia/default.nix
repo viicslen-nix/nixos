@@ -15,7 +15,10 @@
       cfg = config.modules.${namespace}.${name};
 
       inherit (pkgs.stdenv.hostPlatform) system;
-      nilastia = inputs.nilastia.packages.${system}.with-cli;
+      # Nilastia imports QtMultimedia (video wallpapers) but its package never adds the module.
+      nilastia = inputs.nilastia.packages.${system}.with-cli.override (old: {
+        quickshell = old.quickshell // {withModules = mods: old.quickshell.withModules (mods ++ [pkgs.qt6.qtmultimedia]);};
+      });
       caelestia = inputs.caelestia.packages.${system}.with-cli;
       onNiri = osConfig.programs.niri.enable or false;
       onHyprland = osConfig.programs.hyprland.enable or false;

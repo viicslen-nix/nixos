@@ -200,3 +200,10 @@ bind never opens it. `SUPER+G` is hyprsplit's there, so the dashboard moves to
 Neither flake has a binary cache we use: quickshell, the QML plugin and
 m3shapes build locally for each flake, and on a host with both compositors
 that happens twice.
+
+Nilastia's package is also incomplete as shipped. Its `Wallpaper.qml` imports
+`QtMultimedia` (video wallpapers), but its `quickshell.withModules` list holds
+only `qtimageformats`, so the shell dies on load with `module "QtMultimedia" is
+not installed` and restarts forever. Caelestia doesn't import it. The module
+overrides Nilastia's `quickshell` argument to add `qt6.qtmultimedia`; drop the
+override once upstream packages it.
