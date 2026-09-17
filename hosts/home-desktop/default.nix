@@ -51,7 +51,6 @@ with lib; {
   environment.systemPackages = with pkgs; [
     vscode
     discord
-    uv
     rpi-imager
     orca-slicer
   ];
