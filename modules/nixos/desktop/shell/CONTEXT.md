@@ -207,3 +207,18 @@ only `qtimageformats`, so the shell dies on load with `module "QtMultimedia" is
 not installed` and restarts forever. Caelestia doesn't import it. The module
 overrides Nilastia's `quickshell` argument to add `qt6.qtmultimedia`; drop the
 override once upstream packages it.
+
+Logout needed its own command. Both shells' default `logout` calls logind's
+`Session.Terminate`, which SIGTERMs the login scope. Under niri that kills
+`niri-session` while it is still in `systemctl --user --wait start
+niri.service`, so its cleanup never runs: `niri.service` keeps running
+headless (DRM `Permission denied`) and holds `graphical-session.target`. Any
+login from the greeter keeps the user manager alive, so uwsm keeps seeing an
+active session and Hyprland "exits" at once with `A compositor or
+graphical-session* target is already active!`. The module links
+`~/.config/caelestia/logout`, which runs `niri msg action quit` under niri and
+`uwsm stop` otherwise. Activation points `session.commands.logout` at that
+script whenever the key is unset or still `["logout"]`. It can't go through
+`programs.caelestia.settings`, because the shell saves `shell.json` itself and
+a store symlink would break its settings UI. The launcher's built-in "logout"
+action still uses the logind call.
