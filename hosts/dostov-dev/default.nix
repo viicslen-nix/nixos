@@ -80,7 +80,7 @@ with lib; {
 
     miami-bus-tracker = {
       enable = true;
-      stopId = "1340";
+      stopId = "590"; # SE 1 ST & 1 AV
       routeId = "836";
       direction = "Westbound";
       notification = true;
