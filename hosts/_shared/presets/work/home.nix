@@ -2,6 +2,8 @@
   pkgs,
   config,
   lib,
+  osConfig,
+  homeModules,
   ...
 }: let
   # Prebuilt static Go binary — no patchelf needed.
@@ -63,9 +65,42 @@
     exec ${lib.getExe pkgs.mcp-grafana} "$@"
   '';
 in {
+  imports = [
+    homeModules.programs.ai
+    homeModules.programs.claude-code
+  ];
+
   age.secrets = {
     prod-db-mysql-password.file = ../../../../secrets/prod-db/mysql-password.age;
     grafana-service-account-token.file = ../../../../secrets/grafana/service-account-token.age;
+    intelephense = {
+      file = ../../../../secrets/intelephense/licence.age;
+      path = "${config.home.homeDirectory}/intelephense/licence.txt";
+    };
+  };
+
+  home.shellAliases = {
+    k = "kubectl";
+    kga = "kubectl get all";
+    kgp = "kubectl get pods";
+    kdp = "kubectl describe pod";
+    kcuc = "kubectl config use-context";
+    krr = "kubectl rollout restart";
+
+    dep = "vendor/bin/dep";
+
+    sail = "vendor/bin/sail";
+    s = "vendor/bin/sail";
+    sud = "vendor/bin/sail up -d";
+    sdown = "vendor/bin/sail down";
+    art = "vendor/bin/sail artisan";
+    sa = "vendor/bin/sail artisan";
+    sc = "vendor/bin/sail composer";
+    sp = "vendor/bin/sail php";
+    sn = "vendor/bin/sail npm";
+    st = "vendor/bin/sail tinker";
+    sd = "vendor/bin/sail debug";
+    sda = "vendor/bin/sail debug artisan";
   };
 
   home.packages = [
@@ -81,6 +116,8 @@ in {
 
   programs = {
     ssh.settings = {
+      "work.neoscode.com".ProxyCommand = "${lib.getExe pkgs.cloudflared} access ssh --hostname %h";
+
       "FmTod" = {
         HostName = "webapps";
         User = "fmtod";
@@ -172,8 +209,9 @@ in {
   };
 
   modules.programs = {
-    zed.enable = true;
+    zed.enable = osConfig.modules.presets.desktop.enable;
     opencode.enable = true;
+    k9s.enable = true;
     krr = {
       enableK9sIntegration = true;
       package = pkgs.inputs.packages.kubernetes.krr;

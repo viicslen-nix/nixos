@@ -1,7 +1,19 @@
 # CONTEXT
 
-The `neoscode` home-manager user. Covers the ssh ControlMaster keep-file and the
-Wayland re-attachment prelude in the shell configs.
+The `neoscode` home-manager user. Covers what belongs in this file at all, the
+ssh ControlMaster keep-file and the Wayland re-attachment prelude in the shell
+configs.
+
+## Every host loads this file
+
+It is applied to headless `wsl` and the base+desktop handheld alike, so only
+identity and shell-level config sit here unconditionally. Work-only items
+(intelephense licence, kubectl/sail/deployer aliases, the cloudflared
+`ProxyCommand`) live in the `work` preset's `home.nix`; the avante key in
+`personal`. GUI items stay here but are gated on
+`osConfig.modules.presets.desktop.enable`: the `defaults` slots, the 1Password
+autostart, and the ghostty/wezterm/vivaldi `enable`s. The imports themselves
+cannot be conditional, so the gate is on each module's `enable`.
 
 ## `.ssh/controlmasters/.keep`
 

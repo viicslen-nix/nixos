@@ -48,12 +48,35 @@ with lib; {
         keyPath = config.age.secrets.mkcert-rootCA-key.path;
       };
 
-      # Shared work servers (identical across every work host).
       core.network.hosts = {
+        # Shared work servers
         "webapps" = "50.116.36.170";
         "storesites" = "23.239.17.196";
         "db-prod-master" = "45.33.94.139";
         "db-prod-read" = "45.79.151.62";
+
+        # Docker
+        "kubernetes.docker.internal" = "127.0.0.1";
+        "host.docker.internal" = "127.0.0.1";
+
+        # Local dev
+        "ai.local" = "127.0.0.1";
+        "home.local" = "127.0.0.1";
+        "buggregator.local" = "127.0.0.1";
+        "soketi.local" = "127.0.0.1";
+        "npm.local" = "127.0.0.1";
+        "portainer.local" = "127.0.0.1";
+        "phpmyadmin.local" = "127.0.0.1";
+        "erpnext.test" = "127.0.0.1";
+        "selldiam.test" = "127.0.0.1";
+        "mylisterhub.test" = "127.0.0.1";
+        "vite.mylisterhub.test" = "127.0.0.1";
+        "app.mylisterhub.test" = "127.0.0.1";
+        "admin.mylisterhub.test" = "127.0.0.1";
+        "*.mylisterhub.test" = "127.0.0.1";
+        "time-tracker.test" = "127.0.0.1";
+        "labreu.test" = "127.0.0.1";
+        "store.labreu.test" = "127.0.0.1";
       };
 
       # Both engines are imported; each enables itself from `backend` and reads
@@ -80,7 +103,6 @@ with lib; {
     };
 
     programs.zsh.shellAliases = {
-      dep = "composer exec -- dep";
       takeout = "composer global exec -- takeout";
       nix-dev = "nix develop path:.";
     };
@@ -106,12 +128,10 @@ with lib; {
       [
         # Formatters
         delta
-        jq
 
         # Build
         libgcc
         gcc13
-        gcc
         zig
         bc
         gnumake
@@ -152,19 +172,14 @@ with lib; {
         pkgs.inputs.packages.coderabbit
         pkgs.inputs.packages.superset.cli
       ]
+      ++ import ./scripts.nix {inherit pkgs;}
       # GUI apps only on graphical hosts (excluded on WSL/headless)
       ++ lib.optionals config.modules.presets.desktop.enable [
-        # Shared GUI dev tools (were duplicated across the work hosts)
+        vscode-fhs
         jetbrains-toolbox
         lens
         insomnia
         dbeaver-bin
-
-        luakit
-        meld
-        github-desktop
-        ferdium
-        sublime-merge
         pkgs.inputs.tuicr.default
         pkgs.inputs.llm-agents.claude-desktop
         pkgs.inputs.llm-agents.antigravity-cli

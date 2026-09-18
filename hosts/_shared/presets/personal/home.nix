@@ -15,6 +15,8 @@ with lib; {
     ./ai
   ];
 
+  age.secrets.avante-anthropic-api-key.file = ../../../../secrets/avante/anthropic-api-key.age;
+
   programs.hunk = {
     enable = true;
     enableGitIntegration = true;

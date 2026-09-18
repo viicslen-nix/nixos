@@ -12,12 +12,11 @@ with lib; {
 
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
-  nixpkgs.hostPlatform = "x86_64-linux";
   home-manager.sharedModules = [./home.nix];
 
   # WSL Specific Configuration
   virtualisation.docker.enable = mkForce false;
-  programs.git.config.programs.core.sshCommand = "ssh.exe";
+  programs.git.config.core.sshCommand = "ssh.exe";
 
   networking = {
     hostName = "wsl";
@@ -56,23 +55,9 @@ with lib; {
     LC_IDENTIFICATION = "en_US.UTF-8";
   };
 
-  environment = {
-    shellAliases = {
-      op = "op.exe";
-      ssh = "ssh.exe";
-      ssh-add = "ssh-add.exe";
-    };
+  environment.systemPackages = with pkgs; [
+    jetbrains.jdk
+  ];
 
-    systemPackages = with pkgs; [
-      jetbrains.webstorm
-      jetbrains.phpstorm
-      jetbrains.jdk
-      uv
-    ];
-  };
-
-  modules.containers.settings = {
-    backend = "docker";
-    log-driver = "local";
-  };
+  modules.containers.settings.log-driver = "local";
 }

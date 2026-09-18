@@ -7,6 +7,7 @@
   ...
 }: let
   user = "neoscode";
+  desktop = osConfig.modules.presets.desktop.enable;
 in {
   imports = with homeModules.programs; [
     zsh
@@ -32,18 +33,7 @@ in {
     vivaldi
   ];
 
-  age = {
-    identityPaths = ["${osConfig.users.users.${user}.home}/.ssh/agenix"];
-
-    secrets.intelephense = {
-      file = ../../secrets/intelephense/licence.age;
-      path = "${osConfig.users.users.${user}.home}/intelephense/licence.txt";
-    };
-
-    secrets.avante-anthropic-api-key = {
-      file = ../../secrets/avante/anthropic-api-key.age;
-    };
-  };
+  age.identityPaths = ["${osConfig.users.users.${user}.home}/.ssh/agenix"];
 
   home = {
     username = osConfig.users.users.${user}.name;
@@ -68,28 +58,6 @@ in {
       gst = "git status";
       gpl = "git pull";
       gph = "git push";
-
-      k = "kubectl";
-      kga = "kubectl get all";
-      kgp = "kubectl get pods";
-      kdp = "kubectl describe pod";
-      kcuc = "kubectl config use-context";
-      krr = "kubectl rollout restart";
-
-      dep = "vendor/bin/dep";
-
-      sail = "vendor/bin/sail";
-      s = "vendor/bin/sail";
-      sud = "vendor/bin/sail up -d";
-      sdown = "vendor/bin/sail down";
-      art = "vendor/bin/sail artisan";
-      sa = "vendor/bin/sail artisan";
-      sc = "vendor/bin/sail composer";
-      sp = "vendor/bin/sail php";
-      sn = "vendor/bin/sail npm";
-      st = "vendor/bin/sail tinker";
-      sd = "vendor/bin/sail debug";
-      sda = "vendor/bin/sail debug artisan";
     };
 
     packages = with pkgs; [
@@ -100,7 +68,7 @@ in {
     # Don't drop: ssh will not open a control socket if this directory is missing.
     file.".ssh/controlmasters/.keep".text = "";
 
-    autostart = [
+    autostart = lib.mkIf desktop [
       {
         package = pkgs._1password-gui;
         args = ["--silent"];
@@ -108,10 +76,7 @@ in {
       }
     ];
 
-    sessionVariables = {
-      EDITOR = "nvim";
-      NIXOS_OZONE_WL = "1";
-    };
+    sessionVariables.EDITOR = "nvim";
   };
 
   xdg = {
@@ -197,22 +162,21 @@ in {
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      settings = {
-        "*".ControlPath = "/home/${user}/.ssh/controlmasters/%r@%h:%p";
-        "work.neoscode.com".ProxyCommand = "${lib.getExe pkgs.cloudflared} access ssh --hostname %h";
-      };
+      settings."*".ControlPath = "${osConfig.users.users.${user}.home}/.ssh/controlmasters/%r@%h:%p";
     };
   };
 
   modules = {
     functionality.defaults = with pkgs; {
-      editor = vscode-fhs;
-      fileManager = nautilus;
-      passwordManager = _1password-gui;
-      terminal = pkgs.inputs.ghostty.default;
-      browser = config.modules.programs.vivaldi.finalPackage;
+      editor = lib.mkIf desktop vscode-fhs;
+      fileManager = lib.mkIf desktop nautilus;
+      passwordManager = lib.mkIf desktop _1password-gui;
+      terminal = lib.mkIf desktop pkgs.inputs.ghostty.default;
+      browser = lib.mkIf desktop config.modules.programs.vivaldi.finalPackage;
     };
     programs = {
+      ghostty.enable = desktop;
+      wezterm.enable = desktop;
       worktrunk.tmux.enable = true;
       workmux.tmux.enable = true;
 
@@ -231,6 +195,7 @@ in {
         enableTmuxIntegration = true;
       };
       vivaldi = {
+        enable = desktop;
         # 8.3's pinned-tab row moves pinned tabs out of .tab-strip, which is
         # where FavouriteTabs.css builds its grid; no settings UI toggles it.
         # preferences.vivaldi.tabs.show_pinned_group = false;
