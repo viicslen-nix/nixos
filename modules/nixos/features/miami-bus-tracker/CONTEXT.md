@@ -42,6 +42,18 @@ the user's `XDG_RUNTIME_DIR`/`DBUS_SESSION_BUS_ADDRESS`, and the unit inherits
 no-op, so the 5-minute timer never stacks overlays; the overlay exits itself
 after three polls with no bus inside `notifyMinutes`, or after 30 minutes.
 
+## Basemap
+
+OSM Mapnik (libshumate's default) drowns a 400px map in POI labels. CARTO's
+dark basemap was the first replacement, but it now serves an "API KEY
+REQUIRED" watermark without a key. Esri's World Dark Gray Base has no labels,
+needs no key, and is what the county page itself renders on (ArcGIS). Its tile
+path is `{z}/{y}/{x}`, not `{z}/{x}/{y}`, and libshumate templates use those
+brace placeholders — `#Z#`-style ones from libchamplain silently 404 every
+tile, which shows up as a transparent map, not an error. The license widget is
+hidden and a short attribution sits in the title instead, because
+`Shumate.License` wraps to three lines at this width.
+
 The overlay is GTK4 + libshumate (native OSM tiles, no browser engine) +
 gtk4-layer-shell through PyGObject. The layer-shell library must be loaded
 before `libwayland-client`, which gi cannot guarantee, so the wrapper
