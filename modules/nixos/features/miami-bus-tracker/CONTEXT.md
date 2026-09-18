@@ -34,8 +34,11 @@ direction read from `RouteImage`'s `TextStr=WB`-style parameter.
 
 ## Why the overlay is a user unit started by a root timer
 
-The notify timer is a system service (it runs `ConditionTime` and notifies
-every logged-in user via `sudo -u`). A Wayland window has to live in the
+The notify timer is a system service (it notifies every logged-in user via
+`sudo -u`). The active window is checked by the script, not the unit: the
+original module set `ConditionTime=`, which systemd does not have — the journal
+says `Unknown key 'ConditionTime' in section [Unit], ignoring` — so the window
+never existed and notifications fired all day once the API worked again. A Wayland window has to live in the
 session, so the same loop runs `systemctl --user start miami-bus-overlay` with
 the user's `XDG_RUNTIME_DIR`/`DBUS_SESSION_BUS_ADDRESS`, and the unit inherits
 `WAYLAND_DISPLAY` from the user manager. Starting an already-running unit is a

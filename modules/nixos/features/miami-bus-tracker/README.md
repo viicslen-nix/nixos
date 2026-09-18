@@ -64,8 +64,8 @@ Manual runs ignore the active-time window and never notify.
 
 ### Services
 
-- `miami-bus-notify.timer` / `.service` (system) — the periodic check; runs
-  `ConditionTime` and notifies every logged-in user.
+- `miami-bus-notify.timer` / `.service` (system) — the periodic check; exits
+  outside the active window (local time) and notifies every logged-in user.
 - `miami-bus-overlay.service` (user) — started by the check inside each user's
   session; exits on its own once the bus is gone, or via its × button.
 

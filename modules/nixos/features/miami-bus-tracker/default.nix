@@ -7,7 +7,7 @@
   }:
     with lib; let
       cfg = config.services.miami-bus-tracker;
-      bins = pkgs.callPackage ./packages.nix {inherit (cfg) routeId direction stopId notifyMinutes apiKey;};
+      bins = pkgs.callPackage ./packages.nix {inherit (cfg) routeId direction stopId notifyMinutes activeTimeStart activeTimeEnd apiKey;};
     in {
       options.services.miami-bus-tracker = {
         enable = mkEnabledOption "Miami-Dade Transit Bus Tracker";
@@ -65,7 +65,7 @@
           type = types.str;
           default = "";
           example = "17:00";
-          description = "Start of the active checking window (HH:MM); empty checks at all times.";
+          description = "Start of the active checking window (HH:MM, local time); empty checks at all times.";
         };
 
         activeTimeEnd = mkOption {
@@ -85,12 +85,6 @@
             serviceConfig = {
               Type = "oneshot";
               ExecStart = "${bins.notify}/bin/miami-bus-notify";
-            };
-            unitConfig = mkIf (cfg.activeTimeStart != "") {
-              ConditionTime =
-                if cfg.activeTimeEnd != "" && cfg.activeTimeEnd < cfg.activeTimeStart
-                then "${cfg.activeTimeStart}..23:59,00:00..${cfg.activeTimeEnd}"
-                else "${cfg.activeTimeStart}..${cfg.activeTimeEnd}";
             };
           };
 
