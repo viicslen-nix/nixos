@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Corner overlay: live map of the tracked route's buses approaching one stop."""
+import datetime
 import json
 import os
+import pathlib
 import threading
 import time
 import urllib.request
@@ -12,7 +14,7 @@ gi.require_version("Gdk", "4.0")
 gi.require_version("Gtk", "4.0")
 gi.require_version("Shumate", "1.0")
 gi.require_version("Gtk4LayerShell", "1.0")
-from gi.repository import Gdk, GLib, Gtk, Gtk4LayerShell as LayerShell, Shumate  # noqa: E402
+from gi.repository import Gdk, GLib, Gtk, Gtk4LayerShell as LayerShell, Pango, Shumate  # noqa: E402
 
 API = os.environ["MIAMI_BUS_API"]
 KEY = os.environ["MIAMI_BUS_KEY"]
@@ -22,6 +24,8 @@ STOP = int(os.environ["STOP_ID"])
 NOTIFY_MIN = int(os.environ.get("NOTIFY_MINUTES", "10"))
 VEHICLES = f"vehicles?routeId={ROUTE}&mapMode=bus&track=NO&curLatitude=0&curLongitude=0"
 POLL = 10
+# Shared with miami-bus-notify: today's date here means "not riding today".
+SKIP = pathlib.Path.home() / ".local/state/miami-bus-tracker/skip"
 MAX_AGE = 30 * 60
 MAX_MISSES = 3
 
@@ -59,7 +63,7 @@ class Overlay(Gtk.Application):
         Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), css, 800)
 
         self.stop = stop_info()
-        win = Gtk.ApplicationWindow(application=self, default_width=380, default_height=320)
+        win = Gtk.ApplicationWindow(application=self, default_width=420, default_height=320)
         win.add_css_class("bus-overlay")
         LayerShell.init_for_window(win)
         LayerShell.set_layer(win, LayerShell.Layer.TOP)
@@ -69,18 +73,22 @@ class Overlay(Gtk.Application):
 
         header = Gtk.Box()
         title = Gtk.Label(xalign=0, hexpand=True, use_markup=True)
-        title.set_markup(
-            f"🚌 {ROUTE} {DIR} · {GLib.markup_escape_text(self.stop['StopName'])}"
-            "  <small><span alpha='45%'>© Esri · OSM</span></small>"
-        )
+        title.set_markup(f"🚌 {ROUTE} {DIR} · {GLib.markup_escape_text(self.stop['StopName'])}")
         title.add_css_class("bus-header")
+        title.set_ellipsize(Pango.EllipsizeMode.END)
         close = Gtk.Button(icon_name="window-close-symbolic", has_frame=False)
         close.connect("clicked", lambda *_: win.close())
         header.append(title)
         header.append(close)
 
-        self.eta = Gtk.Label(label="fetching…", xalign=0)
+        self.eta = Gtk.Label(label="fetching…", xalign=0, hexpand=True, ellipsize=Pango.EllipsizeMode.END)
         self.eta.add_css_class("bus-eta")
+        skip = Gtk.Button(label="Not today", has_frame=False, valign=Gtk.Align.START, margin_end=6)
+        skip.set_tooltip_text("Silence alerts for the rest of today")
+        skip.connect("clicked", lambda *_: self._skip(win))
+        eta_row = Gtk.Box()
+        eta_row.append(self.eta)
+        eta_row.append(skip)
 
         self.map = Shumate.SimpleMap()
         # Esri's dark canvas has no labels, unlike OSM Mapnik; attribution lives in the title. Path order is z/y/x.
@@ -115,12 +123,22 @@ class Overlay(Gtk.Application):
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         box.append(header)
-        box.append(self.eta)
-        box.append(self.map)
+        credit = Gtk.Label(use_markup=True, halign=Gtk.Align.END, valign=Gtk.Align.END, margin_end=6, margin_bottom=4)
+        credit.set_markup("<small><span alpha='55%'>© Esri · OSM</span></small>")
+        map_overlay = Gtk.Overlay(child=self.map)
+        map_overlay.add_overlay(credit)
+
+        box.append(eta_row)
+        box.append(map_overlay)
         win.set_child(box)
         win.present()
 
         threading.Thread(target=self._poll, daemon=True).start()
+
+    def _skip(self, win):
+        SKIP.parent.mkdir(parents=True, exist_ok=True)
+        SKIP.write_text(datetime.date.today().isoformat())
+        win.close()
 
     def _marker(self, css, text, tooltip, lat, lon):
         m = Shumate.Marker()
@@ -149,7 +167,7 @@ class Overlay(Gtk.Application):
             return False
 
         lines = [
-            f"{a['Estimate']:>3} min  {a['ArrivalTime'][11:16]}  bus {a['VehicleName']}  ({a['EstType']})"
+            f"{a['Estimate']:>3} min  {a['ArrivalTime'][11:16]}  bus {a['VehicleName']}{'' if a['EstType'] == 'RealTime' else '  sched'}"
             for a in arrivals[:3]
         ] or ["no buses predicted"]
         self.eta.set_text("\n".join(lines))
