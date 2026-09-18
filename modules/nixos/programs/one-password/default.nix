@@ -93,17 +93,16 @@
               GSM_SKIP_SSH_AGENT_WORKAROUND = "1";
             };
 
-            xdg = {
-              enable = mkDefault true;
+            xdg.enable = mkDefault true;
 
-              # Configure the 1Password autostart desktop file
-              configFile."autostart/1password.desktop".text = mkIf cfg.autostart (
-                replaceStrings
-                ["Exec=1password %U"]
-                ["Exec=${pkgs._1password-gui}/bin/1password --silent %U"]
-                (lib.fileContents "${pkgs._1password-gui}/share/applications/${pkgs._1password-gui.pname}.desktop")
-              );
-            };
+            # A short delay lets the shell's tray come up before 1Password registers its icon.
+            home.autostart = mkIf cfg.autostart [
+              {
+                package = pkgs._1password-gui;
+                args = ["--silent"];
+                delay = 5;
+              }
+            ];
 
             programs._1password-shell-plugins = {
               # enable 1Password shell plugins for bash, zsh, and fish shell
