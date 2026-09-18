@@ -68,14 +68,6 @@ in {
     # Don't drop: ssh will not open a control socket if this directory is missing.
     file.".ssh/controlmasters/.keep".text = "";
 
-    autostart = lib.mkIf desktop [
-      {
-        package = pkgs._1password-gui;
-        args = ["--silent"];
-        delay = 5;
-      }
-    ];
-
     sessionVariables.EDITOR = "nvim";
   };
 

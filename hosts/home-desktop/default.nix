@@ -55,7 +55,5 @@ with lib; {
     };
 
     containers.settings.storageDriver = "btrfs";
-
-    programs.onePassword.autostart = true;
   };
 }

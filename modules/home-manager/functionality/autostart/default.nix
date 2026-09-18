@@ -39,40 +39,30 @@
         }
         else app;
 
-      genDesktopEntryPath = app: let
-        normalized = normalizeApp app;
-        pkg = normalized.package;
-        inherit (normalized) args;
-        inherit (normalized) delay;
-        exePath = lib.getExe pkg;
-        command = lib.escapeShellArgs ([exePath] ++ args);
-        execLine =
-          if delay > 0
-          then lib.escapeShellArgs ["${pkgs.bash}/bin/bash" "-lc" "${pkgs.coreutils}/bin/sleep ${toString delay}; exec ${command}"]
-          else command;
-        content =
-          if pkg ? desktopItem
-          then pkg.desktopItem.text
-          else builtins.readFile (pkg + "/share/applications/" + pkg.pname + ".desktop");
-        lines = lib.splitString "\n" content;
-        modifiedLines =
-          map (
-            line:
-              if lib.hasPrefix "Exec=" line
-              then "Exec=${execLine}"
-              else line
-          )
-          lines;
-        modifiedContent = lib.concatStringsSep "\n" modifiedLines;
+      mkService = app: let
+        inherit (normalizeApp app) package args delay;
       in
-        pkgs.writeText "autostart-${pkg.pname}.desktop" modifiedContent;
+        nameValuePair "autostart-${package.pname}" {
+          Unit = {
+            Description = "Autostart ${package.pname}";
+            PartOf = ["graphical-session.target"];
+            After = ["graphical-session.target"];
+          };
+          Service = {
+            ExecStartPre = mkIf (delay > 0) "${pkgs.coreutils}/bin/sleep ${toString delay}";
+            ExecStart = escapeShellArgs ([(getExe package)] ++ args);
+            Slice = "app.slice";
+          };
+          Install.WantedBy = ["graphical-session.target"];
+        };
     in {
       options.${namespace}.${name} = mkOption {
         type = types.listOf autostartType;
         default = [];
         description = ''
-          List of packages to create autostart entries for.
-          Can be either a package directly or an object with {package, args}.
+          Applications started with the graphical session, as systemd user
+          services bound to `graphical-session.target`.
+          Can be either a package directly or an object with {package, args, delay}.
         '';
         example = lib.literalExpression ''
           [
@@ -87,10 +77,7 @@
       };
 
       config = {
-        xdg.autostart = mkIf (cfg != []) {
-          enable = true;
-          entries = map genDesktopEntryPath cfg;
-        };
+        systemd.user.services = listToAttrs (map mkService cfg);
       };
     };
 }
