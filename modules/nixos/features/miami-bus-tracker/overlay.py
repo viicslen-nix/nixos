@@ -91,19 +91,21 @@ class Overlay(Gtk.Application):
         eta_row.append(skip)
 
         self.map = Shumate.SimpleMap()
-        # Esri's dark canvas has no labels, unlike OSM Mapnik; attribution lives in the title. Path order is z/y/x.
-        self.map.set_map_source(Shumate.RasterRenderer.new_full_from_url(
-            "esri-dark", "Esri World Dark Gray Base", "Esri, HERE, Garmin, © OpenStreetMap contributors",
+        # Esri's dark canvas keeps labels in a separate Reference layer (street names from zoom 15). Path order is z/y/x.
+        esri = lambda layer: Shumate.RasterRenderer.new_full_from_url(  # noqa: E731
+            f"esri-{layer}", f"Esri World Dark Gray {layer}", "Esri, HERE, Garmin, © OpenStreetMap contributors",
             "https://www.esri.com/en-us/legal/terms/full-master-agreement", 0, 16, 256, Shumate.MapProjection.MERCATOR,
-            "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-        ))
+            f"https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_{layer}/MapServer/tile/{{z}}/{{y}}/{{x}}",
+        )
+        self.map.set_map_source(esri("Base"))
         self.map.set_vexpand(True)
         self.map.set_show_zoom_buttons(False)
         self.map.get_scale().set_visible(False)
         self.map.get_license().set_visible(False)
         viewport = self.map.get_viewport()
-        viewport.set_zoom_level(14)
+        viewport.set_zoom_level(15)
         viewport.set_location(self.stop["Lat"], self.stop["Long"])
+        self.map.add_overlay_layer(Shumate.MapLayer.new(esri("Reference"), viewport))
         color = Gdk.RGBA()
         color.parse("#fe640b")
         shapes = api(f"shape?routeId={ROUTE}&mapMode=bus")

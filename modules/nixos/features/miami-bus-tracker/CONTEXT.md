@@ -57,6 +57,10 @@ tile, which shows up as a transparent map, not an error. The license widget is
 hidden and a short attribution sits in the title instead, because
 `Shumate.License` wraps to three lines at this width.
 
+Street names come from Esri's separate `World_Dark_Gray_Reference` tile layer,
+stacked on the base as a second `Shumate.MapLayer`; it only carries them from
+zoom 15 up, which is why the map opens at 15.
+
 The overlay is GTK4 + libshumate (native OSM tiles, no browser engine) +
 gtk4-layer-shell through PyGObject. The layer-shell library must be loaded
 before `libwayland-client`, which gi cannot guarantee, so the wrapper
