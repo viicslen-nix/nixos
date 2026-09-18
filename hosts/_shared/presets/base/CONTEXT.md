@@ -17,6 +17,19 @@ options the persistence helpers read; it stays disabled unless a host enables
 it. `defaults` and `autostart` likewise declare options other modules read.
 Dropping any of them turns a read elsewhere into an undeclared-option error.
 
+## What `base` deliberately does not carry
+
+Anything that assumes a physical machine lives in `desktop`: sound
+(`core.sound`), bluetooth, the grub-on-EFI loader defaults. `base` also has no
+`adbusers` group and no `defaultUserShell` — per-user `shell` is set with
+`useDefaultShell = false`, so the global default was never read, and groups a
+preset needs are added by that preset.
+
+`users.mutableUsers = false` and root's password hash are `mkDefault` here
+because every host set the same two lines; a host overrides either, it does
+not restate them. `nix.gc` is absent on purpose: `programs.nh.clean` owns
+garbage collection.
+
 ## direnv's log filter, and why not `silent`
 
 nix-direnv's `direnv: export +AR +AS +...` line is a single ~1.1KB string

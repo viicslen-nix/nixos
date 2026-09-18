@@ -129,6 +129,10 @@
             [cfg.finalPackage]
             ++ optional cfg.desktopApp cfg.finalPackage.desktop;
 
+        }
+
+        # Headless hosts have no `programs.niri` option at all, so even a false mkIf would fail.
+        (optionalAttrs (options.programs ? niri) {
           programs.niri.settings.binds = mkIf (osConfig.programs.niri.enable && cfg.desktopApp && cfg.snapShotShortcut != null) {
             ${cfg.snapShotShortcut} = {
               repeat = false;
@@ -145,6 +149,9 @@
               ];
             };
           };
+        })
+
+        {
 
           # Don't swap this for `t3 service install`: its unit runs a self-updating launcher.
           systemd.user.services.${name} = mkIf cfg.serve.enable {

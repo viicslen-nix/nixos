@@ -69,7 +69,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
   (`base`, `desktop`, `work`, `personal`, `linode`). Hosts opt in via their
   `presets = [ … ]` list. `base` is universal/server-safe; `desktop` carries
   **all** graphical/physical-machine config (fonts, printing, avahi, libinput,
-  compositor imports, wayland overlay + caches, bluetooth, GUI env). Every
+  compositor imports, wayland overlay + caches, sound, bluetooth, grub-on-EFI
+  loader defaults, GUI env). Every
   graphical host — including the KDE handheld — must list `desktop`.
 - **`modules.presets.desktop.enable`** — a flag declared in `base` (default
   false) and set true by the `desktop` preset. `work`/`personal` gate their
@@ -87,6 +88,10 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `modules/{nixos,home-manager}` at any depth. A path component starting with
   `_` is skipped, which is how non-module helpers opt out (e.g.
   `services/impermanence/_presets`, whose `default.nix` takes `systemConfig`).
+  Each entry is wrapped with a `key` (`nixos:<name>` / `homeManager:<name>`)
+  so two presets can import the same module: the module system only dedupes
+  imports by `key`, and the flake-parts wrappers carry none, so without it a
+  double import fails with `option … is already declared`.
 - **subflake** — a git submodule flake under `flakes/*` (`lib`, `packages`,
   `opencode`, `zed`, `neovim`, `nixvim`, `niri`, `hyprland`, `dms`, `emacs`).
   Each is a separate upstream repo (`viicslen-nix/*`).
@@ -333,6 +338,14 @@ already happened. Treat every heavy Nix invocation as dangerous.
   error is `string 'nixos' doesn't represent an absolute path`, and the trace
   points at `lib/modules.nix`, never at the real culprit. Pass raw module lists
   around via `_module.args` instead.
+- **`mkIf false` is still a definition.** A home-manager module that writes
+  `programs.niri.settings.… = mkIf cond {…}` fails on a host where the niri
+  module is not imported at all (`wsl`), with `The option … programs.niri does
+  not exist` — the module system rejects the *path* before it looks at the
+  condition, and a `mkIf (options.programs ? niri)` wrapper is no different.
+  Gate on option existence with `optionalAttrs (options.programs ? niri) {…}`
+  as a separate `mkMerge` element, which removes the path entirely. The shell
+  modules (`caelestia`, `exo`, `noctalia`) and `t3code` do this.
 - **Everything embeds the flake's own hash.** `nix.registry` maps every input,
   including `self`, so `/etc/nix/path/*` and `nix/registry.json` contain the
   flake source path — and `containers/{qdrant,buggregator}` mount

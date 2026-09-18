@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  config,
   osConfig,
   homeModules,
   ...
@@ -48,6 +49,8 @@ in {
       delay = 5;
     }
   ];
+
+  modules.functionality.defaults.mailClient = config.modules.programs.thunderbird.finalPackage;
 
   programs = {
     niri.settings = lib.mkIf osConfig.programs.niri.enable {

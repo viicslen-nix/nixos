@@ -1,11 +1,14 @@
 {
   lib,
   pkgs,
+  users,
   config,
   nixosModules,
   ...
 }:
-with lib; {
+with lib; let
+  desktop = config.modules.presets.desktop.enable;
+in {
   imports = [
     nixosModules.containers.homarr
     nixosModules.programs.qmk
@@ -13,6 +16,13 @@ with lib; {
 
   config = {
     home-manager.sharedModules = [./home.nix];
+
+    users.users = mapAttrs (_: _: {extraGroups = ["adbusers"];}) users;
+
+    modules = {
+      programs.qmk.enable = desktop;
+      containers.homarr.enable = desktop;
+    };
 
     # Optimization: Prevent systemd from waiting for network online
     # (Optional but recommended for faster boot with VPNs)
@@ -31,23 +41,26 @@ with lib; {
         # Explicitly qualified: `inputs` is now a module argument, which shadows
         # the `pkgs.inputs` alias that `with pkgs;` used to resolve these to.
         pkgs.inputs.nixvim.default
-        pkgs.inputs.emacs.default
         pkgs.inputs.packages.scripts.git-carve-submodule
         dict
       ]
       # GUI apps only on graphical hosts (excluded on WSL/headless).
-      # ferdium lives in the work preset, so it isn't duplicated here.
-      ++ lib.optionals config.modules.presets.desktop.enable [
+      ++ lib.optionals desktop [
+        pkgs.inputs.emacs.default
         ytmdesktop
         scrcpy
         qtscrcpy
-
-        # Shared personal GUI apps (were duplicated across the desktop hosts)
         obsidian
         legcord
+        discord
+        ferdium
         drawing
         drawio
         kooha
+        luakit
+        meld
+        github-desktop
+        sublime-merge
       ];
 
     services = {
@@ -55,7 +68,7 @@ with lib; {
     };
 
     programs = {
-      localsend.enable = mkDefault true;
+      localsend.enable = mkDefault desktop;
     };
   };
 }

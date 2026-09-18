@@ -35,7 +35,7 @@ in {
 
       # Force enable solicitation and receipt of IPv6 Router Advertisements.
       # Allows global IPv6 address auto-configuration with SLAAC
-      dhcpcd.IPv6rs = mkIf cfg.useNetworkd == false;
+      dhcpcd.IPv6rs = mkIf (!cfg.useNetworkd) true;
 
       # Use networkd to manage networking
       useNetworkd = mkIf cfg.useNetworkd true;
