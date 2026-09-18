@@ -40,6 +40,7 @@ in {
     # opt out with `<module>.enable = false` (lenovo does this for oom).
     nixosModules.desktop.shell
     nixosModules.desktop.monitors
+    nixosModules.hardware.bluetooth
     nixosModules.features.app-images
     nixosModules.core.sound
     nixosModules.core.theming
