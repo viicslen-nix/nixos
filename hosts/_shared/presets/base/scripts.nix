@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   flake,
   ...
@@ -68,22 +69,8 @@
         nix develop path:''$@
     fi
   '')
-  (pkgs.writeShellScriptBin "generate-cert" ''
-    domain=$1
-
-    if [ -z "$2" ]; then
-    # If the second argument is empty, set it to the current working directory
-    directory="$HOME/.local/share/mkcert"
-    else
-    # Use the provided second argument
-    directory="$2"
-    fi
-
-    # Generate certificate
-    ${pkgs.mkcert}/bin/mkcert -key-file "''${directory}/certs/''${domain}.key" -cert-file "''${directory}/certs/''${domain}.crt" "localhost" "''${domain}" "*.''${domain}"
-  '')
   (pkgs.writeShellScriptBin "tmux-session" ''
-    SELECTED_PROJECTS=$(tmuxinator list -n |
+    SELECTED_PROJECTS=$(${lib.getExe pkgs.tmuxinator} list -n |
         tail -n +2 |
         fzf --prompt="Project: " -m -1 -q "$1")
 
@@ -93,7 +80,7 @@
 
         # Start each project without attaching
         for PROJECT in $SELECTED_PROJECTS; do
-            tmuxinator start "$PROJECT" --no-attach # force disable attaching
+            ${lib.getExe pkgs.tmuxinator} start "$PROJECT" --no-attach # force disable attaching
         done
 
         # If inside tmux then select session to switch, otherwise just attach

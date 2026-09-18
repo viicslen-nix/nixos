@@ -2,20 +2,23 @@
   inputs,
   pkgs,
   lib,
+  nixosModules,
   ...
 }:
 with lib; {
   imports = [
-    inputs.chaotic.nixosModules.default
     inputs.jovian.nixosModules.default
     ./hardware.nix
+
+    nixosModules.containers.base
+    nixosModules.programs.docker
   ];
 
   ####################
   # Boot & Kernel    #
   ####################
   boot = {
-    kernelPackages = pkgs.linuxPackages_cachyos;
+    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
     # kernelParams = ["quiet"];
     # kernel.sysctl = {
@@ -31,17 +34,8 @@ with lib; {
 
     loader = {
       timeout = 0;
-      efi = {
-        canTouchEfiVariables = true;
-        efiSysMountPoint = "/boot/efi";
-      };
-      grub = {
-        enable = true;
-        device = "nodev";
-        efiSupport = true;
-        configurationLimit = 5;
-      };
-      systemd-boot.enable = false;
+      efi.canTouchEfiVariables = true;
+      grub.configurationLimit = 5;
     };
 
     consoleLogLevel = 0;
@@ -74,15 +68,7 @@ with lib; {
   hardware = {
     enableAllFirmware = true;
     amdgpu.initrd.enable = false;
-    bluetooth = {
-      enable = true;
-      settings = {
-        General = {
-          MultiProfile = "multiple";
-          FastConnectable = true;
-        };
-      };
-    };
+    bluetooth.settings.General.MultiProfile = "multiple";
   };
 
   #################
@@ -97,7 +83,6 @@ with lib; {
   # Virtualization  #
   ###################
   virtualisation = {
-    docker.enable = true;
     docker.enableOnBoot = false;
     libvirtd.enable = true;
   };
@@ -145,9 +130,13 @@ with lib; {
   };
 
   modules = {
+    containers.settings.backend = "docker";
+
     # Jovian/SteamOS manages its own OOM handling, so opt out of the desktop
     # preset's default.
     services.oom.enable = false;
+    # Jovian ships its own bluetooth config; the module's "true" string clashes with its bool.
+    hardware.bluetooth.enable = false;
   };
 
   ########################
@@ -164,22 +153,15 @@ with lib; {
     decky-loader = {
       enable = true;
       user = "neoscode";
-      enableOsFanControl = false;
-      #       enableControllerUdevRules = true;
-      enableFwupdBiosUpdates = false;
-      enableDefaultCmdlineConfig = false;
-      #       enableGyroDsuService = true;
-      #       enableKernelPatches = true;
     };
     steamos = {
       useSteamOSConfig = true;
-      enableEarlyOOM = false;
     };
     devices.steamdeck = {
+      enableDefaultCmdlineConfig = false;
       enable = true;
       enableOsFanControl = false;
       enableFwupdBiosUpdates = false;
-      enableDefaultCmdlineConfig = false;
     };
   };
 
