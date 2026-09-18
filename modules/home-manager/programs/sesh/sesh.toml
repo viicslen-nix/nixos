@@ -5,7 +5,6 @@ disable_startup_command = true
 [[session]]
 name = "mylisterhub-main-app@master"
 path = "~/Development/mylisterhub-main-app"
-startup_command = "php artisan solo"
 
 [[session]]
 name = "mylisterhub-cloud-config"
