@@ -212,9 +212,8 @@ in {
         outputs.overlays.unstable-packages
         outputs.overlays.flake-inputs
 
-        # After flake-inputs: they patch an attr that overlay creates.
+        # After flake-inputs: it patches an attr that overlay creates.
         outputs.overlays.superset-fork
-        outputs.overlays.t3code-version
 
         inputs.nix-alien.overlays.default
         inputs.nix-cachyos-kernel.overlays.pinned
