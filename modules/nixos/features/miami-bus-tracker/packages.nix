@@ -21,6 +21,8 @@
   direction,
   stopId,
   notifyMinutes,
+  activeTimeStart,
+  activeTimeEnd,
   apiKey,
 }: let
   api = "https://www.miamidade.gov/apps/dtpw/transitapps/api/bus";
@@ -55,6 +57,17 @@ in {
   notify = writeShellScriptBin "miami-bus-notify" ''
     set -euo pipefail
     ${env}
+    # systemd has no ConditionTime, so the active window is checked here, in local time.
+    in_window() {
+      [ -n "${activeTimeStart}" ] || return 0
+      now=$(date +%H:%M)
+      if [[ "${activeTimeEnd}" < "${activeTimeStart}" ]]; then
+        [[ ! "$now" < "${activeTimeStart}" ]] || [[ ! "${activeTimeEnd}" < "$now" ]]
+      else
+        [[ ! "$now" < "${activeTimeStart}" ]] && [[ ! "${activeTimeEnd}" < "$now" ]]
+      fi
+    }
+    in_window || exit 0
     next=$(tracker | jq -c '.[0] // empty')
     [ -n "$next" ] || exit 0
     mins=$(jq -r '.TimeEst / 60 | floor' <<<"$next")
