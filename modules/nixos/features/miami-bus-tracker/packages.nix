@@ -79,9 +79,18 @@ in {
       user=$(loginctl show-user "$uid" -p Name --value)
       rt="/run/user/$uid"
       [ -d "$rt" ] || continue
+      # Same file the overlay's "Not today" button writes; today's date in it silences the user for the day.
+      skip="$(getent passwd "$user" | cut -d: -f6)/.local/state/miami-bus-tracker/skip"
+      [ "$(cat "$skip" 2>/dev/null)" = "$(date +%F)" ] && continue
       as_user() { sudo -u "$user" XDG_RUNTIME_DIR="$rt" DBUS_SESSION_BUS_ADDRESS="unix:path=$rt/bus" "$@" || true; }
-      as_user notify-send -u normal -t 10000 "🚌 Bus $ROUTE_ID $DIR approaching" "Bus $bus arriving in $mins min at $stop"
       as_user systemctl --user start miami-bus-overlay.service
+      # notify-send blocks until the notification closes; the timeout guards servers that ignore -t.
+      action=$(as_user timeout 60 notify-send -u normal -t 10000 -A skip="Not today" \
+        "🚌 Bus $ROUTE_ID $DIR approaching" "Bus $bus arriving in $mins min at $stop")
+      if [ "$action" = skip ]; then
+        as_user sh -c "mkdir -p '$(dirname "$skip")' && date +%F > '$skip'"
+        as_user systemctl --user stop miami-bus-overlay.service
+      fi
     done
   '';
 

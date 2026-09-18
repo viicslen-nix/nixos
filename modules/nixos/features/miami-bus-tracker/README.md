@@ -68,6 +68,10 @@ Manual runs ignore the active-time window and never notify.
   outside the active window (local time) and notifies every logged-in user.
 - `miami-bus-overlay.service` (user) — started by the check inside each user's
   session; exits on its own once the bus is gone, or via its × button.
+- **Not today** — offered as an action on the notification and a button on
+  the overlay. It writes today's date to `~/.local/state/miami-bus-tracker/skip`
+  and the check stays silent for that user until the date changes; delete the
+  file to undo it.
 
 ```bash
 systemctl status miami-bus-notify.timer
