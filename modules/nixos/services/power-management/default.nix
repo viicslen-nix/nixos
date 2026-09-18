@@ -18,6 +18,7 @@
         powerManagement.cpuFreqGovernor = "powersave";
 
         services = {
+          upower.enable = true;
           power-profiles-daemon.enable = false;
 
           tlp = {
