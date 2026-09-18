@@ -26,7 +26,6 @@ in {
     # Keep `impermanence`: it declares the options the persistence helpers read.
     nixosModules.core.localization
     nixosModules.core.network
-    nixosModules.core.sound
     nixosModules.services.impermanence
   ];
 
@@ -36,23 +35,27 @@ in {
 
   config = {
     system.stateVersion = "26.05";
-    systemd.settings.Manager.DefaultTimeoutStopSec = "20s";
+    systemd.settings.Manager.DefaultTimeoutStopSec = mkDefault "20s";
 
-    # Every host in this config runs its own firewall management / trusts its
-    # LAN, so disable the NixOS firewall globally. Hosts can re-enable if needed.
+    # Every host trusts its LAN; `mkForce` means a host cannot re-enable this.
     networking.firewall.enable = mkForce false;
 
-    users.users =
-      lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
-        isNormalUser = true;
-        inherit (value) description;
-        initialPassword = lib.mkIf (value.password == "") name;
-        hashedPassword = lib.mkIf (value.password != "") value.password;
-        extraGroups = ["networkmanager" "wheel" "adbusers" name];
-        shell = pkgs.zsh;
-        useDefaultShell = false;
-      }))
-      users;
+    users = {
+      mutableUsers = mkDefault false;
+      extraUsers.root.hashedPassword = mkDefault "$6$hl2eKy3qKB3A7hd8$8QMfyUJst4sRAM9e9R4XZ/IrQ8qyza9NDgxRbo0VAUpAD.hlwi0sOJD73/N15akN9YeB41MJYoAE9O53Kqmzx/";
+
+      users =
+        lib.attrsets.mapAttrs' (name: value: (nameValuePair name {
+          isNormalUser = true;
+          inherit (value) description;
+          initialPassword = lib.mkIf (value.password == "") name;
+          hashedPassword = lib.mkIf (value.password != "") value.password;
+          extraGroups = ["networkmanager" "wheel" name];
+          shell = pkgs.zsh;
+          useDefaultShell = false;
+        }))
+        users;
+    };
 
     programs = {
       # Enable NH for easier system rebuilds
@@ -81,9 +84,6 @@ in {
       # so scripts with #!/bin/bash work unchanged.
       envfs.enable = true;
     };
-
-    # Set default shell
-    users.defaultUserShell = pkgs.zsh;
 
     # Home Manager
     home-manager = {
@@ -175,7 +175,7 @@ in {
           pkgs.inputs.packages.scripts.system-upgrade
         ]
         ++ import ./scripts.nix {
-          inherit pkgs;
+          inherit lib pkgs;
           flake = flakeLocation;
         };
 
@@ -305,13 +305,6 @@ in {
 
         # Limit the number of parallel jobs to avoid OOM
         # max-jobs = lib.mkDefault 16;
-      };
-
-      # Perform garbage collection weekly to maintain low disk usage
-      gc = {
-        # automatic = true;
-        dates = "weekly";
-        options = "--delete-older-than 1w";
       };
     };
 

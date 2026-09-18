@@ -13,7 +13,6 @@ with lib; {
 
     nixosModules.hardware.intel
     nixosModules.hardware.nvidia
-    nixosModules.hardware.bluetooth
     nixosModules.hardware.razer
     nixosModules.containers.vitess
     nixosModules.features.miami-bus-tracker
@@ -21,22 +20,7 @@ with lib; {
 
   home-manager.sharedModules = [./home.nix];
 
-  boot = {
-    loader = {
-      efi = {
-        canTouchEfiVariables = true;
-        efiSysMountPoint = "/boot/efi";
-      };
-
-      grub = {
-        configurationLimit = 10;
-        efiSupport = true;
-        device = "nodev";
-      };
-
-      systemd-boot.enable = false;
-    };
-  };
+  boot.loader.efi.canTouchEfiVariables = true;
 
   networking = {
     hostName = "dostov-dev";
@@ -141,7 +125,6 @@ with lib; {
     brave
 
     # IDEs & Editors
-    unstable.vscode-fhs
     unstable.code-cursor-fhs
 
     # Development Tools
@@ -150,7 +133,6 @@ with lib; {
 
     # Communication
     discordo
-    discord
 
     # Office
     onlyoffice-desktopeditors
@@ -163,14 +145,11 @@ with lib; {
     # Misc
     tlrc
     vial
-    uv
     wireshark
   ];
 
   modules = {
     desktop = {
-      shell = "dms";
-
       niri.enable = true;
 
       hyprland = {
@@ -189,23 +168,9 @@ with lib; {
     containers.settings = {
       backend = "podman";
       userns = "auto";
-      nvidiaSupport = true;
     };
 
-    core = {
-      theming.disabledTargets = ["chromium"];
-
-      network.hosts = {
-        # Local Dev
-        "erpnext.test" = "127.0.0.1";
-        "selldiam.test" = "127.0.0.1";
-        "mylisterhub.test" = "127.0.0.1";
-        "vite.mylisterhub.test" = "127.0.0.1";
-        "app.mylisterhub.test" = "127.0.0.1";
-        "admin.mylisterhub.test" = "127.0.0.1";
-        "*.mylisterhub.test" = "127.0.0.1";
-      };
-    };
+    core.theming.disabledTargets = ["chromium"];
 
     programs = {
       mkcert.domains = [

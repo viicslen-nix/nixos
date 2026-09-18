@@ -89,7 +89,7 @@
 
         # The shell owns its own binds; niri never learns which shell is running.
         # Absent on a host that runs a different compositor.
-        (mkIf (options.programs ? niri) {
+        (optionalAttrs (options.programs ? niri) {
           programs.niri.settings.binds = with config.lib.niri.actions; {
             "Mod+Space" = {
               repeat = false;

@@ -41,7 +41,9 @@ in {
     nixosModules.desktop.shell
     nixosModules.desktop.monitors
     nixosModules.features.app-images
+    nixosModules.core.sound
     nixosModules.core.theming
+    nixosModules.hardware.bluetooth
     nixosModules.services.oom
     nixosModules.services.power-management
     nixosModules.programs.ld
@@ -54,6 +56,17 @@ in {
 
     # Boot splash on graphical hosts.
     boot.plymouth.enable = true;
+
+    # Shared grub-on-EFI layout; every leaf is a default so a host can override one.
+    boot.loader = {
+      efi.efiSysMountPoint = mkDefault "/boot/efi";
+      grub = {
+        enable = mkDefault true;
+        device = mkDefault "nodev";
+        efiSupport = mkDefault true;
+        configurationLimit = mkDefault 10;
+      };
+    };
 
     services = {
       # Enable CUPS to print documents.
@@ -77,12 +90,6 @@ in {
       xserver.xkb = {
         layout = "us";
         variant = "";
-      };
-
-      # Enable Smartd for disk monitoring
-      smartd = {
-        enable = false;
-        autodetect = true;
       };
     };
 
@@ -116,7 +123,7 @@ in {
     programs.dms-greeter = mkIf config.modules.desktop.niri.enable {
       enable = true;
       compositor.name = "niri";
-      configHome = "/home/neoscode";
+      configHome = "/home/${head (attrNames users)}";
     };
 
     # Keep this out of `base` — headless hosts would rebuild the whole closure.
