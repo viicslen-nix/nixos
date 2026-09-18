@@ -85,8 +85,8 @@ with lib; {
       direction = "Westbound";
       notification = true;
       notifyMinutes = 10;
-      activeTimeStart = "22:00"; # UTC
-      activeTimeEnd = "23:59"; # UTC
+      activeTimeStart = "16:30";
+      activeTimeEnd = "20:00";
     };
 
     openssh = {
