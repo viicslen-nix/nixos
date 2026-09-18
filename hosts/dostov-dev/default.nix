@@ -169,13 +169,14 @@ with lib; {
 
   modules = {
     desktop = {
+      shell = "dms";
+
       niri.enable = true;
+
       hyprland = {
         enable = true;
         layout = "scrolling";
       };
-
-      shell = "caelestia";
 
       monitors = {
         DP-2.rotation = 90;
