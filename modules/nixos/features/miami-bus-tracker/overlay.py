@@ -20,6 +20,7 @@ ROUTE = os.environ["ROUTE_ID"]
 DIR = os.environ["DIR"]
 STOP = int(os.environ["STOP_ID"])
 NOTIFY_MIN = int(os.environ.get("NOTIFY_MINUTES", "10"))
+VEHICLES = f"vehicles?routeId={ROUTE}&mapMode=bus&track=NO&curLatitude=0&curLongitude=0"
 POLL = 10
 MAX_AGE = 30 * 60
 MAX_MISSES = 3
@@ -67,7 +68,11 @@ class Overlay(Gtk.Application):
             LayerShell.set_margin(win, edge, 16)
 
         header = Gtk.Box()
-        title = Gtk.Label(label=f"🚌 {ROUTE} {DIR} · {self.stop['StopName']}", xalign=0, hexpand=True)
+        title = Gtk.Label(xalign=0, hexpand=True, use_markup=True)
+        title.set_markup(
+            f"🚌 {ROUTE} {DIR} · {GLib.markup_escape_text(self.stop['StopName'])}"
+            "  <small><span alpha='45%'>© Esri · OSM</span></small>"
+        )
         title.add_css_class("bus-header")
         close = Gtk.Button(icon_name="window-close-symbolic", has_frame=False)
         close.connect("clicked", lambda *_: win.close())
@@ -78,17 +83,25 @@ class Overlay(Gtk.Application):
         self.eta.add_css_class("bus-eta")
 
         self.map = Shumate.SimpleMap()
-        registry = Shumate.MapSourceRegistry.new_with_defaults()
-        self.map.set_map_source(registry.get_by_id(Shumate.MAP_SOURCE_OSM_MAPNIK))
+        # Esri's dark canvas has no labels, unlike OSM Mapnik; attribution lives in the title. Path order is z/y/x.
+        self.map.set_map_source(Shumate.RasterRenderer.new_full_from_url(
+            "esri-dark", "Esri World Dark Gray Base", "Esri, HERE, Garmin, © OpenStreetMap contributors",
+            "https://www.esri.com/en-us/legal/terms/full-master-agreement", 0, 16, 256, Shumate.MapProjection.MERCATOR,
+            "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+        ))
         self.map.set_vexpand(True)
         self.map.set_show_zoom_buttons(False)
         self.map.get_scale().set_visible(False)
+        self.map.get_license().set_visible(False)
         viewport = self.map.get_viewport()
         viewport.set_zoom_level(13)
         viewport.set_location(self.stop["Lat"], self.stop["Long"])
         color = Gdk.RGBA()
         color.parse("#fe640b")
-        for shape in api(f"shape?routeId={ROUTE}&mapMode=bus"):
+        shapes = api(f"shape?routeId={ROUTE}&mapMode=bus")
+        # Shapes carry no direction; keep the ones same-direction buses are on, all of them if none is out.
+        active = {v["ShapeID"] for v in api(VEHICLES) if f"TextStr={DIR[0]}B" in v["RouteImage"]}
+        for shape in [s for s in shapes if s["Id"] in active] or shapes:
             path = Shumate.PathLayer.new(viewport)
             path.set_stroke_width(4)
             path.set_stroke_color(color)
@@ -121,7 +134,7 @@ class Overlay(Gtk.Application):
         while True:
             try:
                 arrivals = api(f"tracker?routeID={ROUTE}&directionId={DIR}&stopID={STOP}&track=NO")
-                vehicles = {v["ID"]: v for v in api(f"vehicles?routeId={ROUTE}&mapMode=bus&track=NO&curLatitude=0&curLongitude=0")}
+                vehicles = {v["ID"]: v for v in api(VEHICLES)}
             except Exception as e:  # ponytail: transient API errors just skip a tick
                 GLib.idle_add(self.eta.set_text, f"API error: {e}")
                 arrivals, vehicles = [], {}

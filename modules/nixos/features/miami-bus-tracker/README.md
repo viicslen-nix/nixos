@@ -9,7 +9,7 @@ next bus is close, and pops up a small corner map with the live bus position.
 - **Time-based checking** — only check during a window (e.g. after 5 PM)
 - Desktop notification when a bus is within `notifyMinutes`
 - **Corner map overlay** — a layer-shell window (bottom-right) with the next
-  arrivals and an OpenStreetMap view of the route, the stop and the predicted buses,
+  arrivals and a dark basemap with the route, the stop and the predicted buses,
   refreshed every 10 s; closes itself when no bus is imminent
 - `miami-find-stop` to discover the stop ID, `miami-bus-tracker` for a manual check
 
