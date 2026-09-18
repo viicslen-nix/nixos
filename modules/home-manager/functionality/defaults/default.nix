@@ -15,7 +15,7 @@
         if pkg ? desktopFileName
         then "${pkg.desktopFileName}.desktop"
         else if pkg ? desktopItem && pkg.desktopItem ? name
-        then "${pkg.desktopItem.name}.desktop"
+        then "${removeSuffix ".desktop" pkg.desktopItem.name}.desktop"
         else if pkg ? pname
         then "${pkg.pname}.desktop"
         else null
@@ -58,6 +58,14 @@
           default = null;
           description = ''
             The default password manager to use.
+          '';
+        };
+        mailClient = mkOption {
+          type = types.nullOr types.package;
+          default = null;
+          description = ''
+            The default mail client to use. This configures `xdg-open` to use it
+            for mailto links and email messages.
           '';
         };
       };
@@ -120,6 +128,18 @@
         (mkIf (cfg.passwordManager != null) {
           home = {
             packages = [cfg.passwordManager];
+          };
+        })
+        (mkIf (cfg.mailClient != null) {
+          home = {
+            packages = [cfg.mailClient];
+          };
+          xdg.mimeApps.defaultApplications = let
+            desktopFile = getDesktopFileName cfg.mailClient;
+          in {
+            "x-scheme-handler/mailto" = [desktopFile];
+            "message/rfc822" = [desktopFile];
+            "x-scheme-handler/net.thunderbird" = [desktopFile];
           };
         })
       ];
