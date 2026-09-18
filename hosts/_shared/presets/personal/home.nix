@@ -38,5 +38,8 @@ with lib; {
   services.flameshot.enable = mkIf osConfig.modules.presets.desktop.enable true;
 
   # Not `llm-agents.t3code-desktop` — it misses the module's T3 Connect patch.
-  modules.programs.t3code.package = pkgs.inputs.llm-agents.t3code;
+  modules.programs.t3code = {
+    serve.enable = false;
+    package = pkgs.inputs.llm-agents.t3code;
+  };
 }
