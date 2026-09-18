@@ -102,7 +102,7 @@ class Overlay(Gtk.Application):
         self.map.get_scale().set_visible(False)
         self.map.get_license().set_visible(False)
         viewport = self.map.get_viewport()
-        viewport.set_zoom_level(13)
+        viewport.set_zoom_level(14)
         viewport.set_location(self.stop["Lat"], self.stop["Long"])
         color = Gdk.RGBA()
         color.parse("#fe640b")
