@@ -49,9 +49,7 @@ with lib; {
 
     desktop = {
       niri.enable = true;
-      shell = "noctalia";
-
-      hyprland.enable = false;
+      hyprland.enable = true;
     };
 
     containers.settings.storageDriver = "btrfs";
