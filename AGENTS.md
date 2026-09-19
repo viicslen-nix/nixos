@@ -446,7 +446,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   written when `programs.claude-code.settings != {}` — owned by
   `modules/home-manager/programs/claude-code` (global prefs, marketplaces,
   enabled plugins), plus a hook block from every module that wants one —
-  `modules.programs.ai`'s `integrations/{mempalace,superset}.nix` and
+  `modules.programs.ai`'s `integrations/superset.nix` and
   `modules.programs.herdr.enableClaudeIntegration`. Hook lists for the same
   event concatenate, so modules never need to know about each other.
   Claude Code itself, and the mempalace/ponytail/superset hook installers,
@@ -456,7 +456,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   instead of declaring the hook block** — `modules.programs.claude-code`'s
   `marketplaces` + `plugins` get the hooks *and* that repo's skills for two
   lines, and survive the tool's own installer being unable to write the symlink.
-  `workmux-status@workmux` is the worked example.
+  `workmux-status@workmux` and `mempalace@mempalace` are the worked examples.
 - **worktrunk and workmux create into one shared tree.** Both are pointed at
   `../.worktrees/<repo>/<branch>` — worktrunk via `worktree-path`, workmux via
   `worktree_dir` — so a worktree is in the same place and carries the same

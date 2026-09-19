@@ -17,7 +17,6 @@
           lib
           cfg
           pkgs
-          config
           inputs
           isAttrs
           ;
@@ -97,8 +96,7 @@
       # Hook lists for the same event come from several integrations, so they are
       # concatenated per event rather than overwritten.
       effectiveHooks = zipAttrsWith (_: concatLists) (
-        optional cfg.mempalace.enable mempalaceIntegration.hooks
-        ++ optional cfg.superset.enable supersetIntegration.hooks
+        optional cfg.superset.enable supersetIntegration.hooks
       );
       effectiveSkills =
         if isAttrs cfg.skills
