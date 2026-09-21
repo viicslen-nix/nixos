@@ -41,7 +41,8 @@ with lib; {
 
   # Not `llm-agents.t3code-desktop` — it misses the module's T3 Connect patch.
   modules.programs.t3code = {
-    serve.enable = false;
+    desktopApp = true;
+    serve.enable = true;
     package = pkgs.inputs.llm-agents.t3code;
   };
 }
