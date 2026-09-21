@@ -170,7 +170,8 @@ in {
       ghostty.enable = desktop;
       wezterm.enable = desktop;
       worktrunk.tmux.enable = true;
-      workmux.tmux.enable = true;
+      # Imported but off: `wt-dashboard` (worktrunk's popup) replaced its dashboard.
+      workmux.enable = false;
 
       git = {
         user = osConfig.users.users.${user}.description;

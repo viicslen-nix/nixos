@@ -3,6 +3,14 @@
 Why `modules.programs.workmux` looks the way it does, and where its package
 and its Claude Code hooks come from.
 
+## Disabled since 2026-09-21
+
+`users/neoscode` sets `enable = false`. Its dashboard was the only part in
+use, and it is now `wt-dashboard` in the worktrunk module — see
+`../worktrunk/CONTEXT.md`. Everything below describes the module as it would
+run if re-enabled; the `workmux-status` plugin and the vendored skills it
+mentions were removed from the personal AI preset and would need putting back.
+
 ## The package is `pkgs.inputs.llm-agents.workmux`
 
 workmux is not in nixpkgs. Upstream ships its own `flake.nix`, but adding

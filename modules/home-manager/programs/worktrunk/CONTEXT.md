@@ -1,79 +1,79 @@
 # CONTEXT
 
-Why `modules.programs.worktrunk.tmux` delegates to workmux, and what it
-replaced.
+Why `modules.programs.worktrunk.tmux` is a session per worktree plus an fzf
+popup, and what it replaced.
 
-## The division of labour
+## worktrunk alone again
 
-worktrunk and workmux overlap almost entirely — both create worktrees, bind
-them to tmux, and own merge/remove. They are split here by which half each is
-*better* at, not by preference:
+For a week in September 2026 workmux sat on top of worktrunk as the tmux and
+agent layer (`../workmux/CONTEXT.md` keeps that story). Only its worktrees
+dashboard was actually used, and the two tools kept tripping over who closes a
+session — a removal started from the dashboard killed the session hosting it,
+twice, in two different ways. The workmux module stays importable but
+`users/neoscode` sets `enable = false`; its Claude plugin and the six vendored
+skills went with it, since their instructions run a `workmux` that is no longer
+on PATH.
 
-- **worktrunk creates and tears down.** It keeps `wt switch`, the LLM commit
-  generation, the `wt merge` pipeline and the aliases.
-- **workmux attaches and observes.** It owns the tmux target and the agent
-  status icons, dashboard and sidebar.
+## The session is `{{ repo }}@{{ branch | sanitize }}`
 
-The split is by capability, not territory: both tools now create into
-`../.worktrees/<repo>/<branch>`, so a worktree made by either is in the same
-place and carries the same handle. What worktrunk keeps is the richer lifecycle
-— ten hooks to workmux's three, commit generation, the merge pipeline.
+Three places derive the name and `parts/checks.nix` pins them together: the
+`tmux` alias creates it, `pre-remove` kills it, and `dashboard.sh`'s jq derives
+it for the mux column and the close/remove bindings. Qualified by repo so two
+repos' `main` do not collide. `sanitize` is worktrunk's filter — `/` and `\`
+become `-` — which is also why the worktree directory's basename equals it
+under `../.worktrees/<repo>/`; t3code's `t3code-<hash>` directories are the
+exception, hence the `branch → dir` display.
 
-workmux finding worktrunk's worktrees is not a coincidence of layout: it
-resolves from `git worktree list` — basename first, then branch — and never
-consults its own `worktree_dir` on the read path, so it would see them wherever
-they sat. The shared path matters for *creation*, which is why the two
-templates are pinned against each other in `parts/checks.nix`.
+Targets are always `=name`: a bare tmux target prefix-matches, so `repo@feat`
+would resolve to `repo@feat-x`.
 
-## What the `tmux` option used to be
+## `pre-remove` never kills its own session
 
-It carried two hand-rolled shell scripts, both deleted:
+The pre-workmux hook killed unconditionally. From a shell inside the session
+being removed that kills `wt` in the middle of its hooks — the same failure
+workmux's `close` had, and what left worktrees half-removed. `worktrunk-kill-session`
+compares the target with `#S` and skips when they match; the dashboard's
+`leave` switches the client to another session first, so a removal from the
+popup still cleans up fully. A removal from a shell inside the worktree's own
+session leaves that session alive on a deleted cwd — chosen over aborting the
+removal. It stays `|| true` because `pre-remove` blocks.
 
-- `postSwitchScript` — created-or-switched a tmux session per worktree. Now
-  `workmux open`, which does the same and additionally backfills the
-  `workmux.worktree.*` git config so the dashboard and `resurrect` can see the
-  worktree.
-- `tmuxWorktreePickerScript` — a ~100-line `television` picker bound to
-  `prefix + W`, offering switch and delete. Now `workmux dashboard -t worktrees`,
-  whose worktrees tab is a strict superset: jump, close, remove, add, filter.
+## The dashboard is fzf, not a TUI
 
-## `open "{{ branch }}"`, not the directory name
+`wt list --format=json` already carries everything workmux's worktrees tab
+showed — status symbols, divergence from main, diff size, PR number and checks
+(with `--full`), the dev-server URL — so the dashboard is a jq render of it
+inside fzf, which supplies the table, the git-log preview, filtering and the
+key bindings. Hidden tab fields (branch, path, session, url) feed the bindings;
+`--with-nth 5` shows the rendered row. Two details:
 
-The alias passes the raw branch, not `{{ repo }}@{{ branch | sanitize }}`.
-Handle matching only works for non-primary worktrees — the primary worktree's
-directory is plain `repo`, so a `repo@main` handle matches nothing and the
-lookup has to fall through to the branch. Branch matching works for both.
+- `reload-sync` on `start`: the fast list (~0.5 s) appears at once and the
+  `--full` one (~1.7 s, forge round-trips) replaces it when ready. `ctrl-r`
+  refetches.
+- `NO_COLOR=1` on the `wt list` call: otherwise `display.statusline` carries
+  OSC 8 hyperlinks whose BEL byte is invalid JSON and jq refuses the document.
+  The script reads schema 2 (`.items`), which `list.json-schema = 2` selects.
 
-The `{% raw %}` wrapping is unrelated to workmux and must stay: the alias body
-is rendered once by the alias engine (which is what substitutes `{{ args }}`),
-and the inner template has to survive that pass to be rendered again by
-`wt switch` with the worktree in context.
+The layout follows the width, because the portrait monitor is a real
+terminal here: below `$narrow` columns the preview moves under the list
+(fzf's `<SIZE(...)` alternative layout) and the row gets the whole width;
+above it the row gets ~55%. The jq shrinks the branch column to fit and drops
+the diff and commit columns under 90 columns of list, and a `resize` reload
+re-renders on rotation. The width comes from `stty size </dev/tty`, minus the
+two border columns — not from `FZF_COLUMNS`, which fzf exports as `0` to the
+`start` reload because it has not laid itself out yet, and not from
+`tput cols`, which answers 80 when stdout is the reload pipe. That `0` is what
+rendered the table at the 20-column minimum inside a full-width popup.
 
-## `pre-remove` names the handle
+It is a popup, not a window: `enter` ends in `become(wt tmux …)`, whose
+post-switch script runs `tmux switch-client`, after which the process exits and
+the popup closes with it. Column widths count codepoints, so the jq `width`
+adds one for each emoji status symbol (🤖, 💬) by hand.
 
-`workmux close` with no argument claims to default to the current directory, but
-it resolves from the calling tmux pane. `pre-remove` runs with its cwd in the
-worktree being removed and the pane still in the session that ran `wt remove` —
-so `wt prune` from the primary worktree's session killed that session on the
-first integrated worktree, taking `wt` down with it (the log ends at
-`pre-remove user:tmux`; the project hooks never ran). Reproduced on a throwaway
-`tmux -L` server: bare `close` killed the caller, `close <handle>` did not.
+## `{% raw %}` in the alias
 
-The handle is the worktree's basename, taken from `$PWD`. It stays `|| true`
-because `pre-remove` blocks — a failed close (e.g. no open session, which is
-most t3code worktrees) would otherwise abort the removal.
-
-## The close is skipped under a workmux removal
-
-The hook exists for `wt remove`, where nothing else closes the session. A
-repo's `.workmux.yaml` can also route workmux's own `pre_remove` into worktrunk
-(`mylisterhub-main-app`'s `scripts/worktree-hooks down` runs
-`wt hook pre-remove`), and then this close runs *inside* a workmux removal.
-workmux already closes the target itself — and when the removal is started
-from the dashboard in the worktree's own session, it defers that until it has
-switched away. The hook's close got there first, killed the session hosting
-the dashboard, and left the worktree and branch in place with nothing logged
-after `running pre-remove hooks`.
-
-workmux exports `WM_HANDLE` to its hooks and it survives through
-`worktree-hooks` and `wt hook`, so the hook skips the close when it is set.
+The alias body is rendered once by the alias engine (which substitutes
+`{{ args }}`), and the inner template has to survive that pass to be rendered
+again by `wt switch` with the worktree in context. `--no-cd` because the
+post-switch script handles navigation; `--execute` replaces the `wt` process,
+so nothing runs after it.
