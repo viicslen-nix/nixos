@@ -456,29 +456,22 @@ already happened. Treat every heavy Nix invocation as dangerous.
   instead of declaring the hook block** — `modules.programs.claude-code`'s
   `marketplaces` + `plugins` get the hooks *and* that repo's skills for two
   lines, and survive the tool's own installer being unable to write the symlink.
-  `workmux-status@workmux` and `mempalace@mempalace` are the worked examples.
-- **worktrunk and workmux create into one shared tree.** Both are pointed at
-  `../.worktrees/<repo>/<branch>` — worktrunk via `worktree-path`, workmux via
-  `worktree_dir` — so a worktree is in the same place and carries the same
-  handle whichever made it. The templates differ in syntax (worktrunk takes a
-  full per-branch path, workmux only a parent), so they can't be compared and
-  are pinned separately by `checks.workmux-worktrunk`; change one and the check
-  tells you about the other. `window_prefix` stays empty because the handle is
-  the leaf: sessions read `feature-x`, and the primary worktree keeps its bare
-  `repo`. Don't "qualify" them with `window_prefix = "{project}@"` — it doubles
-  the primary into `repo@repo`, and nothing else recovers a `@`, since every
-  workmux path that names a directory slugifies it. workmux reads worktrees from
-  `git worktree list` regardless of layout, so only *creation* depends on this.
-  `panes` must stay **declared**: with neither `panes` nor `windows` set,
-  workmux picks its layout by probing for a `CLAUDE.md` in the project root and
-  silently runs `claude` in the focused pane of every worktree it opens. Every
-  repo here has one, so dropping the key restarts that — `checks.workmux-worktrunk`
-  asserts it.
-  workmux is also **patched** (`worktree-column-width.patch`, the dashboard
-  column cap), so its derivation no longer matches `cache.numtide.com` and a
-  bump builds the Rust crate from source — budget for that, and drop the patch
-  if upstream takes it.
-  See `modules/home-manager/programs/{workmux,worktrunk}/CONTEXT.md`.
+  `mempalace@mempalace` is the worked example.
+- **worktrunk owns worktrees and their tmux sessions; workmux is imported but
+  off.** `wt` creates under `../.worktrees/<repo>/<branch>`, the `wt tmux`
+  alias opens a session named `{{ repo }}@{{ branch | sanitize }}`, `pre-remove`
+  kills it, and `prefix + W` opens `wt-dashboard` — an fzf popup over
+  `wt list --format=json` (`modules/home-manager/programs/worktrunk/dashboard.sh`)
+  that derives the same session name in jq. `checks.worktrunk-tmux` pins all
+  of that and asserts workmux stays disabled (`users/neoscode` sets
+  `modules.programs.workmux.enable = false`); the module, its
+  `worktree-column-width.patch` and its CONTEXT stay in place for a re-enable,
+  but its Claude plugin and vendored skills are gone from the personal AI
+  preset and would need re-adding. Don't kill a tmux session from inside a
+  `wt` hook without checking `#S` first — killing the session `wt` runs in
+  aborts the removal half-way; `worktrunk-kill-session` and the dashboard's
+  `leave` are the two guards. See
+  `modules/home-manager/programs/{worktrunk,workmux}/CONTEXT.md`.
 
 - **A subflake's home-manager wrapper must forward `osConfig` explicitly.**
   `flakes/dms/flake.nix` wraps its module as

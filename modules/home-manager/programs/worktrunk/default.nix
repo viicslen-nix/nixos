@@ -22,7 +22,30 @@
         grep -v '^#' "$f"
       '';
 
-      workmux = getExe config.modules.${namespace}.workmux.package;
+      # `=name` is an exact tmux target; a bare name prefix-matches `repo@feat` to `repo@feat-x`.
+      postSwitchScript = pkgs.writeShellScript "worktrunk-post-switch" ''
+        S=$1
+        W=$2
+
+        tmux has-session -t "=$S" 2>/dev/null || tmux new-session -d -s "$S" -c "$W"
+
+        if [ -n "''${TMUX:-}" ]; then
+          tmux switch-client -t "=$S"
+        else
+          tmux attach-session -t "=$S"
+        fi
+      '';
+
+      # Never kill the session `wt` itself runs in — that takes the removal down mid-hook.
+      killSessionScript = pkgs.writeShellScript "worktrunk-kill-session" ''
+        [ "$(tmux display -p '#S' 2>/dev/null)" = "$1" ] || tmux kill-session -t "=$1" 2>/dev/null || true
+      '';
+
+      dashboard = pkgs.writeShellApplication {
+        name = "wt-dashboard";
+        runtimeInputs = with pkgs; [config.programs.worktrunk.package fzf jq git tmux coreutils gnugrep xdg-utils];
+        text = builtins.readFile ./dashboard.sh;
+      };
     in {
       imports = [
         inputs.worktrunk.homeModules.default
@@ -101,12 +124,11 @@
         };
 
         xdg.configFile."worktrunk/config.toml" = let
+          # The session template is repeated in `dashboard.sh`'s jq; change all three together.
           tmuxSettings = optionalAttrs cfg.tmux.enable {
-            # Skip under workmux: its removal closes the session itself, possibly from inside it.
-            # Name the handle: a bare `close` resolves from the caller's tmux pane, not the cwd.
-            pre-remove.tmux = "[ -n \"\${WM_HANDLE:-}\" ] || ${workmux} close \"$(basename \"$PWD\")\" || true";
-            # `{{ branch }}`, not the sanitized dir name — only a branch match finds the primary worktree.
-            aliases.tmux = "wt switch {{ args }} --no-cd --execute='${workmux} open \"{% raw %}{{ branch }}{% endraw %}\"'";
+            pre-remove.tmux = "${killSessionScript} '{{ repo }}@{{ branch | sanitize }}'";
+            # `{% raw %}` survives the alias engine's pass so `wt switch` renders the inner template.
+            aliases.tmux = "wt switch {{ args }} --no-cd --execute='${postSwitchScript} \"{% raw %}{{ repo }}@{{ branch | sanitize }}{% endraw %}\" \"{% raw %}{{ worktree_path }}{% endraw %}\"'";
           };
           mergedSettings = recursiveUpdate cfg.settings tmuxSettings;
         in
@@ -114,8 +136,10 @@
             source = tomlFormat.generate "worktrunk-config" mergedSettings;
           };
 
+        home.packages = mkIf cfg.tmux.enable [dashboard];
+
         programs.tmux.extraConfig = mkIf cfg.tmux.enable (mkAfter ''
-          bind-key W new-window -n worktrees -c "#{pane_current_path}" '${workmux} dashboard -t worktrees'
+          bind-key W display-popup -E -d "#{pane_current_path}" -w 90% -h 85% -T " worktrees " '${getExe dashboard}'
         '');
       };
     };

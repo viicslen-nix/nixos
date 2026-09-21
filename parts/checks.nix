@@ -24,45 +24,31 @@ in {
       hostToplevels
       // {
         # Grep the generated files, not the option values — a serializer change must fail this too.
-        workmux-worktrunk =
-          pkgs.runCommand "check-workmux-worktrunk" {
-            wm = neoscode.xdg.configFile."workmux/config.yaml".source;
+        worktrunk-tmux =
+          pkgs.runCommand "check-worktrunk-tmux" {
             wt = neoscode.xdg.configFile."worktrunk/config.toml".source;
             tmux = pkgs.writeText "tmux.conf" neoscode.programs.tmux.extraConfig;
+            dashboard = ../modules/home-manager/programs/worktrunk/dashboard.sh;
+            workmux = neoscode.xdg.configFile."workmux/config.yaml".source or "";
           } ''
             set -eu
 
-            fail() { echo "workmux/worktrunk wiring: $1" >&2; exit 1; }
-
-            # Session mode, because `workmux open` outside tmux cannot pick a parent window.
-            grep -qxF 'mode: session' "$wm" || fail 'workmux must run in session mode'
-
-            # Don't "fix" the triple quote — it is an empty YAML string; a real prefix opens a duplicate session.
-            grep -qxF "window_prefix: '''" "$wm" || fail 'window_prefix must stay empty'
-
-            # The two templates differ in syntax, so each is pinned rather than compared.
-            grep -qxF 'worktree_dir: ../.worktrees/{project}' "$wm" \
-              || fail 'workmux must create under ../.worktrees/<project>'
+            fail() { echo "worktrunk tmux wiring: $1" >&2; exit 1; }
 
             grep -qF 'worktree-path = "../.worktrees/{{ repo }}/{{ branch | sanitize }}"' "$wt" \
               || fail 'worktrunk must create under ../.worktrees/<repo>'
 
-            # Absent, a repo with a CLAUDE.md silently gets an agent pane that runs `claude` on open.
-            grep -qxF 'panes:' "$wm" || fail 'panes must be declared, not inferred from CLAUDE.md'
-            ! grep -qF '<agent>' "$wm" || fail 'no pane may launch the agent'
+            # The alias creates the session and pre-remove kills it; the dashboard derives the same name in jq.
+            session='{{ repo }}@{{ branch | sanitize }}'
+            [ "$(grep -cF "$session" "$wt")" -ge 2 ] || fail 'the tmux alias and pre-remove must share the session template'
+            grep -qF '"\($repo)@\($branch | sanitize)"' "$dashboard" || fail 'dashboard.sh must derive the same session name'
 
-            # Dropping the key restores upstream's node_modules fast-delete, it does not disable the hook.
-            grep -qxF 'pre_remove: []' "$wm" || fail 'pre_remove must stay explicitly empty'
+            # A popup, not a window: the dashboard switches the client and exits.
+            grep -qF 'bind-key W display-popup -E' "$tmux" || fail 'prefix+W must open the dashboard as a popup'
+            grep -qF 'wt-dashboard' "$tmux" || fail 'prefix+W must open wt-dashboard'
 
-            # By branch, not by the sanitized dir name — only a branch match finds the primary worktree.
-            grep -qF 'workmux open "{% raw %}{{ branch }}{% endraw %}"' "$wt" \
-              || fail 'the wt tmux alias must hand the branch to workmux open'
-
-            grep -qF 'workmux close "$(basename' "$wt" || fail 'pre-remove must name the workmux target, or close kills the caller'
-            grep -qF 'WM_HANDLE' "$wt" || fail 'pre-remove must leave a workmux removal to close its own target'
-
-            # Dropping -s is silent — the sidebar then adds a pane to every window of every session.
-            grep -qF "workmux sidebar -s'" "$tmux" || fail 'the sidebar key must stay session-scoped'
+            [ -z "$workmux" ] || fail 'workmux must stay disabled'
+            ! grep -qF 'workmux' "$tmux" || fail 'no workmux key may remain bound'
 
             touch "$out"
           '';
