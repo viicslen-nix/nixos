@@ -59,13 +59,11 @@
                 uncommit = "reset --soft HEAD~0";
               };
               init.defaultBranch = cfg.defaultBranch;
-              pull.rebase = true;
-              push = {
-                autoSetupRemote = true;
-                # recurseSubmodules = "on-demand";
-              };
 
-              # submodule.recurse = true;
+              pull.rebase = true;
+              merge.autostash = true;
+              rebase.autostash = true;
+              push.autoSetupRemote = true;
             }
             // optionalAttrs cfg.jetbrainIntegration.enable {
               diff.tool = "jetbrains";
