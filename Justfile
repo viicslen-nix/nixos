@@ -170,7 +170,7 @@ rebuild-path COMMAND='switch' *ARGS:
 
 # Rebuild using nh helper utility
 upgrade COMMAND='switch' *ARGS:
-  nh os {{COMMAND}} --ask "path:." {{ARGS}}
+  nh os {{COMMAND}} --ask "path:." {{ARGS}} --accept-flake-config
 
 # Commit changes and upgrade system
 commit-and-upgrade MESSAGE COMMAND='switch' *ARGS:
