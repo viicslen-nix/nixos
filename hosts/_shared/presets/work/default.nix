@@ -157,8 +157,10 @@ with lib; {
         glab
         awscli
         kubectl
-        kubernetes-helm
         linode-cli
+        wrangler
+        cloudflared
+        kubernetes-helm
         atlas
         devbox
         act
