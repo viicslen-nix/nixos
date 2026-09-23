@@ -66,3 +66,14 @@ gtk4-layer-shell through PyGObject. The layer-shell library must be loaded
 before `libwayland-client`, which gi cannot guarantee, so the wrapper
 `LD_PRELOAD`s it; without that the window is an ordinary toplevel. Verified on
 Hyprland (`hyprctl layers` shows namespace `gtk4-layer-shell` at the top level).
+
+## `getent` has to be in the notify script's PATH
+
+`miami-bus-notify` sets an explicit `PATH` via `makeBinPath`, so every binary it
+shells out to must be listed. `getent` is the only way to a user's home
+directory — `loginctl show-user` exposes `Name` but not `Home` — and the lookup
+sits *after* the `mins -le NOTIFY_MINUTES` early exit. Missing, it therefore
+never fired on a run with no bus due and died `status=127` on exactly the runs
+that were about to notify, taking the overlay start on the next line with it.
+One missing dependency, both symptoms, and a timer whose recent history reads
+as healthy unless you happen to look during the active window.
