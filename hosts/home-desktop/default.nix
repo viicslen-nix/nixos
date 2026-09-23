@@ -56,6 +56,10 @@ with lib; {
       hyprland.enable = true;
     };
 
-    containers.settings.storageDriver = "btrfs";
+    containers.settings = {
+      backend = "podman";
+      userns = "auto";
+      storageDriver = "btrfs";
+    };
   };
 }
