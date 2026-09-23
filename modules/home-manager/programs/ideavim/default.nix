@@ -14,7 +14,7 @@
         enable = mkEnabledOption (mdDoc name);
       };
 
-      config.home.file.".ideavimrc" = mkIf cfg.enable {
+      config.xdg.configFile."ideavim/ideavimrc" = mkIf cfg.enable {
         source = ./ideavimrc;
       };
     };

@@ -102,7 +102,11 @@ in {
         homeModules.functionality.autostart
         homeModules.functionality.impermanence
 
-        ({osConfig, ...}: {
+        ({
+          config,
+          osConfig,
+          ...
+        }: {
           imports = [
             inputs.agenix.homeManagerModules.default
             inputs.opencode.homeManagerModules.default
@@ -116,7 +120,16 @@ in {
 
               # Add local bin to PATH
               sessionPath = ["$HOME/.local/bin"];
+
+              # Every home-manager module that honours this drops its $HOME
+              # dotfile for the XDG dir — and exports the tool's env var with it
+              # (GTK2_RC_FILES, CODEX_HOME, COPILOT_HOME). Flipping it back
+              # strands whatever state already moved.
+              preferXdgDirectories = true;
             };
+
+            # xresources predates preferXdgDirectories and needs saying twice.
+            xresources.path = "${config.xdg.configHome}/xresources";
 
             # Allow home-manager to manage itself
             programs.home-manager.enable = mkDefault true;
