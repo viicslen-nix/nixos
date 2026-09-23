@@ -36,7 +36,11 @@ with lib; {
   environment.systemPackages = with pkgs; [
     rpi-imager
     orca-slicer
+    platformio
   ];
+
+  users.users.neoscode.extraGroups = ["dialout"];
+  services.udev.packages = [pkgs.platformio-core.udev];
 
   services.tailscale = {
     enable = true;
