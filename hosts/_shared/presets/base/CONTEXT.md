@@ -95,3 +95,28 @@ instead of refusing to start.
 The table lives in `caches.nix` at the repo root. Adding a cache there — not in
 this preset — is what keeps the flake's own `nixConfig` and the own-nixpkgs
 routing in step with it.
+
+## `home.preferXdgDirectories`
+
+Set for every user on every host. Home-manager modules that honour it drop
+their `$HOME` dotfile for the XDG equivalent *and* export the env var the tool
+needs to follow (`GTK2_RC_FILES`, `CODEX_HOME`, `COPILOT_HOME`). Today that
+covers gtk2, codex and github-copilot-cli here; enabling npm, readline,
+dircolors, lazygit, kubecolor or atuin's logs picks it up for free.
+`xresources.path` is set beside it because the xresources module predates the
+flag and reads no such default.
+
+What is left in `$HOME` is what its tool hardcodes and cannot be talked out of:
+`.bashrc`/`.bash_profile`/`.profile` (bash), `.zshenv` (the stub that points
+zsh at `ZDOTDIR`, which is already `.config/zsh`), and `.tmate.conf` — tmate
+takes only `-f`, and home-manager writes the path literally.
+
+Two things bite when the flag changes:
+
+- A flag flip only relocates where the tool *looks*. Existing state stays where
+  it was and the tool comes up logged out, so each move is `mv ~/.<tool>
+  ~/.config/<tool>` alongside the rebuild.
+- `home.sessionVariables` reaches new login shells, not the running graphical
+  session. Until a re-login, anything launched from the desktop — IDE agent
+  extensions especially — still writes the old path and quietly recreates the
+  directory that was just moved.
