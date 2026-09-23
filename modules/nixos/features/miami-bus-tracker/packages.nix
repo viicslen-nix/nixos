@@ -17,6 +17,7 @@
   sudo,
   gawk,
   libnotify,
+  getent,
   routeId,
   direction,
   stopId,
@@ -30,7 +31,7 @@
   env = ''
     export MIAMI_BUS_API="${api}" MIAMI_BUS_KEY="${apiKey}"
     export ROUTE_ID="${routeId}" DIR="${direction}" STOP_ID="${stopId}" NOTIFY_MINUTES="${toString notifyMinutes}"
-    PATH=${lib.makeBinPath [curl jq coreutils systemd sudo gawk libnotify]}:$PATH
+    PATH=${lib.makeBinPath [curl jq coreutils systemd sudo gawk libnotify getent]}:$PATH
     api() { curl -sSf -H "x-api-key: $MIAMI_BUS_KEY" "$MIAMI_BUS_API/$1"; }
     tracker() { api "tracker?routeID=$ROUTE_ID&directionId=$DIR&stopID=$STOP_ID&track=NO"; }
     stops() { api "routestops?routeID=$ROUTE_ID&directionId=$DIR"; }
