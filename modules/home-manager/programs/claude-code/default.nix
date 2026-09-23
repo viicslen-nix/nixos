@@ -44,7 +44,11 @@
 
       config = mkIf cfg.enable {
         # Don't drop `force`: the next activation then aborts on a stale settings.json.backup.
-        home.file."${config.home.homeDirectory}/.claude/settings.json".force = true;
+        home.file."${config.programs.claude-code.configDir}/settings.json".force = true;
+
+        # Carries ~/.claude.json with it, and herdr resolves its hook directory
+        # through the CLAUDE_CONFIG_DIR this exports.
+        programs.claude-code.configDir = "${config.xdg.configHome}/claude";
 
         programs.claude-code.settings =
           recursiveUpdate {

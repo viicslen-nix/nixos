@@ -21,7 +21,7 @@
           hooks = [
             {
               type = "command";
-              command = "bash '${config.home.homeDirectory}/.claude/hooks/herdr-agent-state.sh' session";
+              command = "bash '${config.programs.claude-code.configDir}/hooks/herdr-agent-state.sh' session";
               timeout = 10;
             }
           ];
