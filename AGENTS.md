@@ -55,6 +55,13 @@ already happened. Treat every heavy Nix invocation as dangerous.
   when a directory earns one. This file holds the rules, vocabulary and
   workflows an agent follows; `CONTEXT.md` holds the story behind what is
   already written. Keep each fact in exactly one of the two.
+- **Never put a dotfile or dotdir directly in `$HOME`.** Config belongs in
+  `$XDG_CONFIG_HOME`, mutable data in `$XDG_DATA_HOME`, logs/history in
+  `$XDG_STATE_HOME`, throwaway output in `$XDG_CACHE_HOME` — read each with its
+  spec default (`''${XDG_CONFIG_HOME:-$HOME/.config}`), never hardcoded. This
+  covers home-manager `home.file.".foo"`, an `age.secrets.<n>.path`, and any
+  wrapper script that invents a private directory. A tool that only offers a
+  `$HOME`-relative knob gets wrapped with the XDG path, not accommodated.
 - **Comments in `.nix` files are one line, at the trap they guard.** A line
   that must not be "simplified" — a `follows` that must stay absent, a label
   order baked into a systemd unit, a literal nix cannot compute — carries a
