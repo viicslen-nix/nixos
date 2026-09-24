@@ -444,7 +444,11 @@ already happened. Treat every heavy Nix invocation as dangerous.
   *symlink this directory to `skills/<name>/`* vs *write this value as
   `skills/<name>/SKILL.md`*. `isPathLike` accepts a path, a store-path
   **string**, or a derivation. A directory path is what you want for a
-  multi-file skill; a plain string gives you a single `SKILL.md`.
+  multi-file skill; a plain string gives you a single `SKILL.md`. The ai
+  subflake then wraps every file or string skill into a one-file store
+  directory (`builders/skillDir.nix`) for opencode and claude-code — never hand
+  them a bare store file, or opencode v2 recursively watches all of `/nix/store`
+  (ENOSPC). See `flakes/ai/CONTEXT.md`.
 - **Patching an upstream skill without forking it.** `skills` in the ai
   subflake's `profile` module is three layers, last wins: `upstreamSkills` (verbatim, via
   `selectFromInput`) `//` `patchedSkills` `//` `mkSkillAttrSet ../content/skills` (a local
