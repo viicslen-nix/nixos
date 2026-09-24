@@ -213,7 +213,7 @@ in {
   modules.programs = {
     zed.enable = osConfig.modules.presets.desktop.enable;
     opencode.enable = true;
-    opencode2.enable = true;
+    opencode1.enable = true;
     k9s.enable = true;
     krr = {
       enableK9sIntegration = true;
