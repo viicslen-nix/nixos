@@ -77,6 +77,8 @@
       hasMcpOption = hasAttrByPath ["programs" "mcp" "servers"] options;
       hasOpencodeOption = hasAttrByPath ["programs" "opencode" "commands"] options;
       hasOpencodeSkillsOption = hasAttrByPath ["programs" "opencode" "skills"] options;
+      hasOpencode2Option = hasAttrByPath ["programs" "opencode2" "commands"] options;
+      hasOpencode2SkillsOption = hasAttrByPath ["programs" "opencode2" "skills"] options;
       hasClaudeCodeOption = hasAttrByPath ["programs" "claude-code" "commands"] options;
       hasClaudeCodeSkillsOption = hasAttrByPath ["programs" "claude-code" "skills"] options;
       hasAntigravityOption = hasAttrByPath ["programs" "antigravity-cli" "commands"] options;
@@ -207,6 +209,12 @@
             description = mdDoc "Forward commands and agents to opencode.";
           };
 
+          opencode2 = mkOption {
+            type = types.bool;
+            default = true;
+            description = mdDoc "Forward commands and agents to opencode 2.";
+          };
+
           claude-code = mkOption {
             type = types.bool;
             default = true;
@@ -249,6 +257,8 @@
             "`modules.programs.ai.mcps` is set, but `programs.mcp` is unavailable in this Home Manager version."
             ++ optional (!hasOpencodeOption && cfg.targets.opencode && (effectiveCommands != {} || effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
             "`modules.programs.ai.targets.opencode` is enabled, but `programs.opencode` is unavailable."
+            ++ optional (!hasOpencode2Option && cfg.targets.opencode2 && (effectiveCommands != {} || effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
+            "`modules.programs.ai.targets.opencode2` is enabled, but `programs.opencode2` is unavailable."
             ++ optional (!hasClaudeCodeOption && cfg.targets.claude-code && (effectiveCommands != {} || effectiveAgents != {} || hasGlobalContext || hasGlobalSkills))
             "`modules.programs.ai.targets.claude-code` is enabled, but `programs.claude-code` is unavailable."
             ++ optional (!hasAntigravityOption && cfg.targets.antigravity-cli && (effectiveCommands != {} || hasGlobalContext || hasGlobalSkills))
@@ -257,6 +267,8 @@
             "`modules.programs.ai.targets.github-copilot-cli` is enabled, but `programs.github-copilot-cli` is unavailable."
             ++ optional (!hasOpencodeSkillsOption && cfg.targets.opencode && hasGlobalSkills)
             "`modules.programs.ai.skills` is set, but `programs.opencode.skills` is unavailable."
+            ++ optional (!hasOpencode2SkillsOption && cfg.targets.opencode2 && hasGlobalSkills)
+            "`modules.programs.ai.skills` is set, but `programs.opencode2.skills` is unavailable."
             ++ optional (!hasClaudeCodeSkillsOption && cfg.targets.claude-code && hasGlobalSkills)
             "`modules.programs.ai.skills` is set, but `programs.claude-code.skills` is unavailable."
             ++ optional (!hasAntigravitySkillsOption && cfg.targets.antigravity-cli && hasGlobalSkills)
@@ -285,6 +297,15 @@
             agents = mkDefaultAttrs effectiveAgents;
             context = mkIf hasGlobalContext (mkDefault cfg.context);
             skills = mkIf (hasGlobalSkills && hasOpencodeSkillsOption) (mkDefaultSkills effectiveSkills);
+          };
+        })
+        (mkIf (hasOpencode2Option && cfg.targets.opencode2) {
+          programs.opencode2 = {
+            enableMcpIntegration = true;
+            commands = mkDefaultAttrs opencodeCommands;
+            agents = mkDefaultAttrs effectiveAgents;
+            context = mkIf hasGlobalContext (mkDefault cfg.context);
+            skills = mkIf (hasGlobalSkills && hasOpencode2SkillsOption) (mkDefaultSkills effectiveSkills);
           };
         })
         (mkIf (hasClaudeCodeOption && cfg.targets.claude-code) {

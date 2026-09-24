@@ -64,18 +64,6 @@
     export GRAFANA_SERVICE_ACCOUNT_TOKEN
     exec ${lib.getExe pkgs.mcp-grafana} "$@"
   '';
-
-  # v1 and v2 both live in <XDG>/opencode, so v2 gets its own XDG roots — it
-  # appends "opencode" itself, hence the nested opencode2/opencode dirs.
-  # XDG_CONFIG_HOME stays untouched on purpose: moving it would send every
-  # child process opencode spawns (gh, git, nu) to an empty config dir.
-  opencode2 = pkgs.writeShellScriptBin "opencode2" ''
-    export OPENCODE_CONFIG_DIR="''${XDG_CONFIG_HOME:-$HOME/.config}/opencode2"
-    export XDG_DATA_HOME="''${XDG_DATA_HOME:-$HOME/.local/share}/opencode2"
-    export XDG_STATE_HOME="''${XDG_STATE_HOME:-$HOME/.local/state}/opencode2"
-    export XDG_CACHE_HOME="''${XDG_CACHE_HOME:-$HOME/.cache}/opencode2"
-    exec ${lib.getExe' pkgs.inputs.llm-agents.opencode2 "opencode2"} "$@"
-  '';
 in {
   imports = [
     homeModules.programs.ai
@@ -125,7 +113,6 @@ in {
       ln -s ${lib.getExe config.programs.antigravity-cli.package} $out/bin/antigravity
     '')
     pkgs.inputs.llm-agents.opencode-desktop
-    opencode2
   ];
 
   programs = {
@@ -225,6 +212,7 @@ in {
   modules.programs = {
     zed.enable = osConfig.modules.presets.desktop.enable;
     opencode.enable = true;
+    opencode2.enable = true;
     k9s.enable = true;
     krr = {
       enableK9sIntegration = true;
