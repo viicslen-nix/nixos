@@ -2,7 +2,7 @@
 set shell := ["zsh", "-c"]
 
 # Where `gh skill` vendors upstream skill collections
-SKILLS_DIR := "hosts/_shared/presets/personal/ai/skills"
+SKILLS_DIR := "flakes/ai/content/skills"
 
 ############################################################################
 #
@@ -90,14 +90,14 @@ update-subflake NAME *ARGS:
 #        just vendor-skills google-labs-code/stitch-skills --all --pin v1.0
 vendor-skills REPO *ARGS:
   gh skill install {{REPO}} --force --dir {{SKILLS_DIR}} {{ARGS}}
-  git add {{SKILLS_DIR}}
+  git -C flakes/ai add content/skills
 
 # Pull upstream changes into every vendored skill. `gh skill` tracks each one's
 # origin in its own SKILL.md frontmatter, so there is no manifest to keep.
 # Usage: just update-skills [--dry-run]
 update-skills *ARGS:
   gh skill update --all --dir {{SKILLS_DIR}} {{ARGS}}
-  git add {{SKILLS_DIR}}
+  git -C flakes/ai add content/skills
 
 # Regenerate flake.nix's nixConfig block from caches.nix. Needed because nix
 # rejects a computed flake config value — the list and its strings must both be

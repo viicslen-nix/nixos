@@ -100,7 +100,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   imports by `key`, and the flake-parts wrappers carry none, so without it a
   double import fails with `option … is already declared`.
 - **subflake** — a git submodule flake under `flakes/*` (`lib`, `packages`,
-  `opencode`, `zed`, `neovim`, `nixvim`, `niri`, `hyprland`, `dms`, `emacs`).
+  `ai`, `zed`, `neovim`, `nixvim`, `niri`, `hyprland`, `dms`, `emacs`).
   Each is a separate upstream repo (`viicslen-nix/*`).
 - **vlib / viicslen-lib** — helper library exported from `flakes/lib`; provides
   `defaultSystems`, `genSystems`, `pkgsFor`, and the namespaced helper sets
@@ -135,7 +135,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `programs.podman` each default `enable` to `backend == "<self>"` and read the
   rest from here, so both can be imported and a host sets only these. Don't add
   a per-engine `enable = true` or duplicate a knob onto `programs.<engine>`.
-- **`modules.programs.opencode2`** — opencode 2.x, declared in the `opencode`
+- **`modules.programs.opencode2`** — opencode 2.x, declared in the `ai`
   subflake beside the v1 module and imported by `base`. v2 renamed the config
   keys (`plugin`→`plugins`, `agent`→`agents`, an agent's `prompt`→`system`), so
   it needs its own module rather than a flag on v1's; the *option* names match
@@ -144,6 +144,13 @@ already happened. Treat every heavy Nix invocation as dangerous.
   opencode owns `service.json` in the same directory. See that directory's
   `CONTEXT.md` — especially the shared `49374` service port, which does not move
   with the config dir.
+- **`ai` subflake** — `flakes/ai`, the portable AI-harness config: the shared
+  `modules.programs.ai` fan-out, the per-harness modules (claude-code, opencode
+  v1/v2), and everything the old `opencode` subflake carried, which it absorbed.
+  Its modules take **`aiInputs`**, not `inputs` — home-manager `extraSpecialArgs`
+  outranks `_module.args`, so a module asking for `inputs` gets the consumer's
+  set instead of the flake's own. Reach it as `inputs.ai.homeManagerModules.<x>`
+  / `inputs.ai.nixosModules.opencode-web`. See its `CONTEXT.md`.
 - **nh** — `nh os …`, the rebuild helper wrapped by the `just upgrade` recipe.
 - **just** — the task runner; `Justfile` holds the canonical recipes. Don't
   hand-roll `nixos-rebuild` / `nix flake update` when a recipe already exists.
@@ -395,7 +402,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `stdenv.hostPlatform.system` over `pkgs.system`. nixpkgs prints eval warnings
   for the old ones.
 - **Two ways to get upstream AI skills.** Small, skill-only repos ride as a
-  `flake = false` input (`mattpocock-skills`), bumped with `just update-input`.
+  `flake = false` input (`mattpocock-skills`, now an input of the **ai**
+  subflake, bumped with `just update-subflake ai`).
   Repos that carry a lot of non-skill weight are vendored instead — there is no
   sparse fetch for a non-flake input, so an input would copy the whole thing
   into the store (effective-html is 22M for 148K of skills). `just vendor-skills
@@ -404,7 +412,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
   just that one, `--all` takes the collection, neither prompts. `gh` allows only
   one name per run and rejects `--all` beside it, so a subset means repeating the
   recipe. It drops them in
-  `hosts/_shared/presets/personal/ai/skills/`; `just update-skills` re-pulls
+  `flakes/ai/content/skills/` — inside the submodule, so `git add` and commit
+  happen there, not in the root; `just update-skills` re-pulls
   every one, `just skills` lists them with their origin. There is no manifest:
   `gh` records `github-repo`/`github-path`/`github-ref`/`github-tree-sha` in
   each skill's own **SKILL.md frontmatter**, which is what `update` and `list`
@@ -436,20 +445,20 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `skills/<name>/SKILL.md`*. `isPathLike` accepts a path, a store-path
   **string**, or a derivation. A directory path is what you want for a
   multi-file skill; a plain string gives you a single `SKILL.md`.
-- **Patching an upstream skill without forking it.** `skills` in the personal AI
-  preset is three layers, last wins: `upstreamSkills` (verbatim, via
-  `selectFromInput`) `//` `patchedSkills` `//` `mkSkillAttrSet ./skills` (a local
+- **Patching an upstream skill without forking it.** `skills` in the ai
+  subflake's `profile` module is three layers, last wins: `upstreamSkills` (verbatim, via
+  `selectFromInput`) `//` `patchedSkills` `//` `mkSkillAttrSet ../content/skills` (a local
   directory, which shadows outright and loses all upstream updates — avoid for a
   skill you only want to tweak). The middle layer is `patchSkill src subs`: it
   `readFile`s the upstream `SKILL.md` and `replaceStrings` anchored spans, so
-  `just update-input mattpocock-skills` keeps flowing in. Two things to know:
+  a bump of `mattpocock-skills` keeps flowing in. Two things to know:
   the result is a **string**, so only single-file skills work this way (a
   multi-file one would need a `runCommand`, which costs an IFD — `pathIsDirectory`
   has to build the derivation to look inside it); and it **asserts** every `from`
   anchor is still present, because `replaceStrings` otherwise no-ops silently and
   hands back vanilla upstream with no signal. Anchor on spans that survive
   rewording, and keep the patch in
-  `hosts/_shared/presets/personal/ai/skill-patches/<name>.nix`. The same value is
+  `flakes/ai/content/skill-patches/<name>.nix`. The same value is
   forwarded to opencode/antigravity/copilot too — phrase harness-specific edits
   conditionally rather than naming one harness's tool imperatively.
 - **`modules.programs.ai` never touches `~/.claude.json`.** MCP servers reach

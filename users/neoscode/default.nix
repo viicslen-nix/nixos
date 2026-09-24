@@ -61,7 +61,7 @@ in {
     };
 
     packages = with pkgs; [
-      inputs.opencode.oh-my-opencode
+      inputs.ai.oh-my-opencode
       inputs.packages.python.mempalace
     ];
 

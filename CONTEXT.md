@@ -75,12 +75,10 @@ the index keys on the *repository* name. Find the right-hand side with
 
 ## `flake.nix` — other input notes
 
-- **opencode** follows this flake's `omniflake` so opencode's home-manager is
-  the same copy as everything else, and no extra nodes are locked for it.
-- **mattpocock-skills** carries upstream AI harness skills; bump with
-  `just update-input mattpocock-skills`. Collections too large to carry whole
-  are vendored instead — see `scripts/skill-sources.tsv` and
-  `just vendor-skills`.
+- **ai** follows this flake's `omniflake`, `packages`, `llm-agents` and
+  `viicslen-lib` so nothing is locked twice. It absorbed the old `opencode`
+  subflake, and it owns `mattpocock-skills` now — bump the skills with
+  `just update-subflake ai`, not an `update-input` here.
 - **nixvim** — `flakes/neovim` is still a maintained subflake but nothing here
   consumes it; 5556fbc replaced it with nixvim. Re-add as an input when
   something needs it again.

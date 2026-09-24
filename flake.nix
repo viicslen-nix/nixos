@@ -106,25 +106,23 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # OpenCode
-    opencode = {
-      url = "path:./flakes/opencode";
-      # Share this flake's omniflake so opencode's home-manager is the same
-      # copy as everything else, and no extra nodes are locked for it.
+    # AI harnesses: shared config, per-harness modules, and the opencode
+    # packages and web service it absorbed.
+    ai = {
+      url = "path:./flakes/ai";
+      # Share this flake's omniflake so its home-manager is the same copy as
+      # everything else, and no extra nodes are locked for it.
       inputs.omniflake.follows = "omniflake";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.packages.follows = "packages";
+      inputs.llm-agents.follows = "llm-agents";
+      inputs.viicslen-lib.follows = "viicslen-lib";
     };
 
     # Leave `nixpkgs` un-overridden — it is what keeps cache.numtide.com hitting.
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.systems.follows = "systems-linux";
-    };
-
-    mattpocock-skills = {
-      url = "github:mattpocock/skills";
-      flake = false;
     };
 
     zed = {
