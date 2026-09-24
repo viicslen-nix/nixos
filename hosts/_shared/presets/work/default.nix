@@ -40,7 +40,6 @@ with lib; {
     age.secrets.mkcert-rootCA-key.file = ../../../../secrets/mkcert/rootCA-key.age;
 
     modules = {
-
       programs.mkcert.rootCA = {
         enable = true;
         certPath = ../../../../secrets/mkcert/rootCA.pem;
