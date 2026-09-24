@@ -110,6 +110,7 @@ in {
           imports = [
             inputs.agenix.homeManagerModules.default
             inputs.opencode.homeManagerModules.default
+            inputs.opencode.homeManagerModules.opencode2
             inputs.zed.homeManagerModules.default
           ];
 

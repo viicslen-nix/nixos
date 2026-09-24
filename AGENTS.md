@@ -135,6 +135,15 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `programs.podman` each default `enable` to `backend == "<self>"` and read the
   rest from here, so both can be imported and a host sets only these. Don't add
   a per-engine `enable = true` or duplicate a knob onto `programs.<engine>`.
+- **`modules.programs.opencode2`** — opencode 2.x, declared in the `opencode`
+  subflake beside the v1 module and imported by `base`. v2 renamed the config
+  keys (`plugin`→`plugins`, `agent`→`agents`, an agent's `prompt`→`system`), so
+  it needs its own module rather than a flag on v1's; the *option* names match
+  v1 on purpose, so retiring v1 is a rename. It is a `modules.programs.ai`
+  target, carries its own XDG-isolation wrapper, and writes per file because
+  opencode owns `service.json` in the same directory. See that directory's
+  `CONTEXT.md` — especially the shared `49374` service port, which does not move
+  with the config dir.
 - **nh** — `nh os …`, the rebuild helper wrapped by the `just upgrade` recipe.
 - **just** — the task runner; `Justfile` holds the canonical recipes. Don't
   hand-roll `nixos-rebuild` / `nix flake update` when a recipe already exists.
