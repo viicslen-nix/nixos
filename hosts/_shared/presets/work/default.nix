@@ -9,7 +9,7 @@
 }:
 with lib; {
   imports = [
-    inputs.opencode.nixosModules.opencode-web
+    inputs.ai.nixosModules.opencode-web
 
     # Development tooling
     nixosModules.programs.corepack

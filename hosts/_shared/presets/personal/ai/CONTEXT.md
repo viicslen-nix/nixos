@@ -1,28 +1,17 @@
 # CONTEXT
 
-The AI-harness config for the `personal` preset — skills, commands and MCP
-backends. This file holds the reasoning behind `default.nix`; the local skill
-deltas have their own [CONTEXT.md](./skill-patches/CONTEXT.md).
+What is left of the personal AI config after the portable half moved to the
+`ai` subflake. `default.nix` now imports that flake's `profile` module and adds
+only what cannot travel: a credential, and the one MCP backend that needs it.
 
-## Where skills come from, and in what order
+Skills, commands, prompts, plugins and the credential-free MCP backends live in
+`flakes/ai/content` and `flakes/ai/hmModules/profile.nix`. Their story —
+including the three-layer skill precedence and the mattpocock patch anchors —
+moved with them.
 
-`skills` is three layers, last wins:
-
-1. `upstreamSkills` — taken verbatim from `github:mattpocock/skills` via
-   `selectFromInput`, curated by name because that repo carries more than we
-   want (`in-progress/`, `misc/`, `deprecated/`).
-2. `patchedSkills` — the same upstream skills with the local edits in
-   `./skill-patches` rewritten in, so `just update-input mattpocock-skills`
-   keeps flowing and a reword that moves an anchor fails the build instead of
-   silently reverting.
-3. `mkSkillAttrSet ./skills` — a local directory, which shadows either of the
-   layers above outright. It also holds the vendored collections
-   (`just vendor-skills`), which are plain checked-in skills as far as this is
-   concerned.
-
-One upstream path is worth remembering: `writing-for-agents` was renamed from
-`writing-great-skills` and had its `GLOSSARY.md` split into `SKILL-MECHANICS.md`
-(mattpocock/skills 1fc6573e), so the key here changed with it.
+`modules.programs.ai.skills` and `.mcps` merge across definitions, which is what
+lets this file and the `work` preset each add to what the profile sets rather
+than replacing it.
 
 ## google_stitch authenticates with an API key, not OAuth
 

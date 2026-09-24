@@ -2,6 +2,7 @@
   pkgs,
   config,
   lib,
+  inputs,
   osConfig,
   homeModules,
   ...
@@ -66,8 +67,8 @@
   '';
 in {
   imports = [
-    homeModules.programs.ai
-    homeModules.programs.claude-code
+    inputs.ai.homeManagerModules.ai
+    inputs.ai.homeManagerModules.claude-code
   ];
 
   age.secrets = {

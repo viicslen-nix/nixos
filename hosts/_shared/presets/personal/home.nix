@@ -9,8 +9,8 @@
 with lib; {
   imports = [
     inputs.hunk.homeManagerModules.default
-    homeModules.programs.ai
-    homeModules.programs.claude-code
+    inputs.ai.homeManagerModules.ai
+    inputs.ai.homeManagerModules.claude-code
     homeModules.programs.t3code
     ./ai
   ];
