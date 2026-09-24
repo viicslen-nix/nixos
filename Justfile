@@ -1,9 +1,6 @@
 # use zshell for shell commands
 set shell := ["zsh", "-c"]
 
-# Where `gh skill` vendors upstream skill collections
-SKILLS_DIR := "flakes/ai/content/skills"
-
 ############################################################################
 #
 #  Development Commands
@@ -80,24 +77,17 @@ update-subflake NAME *ARGS:
   nix flake update --flake "path:flakes/{{NAME}}"
   nix flake update "{{NAME}}" {{ARGS}}
 
-# Vendor upstream AI skills into the personal preset, for repos too large to
-# carry as a flake input. Commit the result. Name a skill (or its path in the
-# repo) to take just that one, `--all` for the whole collection, neither to pick
-# interactively. `gh` takes one name per run and refuses `--all` beside it, so
-# picking several means repeating the recipe.
+# Vendor an upstream AI skill collection into the ai subflake, for repos too
+# large to carry as a flake input. Commit the result inside flakes/ai.
 # Usage: just vendor-skills plannotator/effective-html --all
 #        just vendor-skills plannotator/effective-html html-plan
-#        just vendor-skills google-labs-code/stitch-skills --all --pin v1.0
 vendor-skills REPO *ARGS:
-  gh skill install {{REPO}} --force --dir {{SKILLS_DIR}} {{ARGS}}
-  git -C flakes/ai add content/skills
+   flakes/ai && just vendor-skills {{REPO}} {{ARGS}}
 
-# Pull upstream changes into every vendored skill. `gh skill` tracks each one's
-# origin in its own SKILL.md frontmatter, so there is no manifest to keep.
+# Pull upstream changes into every vendored skill
 # Usage: just update-skills [--dry-run]
 update-skills *ARGS:
-  gh skill update --all --dir {{SKILLS_DIR}} {{ARGS}}
-  git -C flakes/ai add content/skills
+   flakes/ai && just update-skills {{ARGS}}
 
 # Regenerate flake.nix's nixConfig block from caches.nix. Needed because nix
 # rejects a computed flake config value — the list and its strings must both be
@@ -116,12 +106,9 @@ sync-caches:
   mv flake.nix.new flake.nix
   echo "flake.nix nixConfig regenerated from caches.nix"
 
-# Hand-written skills have no origin, and are omitted
 # List the vendored skills with the repo and ref each came from
 skills:
-  @gh skill list --dir {{SKILLS_DIR}} --json skillName,sourceURL,version \
-    --jq '["SKILL","REPO","REF"], (.[] | select(.sourceURL != "") | [.skillName, (.sourceURL | sub("https://github.com/"; "")), .version]) | @tsv' \
-    | column -t -s $'\t'
+  @cd flakes/ai && just skills
 
 # List the local package attrs in flakes/packages (as `just bump` takes them)
 packages:
