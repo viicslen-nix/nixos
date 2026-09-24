@@ -40,7 +40,6 @@ with lib; {
     age.secrets.mkcert-rootCA-key.file = ../../../../secrets/mkcert/rootCA-key.age;
 
     modules = {
-      services.opencode-web.enable = true;
 
       programs.mkcert.rootCA = {
         enable = true;
