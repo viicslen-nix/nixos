@@ -135,13 +135,17 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `programs.podman` each default `enable` to `backend == "<self>"` and read the
   rest from here, so both can be imported and a host sets only these. Don't add
   a per-engine `enable = true` or duplicate a knob onto `programs.<engine>`.
-- **`modules.programs.opencode2`** — opencode 2.x, declared in the `ai`
-  subflake beside the v1 module and imported by `base`. v2 renamed the config
-  keys (`plugin`→`plugins`, `agent`→`agents`, an agent's `prompt`→`system`), so
-  it needs its own module rather than a flag on v1's; the *option* names match
-  v1 on purpose, so retiring v1 is a rename. It is a `modules.programs.ai`
-  target, carries its own XDG-isolation wrapper, and writes per file because
-  opencode owns `service.json` in the same directory. See that directory's
+- **`modules.programs.opencode`** — opencode **2.x**; v1 is
+  `modules.programs.opencode1`, with `op1` as a short alias. Both are declared
+  in the `ai` subflake and imported by `base`. v2 renamed the config keys
+  (`plugin`→`plugins`, `agent`→`agents`, an agent's `prompt`→`system`), so each
+  major keeps its own module. The trap: `programs.opencode` is **home-manager's**
+  module, hardcoded to `~/.config/opencode`, so v1 had to stop using it for v2
+  to take that directory — v1 is self-contained now and has no `tui`/`themes`/
+  `tools`/`commands` options (no stylix theming). The module namespaces do not
+  match the knobs: `modules.programs.opencode` writes `programs.opencode2`.
+  Both write per file, because opencode owns `service.json` in the same
+  directory. v1 plugins do not load on v2 at all. See that directory's
   `CONTEXT.md` — especially the shared `49374` service port, which does not move
   with the config dir.
 - **`ai` subflake** — `flakes/ai`, the portable AI-harness config: the shared

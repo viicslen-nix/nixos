@@ -107,7 +107,7 @@ in {
       "custom"
     ];
 
-    opencode.settings.provider.ollama = {
+    opencode2.settings.provider.ollama = {
       name = "Ollama";
       npm = "@ai-sdk/openai-compatible";
       models."qwen3.5".name = "Qwen 3.5";
