@@ -409,7 +409,10 @@ already happened. Treat every heavy Nix invocation as dangerous.
   one name per run and rejects `--all` beside it, so a subset means repeating the
   recipe. It drops them in
   `flakes/ai/content/skills/` — inside the submodule, so `git add` and commit
-  happen there, not in the root; `just update-skills` re-pulls
+  happen there, not in the root. A collection only one `modules.programs.ai`
+  integration should install goes in `content/integrations/skills/<name>/`
+  instead, via `just vendor-integration-skills <name> <owner/repo> …` (run in
+  `flakes/ai`; `orca` is the one user). `just update-skills` re-pulls
   every one, `just skills` lists them with their origin. There is no manifest:
   `gh` records `github-repo`/`github-path`/`github-ref`/`github-tree-sha` in
   each skill's own **SKILL.md frontmatter**, which is what `update` and `list`
