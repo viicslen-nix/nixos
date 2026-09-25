@@ -14,4 +14,6 @@ in {
   "secrets/grafana/service-account-token.age".publicKeys = [sshKey];
   # Dotenv (`STITCH_API_KEY=…`) — mcp-gateway reads it as an `env_files` entry.
   "secrets/stitch/api-key.age".publicKeys = [sshKey];
+  "secrets/cliproxyapi/api-key.age".publicKeys = [sshKey];
+  "secrets/cliproxyapi/management-key.age".publicKeys = [sshKey];
 }
