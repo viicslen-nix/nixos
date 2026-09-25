@@ -69,9 +69,10 @@ the index keys on the *repository* name. Find the right-hand side with
   builds are keyed to the nixpkgs ghostty pins. Ours matches it today only by
   coincidence (one day apart), so following would turn every future ghostty
   into a from-source zig build. Costs 7 lock nodes.
-- **tuicr** — pinning it to ours forces a cargo re-vendor, and crates.io 403s
-  nix's curl User-Agent from here, so the rebuild dies on `cannot download
-  download-adler2-2.0.1 from any mirror`. Costs 7 lock nodes.
+- **tuicr** — pinning it to ours forces a cargo re-vendor, and when this was
+  decided crates.io 403'd nix's curl User-Agent from here, so the rebuild died
+  on `cannot download download-adler2-2.0.1 from any mirror`. That 403 was gone
+  by 2026-09, so the pin may no longer be needed. Costs 7 lock nodes.
 
 ## `flake.nix` — other input notes
 

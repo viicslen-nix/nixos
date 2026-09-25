@@ -287,9 +287,6 @@ in {
 
     systemd.services.nix-daemon.serviceConfig.EnvironmentFile = "-${nixDaemonEnv}";
 
-    # crates.io 403s nix's own User-Agent from this host; no spaces, $NIX_CURL_FLAGS is word-split.
-    systemd.services.nix-daemon.environment.NIX_CURL_FLAGS = "-A Mozilla/5.0";
-
     nix = {
       # This will add each flake input as a registry
       # To make nix3 commands consistent with your flake
