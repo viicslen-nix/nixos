@@ -45,6 +45,10 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - Fix root causes, not symptoms — grep every caller before patching one path.
 - If a change is shown not to work, roll it back before layering another fix.
   Don't stack speculative fixes.
+- **Root needs the user's click.** On graphical hosts a tty-less `sudo` pops a
+  password dialog (askpass, `desktop` preset). Call `sudo`, never `sudo -n`,
+  and say beforehand what you are about to run as root. The rebuild ban above
+  still applies.
 - **Read `CONTEXT.md` before you touch a directory.** A directory may hold a
   `CONTEXT.md` carrying the story behind its files — what was tried, why the
   obvious shape is wrong, what it cost. Nothing loads it for you and no comment

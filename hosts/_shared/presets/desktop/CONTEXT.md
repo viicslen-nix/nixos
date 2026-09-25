@@ -33,3 +33,24 @@ The caches that let the overlay and the ghostty flake substitute instead of
 building from source are declared in `caches.nix` at the repo root with
 `scope = "desktop"`. That scope is what keeps them off headless/WSL hosts, so a
 cache is added there and never inline here.
+
+## Graphical sudo goes through askpass, not polkit
+
+A `sudo` with no terminal (an AI agent's shell tool, a launcher) now shows an
+`lxqt-openssh-askpass` dialog instead of failing with "a terminal is required".
+sudo does this on its own when stdin has no tty, `$DISPLAY` is set, and
+`/etc/sudo.conf` names an askpass program. nixpkgs' sudo reads `/etc/sudo.conf`,
+but NixOS writes no such file, so the preset provides it. It is copied (`mode`)
+rather than symlinked into the store, because sudo ignores a `sudo.conf` it
+does not consider root-owned and secure.
+
+polkit (`pkexec`, `run0`) looked like the cleaner route, because DMS already
+runs an authentication agent. It cannot work for the main caller here. opencode
+runs as `opencode serve --service` under `systemd --user`, whose logind session
+is the user manager's (class `manager`), not the graphical `tty1` session. A
+polkit agent only answers for the session it registered in, so a `pkexec` from
+the agent's shell finds no agent and fails. askpass has no notion of sessions:
+all it needs is a display.
+
+`sudo -n` still never prompts. That is the right behaviour, so a caller has to
+drop `-n` to get the dialog.
