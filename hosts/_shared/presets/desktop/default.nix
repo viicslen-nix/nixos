@@ -151,6 +151,14 @@ in {
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
       };
+
+      # Don't swap for pkexec/run0: the DMS polkit agent never sees processes outside the graphical session.
+      etc."sudo.conf" = {
+        mode = "0444";
+        text = ''
+          Path askpass ${getExe pkgs.lxqt.lxqt-openssh-askpass}
+        '';
+      };
     };
   };
 }
