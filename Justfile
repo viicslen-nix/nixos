@@ -82,12 +82,12 @@ update-subflake NAME *ARGS:
 # Usage: just vendor-skills plannotator/effective-html --all
 #        just vendor-skills plannotator/effective-html html-plan
 vendor-skills REPO *ARGS:
-   flakes/ai && just vendor-skills {{REPO}} {{ARGS}}
+  cd flakes/ai && just vendor-skills {{REPO}} {{ARGS}}
 
 # Pull upstream changes into every vendored skill
 # Usage: just update-skills [--dry-run]
 update-skills *ARGS:
-   flakes/ai && just update-skills {{ARGS}}
+  cd flakes/ai && just update-skills {{ARGS}}
 
 # Regenerate flake.nix's nixConfig block from caches.nix. Needed because nix
 # rejects a computed flake config value — the list and its strings must both be
