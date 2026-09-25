@@ -107,9 +107,8 @@ dircolors, lazygit, kubecolor or atuin's logs picks it up for free.
 flag and reads no such default.
 
 What is left in `$HOME` is what its tool hardcodes and cannot be talked out of:
-`.bashrc`/`.bash_profile`/`.profile` (bash), `.zshenv` (the stub that points
-zsh at `ZDOTDIR`, which is already `.config/zsh`), and `.tmate.conf` — tmate
-takes only `-f`, and home-manager writes the path literally.
+`.bashrc`/`.bash_profile`/`.profile` (bash) and `.zshenv` (the stub that points
+zsh at `ZDOTDIR`, which is already `.config/zsh`).
 
 Two things bite when the flag changes:
 

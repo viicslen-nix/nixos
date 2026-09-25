@@ -15,7 +15,6 @@ in {
     tmux
     herdr
     btop
-    tmate
     atuin
     ghostty
     wezterm
