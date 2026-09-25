@@ -253,22 +253,18 @@ already happened. Treat every heavy Nix invocation as dangerous.
   note that writes a node with `lastModified` 1980 and no `rev`, so restore
   those two fields with `jq` if you want the lock byte-faithful. Verify with
   the *store path*, not the lock: it must match what the cache has.
-- **crates.io 403s nix's User-Agent from this host.** A bare `curl` of
-  `https://crates.io/api/v1/crates/<c>/<v>/download` returns **403**; the same
-  URL with a browser UA returns 200, as does `static.crates.io`. nixpkgs'
-  `importCargoLock` fetches the blocked URL, so any Rust package that has to
-  *re-vendor* its crates dies on
-  `error: cannot download download-<crate> from any mirror`. Already-realised
-  store paths and cached vendor FODs mask it, so it only shows up when
-  something forces a rebuild — bumping a Rust input, or repinning one's
-  nixpkgs. This is why `tuicr` keeps its own nixpkgs pin. Fixed globally in the
-  `base` preset: `systemd.services.nix-daemon.environment.NIX_CURL_FLAGS =
-  "-A Mozilla/5.0"` — fetchurl lists `NIX_CURL_FLAGS` in `impureEnvVars` and
-  appends it *after* its own `--user-agent`, so it wins. The value must contain
-  no spaces: the builder expands `$NIX_CURL_FLAGS` unquoted. Before the first
-  rebuild that carries it, bootstrap the running daemon the same way as the
-  GitHub token (`sudo systemctl set-environment NIX_CURL_FLAGS=…` +
-  `systemctl restart nix-daemon`).
+- **Never give fetchurl a browser User-Agent.** crates.io once 403'd nix's
+  UA from this host (`cannot download download-<crate> from any mirror` on any
+  Rust cargo re-vendor), and the fix was `NIX_CURL_FLAGS = "-A Mozilla/5.0"` on
+  the nix-daemon — fetchurl lists it in `impureEnvVars` and appends it after its
+  own `--user-agent`. That UA trips the Anubis bot wall on
+  `gitlab.freedesktop.org`: fetches get a 7 KB HTML challenge page and die on
+  `tar: This does not look like a tar archive` (grim, from the wayland
+  overlay). A non-browser UA passes Anubis, and by 2026-09 crates.io answered
+  nix's own UA normally again, so the override is gone. If crates.io 403s
+  again, set a *non-Mozilla* UA there (no spaces: the builder word-splits
+  `$NIX_CURL_FLAGS`), and test both hosts with `curl -A` first. The `tuicr`
+  nixpkgs pin was a consequence of the old 403.
 - **The subflakes stay on their own inputs.** Only 5 of the ~35 inputs across
   `flakes/*` are in the index (emacs→`emacs-overlay`, lib→`systems`,
   neovim→`nvf`, niri→`niri-flake`, nixvim→`nixvim`), and adding omniflake to a
