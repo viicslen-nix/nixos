@@ -28,6 +28,8 @@ with lib; {
     nixosModules.containers.centrifugo
     nixosModules.containers.meilisearch
     nixosModules.containers.buggregator
+
+    nixosModules.services.cliproxyapi
   ];
   config = {
     home-manager.sharedModules = [
@@ -38,8 +40,15 @@ with lib; {
 
     # Cert is public and feeds the build-time bundle; only the key is a secret.
     age.secrets.mkcert-rootCA-key.file = ../../../../secrets/mkcert/rootCA-key.age;
+    age.secrets.cliproxyapi-api-key.file = ../../../../secrets/cliproxyapi/api-key.age;
+    age.secrets.cliproxyapi-management-key.file = ../../../../secrets/cliproxyapi/management-key.age;
 
     modules = {
+      services.cliproxyapi = {
+        apiKeyFile = config.age.secrets.cliproxyapi-api-key.path;
+        managementKeyFile = config.age.secrets.cliproxyapi-management-key.path;
+      };
+
       programs.mkcert.rootCA = {
         enable = true;
         certPath = ../../../../secrets/mkcert/rootCA.pem;
