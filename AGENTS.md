@@ -104,7 +104,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   imports by `key`, and the flake-parts wrappers carry none, so without it a
   double import fails with `option … is already declared`.
 - **subflake** — a git submodule flake under `flakes/*` (`lib`, `packages`,
-  `ai`, `zed`, `neovim`, `nixvim`, `niri`, `hyprland`, `dms`, `emacs`).
+  `ai`, `zed`, `nixvim`, `niri`, `hyprland`, `dms`, `emacs`).
   Each is a separate upstream repo (`viicslen-nix/*`).
 - **vlib / viicslen-lib** — helper library exported from `flakes/lib`; provides
   `defaultSystems`, `genSystems`, `pkgsFor`, and the namespaced helper sets
@@ -269,12 +269,11 @@ already happened. Treat every heavy Nix invocation as dangerous.
   again, set a *non-Mozilla* UA there (no spaces: the builder word-splits
   `$NIX_CURL_FLAGS`), and test both hosts with `curl -A` first. The `tuicr`
   nixpkgs pin was a consequence of the old 403.
-- **The subflakes stay on their own inputs.** Only 5 of the ~35 inputs across
+- **The subflakes stay on their own inputs.** Only 4 of the inputs across
   `flakes/*` are in the index (emacs→`emacs-overlay`, lib→`systems`,
-  neovim→`nvf`, niri→`niri-flake`, nixvim→`nixvim`), and adding omniflake to a
-  subflake costs six lock nodes to remove one — a net loss in every case.
-  `nvf` and `nixvim` are also deliberately pinned to a branch/tag the index
-  does not carry. Don't "finish the migration" there.
+  niri→`niri-flake`, nixvim→`nixvim`), and adding omniflake to a subflake
+  costs six lock nodes to remove one — a net loss in every case. Don't
+  "finish the migration" there.
 - **Bumping local packages.** The recipes live in the subflake
   (`flakes/packages/Justfile`, implemented by `flakes/packages/scripts/packages.sh`);
   the root `Justfile` only aliases them. `just packages` lists the attrs; `just
