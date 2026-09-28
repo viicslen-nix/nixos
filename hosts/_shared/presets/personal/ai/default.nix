@@ -13,6 +13,7 @@
   # Not `oauth.enabled` — accounts.google.com has no registration_endpoint.
   modules.programs.ai = {
     orca.enable = osConfig.modules.presets.desktop.enable;
+    browser-harness.enable = osConfig.modules.presets.desktop.enable;
     mcps.google_stitch = {
       url = "https://stitch.googleapis.com/mcp";
       headers."X-Goog-Api-Key" = "\${STITCH_API_KEY}";
