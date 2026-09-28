@@ -131,12 +131,6 @@
       inputs.packages.follows = "packages";
     };
 
-    nixvim = {
-      url = "path:./flakes/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.packages.follows = "packages";
-    };
-
     # Emacs
     emacs = {
       url = "path:./flakes/emacs";
