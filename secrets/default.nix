@@ -16,4 +16,5 @@ in {
   "secrets/stitch/api-key.age".publicKeys = [sshKey];
   "secrets/cliproxyapi/api-key.age".publicKeys = [sshKey];
   "secrets/cliproxyapi/management-key.age".publicKeys = [sshKey];
+  "secrets/typesafe/api-key.age".publicKeys = [sshKey];
 }
