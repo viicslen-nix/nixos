@@ -402,8 +402,12 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `stdenv.hostPlatform.system` over `pkgs.system`. nixpkgs prints eval warnings
   for the old ones.
 - **Two ways to get upstream AI skills.** Small, skill-only repos ride as a
-  `flake = false` input (`mattpocock-skills`, now an input of the **ai**
-  subflake, bumped with `just update-subflake ai`).
+  `flake = false` input (`mattpocock-skills`, `typesafe-skills`, inputs of the
+  **ai** subflake, bumped with `just update-subflake ai`). Adding such an input
+  also needs the root to re-lock it: `nix flake update ai`, after checking
+  the other `ai` pins have not drifted (**Submodules + locking**). Upstream
+  "`claude plugin install`" / "`npx skills add`" instructions are not the way
+  here — both write into Nix-owned files.
   Repos that carry a lot of non-skill weight are vendored instead — there is no
   sparse fetch for a non-flake input, so an input would copy the whole thing
   into the store (effective-html is 22M for 148K of skills). `just vendor-skills
