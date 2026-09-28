@@ -38,9 +38,6 @@ in {
         yazi
         android-tools
         nchat
-        # Explicitly qualified: `inputs` is now a module argument, which shadows
-        # the `pkgs.inputs` alias that `with pkgs;` used to resolve these to.
-        pkgs.inputs.nixvim.default
         pkgs.inputs.packages.scripts.git-carve-submodule
         dict
       ]
