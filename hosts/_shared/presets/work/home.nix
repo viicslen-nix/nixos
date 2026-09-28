@@ -74,6 +74,8 @@ in {
   age.secrets = {
     prod-db-mysql-password.file = ../../../../secrets/prod-db/mysql-password.age;
     grafana-service-account-token.file = ../../../../secrets/grafana/service-account-token.age;
+    typesafe-api-key.file = ../../../../secrets/typesafe/api-key.age;
+    cliproxyapi-api-key.file = ../../../../secrets/cliproxyapi/api-key.age;
     intelephense = {
       file = ../../../../secrets/intelephense/licence.age;
       path = "${config.home.homeDirectory}/intelephense/licence.txt";
@@ -220,6 +222,16 @@ in {
       package = pkgs.inputs.packages.kubernetes.krr;
     };
     ai = {
+      jev = {
+        enable = osConfig.modules.presets.desktop.enable;
+        typesafeApiKeyFile = config.age.secrets.typesafe-api-key.path;
+        textModel = {
+          baseUrl = "http://127.0.0.1:${toString osConfig.modules.services.cliproxyapi.port}/v1";
+          # Haiku fences its JSON in ```, which jev rejects.
+          model = "claude-sonnet-4-6";
+          apiKeyFile = config.age.secrets.cliproxyapi-api-key.path;
+        };
+      };
       commands = {
         skill-assessment-review = ./ai/skill-assessment-review.md;
         work-summary = ./ai/work-summary.md;
