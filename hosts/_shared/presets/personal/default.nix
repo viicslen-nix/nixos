@@ -38,6 +38,7 @@ in {
         yazi
         android-tools
         nchat
+        pkgs.inputs.nixvim.default
         pkgs.inputs.packages.scripts.git-carve-submodule
         dict
       ]

@@ -25,3 +25,6 @@
 [submodule "flakes/ai"]
 	path = flakes/ai
 	url = https://github.com/viicslen-nix/ai.git
+[submodule "flakes/nixvim"]
+	path = flakes/nixvim
+	url = https://github.com/viicslen-nix/nixvim
