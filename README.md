@@ -64,7 +64,7 @@ Pre-configured development shells (see `dev-shells/`):
 
 ### 🛠️ Development Tools
 
-- **Neovim**: Heavily customized with nvf
+- **Neovim**: Heavily customized with NixVim
 - **Terminal multiplexers**: tmux, Zellij support
 - **Shells**: Nushell, Zsh configurations
 - **Version control**: Git, Jujutsu (jj)
@@ -300,7 +300,7 @@ This configuration pulls from numerous upstream sources:
 - **Home Manager**: User environment management
 - **Hyprland**: Wayland compositor
 - **Stylix**: System theming
-- **nvf**: Neovim configuration framework
+- **NixVim**: Neovim configuration framework
 - **And many more** - see `flake.nix` for complete list
 
 ## ⚠️ Important Notes

@@ -80,9 +80,6 @@ the index keys on the *repository* name. Find the right-hand side with
   `viicslen-lib` so nothing is locked twice. It absorbed the old `opencode`
   subflake, and it owns `mattpocock-skills` now — bump the skills with
   `just update-subflake ai`, not an `update-input` here.
-- **nixvim** — `flakes/neovim` is still a maintained subflake but nothing here
-  consumes it; 5556fbc replaced it with nixvim. Re-add as an input when
-  something needs it again.
 - **systems-linux** is the linux-only systems list, used to strip
   `x86_64-darwin` from transitive flake-parts flakes (nixpkgs 26.11 throws when
   its darwin set is evaluated).
