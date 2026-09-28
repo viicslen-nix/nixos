@@ -33,6 +33,8 @@ with lib; {
         "hunk.view.toggleLineNumbers" = "ctrl+l";
         "hunk.review.pageDown" = ["ctrl+f" "pagedown" "space"];
         "hunk.review.pageUp" = ["ctrl+b" "pageup" "shift+space"];
+        "hunk.review.halfPageDown" = ["ctrl+d" "d"];
+        "hunk.review.halfPageUp" = ["ctrl+u" "u"];
       };
     };
   };
