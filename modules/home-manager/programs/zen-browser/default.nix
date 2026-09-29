@@ -3,6 +3,7 @@
     lib,
     pkgs,
     config,
+    osConfig ? {},
     inputs,
     ...
   }:
@@ -86,6 +87,7 @@
                 settings = {
                   "dom.allow_scripts_to_close_windows" = true;
                   "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+                  "dom.webgpu.enabled" = true;
 
                   # Must stay false, or closed tabs come back from other windows.
                   "zen.window-sync.enabled" = false;
@@ -113,6 +115,13 @@
 
           home.file."${config.xdg.configHome}/zen/default/search.json.mozlz4".force = mkForce true;
         }
+        # Inert without MOZ_DISABLE_RDD_SANDBOX, which the nvidia module sets.
+        (mkIf (osConfig.modules.hardware.nvidia.enable or false) {
+          programs.zen-browser.profiles.default.settings = {
+            "media.ffmpeg.vaapi.enabled" = true;
+            "media.hardware-video-decoding.force-enabled" = true;
+          };
+        })
         (persistence.mkPersistence config {
           directories = [".config/zen"];
         })

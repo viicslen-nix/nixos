@@ -3,6 +3,7 @@
     lib,
     pkgs,
     config,
+    osConfig ? {},
     inputs,
     ...
   }:
@@ -12,6 +13,10 @@
       namespace = "programs";
 
       cfg = config.modules.${namespace}.${name};
+
+      nvidia = osConfig.modules.hardware.nvidia or {};
+      # One flag: Chromium keeps only the last --enable-features.
+      features = ["UseOzonePlatform"] ++ optionals (nvidia.enable or false) nvidia.chromiumFeatures;
 
       vivaldiPackage = cfg.package.override {
         proprietaryCodecs = true;
@@ -120,7 +125,7 @@
             --add-flags "--user-data-dir=\$HOME/${cfg.profileDir}" \
             ${optionalString cfg.enableWayland ''
             --add-flags "--ozone-platform=wayland" \
-            --add-flags "--enable-features=UseOzonePlatform"
+            --add-flags "--enable-features=${concatStringsSep "," features}"
           ''}
 
           # Desktop entries point Exec= at the package's own bin/vivaldi, which
