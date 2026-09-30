@@ -214,7 +214,10 @@ in {
 
   modules.programs = {
     zed.enable = osConfig.modules.presets.desktop.enable;
-    opencode.enable = true;
+    opencode = {
+      enable = true;
+      default = "v1";
+    };
     opencode1.enable = true;
     k9s.enable = true;
     krr = {
