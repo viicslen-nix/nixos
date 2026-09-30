@@ -139,15 +139,20 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `programs.podman` each default `enable` to `backend == "<self>"` and read the
   rest from here, so both can be imported and a host sets only these. Don't add
   a per-engine `enable = true` or duplicate a knob onto `programs.<engine>`.
-- **`modules.programs.opencode2`** — opencode 2.x, declared in the `ai`
-  subflake beside the v1 module and imported by `base`. v2 renamed the config
-  keys (`plugin`→`plugins`, `agent`→`agents`, an agent's `prompt`→`system`), so
-  it needs its own module rather than a flag on v1's; the *option* names match
-  v1 on purpose, so retiring v1 is a rename. It is a `modules.programs.ai`
-  target, carries its own XDG-isolation wrapper, and writes per file because
-  opencode owns `service.json` in the same directory. See that directory's
-  `CONTEXT.md` — especially the shared `49374` service port, which does not move
-  with the config dir.
+- **`modules.programs.opencode`** — opencode **2.x**; v1 is
+  `modules.programs.opencode1`. Both are declared in the `ai` subflake and
+  imported by `base`, and each is isolated: launchers `opencode2` /
+  `opencode1` (`op1`), config in `~/.config/opencode{2,1}`, data nested under
+  `~/.local/share/opencode{2,1}/opencode`. **`modules.programs.opencode.default`**
+  (`"v2"`/`"v1"`) only points: the chosen one gets the `opencode` command, the
+  `~/.config/opencode` symlink and `opencode-web`. v2 renamed the config keys
+  (`plugin`→`plugins`, `agent`→`agents`, an agent's `prompt`→`system`), so each
+  major keeps its own module; v1 plugins do not load on v2 at all, and v1 has
+  no `tui`/`themes`/`tools`/`commands` options (no stylix theming). The module
+  namespaces do not match the knobs: `modules.programs.opencode` writes
+  `programs.opencode2`, because `programs.opencode` is home-manager's own.
+  Both write per file, because opencode owns `service.json` in the same
+  directory. See `flakes/ai/CONTEXT.md`.
 - **`ai` subflake** — `flakes/ai`, the portable AI-harness config: the shared
   `modules.programs.ai` fan-out, the per-harness modules (claude-code, opencode
   v1/v2), and everything the old `opencode` subflake carried, which it absorbed.
