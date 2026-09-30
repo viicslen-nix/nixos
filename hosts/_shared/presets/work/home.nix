@@ -231,7 +231,7 @@ in {
         textModel = {
           baseUrl = "http://127.0.0.1:${toString osConfig.modules.services.cliproxyapi.port}/v1";
           # Haiku fences its JSON in ```, which jev rejects.
-          model = "claude-sonnet-4-6";
+          model = "claude-sonnet-5-5";
           apiKeyFile = config.age.secrets.cliproxyapi-api-key.path;
         };
       };
