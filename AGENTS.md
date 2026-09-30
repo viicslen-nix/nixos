@@ -149,7 +149,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `~/.config/opencode` symlink and `opencode-web`. v2 renamed the config keys
   (`plugin`→`plugins`, `agent`→`agents`, an agent's `prompt`→`system`), so each
   major keeps its own module; v1 plugins do not load on v2 at all, and v1 has
-  no `tui`/`themes`/`tools`/`commands` options (no stylix theming). The module
+  no `tui`/`themes`/`tools` options (no stylix theming). The module
   namespaces do not match the knobs: `modules.programs.opencode` writes
   `programs.opencode2`, because `programs.opencode` is home-manager's own.
   Both write per file, because opencode owns `service.json` in the same
