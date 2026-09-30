@@ -1,8 +1,9 @@
 # AGENTS.md
 
 Instructions for AI coding agents (Claude Code, Opencode, Antigravity, and any
-other assistant) working in this repository. `CLAUDE.md` is a symlink to this
-file. For general architecture, the host list, and feature overview, see
+other assistant) working in this repository. There is deliberately no
+`CLAUDE.md`: Claude Code reads this file directly. For general architecture,
+the host list, and feature overview, see
 [README.md](./README.md).
 
 ## Resource safety — CRITICAL
@@ -414,7 +415,9 @@ already happened. Treat every heavy Nix invocation as dangerous.
   here — both write into Nix-owned files.
   Repos that carry a lot of non-skill weight are vendored instead — there is no
   sparse fetch for a non-flake input, so an input would copy the whole thing
-  into the store (effective-html is 22M for 148K of skills). `just vendor-skills
+  into the store (effective-html is 22M for 148K of skills). These recipes
+  live in `flakes/ai/Justfile`; the root only aliases them, the same way
+  `flakes/packages` owns the package-bump recipes. `just vendor-skills
   <owner/repo> [skill|--all]` shells out to `gh skill install --dir` (preview
   command, `gh skill`/`gh skills`) — naming a skill (or its in-repo path) takes
   just that one, `--all` takes the collection, neither prompts. `gh` allows only

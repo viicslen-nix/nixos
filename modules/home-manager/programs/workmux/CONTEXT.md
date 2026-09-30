@@ -213,8 +213,10 @@ Nothing in this config asked for that: with neither `panes` nor `windows` set,
 workmux picks its pane layout by *probing the repo* — `Config::resolve` uses
 `agent_default_panes()` (whose focused pane runs the `<agent>` placeholder,
 defaulting to `claude`) when the project root holds a `CLAUDE.md`, and the
-plain `default_panes()` otherwise. Every repo here has a `CLAUDE.md`, so every
-repo got the agent layout.
+plain `default_panes()` otherwise. Every repo here had a `CLAUDE.md` at the
+time, so every repo got the agent layout; a repo that only has `AGENTS.md`
+would not trigger it, but the declared `panes` keeps the layout from depending
+on which file a repo happens to carry.
 
 Enter is not the only door — the dashboard's jump, `workmux open` and the
 `wt tmux` alias all route through `workflow::open` with
