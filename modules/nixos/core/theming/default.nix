@@ -122,6 +122,14 @@
               };
 
               gtk = {
+                iconTheme = {
+                  name = mkDefault (
+                    if cfg.polarity == "light"
+                    then "Papirus-Light"
+                    else "Papirus-Dark"
+                  );
+                  package = mkDefault pkgs.papirus-icon-theme;
+                };
                 gtk3.extraConfig = {
                   gtk-application-prefer-dark-theme = 1;
                 };
