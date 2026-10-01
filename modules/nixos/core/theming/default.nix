@@ -79,6 +79,13 @@
             image = cfg.wallpaper;
             inherit (cfg) polarity;
 
+            icons = {
+              enable = true;
+              package = mkDefault pkgs.kora-icon-theme;
+              dark = mkDefault "kora";
+              light = mkDefault "kora-light";
+            };
+
             cursor = {
               name = "Bibata-Modern-Classic";
               package = pkgs.bibata-cursors;
@@ -125,10 +132,10 @@
                 iconTheme = {
                   name = mkDefault (
                     if cfg.polarity == "light"
-                    then "Papirus-Light"
-                    else "Papirus-Dark"
+                    then "kora-light"
+                    else "kora"
                   );
-                  package = mkDefault pkgs.papirus-icon-theme;
+                  package = mkDefault pkgs.kora-icon-theme;
                 };
                 gtk3.extraConfig = {
                   gtk-application-prefer-dark-theme = 1;
