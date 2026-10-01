@@ -23,6 +23,12 @@
       return 1
     }
 
+    # Chromium/Electron fall back to their own popup windows for the whole session if no notification daemon is up yet.
+    for _ in $(seq 100); do
+      ${pkgs.systemd}/bin/busctl --user status org.freedesktop.Notifications >/dev/null 2>&1 && break
+      sleep 0.2
+    done
+
     vivaldi &
     legcord &
     await legcord >/dev/null || exit 0

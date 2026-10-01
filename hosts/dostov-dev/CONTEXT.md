@@ -18,6 +18,13 @@ column on Communication (DP-2). The window rules in `home.nix` place vivaldi and
 legcord — a rule can pin a window to a workspace but cannot drop it into an
 existing column, so only the ghostty half needs the `loginLayout` script.
 
+The script also holds vivaldi and legcord back until something owns
+`org.freedesktop.Notifications` (the DMS shell). Chromium checks for the
+notification server once at startup. If it races the shell and finds nothing,
+it falls back to its own message-center popups for the rest of the session.
+Under niri those popups are ordinary toplevels, so a "Download complete" toast
+gets tiled as a full-size window.
+
 ## The Xerox needs a vendored PPD and the raw PDL port
 
 The WorkCentre 6605DN (mDNS `XRX9C934E127ECD.local`, 192.168.5.20) is a 2013
