@@ -8,7 +8,11 @@
   inherit (inputs.viicslen-lib.lib.discovery) discover mkTree assertUnique;
 
   # Without a `key` the module system cannot dedupe a module two presets both import.
-  withKeys = kind: lib.mapAttrs (name: m: {key = "${kind}:${name}"; imports = [m];});
+  withKeys = kind:
+    lib.mapAttrs (name: m: {
+      key = "${kind}:${name}";
+      imports = [m];
+    });
 
   nixosTree = assert assertUnique ../modules/nixos;
     mkTree ../modules/nixos (withKeys "nixos" config.flake.modules.nixos);
