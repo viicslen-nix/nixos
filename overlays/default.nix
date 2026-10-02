@@ -27,22 +27,6 @@ in {
     flake = inputs.nixpkgs-stable;
   };
 
-  # Must be applied *after* `flake-inputs`, which is what creates `pkgs.inputs`.
-  superset-fork = _final: prev: let
-    # The fork's `superset-desktop` attr, not `superset` — the CLI installs `bin/superset` too.
-    fork = inputs.superset-desktop.packages.${prev.stdenv.hostPlatform.system}.superset-desktop;
-  in {
-    inputs =
-      prev.inputs
-      // {
-        packages =
-          prev.inputs.packages
-          // {
-            superset = prev.inputs.packages.superset // {desktop = fork;};
-          };
-      };
-  };
-
   modifications = final: _prev: {
     # Keep until niri-flake moves to libdisplay-info_0_3 — pkgs.niri-unstable needs 0.2.
     libdisplay-info_0_2 = _prev.libdisplay-info_0_3.overrideAttrs (_: {

@@ -62,9 +62,6 @@ the index keys on the *repository* name. Find the right-hand side with
   antigravity, t3code, …). Leaving `nixpkgs` un-overridden locks it from
   llm-agents' own `flake.lock`, which is what keeps `cache.numtide.com`
   hitting.
-- **superset-desktop** — private, and resolvable because `access-tokens` is
-  wired in the base preset. Deliberately does not follow nixpkgs: it ships a
-  prebuilt AppImage and pins its own nixpkgs for the autoPatchelf inputs.
 - **ghostty** — `ghostty.cachix.org` is a configured substituter, and its
   builds are keyed to the nixpkgs ghostty pins. Ours matches it today only by
   coincidence (one day apart), so following would turn every future ghostty

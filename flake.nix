@@ -153,8 +153,6 @@
     };
 
     # Community packages
-    # Don't make superset-desktop follow nixpkgs — it pins its own for the autoPatchelf inputs.
-    superset-desktop.url = "github:viicslen/superset-desktop";
     gitura = {
       url = "github:viicslen/gitura";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -173,36 +173,6 @@ just --list
 2. Register it under `flake.modules.nixos` or `flake.modules.homeManager`
 3. Import it from the generated `nixosModules` or `homeModules` tree
 
-### 📦 Overriding a packaged app with a fork
-
-`overlays/default.nix` → `superset-fork` replaces
-`pkgs.inputs.packages.superset.desktop` with the build from
-[`viicslen/superset-desktop`](https://github.com/viicslen/superset-desktop)
-(private; thread-style sidebar). Nothing at the use site changes — the `work`
-preset still installs `pkgs.inputs.packages.superset.desktop` — so reverting is
-deleting the overlay from the list in `base`.
-
-Three things make it work:
-
-- It is listed **after** `flake-inputs` in `base`, which is the overlay that
-  creates `pkgs.inputs` at all.
-- It takes the fork's `superset-desktop` attr, not `superset`: the Superset CLI
-  already installs `bin/superset`, and both land in the same profile.
-- The private input resolves through `access-tokens` (above). **A rebuild now
-  needs that token** — without it, evaluation fails at the flake input, not at
-  the package.
-
-On a **brand-new host** this has a bootstrap order problem: the first rebuild
-has to build the fork package, which needs `GITHUB_TOKEN` in the nix-daemon's
-environment, which only exists after that rebuild activates. Break the cycle
-once, before the first rebuild:
-
-```bash
-sudo systemctl set-environment GITHUB_TOKEN="$(gh auth token)"
-sudo systemctl restart nix-daemon
-```
-
-Subsequent rebuilds need nothing — activation writes `/run/nix-daemon-env`.
 ### 🎮 Gaming
 
 Import `nixosModules.functionality.gaming` for the safe desktop gaming stack: Steam,
