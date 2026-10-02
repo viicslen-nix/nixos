@@ -78,10 +78,21 @@
         {
           services.cliproxyapi = {
             enable = true;
+            # TODO: drop once the locked nixpkgs ships cliproxyapi >= 8.
+            package = pkgs.cliproxyapi.overrideAttrs (finalAttrs: _: {
+              version = "8.0.4";
+              src = pkgs.fetchFromGitHub {
+                owner = "router-for-me";
+                repo = "CLIProxyAPI";
+                tag = "v${finalAttrs.version}";
+                hash = "sha256-CQ4kjO8XaGdVGFkO9MvbPMO9PrO3sTKCN706mbzOj9g=";
+              };
+            });
             settings =
               {
                 host = "";
                 inherit (cfg) port;
+                plugins.enabled = true;
               }
               // optionalAttrs (cfg.apiKeyFile != null) {
                 api-keys = [{_secret = cfg.apiKeyFile;}];

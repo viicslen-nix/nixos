@@ -38,6 +38,12 @@ downloaded management panel. It is persisted. `config.yaml` is regenerated
 from Nix on every service start. Any setting changed in the panel is lost at
 the next restart, so put it in `services.cliproxyapi.settings` instead.
 
+The panel is not pinned: the service downloads the latest Management Center
+release, which tracks the newest backend major. When the panel moved to the v8
+Management API, the locked nixpkgs still had 7.3.10 and login failed with
+"accepts v0 Management API but does not provide v8". The module therefore
+overrides the package to a v8 release until nixpkgs catches up.
+
 Provider logins are a manual, one-time step:
 
     sudo -u cliproxyapi cliproxyapi -config /var/lib/cliproxyapi/config.yaml --claude-login
