@@ -13,20 +13,8 @@ The story behind the overlays in this directory. They are exported by
 - **`unstable-packages` / `stable-packages`** — make the unstable and stable
   nixpkgs sets (declared in the flake inputs) reachable as `pkgs.unstable` and
   `pkgs.stable`.
-- **`superset-fork`** — see below.
 - **`modifications`** — whatever you want to overlay: changed versions,
   patches, compilation flags. See <https://nixos.wiki/wiki/Overlays>.
-
-## `superset-fork`
-
-Swaps the Superset desktop app for this user's fork (thread-style sidebar). An
-overlay rather than a changed reference, so every consumer of
-`pkgs.inputs.packages.superset.desktop` gets it and the swap is one line to
-undo. Must be applied *after* `flake-inputs`, which is what creates
-`pkgs.inputs` in the first place.
-
-It takes the fork's `superset-desktop` attr — not `superset` — because the
-Superset CLI installs `bin/superset` and both land in the same profile.
 
 ## `modifications.libdisplay-info_0_2`
 
