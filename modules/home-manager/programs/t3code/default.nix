@@ -128,7 +128,6 @@
           home.packages =
             [cfg.finalPackage]
             ++ optional cfg.desktopApp cfg.finalPackage.desktop;
-
         }
 
         # Headless hosts have no `programs.niri` option at all, so even a false mkIf would fail.
@@ -152,7 +151,6 @@
         })
 
         {
-
           # Don't swap this for `t3 service install`: its unit runs a self-updating launcher.
           systemd.user.services.${name} = mkIf cfg.serve.enable {
             Unit = {

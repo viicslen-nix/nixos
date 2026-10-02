@@ -10,7 +10,8 @@ usage() {
 
 # Same tmux session name the `wt tmux` alias and the pre-remove hook derive
 # from `{{ repo }}@{{ branch | sanitize }}`; keep the three in step.
-jq_rows=$(cat <<'JQ'
+jq_rows=$(
+  cat <<'JQ'
 def color(c): "[" + c + "m" + . + "[0m";
 def width: length + ([scan("[\\x{1F300}-\\x{1FAFF}]")] | length);
 def pad(n): if width < n then . + (" " * (n - width)) else . end;
@@ -99,15 +100,15 @@ columns() {
   local cols
   cols=$(stty size </dev/tty 2>/dev/null || true)
   cols=${cols##* }
-  echo $(( ${cols:-0} > 6 ? cols - 6 : ${COLUMNS:-80} ))
+  echo $((${cols:-0} > 6 ? cols - 6 : ${COLUMNS:-80}))
 }
 
 list() {
   local full=()
   [ "${1:-}" = full ] && full=(--full)
-  NO_COLOR=1 wt list --format=json --no-progressive "${full[@]}" \
-    | jq -r --argjson sessions "$(sessions_json)" --arg current "$(current_session)" \
-        --argjson cols "$(columns)" --argjson narrow "$narrow" "$jq_rows"
+  NO_COLOR=1 wt list --format=json --no-progressive "${full[@]}" |
+    jq -r --argjson sessions "$(sessions_json)" --arg current "$(current_session)" \
+      --argjson cols "$(columns)" --argjson narrow "$narrow" "$jq_rows"
 }
 
 preview() {
@@ -136,9 +137,9 @@ remove() {
   read -r -n 1 answer
   echo
   case $answer in
-    y | Y) flags=(--force --force-delete) ;;
-    k | K) flags=(--force --no-delete-branch) ;;
-    *) return 0 ;;
+  y | Y) flags=(--force --force-delete) ;;
+  k | K) flags=(--force --no-delete-branch) ;;
+  *) return 0 ;;
   esac
   leave "$session"
   wt remove "${flags[@]}" "$branch" || pause 'remove failed'
@@ -152,8 +153,11 @@ close() {
 # Removes every worktree `wt list` marks integrated, via the `wt prune` alias.
 prune() {
   local repo branches branch
-  { read -r repo; branches=$(cat); } < <(NO_COLOR=1 wt list --format=json --no-progressive \
-    | jq -r '(.items | map(select(.worktree.main)) | first | .worktree.path | split("/") | last),
+  {
+    read -r repo
+    branches=$(cat)
+  } < <(NO_COLOR=1 wt list --format=json --no-progressive |
+    jq -r '(.items | map(select(.worktree.main)) | first | .worktree.path | split("/") | last),
              (.items[] | select(.display.state == "integrated") | .branch)')
   if [ -z "$branches" ]; then
     pause 'nothing is integrated'
@@ -163,8 +167,8 @@ prune() {
   read -r -n 1 answer
   echo
   case $answer in
-    y | Y) ;;
-    *) return 0 ;;
+  y | Y) ;;
+  *) return 0 ;;
   esac
   for branch in $branches; do
     branch=${branch//\//-}
@@ -195,16 +199,19 @@ dashboard() {
 }
 
 case "${1:-}" in
-  '') dashboard ;;
-  list) list "${2:-}" ;;
-  preview) preview "$2" ;;
-  switch) exec wt tmux "$2" ;;
-  create)
-    [ -n "${2:-}" ] || { pause 'type the branch name as the query first'; exit 1; }
-    exec wt tmux --create "$2"
-    ;;
-  remove) remove "$2" "$3" ;;
-  close) close "$2" ;;
-  prune) prune ;;
-  *) usage ;;
+'') dashboard ;;
+list) list "${2:-}" ;;
+preview) preview "$2" ;;
+switch) exec wt tmux "$2" ;;
+create)
+  [ -n "${2:-}" ] || {
+    pause 'type the branch name as the query first'
+    exit 1
+  }
+  exec wt tmux --create "$2"
+  ;;
+remove) remove "$2" "$3" ;;
+close) close "$2" ;;
+prune) prune ;;
+*) usage ;;
 esac
