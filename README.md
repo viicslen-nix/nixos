@@ -1,239 +1,221 @@
-# Personal NixOS Configuration
+<div align="center">
 
-> **Note**: This is my personal NixOS configuration. It's tailored to my specific needs, hardware, and preferences. While you're welcome to browse and learn from it, please be aware that applying these configurations directly to your system may not work as expected or could potentially cause issues.
+# ❄️ viicslen's NixOS
 
-## 📖 Overview
+**One flake, five machines, everything declarative.**
 
-This repository contains my complete NixOS configuration using Nix Flakes, featuring a modular architecture with support for multiple hosts, desktop environments, and development workflows.
+[![NixOS unstable](https://img.shields.io/badge/NixOS-unstable-5277C3?style=flat-square&logo=nixos&logoColor=white)](https://nixos.org)
+[![flake-parts](https://img.shields.io/badge/built_with-flake--parts-7EBAE4?style=flat-square&logo=nixos&logoColor=white)](https://flake.parts)
+[![Home Manager](https://img.shields.io/badge/Home_Manager-integrated-41439A?style=flat-square)](https://github.com/nix-community/home-manager)
+[![niri](https://img.shields.io/badge/WM-niri-E0A458?style=flat-square)](https://github.com/YaLTeR/niri)
+[![Stylix](https://img.shields.io/badge/theme-material--darker-212121?style=flat-square)](https://github.com/nix-community/stylix)
+[![Checks](https://img.shields.io/github/actions/workflow/status/viicslen-nix/nixos/checks.yml?style=flat-square&label=checks)](https://github.com/viicslen-nix/nixos/actions/workflows/checks.yml)
 
-## 🏗️ Architecture
+</div>
 
-The configuration is built using a modular flake-based architecture with the following key components:
+> [!NOTE]
+> This is a personal configuration, shaped around my hardware and habits.
+> Browse it, borrow from it, but don't apply it as-is.
 
-- **Flake-based**: Modern Nix configuration using flakes for reproducible builds
-- **Multi-host support**: Configurations for different machines and environments
-- **Modular design**: Reusable modules for NixOS and Home Manager
-- **Development environments**: Multiple dev shells for different workflows
-- **Secrets management**: Age-encrypted secrets handling
+## Contents
 
-## 💻 Supported Hosts
+- [At a glance](#at-a-glance)
+- [Hosts](#hosts)
+- [Layout](#layout)
+- [Presets](#presets)
+- [Subflakes](#subflakes)
+- [Desktop](#desktop)
+- [Usage](#usage)
+- [Secrets](#secrets)
+- [Extending](#extending)
 
-Hosts and the presets each one receives are declared in `hosts/default.nix`.
+## At a glance
 
-### 🖥️ Physical Machines
+| | |
+| --- | --- |
+| **Base** | `nixos-unstable`, with `pkgs.stable` (26.05) and `pkgs.unstable` overlays |
+| **Structure** | [flake-parts](https://flake.parts); every file in `parts/` is auto-imported |
+| **Composition** | Hosts pick presets (`base`, `desktop`, `work`, `personal`) and import modules by path |
+| **Modules** | ~50 NixOS and ~40 Home Manager modules, discovered automatically |
+| **Inputs** | 20 dependencies resolved lazily through [omniflake](https://github.com/fzakaria/omniflake) |
+| **Desktop** | niri + DankMaterialShell, themed system-wide by Stylix |
+| **Secrets** | agenix, every secret encrypted to one portable key |
+| **Disks** | disko layouts, btrfs on LVM |
+| **CI** | Formatting, secret scanning, and evaluation of the niri hosts |
 
-- **asus-zephyrus-gu603**: ASUS Zephyrus GU603 gaming laptop with NVIDIA graphics (niri)
-- **dostov-dev**: Intel development workstation (niri)
-- **home-desktop**: Desktop workstation, CachyOS kernel (niri)
-- **lenovo-legion-go**: Lenovo Legion Go handheld, KDE Plasma 6 on Jovian-NixOS
+## Hosts
 
-### 🌐 Virtual Environments
+Declared in [`hosts/default.nix`](hosts/default.nix), all `x86_64-linux`.
 
-- **wsl**: Windows Subsystem for Linux setup
+| Host | Machine | Session | Presets |
+| --- | --- | --- | --- |
+| `dostov-dev` | Intel + NVIDIA workstation, rotated dual monitors | niri, Hyprland | base · desktop · work · personal |
+| `home-desktop` | Intel + NVIDIA desktop, CachyOS kernel | niri, Hyprland | base · desktop · work · personal |
+| `asus-zephyrus-gu603` | ASUS Zephyrus G16 laptop, NVIDIA PRIME | niri | base · desktop · work · personal |
+| `lenovo-legion-go` | Lenovo Legion Go handheld on [Jovian](https://github.com/Jovian-Experiments/Jovian-NixOS), CachyOS kernel | Steam / Plasma 6 | base · desktop |
+| `wsl` | [NixOS-WSL](https://github.com/nix-community/NixOS-WSL) with Docker Desktop | headless | base · work · personal |
 
-## 🎨 Desktop Environments
+## Layout
 
-- **niri**: primary Wayland compositor on the desktop/laptop hosts
-- **DankMaterialShell (DMS)**: shell, panel, and login greeter for niri
-- **KDE Plasma 6**: used on the Legion Go handheld
-- **Hyprland**: available as a module (`flakes/hyprland`), not currently enabled by default
-
-## 🛠️ Development Environments
-
-Pre-configured development shells (see `shells/`):
-
-- **Kubernetes**: Container orchestration development
-- **Laravel/PHP**: Web development with PHP and Laravel
-- **Python**: Python development with common tools
-
-## 📦 Key Features
-
-### 🔧 System Management
-
-- **Impermanence**: Stateless system with persistent data management
-- **Disko**: Declarative disk partitioning
-- **Secrets**: Age-encrypted secrets management
-- **Backups**: Automated backup solutions with Restic
-
-### 🖥️ Desktop Experience
-
-- **niri**: Scrollable-tiling Wayland compositor
-- **DankMaterialShell**: Status bar, panels, and login greeter
-- **Stylix**: System-wide theming
-- **Multiple browsers**: Firefox, Chromium, Zen Browser, Vivaldi support
-
-### 🛠️ Development Tools
-
-- **Neovim**: Heavily customized with NixVim
-- **Terminal multiplexers**: tmux, Zellij support
-- **Shells**: Nushell, Zsh configurations
-- **Version control**: Git, Jujutsu (jj)
-- **Containers**: Docker, Podman support
-
-### 📱 Applications
-
-- **Gaming**: Steam integration
-- **Productivity**: Various development and productivity tools
-- **Multimedia**: Audio/video editing capabilities
-- **Networking**: VPN (Mullvad), network tools
-
-## 🚀 Quick Start
-
-### 📋 Prerequisites
-
-- NixOS installed system
-- Git
-- Basic understanding of Nix/NixOS
-
-### 🔧 Installation
-
-1. **Clone the repository**:
-
-   ```bash
-   git clone <repository-url> /etc/nixos
-   cd /etc/nixos
-   ```
-
-2. **Review and customize**:
-   - Check `hosts/` for available configurations
-   - Modify hardware configurations to match your system
-   - Update user configurations in `users/`
-
-3. **Install using the script**:
-
-   ```bash
-   chmod +x install.sh
-   ./install.sh
-   ```
-
-   Or manually:
-
-   ```bash
-   sudo nixos-rebuild switch --flake .#<hostname>
-   ```
-
-### ⚡ Available Commands (using Just)
-
-```bash
-# Update all subflakes and root flake inputs
-just update
-
-# Update only root inputs, or a single input / subflake
-just update-main
-just update-input nixpkgs
-just update-subflake niri
-
-# Search the omniflake index for a flake to add to `omniInputs` in flake.nix
-# (no argument lists all ~12k). `just update-input omniflake` bumps them all.
-just omniflake-search sops
-
-# List the local packages in flakes/packages
-just packages
-
-# Check local packages against their latest upstream version
-just outdated
-
-# Bump version + hash of a local package in flakes/packages (nix-update)
-just bump app-images.t3code
-just bump coderabbit --version 0.4.5   # upstream nix-update can't autodetect
-just bump-all                          # sweep every local package
-just bump-outdated                     # bump only what `just outdated` flags
-
-# Rebuild and switch (nh wrapper); use boot/test in place of switch as needed
-just upgrade switch
-
-# Or rebuild directly with nixos-rebuild
-just rebuild switch
-
-# Update flake inputs, then rebuild (full upgrade)
-just full-upgrade
-
-# Run the eval tests
-just test
-
-# View all available commands
-just --list
+```text
+.
+├── flake.nix        # inputs and the omniflake mapping, nothing else
+├── parts/           # flake-parts modules, one concern per file
+├── hosts/           # one directory per machine + the host table
+├── presets/         # base · desktop · work · personal · linode
+├── modules/
+│   ├── nixos/           # containers, core, desktop, hardware, programs, services, …
+│   └── home-manager/    # programs and functionality, per user
+├── users/           # Home Manager entry point per user
+├── disko/           # reusable disk layouts
+├── overlays/        # pkgs.stable, pkgs.unstable, pkgs.local, pkgs.inputs, tweaks
+├── shells/          # nix develop environments
+├── secrets/         # agenix-encrypted secrets
+├── caches.nix       # every binary cache, declared once
+└── flakes/          # subflakes, each its own repo (git submodules)
 ```
 
-> Heavy rebuilds are resource-intensive; you can pass build limits through, e.g.
+A module is any `default.nix` under `modules/`. It appears in the
+`nixosModules` / `homeModules` trees that hosts and presets receive, namespaced
+like its directory:
+
+```nix
+{nixosModules, ...}: {
+  imports = with nixosModules; [hardware.nvidia programs.docker functionality.gaming];
+}
+```
+
+## Presets
+
+| Preset | What it brings |
+| --- | --- |
+| **base** | Every host, server-safe. Home Manager, agenix, NUR, nh, zsh, CLI tooling, binary caches, the flake registry |
+| **desktop** | Everything graphical: niri, Hyprland, DMS and its greeter, Stylix, fonts, sound, Bluetooth, printing, Plymouth, 1Password |
+| **work** | Development stack: Docker/Podman, local containers (Traefik, MySQL, Redis, Meilisearch, Qdrant, …), mkcert CA, PHP, Node, Go, cloud and Kubernetes CLIs, AI harnesses |
+| **personal** | QMK, Emacs, Discord, Obsidian, LocalSend, the Neovim build, the personal AI profile |
+| **linode** | Linode networking and support tools (no host uses it today) |
+
+GUI-only packages in `work` and `personal` are gated on the desktop preset, so
+headless hosts such as `wsl` stay lean.
+
+## Subflakes
+
+Under `flakes/`, each a submodule backed by its own `viicslen-nix/*` repo.
+
+| Subflake | Provides |
+| --- | --- |
+| [`lib`](flakes/lib) | Helper library: option helpers, module discovery, omniflake wiring, skill and container helpers |
+| [`packages`](flakes/packages) | Local packages (Superset, Vivaldi builds, PHP, AppImages, scripts, …) with bump tooling |
+| [`ai`](flakes/ai) | Portable AI-harness config for Claude Code, opencode, Codex, Copilot CLI and Antigravity: skills, MCP servers, integrations |
+| [`niri`](flakes/niri) | niri-unstable, keybinds, window rules, scratchpads, which-key menus |
+| [`hyprland`](flakes/hyprland) | Hyprland via UWSM, Lua config, hyprsplit, DMS integration |
+| [`dms`](flakes/dms) | DankMaterialShell and its greeter |
+| [`nixvim`](flakes/nixvim) | Standalone Neovim: LSPs, Telescope, Avante, Laravel tooling |
+| [`emacs`](flakes/emacs) | Emacs from emacs-overlay, mirroring the Neovim setup |
+| [`zed`](flakes/zed) | Zed from upstream with Nix-managed extensions |
+
+## Desktop
+
+| | |
+| --- | --- |
+| **Compositor** | [niri](https://github.com/YaLTeR/niri), with Hyprland as a second session on the desktops |
+| **Shell & greeter** | [DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell); Caelestia, Exo and Noctalia are one option away (`modules.desktop.shell`) |
+| **Theme** | Stylix, base16 `material-darker`, Kora icons, Bibata cursor |
+| **Fonts** | FiraCode Nerd Font Mono, Victor Mono, Noto |
+| **Terminal** | Ghostty |
+| **Browser** | Vivaldi (snapshot), Zen |
+| **Editor** | Neovim (nixvim), Zed, VS Code |
+| **Shell** | zsh + starship, atuin, zoxide; tmux with worktrunk-managed worktree sessions |
+
+Gaming lives in `nixosModules.functionality.gaming`: Steam, GE-Proton,
+GameMode, Gamescope (with its own login session), Decky Loader and controller
+rules. Privileged extras stay opt-in under `modules.functionality.gaming`.
+
+## Usage
+
+Recipes live in the [`Justfile`](Justfile); `just --list` shows them all.
+
+```bash
+just upgrade              # rebuild and switch via nh (boot / test also work)
+just update               # bump every subflake, then the root inputs
+just full-upgrade         # update, then rebuild for next boot
+just build home-desktop   # build one host without switching
+just build-all            # nix flake check: every host + all checks
+```
+
+<details>
+<summary><b>All recipes</b></summary>
+
+| Area | Recipe | Does |
+| --- | --- | --- |
+| Deploy | `upgrade [cmd]` | Rebuild through `nh os` |
+| | `rebuild [cmd]` / `rebuild-path [cmd]` | Plain `nixos-rebuild`, the latter for dirty trees |
+| | `commit-and-upgrade MSG [cmd]` | Commit, then rebuild |
+| Update | `update` / `update-main` | Everything / root inputs only |
+| | `update-input X` / `update-subflake X` | One input / one subflake (re-locked in the root) |
+| | `omniflake-search TERM` | Find a flake in the omniflake index |
+| | `sync-caches` | Regenerate the flake's `nixConfig` from `caches.nix` |
+| Packages | `packages` / `outdated` | List local packages / compare with upstream |
+| | `bump ATTR` / `bump-outdated` / `bump-all` | Update versions and hashes with nix-update |
+| Skills | `skills` / `vendor-skills REPO` / `update-skills` | Manage vendored AI skills |
+| Dev | `fmt` / `lint` / `check-file F` / `repl` | treefmt, deadnix, parse check, REPL |
+| Maintenance | `gc` / `optimize` / `clean` / `history` | Store and generation housekeeping |
+| Git | `commit MSG` / `push MSG` | Commit, or commit and push |
+
+</details>
+
+> [!TIP]
+> Big rebuilds are memory-hungry. Pass limits straight through:
 > `just upgrade boot --cores 3 --max-jobs 2`.
 
-## 🔧 Customization
-
-### 🏠 Adding a New Host
-
-1. Create a new directory in `hosts/`
-2. Add configuration files (`default.nix`, `hardware.nix`, etc.)
-3. Update `hosts/default.nix` to include the new host
-4. Rebuild with `just upgrade switch`
-
-### 📦 Adding New Modules
-
-1. Create a `default.nix` under the appropriate `modules/nixos/` or `modules/home-manager/` category
-2. Register it under `flake.modules.nixos` or `flake.modules.homeManager`
-3. Import it from the generated `nixosModules` or `homeModules` tree
-
-### 🎮 Gaming
-
-Import `nixosModules.functionality.gaming` for the safe desktop gaming stack: Steam,
-GE-Proton, Protontricks, GameMode, Gamescope, Decky Loader, ZRAM, Wine, controller
-rules, launchers, and overlay tools. The dedicated Gamescope login session uses its
-own Holo/Gamescope portal routing without changing desktop portal preferences.
-Decky Loader's required root service is enabled by default. Other hardware-specific
-or privileged features remain opt-in under `modules.functionality.gaming`, including
-Gamescope capabilities/WSI, controller drivers, Steam firewall ports, low-latency
-PipeWire, and SteamOS platform sysctls.
-
-### 🐚 Development Shells
-
-Access development environments:
+### Development shells
 
 ```bash
-nix develop .#kubernetes  # Kubernetes development
-nix develop .#laravel     # Laravel development
-nix develop .#python      # Python development
+nix develop .#laravel      # PHP + xdebug, Composer, Node 22, Bun, DDEV, Stripe CLI
+nix develop .#kubernetes   # kubectl, Helm + helm-secrets, k9s, stern, minikube
+nix develop .#python       # Python 3
 ```
 
-## 🔐 Secrets Management
+### Fresh install
 
-This configuration uses `agenix` for secrets management:
+From the NixOS live installer, in a clone of this repo (with submodules):
 
-- Secrets are stored in `secrets/` directory
-- Encrypted with age
-- Referenced in `secrets/default.nix`
+```bash
+./install.sh <host> [path/to/agenix-key]
+```
 
-Every secret is encrypted to **one portable key**, `~/.ssh/agenix`, rather than
-to per-host SSH host keys. Bringing up a new host therefore needs no
-re-encryption round trip — copy that key in and every secret decrypts.
-`base` sets `age.identityPaths` accordingly.
+It partitions with the host's disko layout, copies the repo to
+`/mnt/etc/nixos`, installs the agenix key so secrets decrypt, and runs
+`nixos-install`, confirming each step. Hosts without a disko layout need `/mnt`
+partitioned and mounted by hand first.
 
-### GitHub token for private flakes
+## Secrets
 
-`secrets/github/nix-token.age` holds one PAT — just the token, no trailing
-newline, no surrounding syntax — and `base` wires it, so private repos work on
-any host with no hand-written `~/.config/nix/nix.conf`. Nix wants that token on
-two paths that never see each other:
+Managed with [agenix](https://github.com/ryantm/agenix). Every secret in
+`secrets/` is encrypted to **one portable key**, `~/.ssh/agenix`, rather than
+to per-host SSH keys, so a new machine needs no re-encryption round trip:
+copy the key in and everything decrypts.
+
+<details>
+<summary><b>GitHub token for private flakes</b></summary>
+
+`secrets/github/nix-token.age` holds one bare PAT (no trailing newline), and
+`base` wires it so private repos work on any host without a hand-written
+`nix.conf`. Nix needs it on two paths that never see each other:
 
 | Consumer | Covers | File |
 | --- | --- | --- |
-| `nix-daemon`'s `EnvironmentFile` | `pkgs.fetchurl` inside a **fixed-output derivation**, e.g. a private release asset | `/run/nix-daemon-env`, `GITHUB_TOKEN=…`, `root:root 0400` |
-| `access-tokens` in `/etc/nix/nix.conf` | flake **inputs** — `nix run github:owner/private-repo` | `/run/nix-access-tokens`, nix.conf syntax, `root:users 0440`, `!include`d |
+| `nix-daemon`'s `EnvironmentFile` | `pkgs.fetchurl` in a fixed-output derivation, e.g. a private release asset | `/run/nix-daemon-env`, `GITHUB_TOKEN=…`, `root:root 0400` |
+| `access-tokens` in `/etc/nix/nix.conf` | flake inputs, e.g. `nix run github:owner/private-repo` | `/run/nix-access-tokens`, `root:users 0440`, `!include`d |
 
-`fetchurl` reads `impureEnvVars` from the **daemon's** environment, not yours —
-exporting the token before `nix run` does nothing. Flake inputs are the mirror
-image: fetched by the *client*, which never sees the daemon's environment. One
-setting cannot serve both, hence two files.
+`fetchurl` reads its impure variables from the **daemon's** environment, while
+flake inputs are fetched by the **client**, so one setting cannot serve both.
+`system.activationScripts.nixTokenFiles` writes both files into tmpfs at
+activation. They are never `writeText`ed: `/nix/store` is world-readable and
+substitutable, so a token in a derivation would leak.
 
-`system.activationScripts.nixTokenFiles` shapes both from the one secret. They
-cannot be `writeText`ed instead: `/nix/store` is world-readable (`drwxrwxr-t`)
-and store paths are substitutable, so a token baked into a derivation would leak
-to every local user and to any cache the closure reaches — the whole reason
-agenix exists. Only the *script* is declarative; the token joins it at
-activation, into tmpfs, so neither file persists.
-
-`/run/nix-access-tokens` is group-readable because a root-only file would break
-`nix run` for the user who needs it. Any local user in `users` can read the
-token — the same exposure as the plaintext `~/.config/nix/nix.conf` it replaces.
+`/run/nix-access-tokens` is group-readable because `nix run` needs it as your
+user, the same exposure as the plaintext `~/.config/nix/nix.conf` it replaces.
 
 Rotate:
 
@@ -243,65 +225,25 @@ gh auth token | tr -d '\n' \
         -o secrets/github/nix-token.age
 ```
 
-## ⚙️ Hardware Support
+</details>
 
-### 🎮 Graphics
+## Extending
 
-- **NVIDIA**: Proprietary drivers with proper configuration
-- **Intel**: Integrated graphics support
+**A host:** add `hosts/<name>/default.nix` (plus `hardware.nix`), then list it
+with its `system` and `presets` in `hosts/default.nix`. A disko layout is one
+import away: `(diskoLayouts.btrfs-lvm {device = "/dev/disk/by-id/…";})`.
 
-### 💻 Laptops
+**A module:** drop a `default.nix` under `modules/nixos/<category>/<name>/` or
+`modules/home-manager/<category>/<name>/`. It is discovered automatically and
+reachable as `nixosModules.<category>.<name>`. Path components starting with
+`_` are skipped.
 
-- **ASUS**: Specific optimizations for ASUS hardware
-- **Power management**: TLP, auto-cpufreq
-- **Display**: HiDPI and multi-monitor support
+**A flake-parts concern:** drop a file into `parts/`.
 
-### 🔌 Peripherals
+**A binary cache:** add it to `caches.nix`, then run `just sync-caches`.
 
-- **Bluetooth**: Full Bluetooth stack
-- **Audio**: PipeWire audio system
-- **Keyboards**: QMK and custom layouts support
+## Acknowledgments
 
-## 📋 Dependencies
-
-This configuration pulls from numerous upstream sources:
-
-- **NixOS/nixpkgs**: Core packages
-- **Home Manager**: User environment management
-- **Hyprland**: Wayland compositor
-- **Stylix**: System theming
-- **NixVim**: Neovim configuration framework
-- **And many more** - see `flake.nix` for complete list
-
-## ⚠️ Important Notes
-
-- **Personal Configuration**: This is specifically tailored for my use case
-- **Hardware Specific**: Some configurations are tied to specific hardware
-- **Experimental Features**: Uses unstable Nix features and packages
-- **Regular Updates**: Configurations change frequently
-- **No Warranty**: Use at your own risk
-
-## 🤝 Contributing
-
-While this is a personal configuration, if you find bugs or have suggestions:
-
-1. Open an issue describing the problem
-2. Provide relevant system information
-3. Include error messages or logs
-
-## 📜 License
-
-This configuration is provided as-is for educational and reference purposes. Feel free to learn from it, but please adapt it to your own needs rather than using it directly.
-
-## 🙏 Acknowledgments
-
-This configuration is built upon the excellent work of the Nix community and draws inspiration from many other configurations. Special thanks to:
-
-- The NixOS team and community
-- Home Manager maintainers
-- Hyprland developers
-- All the package maintainers and contributors
-
----
-
-*Remember: This is a personal configuration. Always review and understand what you're applying to your system before running any commands.*
+Built on the work of the NixOS and Home Manager communities, and the authors of
+niri, DankMaterialShell, Stylix, nixvim, Jovian-NixOS, omniflake and the many
+flakes this pulls in.
