@@ -160,7 +160,9 @@ already happened. Treat every heavy Nix invocation as dangerous.
   Its modules take **`aiInputs`**, not `inputs` — home-manager `extraSpecialArgs`
   outranks `_module.args`, so a module asking for `inputs` gets the consumer's
   set instead of the flake's own. Reach it as `inputs.ai.homeManagerModules.<x>`
-  / `inputs.ai.nixosModules.opencode-web`. See its `CONTEXT.md`.
+  / `inputs.ai.nixosModules.opencode-web`. See its `CONTEXT.md`. **Before
+  editing anything under `flakes/ai`, read `flakes/ai/AGENTS.md`**: skill
+  patching and renames, namespaces, and how an integration is wired.
 - **nh** — `nh os …`, the rebuild helper wrapped by the `just upgrade` recipe.
 - **just** — the task runner; `Justfile` holds the canonical recipes. Don't
   hand-roll `nixos-rebuild` / `nix flake update` when a recipe already exists.
@@ -427,7 +429,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
   happen there, not in the root. A collection only one `modules.programs.ai`
   integration should install goes in `content/integrations/skills/<name>/`
   instead, via `just vendor-integration-skills <name> <owner/repo> …` (run in
-  `flakes/ai`; `orca` is the one user). `just update-skills` re-pulls
+  `flakes/ai`; `orca` and `superset` use it — Superset's pinned with
+  `--pin cli-v<version>` to match the superset-cli package). `just update-skills` re-pulls
   every one, `just skills` lists them with their origin. There is no manifest:
   `gh` records `github-repo`/`github-path`/`github-ref`/`github-tree-sha` in
   each skill's own **SKILL.md frontmatter**, which is what `update` and `list`
@@ -470,15 +473,16 @@ already happened. Treat every heavy Nix invocation as dangerous.
   skill you only want to tweak). The middle layer is `patchSkill src subs`: it
   `readFile`s the upstream `SKILL.md` and `replaceStrings` anchored spans, so
   a bump of `mattpocock-skills` keeps flowing in. Two things to know:
-  the result is a **string**, so only single-file skills work this way (a
-  multi-file one would need a `runCommand`, which costs an IFD — `pathIsDirectory`
-  has to build the derivation to look inside it); and it **asserts** every `from`
+  the result is a **string**, so only single-file skills work this way (it drops
+  any sibling files); and it **asserts** every `from`
   anchor is still present, because `replaceStrings` otherwise no-ops silently and
   hands back vanilla upstream with no signal. Anchor on spans that survive
   rewording, and keep the patch in
   `flakes/ai/content/skill-patches/<name>.nix`. The same value is
   forwarded to opencode/antigravity/copilot too — phrase harness-specific edits
   conditionally rather than naming one harness's tool imperatively.
+  Renaming a skill and namespacing collections are covered in
+  `flakes/ai/AGENTS.md`.
 - **`modules.programs.ai` never touches `~/.claude.json`.** MCP servers reach
   Claude Code as a generated `claude-code-home-manager` plugin (a `.mcp.json`
   in a plugin dir passed via `--plugin-dir` on the wrapped binary) — hence the
