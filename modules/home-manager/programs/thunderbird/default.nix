@@ -31,7 +31,7 @@
         {
           programs.thunderbird = {
             enable = true;
-            package = cfg.package;
+            inherit (cfg) package;
             profiles.default = {
               isDefault = true;
               withExternalGnupg = true;

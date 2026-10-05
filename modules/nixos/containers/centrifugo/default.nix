@@ -71,7 +71,7 @@
               ]
               ++ mkTraefikLabels {
                 name = "centrifugo";
-                host = cfg.host;
+                inherit (cfg) host;
                 port = 8000;
               };
             volumes = [

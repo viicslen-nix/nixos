@@ -40,7 +40,7 @@
               ]
               ++ mkTraefikLabels {
                 name = "buggregator";
-                host = cfg.host;
+                inherit (cfg) host;
                 port = 8000;
               };
             volumes = [

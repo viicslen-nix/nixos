@@ -110,13 +110,15 @@
     # packages and web service it absorbed.
     ai = {
       url = "path:./flakes/ai";
-      # Share this flake's omniflake so its home-manager is the same copy as
-      # everything else, and no extra nodes are locked for it.
-      inputs.omniflake.follows = "omniflake";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.packages.follows = "packages";
-      inputs.llm-agents.follows = "llm-agents";
-      inputs.viicslen-lib.follows = "viicslen-lib";
+      inputs = {
+        # Share this flake's omniflake so its home-manager is the same copy as
+        # everything else, and no extra nodes are locked for it.
+        omniflake.follows = "omniflake";
+        nixpkgs.follows = "nixpkgs";
+        packages.follows = "packages";
+        llm-agents.follows = "llm-agents";
+        viicslen-lib.follows = "viicslen-lib";
+      };
     };
 
     # Leave `nixpkgs` un-overridden — it is what keeps cache.numtide.com hitting.

@@ -73,35 +73,41 @@
 
       config = mkIf cfg.enable (mkMerge [
         {
-          # Enable the GNOME Desktop Environment.
-          services.xserver.enable = mkDefault true;
-          services.desktopManager.gnome.enable = true;
+          services = {
+            # Enable the GNOME Desktop Environment.
+            xserver.enable = mkDefault true;
+            desktopManager.gnome.enable = true;
 
-          # Enable the GNOME Display Manager
-          services.displayManager.gdm = mkIf cfg.enableGdm {
-            enable = true;
+            # Enable the GNOME Display Manager
+            displayManager.gdm = mkIf cfg.enableGdm {
+              enable = true;
+            };
+
+            # Enable GNOME services
+            gnome = {
+              core-shell.enable = true;
+              core-apps.enable = true;
+              core-os-services.enable = true;
+            };
           };
 
-          # Exclude GNOME applications from the default install
-          environment.gnome.excludePackages = cfg.exclude;
+          environment = {
+            # Exclude GNOME applications from the default install
+            gnome.excludePackages = cfg.exclude;
 
-          # Enable GNOME services
-          services.gnome.core-shell.enable = true;
-          services.gnome.core-apps.enable = true;
-          services.gnome.core-os-services.enable = true;
+            # Install GNOME Tweaks
+            systemPackages = with pkgs;
+              [
+                adw-gtk3
+                gnome-tweaks
+                adwaita-icon-theme
+              ]
+              ++ enabledExtensions;
 
-          # Install GNOME Tweaks
-          environment.systemPackages = with pkgs;
-            [
-              adw-gtk3
-              gnome-tweaks
-              adwaita-icon-theme
-            ]
-            ++ enabledExtensions;
-
-          # Required for some GNOME extensions
-          environment.variables = {
-            GI_TYPELIB_PATH = "/run/current-system/sw/lib/girepository-1.0";
+            # Required for some GNOME extensions
+            variables = {
+              GI_TYPELIB_PATH = "/run/current-system/sw/lib/girepository-1.0";
+            };
           };
         }
         (mkIf cfg.remoteDesktop {
@@ -132,9 +138,13 @@
         (mkIf homeManagerLoaded {
           home-manager.sharedModules = [
             {
-              gtk.enable = true;
-              gtk.iconTheme.name = "Adwaita";
-              gtk.iconTheme.package = pkgs.adwaita-icon-theme;
+              gtk = {
+                enable = true;
+                iconTheme = {
+                  name = "Adwaita";
+                  package = pkgs.adwaita-icon-theme;
+                };
+              };
 
               dconf.settings = {
                 "org/gtk/settings/file-chooser".clock-format = "12h";

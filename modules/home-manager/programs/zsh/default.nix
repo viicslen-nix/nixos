@@ -1,7 +1,6 @@
 {
   flake.modules.homeManager.zsh = {
     lib,
-    pkgs,
     config,
     inputs,
     ...
