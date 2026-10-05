@@ -185,7 +185,6 @@ in {
           # Keep explicit: environment.shells advertises nu, but the shell is zsh.
           nushell
 
-          pkgs.inputs.packages.scripts.system-update
           pkgs.inputs.packages.scripts.system-upgrade
         ]
         ++ import ./scripts.nix {
