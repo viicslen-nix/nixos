@@ -61,7 +61,6 @@ in {
 
     packages = with pkgs; [
       inputs.ai.oh-my-opencode
-      inputs.packages.python.mempalace
     ];
 
     # Don't drop: ssh will not open a control socket if this directory is missing.
