@@ -265,6 +265,10 @@ already happened. Treat every heavy Nix invocation as dangerous.
   note that writes a node with `lastModified` 1980 and no `rev`, so restore
   those two fields with `jq` if you want the lock byte-faithful. Verify with
   the *store path*, not the lock: it must match what the cache has.
+  When you want the *author's* pin instead, follow the lock with
+  `nix flake update <x>`: re-locking the input itself copies its own
+  `flake.lock` for the transitive nixpkgs (opencode v1 got `9dd5558` that way
+  after `nix flake lock` had floated it to that day's unstable).
 - **Never give fetchurl a browser User-Agent.** crates.io once 403'd nix's
   UA from this host (`cannot download download-<crate> from any mirror` on any
   Rust cargo re-vendor), and the fix was `NIX_CURL_FLAGS = "-A Mozilla/5.0"` on
@@ -549,7 +553,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   secret fed to the unit:
   `systemd.user.services.mcp-gateway.Service.EnvironmentFile = "%t/agenix/<name>";`.
   That is how `google_stitch` gets its `X-Goog-Api-Key`.
-  **Not `gateway.settings.env_files`**: home-manager's agenix reports
+  **Not `integrations.gateway.settings.env_files`**: home-manager's agenix reports
   `age.secrets.<n>.path` as the *literal* `''${XDG_RUNTIME_DIR}/agenix/<n>` for a
   shell to expand, and the gateway's loader expands only `~`, so it skips the
   unresolved path in silence. The variable then stays unset and `expand_string`,
