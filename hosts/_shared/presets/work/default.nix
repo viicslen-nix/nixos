@@ -176,10 +176,6 @@ with lib; {
         pkgs.inputs.hunk.hunk
         # pkgs.inputs.gitura.default
         pkgs.inputs.ghost-backup.default
-
-        # AI (CLI)
-        pkgs.inputs.packages.coderabbit
-        pkgs.inputs.packages.superset.cli
       ]
       ++ import ./scripts.nix {inherit pkgs;}
       # GUI apps only on graphical hosts (excluded on WSL/headless)
