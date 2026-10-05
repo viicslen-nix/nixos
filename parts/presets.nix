@@ -1,6 +1,6 @@
 # Presets, exposed as named, composable NixOS modules.
 {lib, ...}: let
-  presetsPath = ../hosts/_shared/presets;
+  presetsPath = ../presets;
 
   names =
     builtins.attrNames

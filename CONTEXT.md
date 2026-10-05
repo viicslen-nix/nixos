@@ -107,7 +107,7 @@ not been rebuilt yet.
 Single source of truth for the extra binary caches this repo trusts. Three
 things read the table:
 
-1. `hosts/_shared/presets/{base,desktop}` — `nix.settings.substituters` and
+1. `presets/{base,desktop}` — `nix.settings.substituters` and
    `trusted-public-keys`, split by `scope`.
 2. `flake.nix` — `ownNixpkgs` names the omniflake index attributes that must
    keep their author's nixpkgs pin, because unifying nixpkgs changes the

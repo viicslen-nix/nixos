@@ -3,13 +3,14 @@
   inputs,
   users,
   nixosModules,
+  diskoLayouts,
   ...
 }:
 with lib; {
   imports = [
     inputs.nixos-hardware.nixosModules.asus-zephyrus-gu603h
     inputs.disko.nixosModules.disko
-    (import ../_shared/disko/btrfs-lvm.nix {device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_223766801969";})
+    (diskoLayouts.btrfs-lvm {device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_223766801969";})
     ./hardware.nix
 
     nixosModules.hardware.asus

@@ -25,6 +25,19 @@ flake-parts' `perSystem.pkgs`, so they match the pre-flake-parts layout. The
 pre-commit hooks (`git-hooks.nix`) install on shell entry. The formatter is
 owned by `treefmt.nix`.
 
+## `disko.nix`
+
+Each `../disko/<name>.nix` is a function of its parameters (`{device}`)
+returning a disko module. Hosts receive the set as the `diskoLayouts`
+specialArg and call it inside `imports`, which is why it is a specialArg and
+not a `_module.args` entry inside the NixOS evaluation:
+
+```nix
+imports = [(diskoLayouts.btrfs-lvm {device = "/dev/disk/by-id/…";})];
+```
+
+Also exported as `flake.diskoLayouts`.
+
 ## `flake-modules.nix`
 
 Enables flake-parts' native dendritic module output,
@@ -50,8 +63,8 @@ key assignments) that `statix fix` cannot resolve automatically. Run them by
 hand when doing a cleanup pass:
 
 ```bash
-nix run nixpkgs#deadnix -- --edit modules parts overlays dev-shells users hosts
-nix run nixpkgs#statix -- fix modules parts overlays dev-shells users hosts
+nix run nixpkgs#deadnix -- --edit modules parts overlays dev-shells users hosts presets disko
+nix run nixpkgs#statix -- fix modules parts overlays dev-shells users hosts presets disko
 ```
 
 gitleaks is the same tool CI runs (`.github/workflows/gitleaks.yml`), so local
@@ -114,7 +127,7 @@ inside modules.
 
 ## `presets.nix`
 
-A preset is a bundle of configuration in `../hosts/_shared/presets/<name>`.
+A preset is a bundle of configuration in `../presets/<name>`.
 Hosts opt in through their `presets = [ … ]` list in `../hosts/default.nix`;
 publishing them here also makes them reachable as
 `self.nixosModules.presets.<name>` from outside the flake.

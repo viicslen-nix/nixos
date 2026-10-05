@@ -8,7 +8,7 @@
   ...
 }:
 with lib; let
-  caches = import ../../../../caches.nix {inherit lib;};
+  caches = import ../../caches.nix {inherit lib;};
 
   fonts = with pkgs; [
     noto-fonts

@@ -16,8 +16,8 @@ with lib; {
   ];
 
   age.secrets = {
-    avante-anthropic-api-key.file = ../../../../secrets/avante/anthropic-api-key.age;
-    stitch-api-key.file = ../../../../secrets/stitch/api-key.age;
+    avante-anthropic-api-key.file = ../../secrets/avante/anthropic-api-key.age;
+    stitch-api-key.file = ../../secrets/stitch/api-key.age;
   };
 
   # Not the gateway's `env_files` — it can't expand the path, sending an empty header.
