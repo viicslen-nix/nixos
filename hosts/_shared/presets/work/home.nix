@@ -225,7 +225,7 @@ in {
       package = pkgs.inputs.packages.kubernetes.krr;
     };
     ai = {
-      jev = {
+      integrations.jev = {
         enable = osConfig.modules.presets.desktop.enable;
         typesafeApiKeyFile = config.age.secrets.typesafe-api-key.path;
         textModel = {

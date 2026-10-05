@@ -14,9 +14,6 @@
         "*.png"
         "*.lock"
         "flakes/*" # submodules format themselves
-        # Vendored AI skill/command content that is read verbatim into the home
-        # config — reformatting it would change the home-manager generation.
-        "hosts/_shared/presets/personal/ai/**"
       ];
     };
   };

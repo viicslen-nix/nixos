@@ -4,12 +4,8 @@
 
   perSystem = {pkgs, ...}: {
     pre-commit.settings = {
-      # Mirrors parts/treefmt.nix: flakes/* are submodules, and personal/ai/* is
-      # vendored content read verbatim into the home config.
-      excludes = [
-        "^flakes/"
-        "^hosts/_shared/presets/personal/ai/"
-      ];
+      # Mirrors parts/treefmt.nix: flakes/* are submodules.
+      excludes = ["^flakes/"];
 
       # Don't add deadnix or statix here — they ignore `excludes` and lint the flakes/* submodules.
       hooks = {
