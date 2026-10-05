@@ -1,4 +1,4 @@
-# Pre-commit hooks, via git-hooks.nix. Secrets only — formatting is treefmt's job.
+# Pre-commit hooks, via git-hooks.nix. Secrets, plus the statix lints treefmt cannot fix.
 {inputs, ...}: {
   imports = [inputs.git-hooks.flakeModule];
 
@@ -7,8 +7,17 @@
       # Mirrors parts/treefmt.nix: flakes/* are submodules.
       excludes = ["^flakes/"];
 
-      # Don't add deadnix or statix here — they ignore `excludes` and lint the flakes/* submodules.
+      # Not the built-in deadnix/statix hooks — they ignore `excludes` and lint the flakes/* submodules.
       hooks = {
+        # treefmt runs `statix fix`, which skips unfixable lints (repeated keys); this fails on them.
+        statix-check = {
+          enable = true;
+          name = "statix check";
+          entry = "${pkgs.statix}/bin/statix check --ignore 'flakes/**'";
+          pass_filenames = false;
+          files = "\\.nix$";
+        };
+
         # gitleaks scans the tree itself, so `pass_filenames` must stay false.
         gitleaks = {
           enable = true;

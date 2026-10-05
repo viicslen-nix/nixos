@@ -413,6 +413,11 @@ already happened. Treat every heavy Nix invocation as dangerous.
   other flags first (local-ai's `--device`) can order them: write
   `extraOptions = ["--network=local"] ++ mkTraefikLabels {…};`. Label **order**
   is part of the systemd unit, so if you extend it, append rather than reorder.
+- **deadnix and statix gate CI.** `nix fmt` runs them as fixers, and the
+  `statix check` pre-commit hook fails on what they cannot fix — mainly
+  repeated keys: three or more `services.x = …; services.y = …;` siblings
+  must be one `services = { … };`. Run `just lint` before committing `.nix`
+  edits; `just fmt` fixes the rest.
 - **Renamed attrs.** Prefer current names: `pkgs.<x>` over `pkgs.xorg.<x>`,
   `stdenv.hostPlatform.system` over `pkgs.system`. nixpkgs prints eval warnings
   for the old ones.
