@@ -499,7 +499,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   and shadows the Nix-provided copy; drop it with
   `claude mcp remove <name> -s user`. `~/.claude/settings.json` is likewise only
   written when `programs.claude-code.settings != {}` — owned by
-  `modules/home-manager/programs/claude-code` (global prefs, marketplaces,
+  `flakes/ai/hmModules/claude-code` (global prefs, marketplaces,
   enabled plugins), plus a hook block from every module that wants one —
   `modules.programs.ai`'s `integrations/superset.nix` and
   `modules.programs.herdr.enableClaudeIntegration`. Hook lists for the same
