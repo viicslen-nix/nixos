@@ -3,6 +3,7 @@
   inputs,
   lib,
   presetModules,
+  diskoLayouts,
   # Namespaced module trees, mirroring the modules/ directory layout
   # (see parts/modules.nix).
   nixosModules,
@@ -32,7 +33,7 @@
         ];
 
       specialArgs = {
-        inherit inputs hostName nixosModules homeModules;
+        inherit inputs hostName nixosModules homeModules diskoLayouts;
         outputs = inputs.self.outputs;
         users = shared.users or {};
       };

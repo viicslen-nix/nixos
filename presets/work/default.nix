@@ -39,9 +39,9 @@ with lib; {
     ];
 
     # Cert is public and feeds the build-time bundle; only the key is a secret.
-    age.secrets.mkcert-rootCA-key.file = ../../../../secrets/mkcert/rootCA-key.age;
-    age.secrets.cliproxyapi-api-key.file = ../../../../secrets/cliproxyapi/api-key.age;
-    age.secrets.cliproxyapi-management-key.file = ../../../../secrets/cliproxyapi/management-key.age;
+    age.secrets.mkcert-rootCA-key.file = ../../secrets/mkcert/rootCA-key.age;
+    age.secrets.cliproxyapi-api-key.file = ../../secrets/cliproxyapi/api-key.age;
+    age.secrets.cliproxyapi-management-key.file = ../../secrets/cliproxyapi/management-key.age;
 
     modules = {
       services.cliproxyapi = {
@@ -51,7 +51,7 @@ with lib; {
 
       programs.mkcert.rootCA = {
         enable = true;
-        certPath = ../../../../secrets/mkcert/rootCA.pem;
+        certPath = ../../secrets/mkcert/rootCA.pem;
         keyPath = config.age.secrets.mkcert-rootCA-key.path;
       };
 

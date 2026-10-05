@@ -72,12 +72,12 @@ in {
   ];
 
   age.secrets = {
-    prod-db-mysql-password.file = ../../../../secrets/prod-db/mysql-password.age;
-    grafana-service-account-token.file = ../../../../secrets/grafana/service-account-token.age;
-    typesafe-api-key.file = ../../../../secrets/typesafe/api-key.age;
-    cliproxyapi-api-key.file = ../../../../secrets/cliproxyapi/api-key.age;
+    prod-db-mysql-password.file = ../../secrets/prod-db/mysql-password.age;
+    grafana-service-account-token.file = ../../secrets/grafana/service-account-token.age;
+    typesafe-api-key.file = ../../secrets/typesafe/api-key.age;
+    cliproxyapi-api-key.file = ../../secrets/cliproxyapi/api-key.age;
     intelephense = {
-      file = ../../../../secrets/intelephense/licence.age;
+      file = ../../secrets/intelephense/licence.age;
       path = "${config.home.homeDirectory}/intelephense/licence.txt";
     };
   };

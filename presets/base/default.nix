@@ -12,7 +12,7 @@
 with lib; let
   flakeLocation = "/etc/nixos";
 
-  caches = import ../../../../caches.nix {inherit lib;};
+  caches = import ../../caches.nix {inherit lib;};
 
   # Shaped from the agenix secret at activation; tmpfs, so neither persists.
   nixAccessTokens = "/run/nix-access-tokens";
@@ -148,7 +148,7 @@ in {
         })
       ];
 
-      users = genAttrs (filter (user: (pathExists ../../../../users/${user})) (attrNames users)) (name: import ../../../../users/${name});
+      users = genAttrs (filter (user: (pathExists ../../users/${user})) (attrNames users)) (name: import ../../users/${name});
     };
 
     environment = {
@@ -244,7 +244,7 @@ in {
         ++ ["/etc/ssh/ssh_host_ed25519_key"];
 
       # Bare PAT only — no trailing newline, no surrounding syntax.
-      secrets.nix-token.file = ../../../../secrets/github/nix-token.age;
+      secrets.nix-token.file = ../../secrets/github/nix-token.age;
     };
 
     # Never `writeText` the token; keep `deps`/`if` — an `exit` skips later snippets.

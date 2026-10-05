@@ -77,13 +77,17 @@ already happened. Treat every heavy Nix invocation as dangerous.
 
 - **host** — a machine config under `hosts/<name>/`. The set of hosts and the
   presets each one receives is declared in `hosts/default.nix`.
-- **preset** — a composable module bundle in `hosts/_shared/presets/<name>`
+- **preset** — a composable module bundle in `presets/<name>`
   (`base`, `desktop`, `work`, `personal`, `linode`). Hosts opt in via their
   `presets = [ … ]` list. `base` is universal/server-safe; `desktop` carries
   **all** graphical/physical-machine config (fonts, printing, avahi, libinput,
   compositor imports, wayland overlay + caches, sound, bluetooth, grub-on-EFI
   loader defaults, GUI env). Every
   graphical host — including the KDE handheld — must list `desktop`.
+  Wired by `parts/presets.nix`.
+- **disko layout** — a disk layout function in `disko/<name>.nix`, handed to
+  hosts by `parts/disko.nix` as the `diskoLayouts` specialArg:
+  `imports = [(diskoLayouts.btrfs-lvm {device = "…";})]`.
 - **`modules.presets.desktop.enable`** — a flag declared in `base` (default
   false) and set true by the `desktop` preset. `work`/`personal` gate their
   GUI-only packages behind it (`lib.optionals config.modules.presets.desktop.enable [ … ]`)

@@ -3,12 +3,13 @@
   pkgs,
   inputs,
   nixosModules,
+  diskoLayouts,
   ...
 }:
 with lib; {
   imports = [
     inputs.disko.nixosModules.disko
-    (import ../_shared/disko/btrfs-lvm.nix {device = "/dev/disk/by-uuid/2da72401-b2b8-4a0d-8324-fd474124f51e";})
+    (diskoLayouts.btrfs-lvm {device = "/dev/disk/by-uuid/2da72401-b2b8-4a0d-8324-fd474124f51e";})
     ./hardware.nix
 
     nixosModules.hardware.intel
