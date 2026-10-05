@@ -15,9 +15,9 @@ repl *ARGS:
 check-file FILE *ARGS:
   nix-instantiate --parse-only {{FILE}} {{ARGS}}
 
-# Lint for dead code
-lint FILE='.' *ARGS:
-  nix run github:astro/deadnix -- -eq {{FILE}} {{ARGS}}
+# Report deadnix and statix findings without editing (`just fmt` fixes what it can)
+lint PATH='.':
+  nix shell nixpkgs#deadnix nixpkgs#statix -c sh -c 'deadnix --fail --exclude flakes -- {{PATH}} && statix check --ignore "flakes/**" {{PATH}}'
 
 # Format the nix files in this repo
 fmt PATH='.' *ARGS:

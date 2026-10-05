@@ -52,20 +52,19 @@ Exposes `checks.pre-commit` (so `nix flake check` and CI run them) and an
 installation script wired into the dev shells, so the hooks install on
 `nix develop`.
 
-Scope: secrets only. Formatting is already gated by `treefmt.nix` (which runs
-alejandra), so it is not duplicated here.
+Scope: secrets, plus `statix check`. Formatting is gated by `treefmt.nix`, so
+it is not duplicated here.
 
-deadnix and statix are deliberately NOT enabled as commit gates: both declare
-`pass_filenames = false` and scan from the repo root, so they ignore
-pre-commit's `excludes` and lint the `flakes/*` submodules — separate repos
-whose code is not ours to fix. They also surface stylistic findings (repeated
-key assignments) that `statix fix` cannot resolve automatically. Run them by
-hand when doing a cleanup pass:
+deadnix and statix run as treefmt formatters (`--edit` / `fix`), not as the
+built-in git-hooks: those declare `pass_filenames = false` and scan from the
+repo root, so they ignore pre-commit's `excludes` and lint the `flakes/*`
+submodules — separate repos whose code is not ours to fix. treefmt hands each
+tool its own file list, which already skips `flakes/*`.
 
-```bash
-nix run nixpkgs#deadnix -- --edit modules parts overlays shells users hosts presets disko
-nix run nixpkgs#statix -- fix modules parts overlays shells users hosts presets disko
-```
+`statix fix` silently skips lints it cannot rewrite — repeated keys (W20) are
+the one that matters — so treefmt alone would let them in. The `statix-check`
+hook catches those, scoping itself with statix's own `--ignore 'flakes/**'`
+for the same submodule reason.
 
 gitleaks is the same tool CI runs (`.github/workflows/gitleaks.yml`), so local
 and CI agree. It scans the tree itself, hence `pass_filenames = false`.
@@ -146,3 +145,6 @@ that used to build these outputs by hand.
 Formatting, via treefmt-nix. Provides `nix fmt` (multi-language) and a
 `checks.formatting` gate. This owns `formatter`, so `shells.nix` no longer
 sets it.
+
+deadnix and statix rewrite code, so they carry a lower `priority` than
+alejandra: treefmt runs them first and alejandra formats what they leave.

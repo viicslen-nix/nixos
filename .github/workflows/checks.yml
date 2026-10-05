@@ -12,8 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Fast gate: formatting (treefmt) and lint (alejandra/deadnix/statix via
-  # pre-commit). These are the flake's own checks, so CI and local
+  # Fast gate: treefmt (deadnix/statix/alejandra/shfmt) and the pre-commit
+  # hooks. These are the flake's own checks, so CI and local
   # `nix flake check` agree.
   format-and-lint:
     runs-on: ubuntu-latest

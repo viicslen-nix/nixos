@@ -6,8 +6,9 @@ Runs on every push to `main`, on pull requests, and on demand. It runs the
 flake's own `checks` outputs, so CI and a local `nix flake check` agree:
 
 - **`format-and-lint`** — builds `checks.x86_64-linux.{treefmt,pre-commit}`:
-  alejandra + shfmt formatting, and the gitleaks / detect-private-keys
-  pre-commit hooks. Fast; the primary gate.
+  treefmt (deadnix, statix, alejandra, shfmt) must leave the tree unchanged,
+  and the gitleaks / detect-private-keys / `statix check` pre-commit hooks
+  must pass. Fast; the primary gate.
 - **`eval-hosts`** — matrix that evaluates each evaluable host's toplevel to a
   derivation (fast gate; does not build). `wsl` and `lenovo-legion-go` are
   excluded (see `parts/checks.nix`) because they currently fail to evaluate for
