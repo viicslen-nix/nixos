@@ -147,7 +147,7 @@ full-upgrade *ARGS:
 ############################################################################
 
 # Rebuild and switch to new configuration
-# Usage: just switch
+# Usage: just rebuild [switch|boot|test]
 rebuild COMMAND='switch' *ARGS:
   sudo nixos-rebuild {{COMMAND}} --flake . {{ARGS}}
 
@@ -173,7 +173,7 @@ commit-and-upgrade MESSAGE COMMAND='switch' *ARGS:
 
 # Remove all generations older than 7 days
 clean *ARGS:
-  ng clean all -K 7d {{ARGS}}
+  nh clean all -K 7d {{ARGS}}
   sudo nix profile wipe-history --profile /nix/var/nix/profiles/system  --older-than 7d
 
 # Garbage collect all unused nix store entries
