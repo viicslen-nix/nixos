@@ -42,9 +42,9 @@ use flake .#<shell-name>
 
 ## Adding a New Shell
 
-1. Create a new file: `dev-shells/my-shell.nix`
+1. Create a new file: `shells/my-shell.nix`
 2. Define your shell environment
-3. Add to `dev-shells/default.nix` exports
+3. Add to `shells/default.nix` exports
 4. Test with: `nix develop .#my-shell`
 
 ---

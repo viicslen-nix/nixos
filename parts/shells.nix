@@ -13,7 +13,7 @@ in {
           shell.overrideAttrs (old: {
             shellHook = (old.shellHook or "") + config.pre-commit.installationScript;
           })
-      ) (import ../dev-shells {
+      ) (import ../shells {
         inherit inputs system;
         # `vlib.pkgsFor`, not flake-parts' `perSystem.pkgs` — keeps the pre-flake-parts layout.
         pkgs = vlib.pkgsFor system;

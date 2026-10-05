@@ -1,4 +1,4 @@
-# `pkgs` comes from parts/dev-shells.nix (vlib.pkgsFor, which sets
+# `pkgs` comes from parts/shells.nix (vlib.pkgsFor, which sets
 # allowUnfree) — forward it rather than letting each shell re-import nixpkgs,
 # which silently dropped that config.
 {pkgs, ...}: {

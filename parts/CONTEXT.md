@@ -18,7 +18,7 @@ The filter keys off the host NAME only — never the evaluated config — so
 listing checks does not force a (possibly failing) host to evaluate. Every host
 is `x86_64-linux`, so the checks are only emitted there.
 
-## `dev-shells.nix`
+## `shells.nix`
 
 Built via `vlib.pkgsFor` (allowUnfree, no extra overlays) rather than
 flake-parts' `perSystem.pkgs`, so they match the pre-flake-parts layout. The
@@ -63,8 +63,8 @@ key assignments) that `statix fix` cannot resolve automatically. Run them by
 hand when doing a cleanup pass:
 
 ```bash
-nix run nixpkgs#deadnix -- --edit modules parts overlays dev-shells users hosts presets disko
-nix run nixpkgs#statix -- fix modules parts overlays dev-shells users hosts presets disko
+nix run nixpkgs#deadnix -- --edit modules parts overlays shells users hosts presets disko
+nix run nixpkgs#statix -- fix modules parts overlays shells users hosts presets disko
 ```
 
 gitleaks is the same tool CI runs (`.github/workflows/gitleaks.yml`), so local
@@ -144,5 +144,5 @@ that used to build these outputs by hand.
 ## `treefmt.nix`
 
 Formatting, via treefmt-nix. Provides `nix fmt` (multi-language) and a
-`checks.formatting` gate. This owns `formatter`, so `dev-shells.nix` no longer
+`checks.formatting` gate. This owns `formatter`, so `shells.nix` no longer
 sets it.
