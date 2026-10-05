@@ -96,7 +96,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **parts/** — the root flake is a [flake-parts](https://flake.parts) flake.
   `flake.nix` only declares inputs; every `.nix` file under `parts/` is a
   flake-parts module and is auto-imported (`systems`, `lib`, `overlays`,
-  `dev-shells`, `modules`, `hosts`) via `vlib.umport { path = ./parts;
+  `shells`, `modules`, `hosts`) via `vlib.umport { path = ./parts;
   recursive = false; }`. Add a concern by dropping in a file — but note the
   non-recursive call means a *subdirectory* of `parts/` is imported as a whole
   (flake-parts resolves its `default.nix`), not walked file by file.

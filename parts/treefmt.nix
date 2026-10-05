@@ -1,4 +1,4 @@
-# Formatting, via treefmt-nix. This owns `formatter` — don't set it in dev-shells.nix too.
+# Formatting, via treefmt-nix. This owns `formatter` — don't set it in shells.nix too.
 {inputs, ...}: {
   imports = [inputs.treefmt-nix.flakeModule];
 

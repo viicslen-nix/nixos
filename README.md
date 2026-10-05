@@ -40,7 +40,7 @@ Hosts and the presets each one receives are declared in `hosts/default.nix`.
 
 ## 🛠️ Development Environments
 
-Pre-configured development shells (see `dev-shells/`):
+Pre-configured development shells (see `shells/`):
 
 - **Kubernetes**: Container orchestration development
 - **Laravel/PHP**: Web development with PHP and Laravel
