@@ -16,13 +16,6 @@ The story behind the overlays in this directory. They are exported by
 - **`modifications`** — whatever you want to overlay: changed versions,
   patches, compilation flags. See <https://nixos.wiki/wiki/Overlays>.
 
-## `modifications.libdisplay-info_0_2`
-
-nixpkgs dropped `libdisplay-info_0_2` on 2026-08-04 ("unused"), but niri-flake
-still builds niri against 0.2 and asserts the version, so `pkgs.niri-unstable`
-stops evaluating without it. We rebuild 0.2.0 from the 0.3 expression; drop
-this once niri-flake moves to `libdisplay-info_0_3`.
-
 ## `modifications.pythonPackagesExtensions`
 
 dpcontracts' README doctest (pulled in via nix-alien → pylddwrap → icontract)

@@ -28,18 +28,6 @@ in {
   };
 
   modifications = final: _prev: {
-    # Keep until niri-flake moves to libdisplay-info_0_3 — pkgs.niri-unstable needs 0.2.
-    libdisplay-info_0_2 = _prev.libdisplay-info_0_3.overrideAttrs (_: {
-      version = "0.2.0";
-      src = _prev.fetchFromGitLab {
-        domain = "gitlab.freedesktop.org";
-        owner = "emersion";
-        repo = "libdisplay-info";
-        tag = "0.2.0";
-        hash = "sha256-6xmWBrPHghjok43eIDGeshpUEQTuwWLXNHg7CnBUt3Q=";
-      };
-    });
-
     # Skips a doctest that fails on python 3.14; without it nix-alien won't build.
     pythonPackagesExtensions =
       (_prev.pythonPackagesExtensions or [])
