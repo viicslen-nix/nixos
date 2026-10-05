@@ -312,7 +312,7 @@
           })
 
           (persistence.mkHmPersistence {
-            inherit config options;
+            inherit options;
             users = attrNames users;
             directories = optionals cfg.wine.enable [".wine"];
             configDirs =

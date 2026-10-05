@@ -148,7 +148,7 @@
         })
 
         (persistence.mkHmPersistence {
-          inherit config options;
+          inherit options;
           users = attrNames users;
           share = ["mkcert"];
         })

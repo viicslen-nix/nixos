@@ -23,7 +23,7 @@
           programs.steam.enable = true;
         }
         (persistence.mkHmPersistence {
-          inherit config options;
+          inherit options;
           users = attrNames users;
           directories = [".steam"];
           share = ["Steam"];
