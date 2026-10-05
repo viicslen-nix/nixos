@@ -38,7 +38,7 @@
               ]
               ++ mkTraefikLabels {
                 name = "soketi";
-                host = cfg.host;
+                inherit (cfg) host;
                 port = 6001;
               };
             environment = {

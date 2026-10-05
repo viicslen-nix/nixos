@@ -20,7 +20,15 @@ with lib; {
 
   home-manager.sharedModules = [./home.nix];
 
-  services.displayManager.defaultSession = "niri";
+  services = {
+    displayManager.defaultSession = "niri";
+    udev.packages = [pkgs.platformio-core.udev];
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      extraUpFlags = ["--ssh"];
+    };
+  };
 
   boot = {
     binfmt.emulatedSystems = ["aarch64-linux"];
@@ -41,13 +49,6 @@ with lib; {
   ];
 
   users.users.neoscode.extraGroups = ["dialout"];
-  services.udev.packages = [pkgs.platformio-core.udev];
-
-  services.tailscale = {
-    enable = true;
-    openFirewall = true;
-    extraUpFlags = ["--ssh"];
-  };
 
   modules = {
     hardware.nvidia.latest = true;

@@ -41,7 +41,7 @@
               ]
               ++ mkTraefikLabels {
                 name = "localai";
-                host = cfg.host;
+                inherit (cfg) host;
                 port = 8080;
               };
             log-driver = config.modules.containers.settings.log-driver;

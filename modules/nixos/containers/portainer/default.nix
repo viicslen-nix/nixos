@@ -42,7 +42,7 @@
               ]
               ++ mkTraefikLabels {
                 name = "portainer";
-                host = cfg.host;
+                inherit (cfg) host;
                 port = 9443;
                 scheme = "https";
               };

@@ -43,7 +43,7 @@
               ]
               ++ mkTraefikLabels {
                 name = "homarr";
-                host = cfg.host;
+                inherit (cfg) host;
                 port = 7575;
               };
             log-driver = config.modules.containers.settings.log-driver;

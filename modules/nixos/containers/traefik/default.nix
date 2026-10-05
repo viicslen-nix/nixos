@@ -110,7 +110,7 @@
               ]
               ++ mkTraefikLabels {
                 name = "traefik";
-                host = cfg.host;
+                inherit (cfg) host;
                 service = "api@internal";
               };
             volumes =
@@ -189,67 +189,71 @@
           };
         };
 
-        # Generate dynamic TLS configuration
-        systemd.tmpfiles.rules = [
-          "d /var/lib/traefik 0755 root root -"
-          "d /var/lib/traefik/dynamic 0755 root root -"
-        ];
+        systemd = {
+          # Generate dynamic TLS configuration
+          tmpfiles.rules = [
+            "d /var/lib/traefik 0755 root root -"
+            "d /var/lib/traefik/dynamic 0755 root root -"
+          ];
 
-        # Write TLS configuration directly to the dynamic directory
-        systemd.services.traefik-tls-config = let
-          mkcertEnabled = config.modules.programs.mkcert.enable;
-        in
-          mkIf mkcertEnabled {
-            description = "Generate Traefik TLS configuration";
-            wantedBy = ["multi-user.target"];
-            before = ["${containerCfg.backend}-traefik.service"];
-            after = optional mkcertEnabled "mkcert-generate-certs.service";
-            serviceConfig = {
-              Type = "oneshot";
-              RemainAfterExit = true;
+          services = {
+            # Write TLS configuration directly to the dynamic directory
+            traefik-tls-config = let
+              mkcertEnabled = config.modules.programs.mkcert.enable;
+            in
+              mkIf mkcertEnabled {
+                description = "Generate Traefik TLS configuration";
+                wantedBy = ["multi-user.target"];
+                before = ["${containerCfg.backend}-traefik.service"];
+                after = optional mkcertEnabled "mkcert-generate-certs.service";
+                serviceConfig = {
+                  Type = "oneshot";
+                  RemainAfterExit = true;
+                };
+                script = let
+                  customCerts =
+                    mapAttrsToList (_domain: cert: {
+                      certFile = "/custom-certs/${baseNameOf cert.certFile}";
+                      keyFile = "/custom-certs/${baseNameOf cert.keyFile}";
+                    })
+                    cfg.customCerts;
+
+                  # Get all mkcert domains (includes container hosts + additional domains)
+                  mkcertDomainCerts =
+                    map (domain: {
+                      certFile = "/custom-certs/${replaceStrings ["*"] ["wildcard"] domain}.crt";
+                      keyFile = "/custom-certs/${replaceStrings ["*"] ["wildcard"] domain}.key";
+                      # Keep the original domain for SNI matching
+                      inherit domain;
+                    })
+                    config.modules.programs.mkcert.domains;
+
+                  allCerts = customCerts ++ mkcertDomainCerts;
+
+                  # Generate YAML with domains field for proper SNI matching
+                  certsYaml =
+                    concatMapStringsSep "\n" (
+                      cert: "    - certFile: ${cert.certFile}\n      keyFile: ${cert.keyFile}"
+                    )
+                    allCerts;
+                in ''
+                  cat > /var/lib/traefik/dynamic/tls.yml <<EOF
+                  tls:
+                    certificates:
+                  ${certsYaml}
+                    options:
+                      default:
+                        minVersion: VersionTLS12
+                  EOF
+                '';
+              };
+
+            # Ensure traefik-admin starts after traefik-admin-db
+            "${containerCfg.backend}-traefik-admin" = mkIf cfg.admin.enable {
+              after = ["${containerCfg.backend}-traefik-admin-db.service"];
+              requires = ["${containerCfg.backend}-traefik-admin-db.service"];
             };
-            script = let
-              customCerts =
-                mapAttrsToList (_domain: cert: {
-                  certFile = "/custom-certs/${baseNameOf cert.certFile}";
-                  keyFile = "/custom-certs/${baseNameOf cert.keyFile}";
-                })
-                cfg.customCerts;
-
-              # Get all mkcert domains (includes container hosts + additional domains)
-              mkcertDomainCerts =
-                map (domain: {
-                  certFile = "/custom-certs/${replaceStrings ["*"] ["wildcard"] domain}.crt";
-                  keyFile = "/custom-certs/${replaceStrings ["*"] ["wildcard"] domain}.key";
-                  # Keep the original domain for SNI matching
-                  inherit domain;
-                })
-                config.modules.programs.mkcert.domains;
-
-              allCerts = customCerts ++ mkcertDomainCerts;
-
-              # Generate YAML with domains field for proper SNI matching
-              certsYaml =
-                concatMapStringsSep "\n" (
-                  cert: "    - certFile: ${cert.certFile}\n      keyFile: ${cert.keyFile}"
-                )
-                allCerts;
-            in ''
-              cat > /var/lib/traefik/dynamic/tls.yml <<EOF
-              tls:
-                certificates:
-              ${certsYaml}
-                options:
-                  default:
-                    minVersion: VersionTLS12
-              EOF
-            '';
           };
-
-        # Ensure traefik-admin starts after traefik-admin-db
-        systemd.services."${containerCfg.backend}-traefik-admin" = mkIf cfg.admin.enable {
-          after = ["${containerCfg.backend}-traefik-admin-db.service"];
-          requires = ["${containerCfg.backend}-traefik-admin-db.service"];
         };
       };
     };

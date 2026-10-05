@@ -4,7 +4,6 @@
   lib,
   inputs,
   osConfig,
-  homeModules,
   ...
 }: let
   # Prebuilt static Go binary — no patchelf needed.

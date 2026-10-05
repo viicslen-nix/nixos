@@ -6,7 +6,7 @@
     ...
   }:
     with lib; let
-      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains mkTraefikLabels;
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains;
 
       name = "redis";
       namespace = "containers";

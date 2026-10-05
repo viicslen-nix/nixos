@@ -104,29 +104,31 @@
               }
             ];
 
-            programs._1password-shell-plugins = {
-              # enable 1Password shell plugins for bash, zsh, and fish shell
-              enable = true;
-              # the specified packages as well as 1Password CLI will be
-              # automatically installed and configured to use shell plugins
-              inherit (cfg) plugins;
+            programs = {
+              _1password-shell-plugins = {
+                # enable 1Password shell plugins for bash, zsh, and fish shell
+                enable = true;
+                # the specified packages as well as 1Password CLI will be
+                # automatically installed and configured to use shell plugins
+                inherit (cfg) plugins;
+              };
+
+              # Configure the SSH client to use the 1Password socket
+              ssh.settings."*".IdentityAgent = cfg.socket;
+
+              # Configure git to sign commits with the 1Password SSH key
+              git.includes = mkIf cfg.gitSignCommits [
+                {
+                  contents = {
+                    commit.gpgSign = true;
+                    gpg.format = "ssh";
+                    "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+                  };
+                }
+              ];
+
+              jujutsu.settings.signing.backends.ssh.program = mkIf cfg.gitSignCommits "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
             };
-
-            # Configure the SSH client to use the 1Password socket
-            programs.ssh.settings."*".IdentityAgent = cfg.socket;
-
-            # Configure git to sign commits with the 1Password SSH key
-            programs.git.includes = mkIf cfg.gitSignCommits [
-              {
-                contents = {
-                  commit.gpgSign = true;
-                  gpg.format = "ssh";
-                  "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
-                };
-              }
-            ];
-
-            programs.jujutsu.settings.signing.backends.ssh.program = mkIf cfg.gitSignCommits "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
 
             # Configure the 1Password quick access keybinding for gnome
             dconf.settings = {
