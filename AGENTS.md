@@ -541,14 +541,15 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `modules/home-manager/programs/{worktrunk,workmux}/CONTEXT.md`.
 
 - **A subflake's home-manager wrapper must forward `osConfig` explicitly.**
-  `flakes/dms/flake.nix` wraps its module as
-  `{config, lib, pkgs, options, ...}: import ./hm.nix {inherit config lib pkgs options inputs;}`.
-  That forward list is exhaustive, so an `osConfig` the module needs never
+  A wrapper of the form
+  `{config, lib, pkgs, options, ...}: import ./hm.nix {inherit config lib pkgs options inputs;}`
+  has an exhaustive forward list, so an `osConfig` the module needs never
   arrives and an `osConfig ? {}` fallback inside absorbs the loss in silence —
   the gate reads the default and the module stays fully enabled. Bit once
   wiring `modules.desktop.shell`: dms ignored the selection while nilastia also
-  came up. Check the wrapper before trusting any gate a subflake HM module
-  reads off the NixOS config.
+  came up; `flakes/dms/flake.nix` now names `osConfig` in both lists. Check the
+  wrapper before trusting any gate a subflake HM module reads off the NixOS
+  config.
 - **mcp-gateway scrubs the backend environment.** It spawns stdio backends with
   only `HOME`, `PATH`, `PWD`, `SHLVL` and `TMPDIR` plus the backend's own `env:`
   block; there is no inherit/passthrough switch. An agenix secret path is
