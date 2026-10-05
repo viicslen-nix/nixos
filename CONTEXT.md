@@ -41,7 +41,7 @@ Verify with store paths: `packages.x86_64-linux.<pkg>.outPath` through
 says which of this repo's dependencies come through it. Bump with
 `just update-input omniflake`.
 
-Those 20 dependencies come from omniflake's index rather than `flake.lock`, and
+Those 19 dependencies come from omniflake's index rather than `flake.lock`, and
 are resolved into `inputs` before `mkFlake`. The plumbing lives in
 `flakes/lib/omni.nix`; what stays in `flake.nix` is the policy and the list.
 

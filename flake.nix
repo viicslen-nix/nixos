@@ -15,6 +15,12 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
+    # Real, not from omniflake: every subflake's treefmt-nix follows it.
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     omniflake = {
       url = "github:fzakaria/omniflake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,6 +35,7 @@
     viicslen-lib = {
       url = "path:./flakes/lib";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.treefmt-nix.follows = "treefmt-nix";
     };
 
     # Shell
@@ -66,19 +73,26 @@
     # Hyprland
     hyprland = {
       url = "path:./flakes/hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.viicslen-lib.follows = "viicslen-lib";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        viicslen-lib.follows = "viicslen-lib";
+        treefmt-nix.follows = "treefmt-nix";
+      };
     };
 
     # Niri
     niri = {
       url = "path:./flakes/niri";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.viicslen-lib.follows = "viicslen-lib";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        viicslen-lib.follows = "viicslen-lib";
+        treefmt-nix.follows = "treefmt-nix";
+      };
     };
     dms = {
       url = "path:./flakes/dms";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.treefmt-nix.follows = "treefmt-nix";
     };
     caelestia = {
       url = "github:caelestia-dots/shell";
@@ -118,6 +132,7 @@
         packages.follows = "packages";
         llm-agents.follows = "llm-agents";
         viicslen-lib.follows = "viicslen-lib";
+        treefmt-nix.follows = "treefmt-nix";
       };
     };
 
@@ -129,24 +144,32 @@
 
     zed = {
       url = "path:./flakes/zed";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.packages.follows = "packages";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        packages.follows = "packages";
+        treefmt-nix.follows = "treefmt-nix";
+      };
     };
 
     nixvim = {
       url = "path:./flakes/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.packages.follows = "packages";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        packages.follows = "packages";
+        treefmt-nix.follows = "treefmt-nix";
+      };
     };
 
     # Emacs
     emacs = {
       url = "path:./flakes/emacs";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.treefmt-nix.follows = "treefmt-nix";
     };
     packages = {
       url = "path:./flakes/packages";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.treefmt-nix.follows = "treefmt-nix";
     };
     # Theming
     tt-schemes = {
@@ -221,7 +244,6 @@
         nur = "nur";
         plasma-manager = "plasma-manager";
         stylix = "stylix";
-        treefmt-nix = "treefmt-nix";
         vscode-server = "nixos-vscode-server";
         zen-browser = "zen-browser-flake";
       };

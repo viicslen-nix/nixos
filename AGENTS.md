@@ -203,7 +203,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `nix flake update <x>`, is the one hosts see — per **Submodules + locking**
   (except `lib`, whose root input is `viicslen-lib`: that step matches nothing,
   so follow it with `just update-input viicslen-lib`).
-- **omniflake.** 20 dependencies are no longer flake inputs: they are pins in
+- **omniflake.** 19 dependencies are no longer flake inputs: they are pins in
   [omniflake](https://github.com/fzakaria/omniflake)'s `index.json`, fetched
   lazily at evaluation. The wiring lives in `flakes/lib/omni.nix`
   (`inputs.viicslen-lib.lib.omni`), which exports exactly one function:
@@ -213,7 +213,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   loader plumbing; keep it that way. The result is merged into
   `inputs` before `mkFlake`, so `inputs.<name>` and `pkgs.inputs.<name>` are unchanged
   everywhere else and `nix.registry` still lists them (omniflake's loader sets
-  `_type = "flake"`). Consequences: `just update-input omniflake` bumps all 20
+  `_type = "flake"`). Consequences: `just update-input omniflake` bumps all 19
   at once — home-manager included, so an HM bump is now an omniflake bump —
   and `just update-input disko` no longer resolves; `nix flake metadata` will
   not show them; the index keys on the *repository* name, so
@@ -225,7 +225,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   input *name* at every depth via `omni.mkInputs`, which is where the old
   `follows` lines went — including `systems = systems-linux`, so the
   darwin-stripping workaround reaches every indexed flake. An input stays real
-  when something must `follows` it (`nixpkgs`, `systems-linux`), when it
+  when something must `follows` it (`nixpkgs`, `systems-linux`, `treefmt-nix`), when it
   bootstraps `mkFlake` (`flake-parts`), when it is `flake = false`
   (the index holds flakes only), or when it simply is not indexed.
 - **home-manager comes from omniflake, and unifies by self-reference.** The
@@ -290,6 +290,13 @@ already happened. Treat every heavy Nix invocation as dangerous.
   niri→`niri-flake`, nixvim→`nixvim`), and adding omniflake to a subflake
   costs six lock nodes to remove one — a net loss in every case. Don't
   "finish the migration" there.
+- **Every subflake lints itself.** Each has a `treefmt-nix` input and a
+  `treefmt.nix` (deadnix, statix, alejandra) behind `nix fmt`, plus
+  `checks.<system>.{treefmt,statix}`, the latter catching repeated keys
+  `statix fix` skips. The root makes each one `follows` its own real
+  `treefmt-nix`, which is why that input is not in the omniflake mapping —
+  `follows` cannot target an omniflake pin. A new subflake gets the same
+  `inputs.treefmt-nix.follows` line in the root.
 - **Bumping local packages.** The recipes live in the subflake
   (`flakes/packages/Justfile`, implemented by `flakes/packages/scripts/packages.sh`);
   the root `Justfile` only aliases them. `just packages` lists the attrs; `just

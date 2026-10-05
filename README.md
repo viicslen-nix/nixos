@@ -37,7 +37,7 @@
 | **Structure** | [flake-parts](https://flake.parts); every file in `parts/` is auto-imported |
 | **Composition** | Hosts pick presets (`base`, `desktop`, `work`, `personal`) and import modules by path |
 | **Modules** | ~50 NixOS and ~40 Home Manager modules, discovered automatically |
-| **Inputs** | 20 dependencies resolved lazily through [omniflake](https://github.com/fzakaria/omniflake) |
+| **Inputs** | 19 dependencies resolved lazily through [omniflake](https://github.com/fzakaria/omniflake) |
 | **Desktop** | niri + DankMaterialShell, themed system-wide by Stylix |
 | **Secrets** | agenix, every secret encrypted to one portable key |
 | **Disks** | disko layouts, btrfs on LVM |

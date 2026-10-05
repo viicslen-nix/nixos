@@ -145,7 +145,7 @@
           });
         })
         (persistence.mkHmPersistence {
-          inherit config options;
+          inherit options;
           inherit (cfg) users;
           configDirs = ["1Password" "op"];
         })

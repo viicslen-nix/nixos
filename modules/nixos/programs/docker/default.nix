@@ -81,7 +81,7 @@
           hardware.nvidia-container-toolkit.enable = containers.nvidiaSupport;
         }
         (persistence.mkHmPersistence {
-          inherit config options;
+          inherit options;
           users = attrNames users;
           directories = [".docker"];
         })
