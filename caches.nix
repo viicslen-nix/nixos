@@ -28,6 +28,13 @@
       # on a miss. No `ownNixpkgs`: it is a real input now, not an index entry.
     };
 
+    pi = {
+      scope = "base";
+      url = "https://pi.cachix.org";
+      key = "pi.cachix.org-1:lGeoGJaZ5ZDabuRzkcD5EBTNnDM4HJ1vqeOxlWk1Flk=";
+      # Serves the ai subflake's pi.nix, which keeps its own nixpkgs pin for it.
+    };
+
     nixos-cuda = {
       scope = "base";
       url = "https://cache.nixos-cuda.org";
