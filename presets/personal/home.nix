@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  config,
   inputs,
   osConfig,
   homeModules,
@@ -18,6 +19,7 @@ with lib; {
   age.secrets = {
     avante-anthropic-api-key.file = ../../secrets/avante/anthropic-api-key.age;
     stitch-api-key.file = ../../secrets/stitch/api-key.age;
+    cliproxyapi-api-key.file = ../../secrets/cliproxyapi/api-key.age;
   };
 
   # Not the gateway's `env_files` — it can't expand the path, sending an empty header.
@@ -33,6 +35,31 @@ with lib; {
     mcps.google_stitch = {
       url = "https://stitch.googleapis.com/mcp";
       headers."X-Goog-Api-Key" = "\${STITCH_API_KEY}";
+    };
+    proxy = {
+      baseUrl = "https://cliproxyapi.tailb6b9b6.ts.net";
+      apiKeyFile = config.age.secrets.cliproxyapi-api-key.path;
+      models = let
+        thinking = api: {
+          inherit api;
+          reasoning = true;
+        };
+      in {
+        claude-opus-5-5 = thinking "anthropic";
+        claude-sonnet-5-5 = thinking "anthropic";
+        claude-haiku-4-5-20251001 = thinking "anthropic";
+        claude-fable-5-1 = thinking "anthropic";
+        "gpt-6.1-sol" = thinking "openai";
+        gpt-6-sol = thinking "openai";
+        gpt-6-luna = thinking "openai";
+        "gpt-5.6-sol" = thinking "openai";
+        "gemini-3.8-flash-high" = thinking "gemini";
+        gemini-pro-agent = thinking "gemini";
+      };
+      launchers = {
+        codex.model = "gpt-6.1-sol";
+        copilot.model = "claude-sonnet-5-5";
+      };
     };
   };
 
