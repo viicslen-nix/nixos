@@ -228,7 +228,7 @@ in {
         enable = osConfig.modules.presets.desktop.enable;
         typesafeApiKeyFile = config.age.secrets.typesafe-api-key.path;
         textModel = {
-          baseUrl = "http://127.0.0.1:${toString osConfig.modules.services.cliproxyapi.port}/v1";
+          baseUrl = "https://cliproxyapi.tailb6b9b6.ts.net/v1";
           # Haiku fences its JSON in ```, which jev rejects.
           model = "claude-sonnet-5-5";
           apiKeyFile = config.age.secrets.cliproxyapi-api-key.path;
