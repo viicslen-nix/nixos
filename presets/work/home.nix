@@ -213,6 +213,14 @@ in {
     pi.coding-agent.enable = true;
   };
 
+  # The gateway firewall flags backticks/`$(...)` as shell injection in every
+  # argument except these keys; the list replaces its built-in defaults (the
+  # first 15), so keep them. Only the shell scan is skipped — SQL and
+  # path-traversal scans still run on these keys.
+  xdg.configFile."mcp-gateway/firewall.env".text = ''
+    MCP_GATEWAY_FIREWALL_SKIP_KEYS=description,body,summary,content,message,prompt,comment,comment_body,title,rationale,context,notes,rollback,ac,acceptance_criteria,sql,text,old_string,new_string
+  '';
+
   modules.programs = {
     zed.enable = osConfig.modules.presets.desktop.enable;
     opencode = {
@@ -226,6 +234,7 @@ in {
       package = pkgs.inputs.packages.kubernetes.krr;
     };
     ai = {
+      integrations.gateway.settings.env_files = ["~/.config/mcp-gateway/firewall.env"];
       integrations.jev = {
         enable = osConfig.modules.presets.desktop.enable;
         typesafeApiKeyFile = config.age.secrets.typesafe-api-key.path;
