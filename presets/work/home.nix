@@ -68,6 +68,7 @@ in {
   imports = [
     inputs.ai.homeManagerModules.ai
     inputs.ai.homeManagerModules.claude-code
+    inputs.ai.homeManagerModules.pi
   ];
 
   age.secrets = {
@@ -209,6 +210,7 @@ in {
       enable = true;
       package = pkgs.inputs.llm-agents.codex;
     };
+    pi.coding-agent.enable = true;
   };
 
   modules.programs = {

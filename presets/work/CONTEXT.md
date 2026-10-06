@@ -18,8 +18,9 @@ The `dep` alias is `vendor/bin/dep`, not `composer exec -- dep`: home-manager's
 `home.shellAliases` reaches every shell, and the per-project binary is what is
 wanted.
 
-`home.nix` imports `homeModules.programs.{ai,claude-code}` itself: it configures
-both, and `personal` is not guaranteed to be imported beside it.
+`home.nix` imports `inputs.ai.homeManagerModules.{ai,claude-code,pi}` itself: it
+configures all three, and `personal` is not guaranteed to be imported beside
+it.
 
 ## `xdgRuntimeDir` exists because mcp-gateway scrubs the environment
 
