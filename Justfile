@@ -167,6 +167,29 @@ commit-and-upgrade MESSAGE COMMAND='switch' *ARGS:
 
 ############################################################################
 #
+#  Secrets Commands
+#
+############################################################################
+
+# Edit or create an agenix secret in $EDITOR, or pipe the new value in.
+# NAME is the path under secrets/, with or without `secrets/` and `.age`.
+# Usage: just secret cliproxyapi/api-key
+#        printf %s "$TOKEN" | just secret github/nix-token
+secret NAME:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  name={{quote(NAME)}}
+  name=${name#secrets/}
+  name=${name%.age}
+  file="secrets/$name.age"
+  if ! grep -qF "\"$file\"" secrets/default.nix; then
+    echo "error: no rule for $file; add \"$file\".publicKeys = [sshKey]; to secrets/default.nix first" >&2
+    exit 1
+  fi
+  RULES=secrets/default.nix nix run agenix -- -e "$file" -i "$HOME/.ssh/agenix"
+
+############################################################################
+#
 #  Maintenance Commands
 #
 ############################################################################

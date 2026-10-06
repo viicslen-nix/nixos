@@ -196,6 +196,10 @@ Managed with [agenix](https://github.com/ryantm/agenix). Every secret in
 to per-host SSH keys, so a new machine needs no re-encryption round trip:
 copy the key in and everything decrypts.
 
+`just secret <name>` edits one, e.g. `just secret cliproxyapi/api-key`, or takes
+the new value on stdin. A new secret needs its rule in `secrets/default.nix`
+first.
+
 <details>
 <summary><b>GitHub token for private flakes</b></summary>
 
