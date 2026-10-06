@@ -114,7 +114,11 @@ in {
 
     zsh = {
       shellAliases = lsAliases;
-      initContent = reattachWayland;
+      initContent =
+        reattachWayland
+        + ''
+          [[ -n $CLAUDECODE ]] && setopt NO_NOMATCH NO_EQUALS SH_WORD_SPLIT
+        '';
     };
 
     carapace.enable = true;

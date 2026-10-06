@@ -28,3 +28,10 @@ Superset builds its PTY env from a scrubbed login-shell snapshot, which carries
 no `WAYLAND_DISPLAY` — so `wl-copy`/`wl-paste`, and with them Claude Code's image
 paste, have no compositor to talk to. The prelude points them back at the
 session socket when one exists.
+
+## zsh options under Claude Code
+
+When `$CLAUDECODE` is set, zsh switches to bash-like word splitting and
+globbing (`NO_NOMATCH NO_EQUALS SH_WORD_SPLIT`) so that agent-written commands
+behave the way they would in bash. Only zsh gets the line, because `setopt` is
+zsh-only and bash already behaves this way by default.
