@@ -514,7 +514,9 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `claude mcp remove <name> -s user`. `~/.claude/settings.json` is likewise only
   written when `programs.claude-code.settings != {}` — owned by
   `flakes/ai/hmModules/claude-code` (global prefs, marketplaces,
-  enabled plugins), plus a hook block from every module that wants one —
+  enabled plugins, `CLAUDE_CODE_PLUGIN_DIRS` via `pluginDirs`, and the
+  Claude Code mods in `flakes/ai/content/claude-mods`, enabled per preset with
+  `modules.programs.claude-code.mods.<name>.enable`), plus a hook block from every module that wants one —
   `modules.programs.ai`'s `integrations/superset.nix` and
   `modules.programs.herdr.enableClaudeIntegration`. Hook lists for the same
   event concatenate, so modules never need to know about each other.
