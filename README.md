@@ -159,6 +159,7 @@ just build-all            # nix flake check: every host + all checks
 | | `bump ATTR` / `bump-outdated` / `bump-all` | Update versions and hashes with nix-update |
 | Skills | `skills` / `vendor-skills REPO` / `update-skills` | Manage vendored AI skills |
 | Dev | `fmt` / `lint` / `check-file F` / `repl` | treefmt (fixes), deadnix + statix (report), parse check, REPL |
+| Servers | `tmux-push HOST [NAME]` | Install the portable tmux config on a non-NixOS server over ssh |
 | Maintenance | `gc` / `optimize` / `clean` / `history` | Store and generation housekeeping |
 | Git | `commit MSG` / `push MSG` | Commit, or commit and push |
 
