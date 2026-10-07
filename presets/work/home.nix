@@ -222,6 +222,7 @@ in {
   '';
 
   modules.programs = {
+    claude-code.mods.readable-output.enable = true;
     zed.enable = osConfig.modules.presets.desktop.enable;
     opencode = {
       enable = true;
