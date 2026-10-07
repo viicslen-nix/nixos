@@ -190,6 +190,21 @@ secret NAME:
 
 ############################################################################
 #
+#  Server Commands
+#
+############################################################################
+
+# Install the portable tmux config on a non-NixOS server; NAME labels it in the status bar
+# Usage: just tmux-push inventory@webapps webapps
+tmux-push HOST NAME='':
+  ssh {{HOST}} 'set -e; dir="$HOME/.config/tmux"; mkdir -p "$dir"; \
+    if [ -f ~/.tmux.conf ]; then mv ~/.tmux.conf "$dir/tmux.conf.pre-push"; fi; \
+    cat > "$dir/tmux.conf"; \
+    if [ -n "{{NAME}}" ]; then echo "set -g @server_name {{NAME}}" > "$dir/local.conf"; fi; \
+    tmux source-file "$dir/tmux.conf" 2>/dev/null || true' < modules/home-manager/programs/tmux/server.conf
+
+############################################################################
+#
 #  Maintenance Commands
 #
 ############################################################################
