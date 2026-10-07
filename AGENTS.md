@@ -321,11 +321,13 @@ already happened. Treat every heavy Nix invocation as dangerous.
   flake cannot see it.
 - **`openwiki` carries a generated `package-lock.json`.** The registry tarball
   ships none, so `by-name/openwiki/package-lock.json` is produced by running
-  `npm install --package-lock-only --ignore-scripts` against the published
-  `package.json` with `devDependencies` and `scripts` stripped (npm errors with
-  `Cannot read properties of null (reading 'edgesOut')` if they stay). A bump
-  must regenerate it before `npmDepsHash`, or the deps FOD still pins the old
-  tree. better-sqlite3 compiles from source here, so budget for that too.
+  `npm install --package-lock-only --ignore-scripts --legacy-peer-deps` against
+  the published `package.json` with `devDependencies` and `scripts` stripped
+  (npm errors with `Cannot read properties of null (reading 'edgesOut')` if they
+  stay; since 0.7 `deepagents` pins `langsmith <0.10` against openwiki's own
+  `^0.10.5`, hence the flag, which `npmFlags` repeats). `just bump openwiki` only
+  rewrites `version`/`src`: regenerate the lock, then `npmDepsHash`, or npm
+  tries to re-resolve offline and dies on `ENOTCACHED`. better-sqlite3 compiles from source here, so budget for that too.
 - **Local packages must interpolate the version into the tag.** Write
   `tag = "v${version}"` (or `"v${finalAttrs.version}"`), never a literal
   `rev = "v3.2.1"` — with a literal rev, nix-update rewrites `version` only, so
