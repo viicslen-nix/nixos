@@ -40,6 +40,7 @@ with lib; {
         headers."X-Goog-Api-Key" = "\${STITCH_API_KEY}";
       };
       proxy = {
+        default = true;
         baseUrl = "https://cliproxyapi.tailb6b9b6.ts.net";
         apiKeyFile = config.age.secrets.cliproxyapi-api-key.path;
         models = let
