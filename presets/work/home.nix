@@ -110,11 +110,8 @@ in {
     mcp-toolbox
     prod-db-mcp
     grafana-mcp
-    # llm-agents installs the CLI only as `agy`.
-    (pkgs.runCommand "antigravity-alias" {} ''
-      mkdir -p $out/bin
-      ln -s ${lib.getExe config.programs.antigravity-cli.package} $out/bin/antigravity
-    '')
+    # llm-agents installs the CLI only as `agy`; resolve it from PATH, or the proxy's `agy` launcher is bypassed.
+    (pkgs.writeShellScriptBin "antigravity" ''exec agy "$@"'')
     pkgs.inputs.llm-agents.opencode-desktop
   ];
 
