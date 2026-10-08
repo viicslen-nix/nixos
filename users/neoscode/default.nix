@@ -100,7 +100,7 @@ in {
     # lsd stands in for coreutils ls in the posix shells only — nushell keeps
     # its own structured `ls`.
     lsAliases = {
-      ls = "lsd";
+      ls = "lsd -1";
       l = "ls -l";
       la = "ls -a";
       lla = "ls -la";
