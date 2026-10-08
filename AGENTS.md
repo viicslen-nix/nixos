@@ -520,9 +520,13 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `modules.programs.ai`'s `integrations/superset.nix` and
   `modules.programs.herdr.enableClaudeIntegration`. Hook lists for the same
   event concatenate, so modules never need to know about each other.
-  Claude Code itself, and the mempalace/ponytail/superset hook installers,
-  rewrite that file at runtime, so those edits land in `settings.json.backup`
-  and are dropped on the next activation. Change settings in Nix, not in the TUI.
+  The file is a real, writable file merged at activation, not a store symlink:
+  `modules.programs.claude-code.defaults` (effort, model, theme, …) survive
+  runtime edits like `/effort`, while `programs.claude-code.settings` is
+  re-imposed on every activation, so an installer's edit to a key Nix sets
+  (`hooks.<event>`, `env`) is overwritten. Put a preference the TUI changes in
+  `defaults`, anything that must hold in `settings`. See
+  `flakes/ai/hmModules/claude-code/CONTEXT.md`.
   **When an upstream tool ships its hooks as a Claude plugin, enable the plugin
   instead of declaring the hook block** — `modules.programs.claude-code`'s
   `marketplaces` + `plugins` get the hooks *and* that repo's skills for two
