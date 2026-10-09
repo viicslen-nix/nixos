@@ -312,7 +312,9 @@ already happened. Treat every heavy Nix invocation as dangerous.
   script; extend it there for a new upstream kind). Read-only, uses `gh` +
   `curl`; `-` = the repo has no matching release, e.g. rev-pinned plugins.
   `just bump <attr>` wraps `nix-update --flake`; the attr is the path under
-  `by-name/` (`app-images.t3code`, `superset.cli`, bare `coderabbit`).
+  `by-name/` (`t3code.nightly`, `superset.cli`, bare `coderabbit`). A package
+  directory may carry a `nix-update-args` file (one argument per line) that
+  `bump` passes first — `t3code.nightly` uses it to track nightly tags.
   Version autodetect only works for github/gitlab/pypi/npm/crates upstreams —
   otherwise pass `--version <x>` (or `--version skip` to refresh the hash of a
   re-uploaded binary). `vivaldi-stable` / `vivaldi-snapshot` are the exception:
@@ -399,7 +401,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
   condition, and a `mkIf (options.programs ? niri)` wrapper is no different.
   Gate on option existence with `optionalAttrs (options.programs ? niri) {…}`
   as a separate `mkMerge` element, which removes the path entirely. The shell
-  modules (`caelestia`, `exo`, `noctalia`) and `t3code` do this.
+  modules (`caelestia`, `exo`, `noctalia`) and `t3code` (in the `ai` subflake,
+  which also gates impermanence and webapps this way) do this.
 - **Everything embeds the flake's own hash.** `nix.registry` maps every input,
   including `self`, so `/etc/nix/path/*` and `nix/registry.json` contain the
   flake source path — and `containers/{qdrant,buggregator}` mount

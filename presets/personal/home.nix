@@ -4,16 +4,12 @@
   config,
   inputs,
   osConfig,
-  homeModules,
   ...
 }:
 with lib; {
   imports = [
     inputs.hunk.homeManagerModules.default
-    inputs.ai.homeManagerModules.ai
-    inputs.ai.homeManagerModules.claude-code
-    inputs.ai.homeManagerModules.profile
-    homeModules.programs.t3code
+    inputs.ai.homeManagerModules.default
   ];
 
   age.secrets = {
@@ -92,10 +88,10 @@ with lib; {
 
   services.flameshot.enable = mkIf osConfig.modules.presets.desktop.enable true;
 
-  # Not `llm-agents.t3code-desktop` — it misses the module's T3 Connect patch.
   modules.programs.t3code = {
+    enable = true;
     desktopApp = true;
     serve.enable = true;
-    package = pkgs.inputs.llm-agents.t3code;
+    package = pkgs.inputs.packages.t3code.nightly;
   };
 }
