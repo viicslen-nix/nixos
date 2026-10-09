@@ -18,7 +18,10 @@
   # This is what puts the option helpers in every module's ordinary `lib` — don't drop it.
   extendedLib = lib.extend (_final: _prev: inputs.viicslen-lib.lib.options);
 
-  mkHost = hostName: hostConfig:
+  mkHost = hostName: hostConfig: let
+    hostPath = hostConfig.path or (hostsPath + "/${hostName}");
+    hostHome = hostPath + "/home.nix";
+  in
     inputs.nixpkgs.lib.nixosSystem {
       lib = extendedLib;
 
@@ -28,9 +31,13 @@
         (shared.modules or [])
         ++ map (name: presetModules.${name}) (hostConfig.presets or [])
         ++ [
-          (hostConfig.path or (hostsPath + "/${hostName}"))
+          hostPath
           {nixpkgs.hostPlatform.system = hostConfig.system;}
-        ];
+        ]
+        ++ lib.optional (builtins.pathExists hostHome) {
+          _file = hostPath;
+          home-manager.sharedModules = [hostHome];
+        };
 
       specialArgs = {
         inherit inputs hostName nixosModules homeModules diskoLayouts;

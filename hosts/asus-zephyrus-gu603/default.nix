@@ -24,8 +24,6 @@ with lib; {
     nixosModules.services.backups
   ];
 
-  home-manager.sharedModules = [./home.nix];
-
   boot.loader = {
     efi.canTouchEfiVariables = false;
     grub.efiInstallAsRemovable = true;

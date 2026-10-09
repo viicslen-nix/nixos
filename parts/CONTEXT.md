@@ -81,6 +81,10 @@ the `nixosModules` / `homeModules` specialArgs, e.g.
 {nixosModules, ...}: { imports = with nixosModules; [docker steam]; }
 ```
 
+A host's `home.nix`, when present, is wired into `home-manager.sharedModules`
+here rather than by each host. That module carries `_file = <host dir>` so
+`just inventory` still credits it to the host and not to `flake.nix`.
+
 `extendedLib` is why every module reaches the repo-wide option helpers through
 its ordinary `lib` argument, rather than each one importing them. home-manager
 derives its own `extendedLib` from the lib it is handed (`nixos/common.nix`),
