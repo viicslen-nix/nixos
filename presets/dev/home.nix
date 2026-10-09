@@ -28,6 +28,7 @@
 in {
   imports = [
     inputs.ai.homeManagerModules.default
+    inputs.hunk.homeManagerModules.default
     homeModules.programs.k9s
     homeModules.programs.krr
   ];
@@ -102,6 +103,12 @@ in {
       # pkgs.inputs.gitura.default
       pkgs.inputs.ghost-backup.default
       pkgs.inputs.tuicr.default
+      pkgs.inputs.packages.scripts.git-carve-submodule
+
+      # Nix
+      nix-alien
+      nix-init
+      graphviz
 
       # Infra
       kubectl
@@ -120,6 +127,7 @@ in {
     ++ lib.optionals desktop [
       # Editors
       jetbrains-toolbox
+      pkgs.inputs.emacs.default
 
       # Databases & APIs
       dbeaver-bin
@@ -128,6 +136,8 @@ in {
 
       # Git
       gitbutler
+      github-desktop
+      sublime-merge
 
       # Infra
       lens
@@ -164,11 +174,38 @@ in {
       package = pkgs.inputs.llm-agents.codex;
     };
     pi.coding-agent.enable = true;
+    hunk = {
+      enable = true;
+      enableGitIntegration = true;
+      settings = {
+        mode = "auto";
+        wrap_lines = false;
+        line_numbers = true;
+        transparent_background = false;
+
+        # Binding a key steals it from its default holder — rehome, don't drop.
+        keybindings = {
+          "hunk.review.scrollCodeLeft" = ["h" "left" "shift+left"];
+          "hunk.review.scrollCodeRight" = ["l" "right" "shift+right"];
+          "hunk.view.toggleLineNumbers" = "ctrl+l";
+          "hunk.review.pageDown" = ["ctrl+f" "pagedown" "space"];
+          "hunk.review.pageUp" = ["ctrl+b" "pageup" "shift+space"];
+          "hunk.review.halfPageDown" = ["ctrl+d" "d"];
+          "hunk.review.halfPageUp" = ["ctrl+u" "u"];
+        };
+      };
+    };
   };
 
   modules.programs = {
     claude-code.mods.readable-output.enable = true;
     zed.enable = desktop;
+    t3code = {
+      enable = true;
+      desktopApp = true;
+      serve.enable = true;
+      package = pkgs.inputs.packages.t3code.nightly;
+    };
     opencode = {
       enable = true;
       default = "v1";

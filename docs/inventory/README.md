@@ -31,9 +31,9 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | adwaita-qt | `presets/desktop` | S | S | S |  |  |
 | agy | `flakes/ai/hmModules/ai/proxy.nix` | H | H | H |  | H |
 | agy-direct | `flakes/ai/hmModules/ai/proxy.nix` | H | H | H |  | H |
-| android-tools | `presets/personal` | S | S | S |  | S |
+| android-tools | `presets/personal/home.nix` | H | H | H |  | H |
 | antigravity | `presets/dev/home.nix` | H | H | H |  | H |
-| asciinema | `presets/personal` | S | S | S |  | S |
+| asciinema | `presets/personal/home.nix` | H | H | H |  | H |
 | asusctl | `modules/nixos/hardware/asus` | S |  |  |  |  |
 | atlas | `presets/dev/home.nix` | H | H | H |  | H |
 | awscli | `presets/work/home.nix` | H | H | H |  | H |
@@ -68,19 +68,19 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | delta | `presets/dev/home.nix` | H | H | H |  | H |
 | dev-shell | `presets/base` | S | S | S | S | S |
 | devbox | `presets/dev/home.nix` | H | H | H |  | H |
-| dictd | `presets/personal` | S | S | S |  | S |
-| discord | `presets/personal` | S | S | S |  |  |
+| dictd | `presets/personal/home.nix` | H | H | H |  | H |
+| discord | `presets/personal/home.nix` | H | H | H |  |  |
 | discordo | `hosts/dostov-dev` |  | S |  |  |  |
 | dive | `modules/nixos/programs/podman` |  | S | S |  |  |
 | dms-shell | `presets/desktop` | H S | H S | H S | H S |  |
 | docker-buildx | `modules/nixos/programs/docker` | S |  |  | S | S |
 | docker-compose | `modules/nixos/programs/podman` |  | S | S |  |  |
 | docker-credential-helpers | `modules/nixos/programs/docker`, `modules/nixos/programs/podman` | S | S | S | S | S |
-| drawing | `presets/personal` | S | S | S |  |  |
-| drawio | `presets/personal` | S | S | S |  |  |
-| emacs-configured | `presets/personal` | S | S | S |  |  |
+| drawing | `presets/personal/home.nix` | H | H | H |  |  |
+| drawio | `presets/personal/home.nix` | H | H | H |  |  |
+| emacs-configured | `presets/dev/home.nix` | H | H | H |  |  |
 | eza | `modules/home-manager/programs/sesh` | H | H | H | H | H |
-| ferdium | `presets/personal` | S | S | S |  |  |
+| ferdium | `presets/personal/home.nix` | H | H | H |  |  |
 | freerdp | `hosts/dostov-dev` |  | S |  |  |  |
 | fzf | `presets/base` | S | S | S | S | S |
 | gcc | `presets/dev/home.nix` | H | H | H |  | H |
@@ -90,10 +90,10 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | ghost-backup | `hosts/dostov-dev`, `presets/dev/home.nix` | H | H S | H |  | H |
 | ghostty | `hosts/dostov-dev`, `modules/home-manager/functionality/defaults` | H | H S | H | H |  |
 | git | `hosts/dostov-dev`, `presets/base` | S | S | S | S | S |
-| git-carve-submodule | `presets/personal` | S | S | S |  | S |
+| git-carve-submodule | `presets/dev/home.nix` | H | H | H |  | H |
 | gitbutler | `presets/dev/home.nix` | H | H | H |  |  |
 | github-copilot-desktop | `presets/dev/home.nix` | H | H | H |  |  |
-| github-desktop | `presets/personal` | S | S | S |  |  |
+| github-desktop | `presets/dev/home.nix` | H | H | H |  |  |
 | gitleaks | `hosts/dostov-dev` |  | S |  |  |  |
 | glab | `presets/dev/home.nix` | H | H | H |  | H |
 | glib | `presets/base`, `presets/desktop` | H S | H S | H S | H S | S |
@@ -104,9 +104,9 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | gosec | `presets/dev/home.nix` | H | H | H |  | H |
 | goverlay | `modules/nixos/functionality/gaming` | S |  | S |  |  |
 | grafana-mcp | `presets/work/home.nix` | H | H | H |  | H |
-| graphviz | `presets/personal` | S | S | S |  | S |
+| graphviz | `presets/dev/home.nix` | H | H | H |  | H |
 | heroic | `modules/nixos/functionality/gaming` | S |  | S |  |  |
-| hunkdiff | `presets/personal/home.nix` | H | H | H |  | H |
+| hunkdiff | `presets/dev/home.nix` | H | H | H |  | H |
 | hunspell | `presets/desktop` | S | S | S | S |  |
 | hunspell-dict-en-us-wordlist | `presets/desktop` | S | S | S | S |  |
 | insomnia | `presets/dev/home.nix` | H | H | H |  |  |
@@ -121,20 +121,20 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | just | `presets/base` | S | S | S | S | S |
 | keymapviz | `modules/nixos/programs/qmk` | S | S | S |  |  |
 | khal | `presets/desktop` | H S | H S | H S | H S |  |
-| kooha | `presets/personal` | S | S | S |  |  |
+| kooha | `presets/personal/home.nix` | H | H | H |  |  |
 | krr | `modules/home-manager/programs/krr` | H | H | H |  | H |
 | kubectl | `presets/dev/home.nix` | H | H | H |  | H |
 | kubernetes-helm | `presets/dev/home.nix` | H | H | H |  | H |
 | lazygit | `presets/dev/home.nix` | H | H | H |  | H |
 | lazyjj | `modules/home-manager/programs/jujutsu` | H | H | H | H | H |
-| legcord | `presets/personal` | S | S | S |  |  |
+| legcord | `presets/personal/home.nix` | H | H | H |  |  |
 | lens-desktop | `presets/dev/home.nix` | H | H | H |  |  |
 | libinput | `presets/desktop` | S | S | S | S |  |
 | libsecret | `presets/base` | S | S | S | S | S |
 | linode-cli | `presets/work/home.nix` | H | H | H |  | H |
 | lsd | `presets/base` | S | S | S | S | S |
 | lshw | `presets/base` | S | S | S | S | S |
-| luakit | `presets/personal` | S | S | S |  |  |
+| luakit | `presets/personal/home.nix` | H | H | H |  |  |
 | lutris | `modules/nixos/functionality/gaming` | S |  | S |  |  |
 | maliit-framework | `hosts/lenovo-legion-go` |  |  |  | S |  |
 | maliit-keyboard | `hosts/lenovo-legion-go` |  |  |  | S |  |
@@ -142,7 +142,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | matugen | `presets/desktop` | H S | H S | H S | H S |  |
 | mcp-gateway | `flakes/ai/hmModules/ai` | H | H | H |  | H |
 | mcp-toolbox | `presets/work/home.nix` | H | H | H |  | H |
-| meld | `modules/home-manager/programs/jujutsu`, `presets/personal` | H S | H S | H S | H | H |
+| meld | `modules/home-manager/programs/jujutsu` | H | H | H | H | H |
 | mempalace | `flakes/ai/hmModules/ai` | H | H | H |  | H |
 | mergiraf | `modules/home-manager/programs/jujutsu` | H | H | H | H | H |
 | miami-bus-overlay | `modules/nixos/features/miami-bus-tracker` |  | S |  |  |  |
@@ -151,22 +151,22 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | mkcert | `modules/nixos/programs/mkcert` | S | S | S |  | S |
 | mkcert-dev | `modules/nixos/programs/mkcert` | S | S | S |  | S |
 | nautilus | `modules/home-manager/functionality/defaults` | H | H | H | H |  |
-| nchat | `presets/personal` | S | S | S |  | S |
+| nchat | `presets/personal/home.nix` | H | H | H |  | H |
 | networkmanager | `presets/desktop` | H S | H S | H S | H S |  |
 | nil | `presets/base` | S | S | S | S | S |
 | niri | `presets/desktop` | S | S | S |  |  |
 | niri-scratchpad | `presets/desktop` | S | S | S |  |  |
-| nix-alien | `presets/personal` | S | S | S |  | S |
-| nix-init | `presets/personal` | S | S | S |  | S |
+| nix-alien | `presets/dev/home.nix` | H | H | H |  | H |
+| nix-init | `presets/dev/home.nix` | H | H | H |  | H |
 | nixd | `presets/base` | S | S | S | S | S |
 | nixos-upgrade | `presets/base` | S | S | S | S | S |
-| nixvim | `presets/personal` | S | S | S |  | S |
+| nixvim | `presets/personal/home.nix` | H | H | H |  | H |
 | node-gyp | `presets/dev/home.nix` | H | H | H |  | H |
 | nodejs | `presets/dev/home.nix` | H | H | H |  | H |
 | nss | `modules/nixos/programs/mkcert` | S | S | S |  | S |
 | nushell | `presets/base` | S | S | S | S | S |
 | nvtop | `modules/nixos/hardware/nvidia` | S | S | S |  |  |
-| obsidian | `presets/personal` | S | S | S |  |  |
+| obsidian | `presets/personal/home.nix` | H | H | H |  |  |
 | odiff | `presets/dev/home.nix` | H | H | H |  | H |
 | oh-my-opencode | `presets/base` | H | H | H | H | H |
 | onlyoffice-desktopeditors | `hosts/dostov-dev` |  | S |  |  |  |
@@ -182,7 +182,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | orca-slicer | `hosts/home-desktop` |  |  | S |  |  |
 | perl5.42.3-Percona-Toolkit | `presets/dev/home.nix` | H | H | H |  | H |
 | php-with-extensions | `presets/dev/home.nix` | H | H | H |  | H |
-| pi | `presets/personal/home.nix` | H | H | H |  | H |
+| pi | `presets/dev/home.nix` | H | H | H |  | H |
 | pigz | `presets/base` | S | S | S | S | S |
 | pkg-config-wrapper | `presets/dev/home.nix` | H | H | H |  | H |
 | platformio | `hosts/home-desktop` |  |  | S |  |  |
@@ -195,19 +195,19 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | python3 | `presets/dev/home.nix` | H | H | H |  | H |
 | qmk | `modules/nixos/programs/qmk` | S | S | S |  |  |
 | qmk_hid | `modules/nixos/programs/qmk` | S | S | S |  |  |
-| qtscrcpy | `presets/personal` | S | S | S |  |  |
+| qtscrcpy | `presets/personal/home.nix` | H | H | H |  |  |
 | qtvirtualkeyboard | `hosts/lenovo-legion-go` |  |  |  | S |  |
 | quickshell-wrapped | `presets/desktop` | S | S | S | S |  |
 | ray | `modules/home-manager/programs/ray` |  | H |  |  |  |
 | responsively | `presets/dev/home.nix` | H | H | H |  |  |
 | ripgrep | `presets/base` | S | S | S | S | S |
 | rpi-imager | `hosts/home-desktop` |  |  | S |  |  |
-| scrcpy | `presets/personal` | S | S | S |  |  |
+| scrcpy | `presets/personal/home.nix` | H | H | H |  |  |
 | search-package-files | `presets/base` | S | S | S | S | S |
 | sesh | `modules/home-manager/programs/sesh` | H | H | H | H | H |
 | sesh-list | `modules/home-manager/programs/sesh` | H | H | H | H | H |
 | starship-smart-dir | `modules/home-manager/programs/starship` | H | H | H | H | H |
-| sublime-merge | `presets/personal` | S | S | S |  |  |
+| sublime-merge | `presets/dev/home.nix` | H | H | H |  |  |
 | supergfxctl | `modules/nixos/hardware/asus` | S |  |  |  |  |
 | superset | `presets/dev/home.nix` | H | H | H |  |  |
 | superset-cli | `flakes/ai/hmModules/ai` |  | H |  |  |  |
@@ -240,8 +240,8 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | wt-dashboard | `modules/home-manager/programs/worktrunk` | H | H | H | H | H |
 | wvkbd | `hosts/lenovo-legion-go` |  |  |  | S |  |
 | xdg-utils | `presets/desktop` | S | S | S |  |  |
-| yazi | `presets/personal` | S | S | S |  | S |
-| ytmdesktop | `presets/personal` | S | S | S |  |  |
+| yazi | `presets/personal/home.nix` | H | H | H |  | H |
+| ytmdesktop | `presets/personal/home.nix` | H | H | H |  |  |
 | zed | `flakes/zed/hmModules` | H | H | H |  |  |
 | zen-beta | `modules/home-manager/programs/zen-browser` |  | H |  |  |  |
 | zenith | `modules/nixos/hardware/nvidia` | S | S | S |  |  |
@@ -286,12 +286,12 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | `modules.programs.ai.integrations.openwiki` | `flakes/ai/hmModules/profile.nix` | H | H | H |  | H |
 | `modules.programs.ai.integrations.orca` | `hosts/dostov-dev/home.nix` |  | H |  |  |  |
 | `modules.programs.ai.integrations.superset` | `hosts/dostov-dev/home.nix` |  | H |  |  |  |
-| `modules.programs.aiProfile` | `presets/personal/home.nix` | H | H | H |  | H |
+| `modules.programs.aiProfile` | `presets/dev/home.nix` | H | H | H |  | H |
 | `modules.programs.atuin` | `modules/home-manager/programs/atuin` | H | H | H | H | H |
 | `modules.programs.bash` | `modules/home-manager/programs/bash` | H | H | H | H | H |
 | `modules.programs.btop` | `modules/home-manager/programs/btop` | H | H | H | H | H |
 | `modules.programs.claude-code` | `flakes/ai/hmModules/claude-code` | H | H | H |  | H |
-| `modules.programs.claude-code.mods.readable-output` | `presets/dev/home.nix`, `presets/personal/home.nix` | H | H | H |  | H |
+| `modules.programs.claude-code.mods.readable-output` | `presets/dev/home.nix` | H | H | H |  | H |
 | `modules.programs.corepack` | `modules/nixos/programs/corepack` | S | S | S |  | S |
 | `modules.programs.docker` | `modules/nixos/programs/docker` | S |  |  | S | S |
 | `modules.programs.ghostty` | `presets/base` | H | H | H | H |  |
@@ -314,7 +314,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | `modules.programs.sesh` | `modules/home-manager/programs/sesh` | H | H | H | H | H |
 | `modules.programs.starship` | `modules/home-manager/programs/starship` | H | H | H | H | H |
 | `modules.programs.steam` | `modules/nixos/functionality/gaming` | S |  | S |  |  |
-| `modules.programs.t3code` | `presets/personal/home.nix` | H | H | H |  | H |
+| `modules.programs.t3code` | `presets/dev/home.nix` | H | H | H |  | H |
 | `modules.programs.thunderbird` | `modules/home-manager/programs/thunderbird` |  | H |  |  |  |
 | `modules.programs.tinkerwell` | `modules/home-manager/programs/tinkerwell` |  | H |  |  |  |
 | `modules.programs.tmux` | `modules/home-manager/programs/tmux` | H | H | H | H | H |
@@ -360,7 +360,7 @@ Only those enabled from this repo.
 | `programs.herdr` | `modules/home-manager/programs/herdr` | H | H | H | H | H |
 | `programs.home-manager` | `presets/base` | H | H | H | H | H |
 | `programs.hstr` | `presets/base` | H | H | H | H | H |
-| `programs.hunk` | `presets/personal/home.nix` | H | H | H |  | H |
+| `programs.hunk` | `presets/dev/home.nix` | H | H | H |  | H |
 | `programs.hyprland` | `presets/desktop` |  | S | S |  |  |
 | `programs.jujutsu` | `modules/home-manager/programs/jujutsu` | H | H | H | H | H |
 | `programs.k9s` | `modules/home-manager/programs/k9s` | H | H | H |  | H |

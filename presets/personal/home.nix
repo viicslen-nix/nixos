@@ -6,11 +6,50 @@
   osConfig,
   ...
 }:
-with lib; {
-  imports = [
-    inputs.hunk.homeManagerModules.default
-    inputs.ai.homeManagerModules.default
-  ];
+with lib; let
+  desktop = osConfig.modules.presets.desktop.enable;
+in {
+  imports = [inputs.ai.homeManagerModules.ai];
+
+  home.packages = with pkgs;
+    [
+      # Editor
+      pkgs.inputs.nixvim.default
+
+      # Terminal
+      yazi
+      asciinema
+      dict
+
+      # Phone
+      android-tools
+
+      # Chat
+      nchat
+    ]
+    # GUI apps only on graphical hosts (excluded on WSL/headless).
+    ++ lib.optionals desktop [
+      # Phone
+      scrcpy
+      qtscrcpy
+
+      # Chat
+      legcord
+      discord
+      ferdium
+
+      # Media
+      ytmdesktop
+      kooha
+
+      # Notes & drawing
+      obsidian
+      drawing
+      drawio
+
+      # Browsers
+      luakit
+    ];
 
   age.secrets = {
     avante-anthropic-api-key.file = ../../secrets/avante/anthropic-api-key.age;
@@ -22,8 +61,6 @@ with lib; {
   systemd.user.services.mcp-gateway.Service.EnvironmentFile = "%t/agenix/stitch-api-key";
 
   modules.programs = {
-    claude-code.mods.readable-output.enable = true;
-
     ai = {
       integrations.browser-harness = {
         enable = true;
@@ -64,34 +101,5 @@ with lib; {
     };
   };
 
-  programs.hunk = {
-    enable = true;
-    enableGitIntegration = true;
-    settings = {
-      mode = "auto";
-      wrap_lines = false;
-      line_numbers = true;
-      transparent_background = false;
-
-      # Binding a key steals it from its default holder — rehome, don't drop.
-      keybindings = {
-        "hunk.review.scrollCodeLeft" = ["h" "left" "shift+left"];
-        "hunk.review.scrollCodeRight" = ["l" "right" "shift+right"];
-        "hunk.view.toggleLineNumbers" = "ctrl+l";
-        "hunk.review.pageDown" = ["ctrl+f" "pagedown" "space"];
-        "hunk.review.pageUp" = ["ctrl+b" "pageup" "shift+space"];
-        "hunk.review.halfPageDown" = ["ctrl+d" "d"];
-        "hunk.review.halfPageUp" = ["ctrl+u" "u"];
-      };
-    };
-  };
-
-  services.flameshot.enable = mkIf osConfig.modules.presets.desktop.enable true;
-
-  modules.programs.t3code = {
-    enable = true;
-    desktopApp = true;
-    serve.enable = true;
-    package = pkgs.inputs.packages.t3code.nightly;
-  };
+  services.flameshot.enable = mkIf desktop true;
 }

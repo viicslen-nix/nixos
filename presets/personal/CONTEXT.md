@@ -3,37 +3,29 @@
 The `personal` preset. This file holds the reasoning behind `default.nix` and
 `home.nix`.
 
-## Desktop gating in `default.nix`
+## What lives here
 
-qmk, homarr and localsend all default to enabled by their modules, so the
-preset sets them to `modules.presets.desktop.enable` explicitly; emacs and the
-personal GUI apps (discord, ferdium, the git GUIs) sit in the gated list for the
-same reason. A headless host with `personal` gets the CLI set only.
+Your own apps, as `home.packages` in `home.nix`: chat, media, notes and
+drawing, the phone tools, and nixvim. Coding tools are in `dev`. `default.nix`
+keeps only what needs the system: qmk, homarr, localsend, `adbusers`, dictd.
+
+## Desktop gating
+
+qmk, homarr and localsend all default to enabled by their modules, so
+`default.nix` sets them to `modules.presets.desktop.enable` explicitly; the GUI
+apps in `home.nix` sit in the gated list for the same reason. A headless host
+with `personal` gets the CLI set only.
 
 `adbusers` is granted here, not in `base`: android-tools is a personal package,
 and a server has no reason to carry the group.
 
-## hunk keybindings
-
-hunk's defaults are already vim-ish (`j`/`k`, `g`/`G`, `d`/`u`, `[`/`]`); the
-`keybindings` block only fills the gaps (vim's `ctrl+` page/half-page scrolls,
-listed alongside the defaults they would otherwise replace). Binding a key takes it from whatever
-held it as a default, so `toggleLineNumbers` needs a new home (`ctrl+l`) once
-`l` scrolls the code pane right.
-
-## t3code
-
-The module comes from the `ai` subflake (`homeManagerModules.t3code`) with its
-default package, llm-agents' `t3code`. Stable is the served one (and keeps its
-desktop app); `t3code.nightly` runs beside it as the desktop app only, with its
-own state under `~/.local/share/t3code-nightly`.
-
 ## AI config
 
 What is left of the personal AI config after the portable half moved to the
-`ai` subflake. `home.nix` imports that flake's `profile` module and adds only
-what cannot travel: a credential, the one MCP backend that needs it, and the
-browser-harness integration.
+`ai` subflake. The harnesses and the profile are `dev`'s; `home.nix` imports
+only the `ai` module, for the options it sets, and adds what cannot travel: a
+credential, the one MCP backend that needs it, and the browser-harness
+integration.
 
 Skills, commands, prompts, plugins and the credential-free MCP backends live in
 `flakes/ai/content` and `flakes/ai/hmModules/profile.nix`, and their story moved
