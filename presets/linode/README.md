@@ -3,6 +3,9 @@
 Networking for Linode instances. Applied unconditionally to every host that
 lists `linode` in its `presets`; there is no `enable` switch.
 
+No host uses it yet. It is kept as the server template: a Linode host lists
+`base` + `linode` (plus `dev` if it should carry the coding tools).
+
 **Resources:**
 
 - [Manual network configuration on a Compute Instance](https://techdocs.akamai.com/cloud-computing/docs/manual-network-configuration-on-a-compute-instance)

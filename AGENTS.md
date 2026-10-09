@@ -88,10 +88,19 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **disko layout** — a disk layout function in `disko/<name>.nix`, handed to
   hosts by `parts/disko.nix` as the `diskoLayouts` specialArg:
   `imports = [(diskoLayouts.btrfs-lvm {device = "…";})]`.
+- **preset layout** — each preset is `default.nix` (system) plus `home.nix`
+  (home-manager, wired with `home-manager.sharedModules = [./home.nix]`). User
+  apps go in `home.packages`; `environment.systemPackages` is only for what root
+  or the system needs. Hosts carry machine facts and host-only apps; `dev` is
+  general coding tools, `work` only employer access, `personal` your own apps.
+  A package a module already installs is never listed raw too (`just inventory
+  --dupes`). Moving a package into `home.packages` needs a collision check:
+  `home.path` is a plain `buildEnv`, unlike the system profile, which silently
+  ignores collisions (`presets/dev/CONTEXT.md`).
 - **`modules.presets.desktop.enable`** — a flag declared in `base` (default
-  false) and set true by the `desktop` preset. `work`/`personal` gate their
-  GUI-only packages behind it (`lib.optionals config.modules.presets.desktop.enable [ … ]`)
-  so headless hosts (WSL) don't pull GUI apps. In home-manager, read it via
+  false) and set true by the `desktop` preset. `dev`/`work`/`personal` gate their
+  GUI-only packages behind it (`lib.optionals desktop [ … ]`) so headless hosts
+  (WSL) don't pull GUI apps. In home-manager, read it via
   `osConfig.modules.presets.desktop.enable`.
 - **parts/** — the root flake is a [flake-parts](https://flake.parts) flake.
   `flake.nix` only declares inputs; every `.nix` file under `parts/` is a

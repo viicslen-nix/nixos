@@ -112,7 +112,7 @@ through `default.nix`.
 
 Attribution comes from `options.<path>.definitionsWithLocations`: every
 definition carries the file that made it, so `environment.systemPackages` splits
-into `presets/work`, `hosts/dostov-dev`, `modules/nixos/programs/podman`, … with
+into `presets/base`, `hosts/dostov-dev`, `modules/nixos/programs/podman`, … with
 no annotation in the config. Home-manager users are reached through
 `options.home-manager.users.valueMeta.attrs.<user>.configuration`. A file under
 `self.outPath` is a repo source; anything else is upstream (nixpkgs,
