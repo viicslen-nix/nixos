@@ -8,7 +8,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## System
 
-### Packages (167)
+### Packages (163)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -18,15 +18,12 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | curl | 8.22.0 | `presets/base` |
 | dev-shell |  | `presets/base` |
 | fzf | 0.74.4 | `presets/base` |
-| gcc-wrapper | 15.3.0 | `presets/base` |
 | git | 2.55.0 | `presets/base` |
 | glib | 2.88.3 | `presets/base` |
 | glibc | 2.42 | `presets/base` |
 | jc | 1.25.7 | `presets/base` |
 | jq | 1.8.2 | `presets/base` |
-| jujutsu | 0.45.1 | `presets/base` |
 | just | 1.58.0 | `presets/base` |
-| lazygit | 0.65.1 | `presets/base` |
 | libsecret | 0.21.7 | `presets/base` |
 | lsd | 1.2.0 | `presets/base` |
 | lshw | 02.20 | `presets/base` |
@@ -34,7 +31,6 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | nixd | 2.9.2 | `presets/base` |
 | nixos-upgrade |  | `presets/base` |
 | nushell | 0.115.1 | `presets/base` |
-| odiff |  | `presets/base` |
 | pigz | 2.8 | `presets/base` |
 | pv | 1.12.0 | `presets/base` |
 | ripgrep | 15.2.0 | `presets/base` |
@@ -247,11 +243,14 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (68)
+### Packages (71)
 
 | Package | Version | Source |
 | --- | --- | --- |
 | oh-my-opencode |  | `presets/base` |
+| gcc-wrapper | 15.3.0 | `presets/dev/home.nix` |
+| lazygit | 0.65.1 | `presets/dev/home.nix` |
+| odiff |  | `presets/dev/home.nix` |
 | antigravity |  | `presets/work/home.nix` |
 | grafana-mcp |  | `presets/work/home.nix` |
 | mcp-toolbox | 1.8.0 | `presets/work/home.nix` |
@@ -409,12 +408,12 @@ Packages defined in more than one place. Drop the raw entry when a module alread
 | curl | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
 | dictd | presets/personal (system)<br>nixos/modules/services/misc/dictd.nix (system; upstream) |
 | fzf | presets/base (system)<br>modules/programs/fzf.nix (neoscode; upstream) |
-| gcc-wrapper | presets/base (system)<br>presets/work (system) |
+| gcc-wrapper | presets/dev/home.nix (neoscode)<br>presets/work (system) |
 | gh | presets/work (system)<br>modules/programs/gh.nix (neoscode; upstream) |
 | git | presets/base (system)<br>modules/programs/git.nix (neoscode; upstream) |
 | glibc | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
 | hunkdiff | presets/personal/home.nix (neoscode)<br>presets/work (system) |
-| jujutsu | modules/home-manager/programs/jujutsu (neoscode)<br>presets/base (system)<br>modules/programs/jujutsu.nix (neoscode; upstream) |
+| jujutsu | modules/home-manager/programs/jujutsu (neoscode)<br>modules/programs/jujutsu.nix (neoscode; upstream) |
 | nushell | presets/base (system)<br>modules/programs/nushell.nix (neoscode; upstream) |
 | tmux | presets/base (system)<br>modules/programs/tmux.nix (neoscode; upstream) |
 | zoxide | presets/base (system)<br>modules/programs/zoxide.nix (neoscode; upstream) |

@@ -161,7 +161,6 @@ in {
           wget
           curl
           git
-          jujutsu
           fzf
           lshw
           lsd
@@ -175,11 +174,9 @@ in {
           tmux
           zoxide
           btop
-          gcc
           glibc
           glib
           just
-          lazygit
           busybox
 
           # Keep explicit: environment.shells advertises nu, but the shell is zsh.
