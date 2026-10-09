@@ -120,6 +120,16 @@ home-manager, stylix, …). A package added by a module shows that module's file
 not the preset that enabled the module. The `modules` section bridges that gap,
 because it lists who set each `enable`.
 
+The closing Duplicates section (`--dupes` shows only it) lists every package
+name defined in more than one place, file or scope, where at least one of them
+is a repo file. It enforces the preset rule that a raw list never repeats what a
+module installs: `git` in `presets/base` next to home-manager's
+`programs/git.nix` shows up there. It is matched by name, so two outputs of one
+package (`gcc` vs `gcc-wrapper`) are not caught. A subflake module imported
+without a `_file` (dms) is credited to the preset that imported it, so its own
+system and home copies (`dms-shell`, `cava`) show as `presets/desktop` twice.
+It reports and never fails: a check would have to evaluate every host.
+
 Traps hit while building it:
 
 - `tryEval` catches `throw`/`assert` only. Rename aliases (`visible = false`)

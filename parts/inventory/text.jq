@@ -53,9 +53,16 @@ def scope($presets):
   section("Containers"; .containers | sort_by(.name) | map({cols: [.name, .image, .source], dim: .upstream}); ["", "2", "36"]),
   section("Units"; .units | sort_by(srckey($presets), .name) | map({cols: [.name, .scope, .source], dim: false}); ["", "2", "36"]);
 
+def dupes:
+  section("Duplicates, defined in more than one place"; duplicates | map({cols: [.name, (.defs | map(deflabel) | join(", "))], dim: false}); ["", "36"]);
+
 .presets as $presets
 | (.host | c("1;35")) + "  " + ("presets: \($presets | join(" "))" | c("2")),
-  "",
-  ("System" | c("1;4")),
-  (.system | scope($presets)),
-  (.users | to_entries[] | "", ("User \(.key)" | c("1;4")), (.value | scope($presets)))
+  if $dupesOnly then dupes
+  else
+    "",
+    ("System" | c("1;4")),
+    (.system | scope($presets)),
+    (.users | to_entries[] | "", ("User \(.key)" | c("1;4")), (.value | scope($presets))),
+    dupes
+  end

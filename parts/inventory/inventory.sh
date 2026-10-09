@@ -8,23 +8,25 @@ out_dir="$root/docs/inventory"
 
 usage() {
   cat <<'EOF'
-Usage: just inventory [HOST | --all] [--markdown] [--save] [--json]
+Usage: just inventory [HOST | --all] [--markdown] [--save] [--json] [--dupes]
 
   HOST        host to inventory (default: this machine)
   --all       every host, one after another; hosts that fail to evaluate are skipped
   --markdown  print markdown instead of the terminal view
   --save      write docs/inventory/<host>.md (with --all, also docs/inventory/README.md)
   --json      print the raw data
+  --dupes     show only packages defined in more than one place
 EOF
 }
 
-host="" all=false format=text save=false
+host="" all=false format=text save=false dupes=false
 for arg in "$@"; do
   case $arg in
   --all) all=true ;;
   --markdown) format=markdown ;;
   --json) format=json ;;
   --save) save=true ;;
+  --dupes) dupes=true ;;
   -h | --help)
     usage
     exit 0
@@ -50,6 +52,10 @@ if $all && [[ -n $host ]]; then
 fi
 if $save && [[ $format == json ]]; then
   echo "error: --save writes markdown; drop --json" >&2
+  exit 2
+fi
+if $dupes && ($save || [[ $format == json ]]); then
+  echo "error: --dupes is a view; drop --save/--json" >&2
   exit 2
 fi
 $save && format=markdown
@@ -117,7 +123,7 @@ color=false
 width=0
 [[ $format == text && -t 1 ]] && width=${COLUMNS:-$(tput cols 2>/dev/null || echo 0)}
 
-render() { jq -L "$here" -r --argjson color "$color" --argjson width "$width" -f "$here/$1.jq" "${@:2}"; }
+render() { jq -L "$here" -r --argjson color "$color" --argjson width "$width" --argjson dupesOnly "$dupes" -f "$here/$1.jq" "${@:2}"; }
 
 if $save; then
   mkdir -p "$out_dir"

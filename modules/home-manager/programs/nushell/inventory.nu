@@ -1,6 +1,7 @@
 # `just inventory` from the NixOS flake, as a nushell table: one row per entry, so it fits the
 # window and stays queryable (`just inventory | where kind == service and not upstream`).
-# --markdown/--save/--json/--help keep the script's own output; `^just inventory` gets the terminal view.
+# --dupes gives the packages defined in more than one place. --markdown/--save/--json/--help keep
+# the script's own output; `^just inventory` gets the terminal view.
 
 # The justfile `just` would pick: the nearest ancestor holding one.
 def inventory-justfile-dir [] {
@@ -40,16 +41,29 @@ def inventory-rows [inv: record] {
   | flatten
 }
 
+# Packages defined in more than one place (file or scope), at least one of them in the repo.
+def inventory-dupes [inv: record] {
+  let rows = [{scope: system, data: $inv.system}] ++ ($inv.users | transpose scope data)
+    | each {|s| $s.data.packages | each {|p| {name: $p.name, scope: $s.scope, source: $p.source, upstream: $p.upstream} } }
+    | flatten | uniq
+  let names = $rows | group-by name | items {|name, defs|
+    if ($defs | any {|d| not $d.upstream }) and ($defs | length) > 1 { $name }
+  } | compact
+  $rows | where name in $names | sort-by name upstream source
+}
+
 def --wrapped "just inventory" [...rest] {
   let root = inventory-justfile-dir
   let ours = $root != null and ($root | path join parts inventory inventory.sh | path exists)
   let raw = $rest | any {|a| $a in [--markdown --save --json -h --help] }
   if not $ours or $raw { return (^just inventory ...$rest) }
 
-  let data = ^just inventory --json ...$rest | from json
+  let dupes = "--dupes" in $rest
+  let rows = if $dupes { {|inv| inventory-dupes $inv } } else { {|inv| inventory-rows $inv } }
+  let data = ^just inventory --json ...($rest | where $it != "--dupes") | from json
   if "--all" in $rest {
-    $data | transpose host inv | each {|h| inventory-rows $h.inv | each {|row| {host: $h.host} | merge $row } } | flatten
+    $data | transpose host inv | each {|h| do $rows $h.inv | each {|row| {host: $h.host} | merge $row } } | flatten
   } else {
-    inventory-rows $data
+    do $rows $data
   }
 }

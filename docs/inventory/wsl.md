@@ -395,3 +395,26 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `browser-harness-chrome` | user | `flakes/ai/hmModules/ai` |
 | `mcp-gateway` | user | `flakes/ai/hmModules/ai`, `presets/personal/home.nix` |
 | `t3code` | user | `flakes/ai/hmModules/t3code` |
+
+## Duplicates
+
+Packages defined in more than one place. Drop the raw entry when a module already installs it.
+
+### Packages (14)
+
+| Package | Defined by |
+| --- | --- |
+| antigravity-cli | presets/work (system)<br>modules/programs/antigravity-cli.nix (neoscode; upstream) |
+| btop | presets/base (system)<br>modules/programs/btop.nix (neoscode; upstream) |
+| curl | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
+| dictd | presets/personal (system)<br>nixos/modules/services/misc/dictd.nix (system; upstream) |
+| fzf | presets/base (system)<br>modules/programs/fzf.nix (neoscode; upstream) |
+| gcc-wrapper | presets/base (system)<br>presets/work (system) |
+| gh | presets/work (system)<br>modules/programs/gh.nix (neoscode; upstream) |
+| git | presets/base (system)<br>modules/programs/git.nix (neoscode; upstream) |
+| glibc | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
+| hunkdiff | presets/personal/home.nix (neoscode)<br>presets/work (system) |
+| jujutsu | modules/home-manager/programs/jujutsu (neoscode)<br>presets/base (system)<br>modules/programs/jujutsu.nix (neoscode; upstream) |
+| nushell | presets/base (system)<br>modules/programs/nushell.nix (neoscode; upstream) |
+| tmux | presets/base (system)<br>modules/programs/tmux.nix (neoscode; upstream) |
+| zoxide | presets/base (system)<br>modules/programs/zoxide.nix (neoscode; upstream) |

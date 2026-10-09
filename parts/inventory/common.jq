@@ -19,6 +19,16 @@ def sources: if .sources == [] then "default" else .sources | map(.source) | joi
 
 def from_repo: (.sources | any(.upstream | not));
 
+# Packages defined in more than one place (file or scope), at least one of them in the repo.
+def duplicates:
+  [(.system.packages[] | . + {scope: "system"}),
+   (.users | to_entries[] | .key as $u | .value.packages[] | . + {scope: $u})]
+  | group_by(.name)
+  | map(select(any(.upstream | not) and (map([.scope, .source]) | unique | length) > 1))
+  | map({name: .[0].name, defs: (map({scope, source, upstream}) | unique | sort_by(.upstream, .source))});
+
+def deflabel: "\(.source) (\(.scope)\(if .upstream then "; upstream" else "" end))";
+
 def md: tostring | gsub("\\|"; "\\|");
 
 def code: if . == "" then "" else "`\(md)`" end;
