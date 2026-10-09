@@ -36,6 +36,8 @@
 
               ${optionalString cfg.enableContainerIntegration (builtins.unsafeDiscardStringContext (builtins.readFile ./containers.nu))}
 
+              ${builtins.unsafeDiscardStringContext (builtins.readFile ./inventory.nu)}
+
               source ${inputs.nu-scripts}/custom-completions/nix/nix-completions.nu
             '';
 
