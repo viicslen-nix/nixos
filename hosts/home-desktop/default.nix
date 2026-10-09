@@ -18,8 +18,6 @@ with lib; {
     nixosModules.functionality.gaming
   ];
 
-  home-manager.sharedModules = [./home.nix];
-
   services = {
     displayManager.defaultSession = "niri";
     udev.packages = [pkgs.platformio-core.udev];

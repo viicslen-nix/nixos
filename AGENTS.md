@@ -76,7 +76,10 @@ already happened. Treat every heavy Nix invocation as dangerous.
 ## Vocabulary
 
 - **host** — a machine config under `hosts/<name>/`. The set of hosts and the
-  presets each one receives is declared in `hosts/default.nix`.
+  presets each one receives is declared in `hosts/default.nix`. A
+  `hosts/<name>/home.nix` is added to `home-manager.sharedModules`
+  automatically by `parts/hosts.nix` — don't import it from the host's
+  `default.nix`.
 - **preset** — a composable module bundle in `presets/<name>`
   (`base`, `desktop`, `dev`, `work`, `personal`, `linode`). Hosts opt in via their
   `presets = [ … ]` list. `base` is universal/server-safe; `desktop` carries

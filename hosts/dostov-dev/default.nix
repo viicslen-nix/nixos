@@ -18,8 +18,6 @@ with lib; {
     nixosModules.features.miami-bus-tracker
   ];
 
-  home-manager.sharedModules = [./home.nix];
-
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking = {

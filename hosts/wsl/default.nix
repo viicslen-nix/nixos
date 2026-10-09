@@ -12,8 +12,6 @@ with lib; {
 
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
-  home-manager.sharedModules = [./home.nix];
-
   # WSL Specific Configuration
   virtualisation.docker.enable = mkForce false;
   programs.git.config.core.sshCommand = "ssh.exe";
