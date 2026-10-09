@@ -12,6 +12,7 @@ What each host installs and enables. Per host, with every source file: [asus-zep
 | --- | --- | --- | --- | --- | --- |
 | `base` | ✓ | ✓ | ✓ | ✓ | ✓ |
 | `desktop` | ✓ | ✓ | ✓ | ✓ |  |
+| `dev` | ✓ | ✓ | ✓ |  | ✓ |
 | `personal` | ✓ | ✓ | ✓ |  | ✓ |
 | `work` | ✓ | ✓ | ✓ |  | ✓ |
 
