@@ -171,7 +171,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | oh-my-opencode | `presets/base` | H | H | H | H | H |
 | onlyoffice-desktopeditors | `presets/personal/home.nix` | H | H | H |  |  |
 | op1 | `flakes/ai/hmModules/opencode/v1.nix` | H | H | H |  | H |
-| opencode-desktop | `presets/dev/home.nix` | H | H | H |  | H |
+| opencode-desktop | `presets/dev/home.nix` | H | H | H |  |  |
 | opencode1 | `flakes/ai/hmModules/opencode/v1.nix` | H | H | H |  | H |
 | opencode2 | `flakes/ai/hmModules/opencode/v2.nix` | H | H | H |  | H |
 | openwiki | `flakes/ai/hmModules/ai` | H | H | H |  | H |

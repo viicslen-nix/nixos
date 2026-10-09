@@ -123,7 +123,6 @@ in {
       # AI
       # llm-agents installs the CLI only as `agy`; resolve it from PATH, or the proxy's `agy` launcher is bypassed.
       (writeShellScriptBin "antigravity" ''exec agy "$@"'')
-      pkgs.inputs.llm-agents.opencode-desktop
     ]
     ++ import ./scripts.nix {inherit pkgs;}
     ++ lib.optionals desktop [
@@ -148,6 +147,7 @@ in {
 
       # AI
       pkgs.inputs.llm-agents.claude-desktop
+      pkgs.inputs.llm-agents.opencode-desktop
       pkgs.inputs.packages.superset.desktop
       pkgs.inputs.packages.github.copilot-desktop
     ];

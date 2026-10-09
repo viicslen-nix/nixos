@@ -194,7 +194,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (118)
+### Packages (117)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -229,7 +229,6 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | node-gyp | 13.0.1 | `presets/dev/home.nix` |
 | nodejs | 22.23.3 | `presets/dev/home.nix` |
 | odiff |  | `presets/dev/home.nix` |
-| opencode-desktop | 1.18.35 | `presets/dev/home.nix` |
 | opus-tools | 0.2 | `presets/dev/home.nix` |
 | opusfile | 0.12 | `presets/dev/home.nix` |
 | opustags | 1.10.1 | `presets/dev/home.nix` |
