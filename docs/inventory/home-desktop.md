@@ -8,7 +8,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## System
 
-### Packages (233)
+### Packages (208)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -61,31 +61,6 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | wl-clipboard | +16cf9d3 | `presets/desktop` |
 | wmctrl | 1.07 | `presets/desktop` |
 | xdg-utils | 1.2.1 | `presets/desktop` |
-| android-tools | 37.0.0 | `presets/personal` |
-| asciinema | 3.2.1 | `presets/personal` |
-| dictd | 1.13.3 | `presets/personal` |
-| discord | 1.0.158 | `presets/personal` |
-| drawing | 1.0.2 | `presets/personal` |
-| drawio | 31.4.5 | `presets/personal` |
-| emacs-configured |  | `presets/personal` |
-| ferdium | 7.2.3 | `presets/personal` |
-| git-carve-submodule |  | `presets/personal` |
-| github-desktop | 3.6.6 | `presets/personal` |
-| graphviz | 15.1.1 | `presets/personal` |
-| kooha | 2.3.1 | `presets/personal` |
-| legcord | 1.3.0 | `presets/personal` |
-| luakit | 2.4.0 | `presets/personal` |
-| meld | 3.24.0 | `presets/personal` |
-| nchat | 5.16.9 | `presets/personal` |
-| nix-alien | 0.1.0+git_df422df | `presets/personal` |
-| nix-init | 0.3.6 | `presets/personal` |
-| nixvim |  | `presets/personal` |
-| obsidian | 1.13.7 | `presets/personal` |
-| qtscrcpy | 3.3.3 | `presets/personal` |
-| scrcpy | 4.1 | `presets/personal` |
-| sublime-merge | 2125 | `presets/personal` |
-| yazi | 26.9.1 | `presets/personal` |
-| ytmdesktop | 2.0.12 | `presets/personal` |
 | orca-slicer | 2.4.2 | `hosts/home-desktop` |
 | platformio | 6.1.19 | `hosts/home-desktop` |
 | rpi-imager | 2.0.11.1 | `hosts/home-desktop` |
@@ -373,7 +348,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (154)
+### Packages (178)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -397,22 +372,29 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | dbeaver-bin | 26.2.0 | `presets/dev/home.nix` |
 | delta | 0.19.2 | `presets/dev/home.nix` |
 | devbox | 0.17.5 | `presets/dev/home.nix` |
+| emacs-configured |  | `presets/dev/home.nix` |
 | gcc | 15.3.0 | `presets/dev/home.nix` |
 | gcc-wrapper | 13.4.0 | `presets/dev/home.nix` |
 | gh-dash | 4.25.2 | `presets/dev/home.nix` |
 | ghost-backup | 0.4.7 | `presets/dev/home.nix` |
+| git-carve-submodule |  | `presets/dev/home.nix` |
 | gitbutler | 0.19.9 | `presets/dev/home.nix` |
 | github-copilot-desktop | 1.1.27 | `presets/dev/home.nix` |
+| github-desktop | 3.6.6 | `presets/dev/home.nix` |
 | glab | 1.114.0 | `presets/dev/home.nix` |
 | gnumake | 4.4.1 | `presets/dev/home.nix` |
 | go | 1.26.7 | `presets/dev/home.nix` |
 | gosec | 2.29.0 | `presets/dev/home.nix` |
+| graphviz | 15.1.1 | `presets/dev/home.nix` |
+| hunkdiff | 0.20.0 | `presets/dev/home.nix` |
 | insomnia | 13.0.0 | `presets/dev/home.nix` |
 | jetbrains-toolbox | 3.8.1.88030 | `presets/dev/home.nix` |
 | kubectl | 1.37.0 | `presets/dev/home.nix` |
 | kubernetes-helm | 4.3.0 | `presets/dev/home.nix` |
 | lazygit | 0.65.1 | `presets/dev/home.nix` |
 | lens-desktop | 2026.9.20601 | `presets/dev/home.nix` |
+| nix-alien | 0.1.0+git_df422df | `presets/dev/home.nix` |
+| nix-init | 0.3.6 | `presets/dev/home.nix` |
 | node-gyp | 13.0.1 | `presets/dev/home.nix` |
 | nodejs | 22.23.3 | `presets/dev/home.nix` |
 | odiff |  | `presets/dev/home.nix` |
@@ -422,9 +404,11 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | opustags | 1.10.1 | `presets/dev/home.nix` |
 | perl5.42.3-Percona-Toolkit | 3.7.1-4 | `presets/dev/home.nix` |
 | php-with-extensions | 8.4.25 | `presets/dev/home.nix` |
+| pi |  | `presets/dev/home.nix` |
 | pkg-config-wrapper | 0.29.2 | `presets/dev/home.nix` |
 | python3 | 3.14.7 | `presets/dev/home.nix` |
 | responsively | 1.18.0 | `presets/dev/home.nix` |
+| sublime-merge | 2125 | `presets/dev/home.nix` |
 | superset | 1.36.0 | `presets/dev/home.nix` |
 | tuicr | 0.24.0 | `presets/dev/home.nix` |
 | uv | 0.12.17 | `presets/dev/home.nix` |
@@ -437,8 +421,23 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | linode-cli | 5.56.2 | `presets/work/home.nix` |
 | mcp-toolbox | 1.8.0 | `presets/work/home.nix` |
 | prod-db-mcp |  | `presets/work/home.nix` |
-| hunkdiff | 0.20.0 | `presets/personal/home.nix` |
-| pi |  | `presets/personal/home.nix` |
+| android-tools | 37.0.0 | `presets/personal/home.nix` |
+| asciinema | 3.2.1 | `presets/personal/home.nix` |
+| dictd | 1.13.3 | `presets/personal/home.nix` |
+| discord | 1.0.158 | `presets/personal/home.nix` |
+| drawing | 1.0.2 | `presets/personal/home.nix` |
+| drawio | 31.4.5 | `presets/personal/home.nix` |
+| ferdium | 7.2.3 | `presets/personal/home.nix` |
+| kooha | 2.3.1 | `presets/personal/home.nix` |
+| legcord | 1.3.0 | `presets/personal/home.nix` |
+| luakit | 2.4.0 | `presets/personal/home.nix` |
+| nchat | 5.16.9 | `presets/personal/home.nix` |
+| nixvim |  | `presets/personal/home.nix` |
+| obsidian | 1.13.7 | `presets/personal/home.nix` |
+| qtscrcpy | 3.3.3 | `presets/personal/home.nix` |
+| scrcpy | 4.1 | `presets/personal/home.nix` |
+| yazi | 26.9.1 | `presets/personal/home.nix` |
+| ytmdesktop | 2.0.12 | `presets/personal/home.nix` |
 | 1password | 8.12.34 | `modules/home-manager/functionality/defaults` |
 | ghostty | 1.3.2-dev+683d8db-nix | `modules/home-manager/functionality/defaults` |
 | nautilus | 50.2.2 | `modules/home-manager/functionality/defaults` |
@@ -543,12 +542,12 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.ai.integrations.jev` | `presets/work/home.nix` |
 | `modules.programs.ai.integrations.mempalace` | `flakes/ai/hmModules/profile.nix` |
 | `modules.programs.ai.integrations.openwiki` | `flakes/ai/hmModules/profile.nix` |
-| `modules.programs.aiProfile` | `presets/personal/home.nix` |
+| `modules.programs.aiProfile` | `presets/dev/home.nix` |
 | `modules.programs.atuin` | `modules/home-manager/programs/atuin` |
 | `modules.programs.bash` | `modules/home-manager/programs/bash` |
 | `modules.programs.btop` | `modules/home-manager/programs/btop` |
 | `modules.programs.claude-code` | `flakes/ai/hmModules/claude-code` |
-| `modules.programs.claude-code.mods.readable-output` | `presets/dev/home.nix`, `presets/personal/home.nix` |
+| `modules.programs.claude-code.mods.readable-output` | `presets/dev/home.nix` |
 | `modules.programs.ghostty` | `presets/base` |
 | `modules.programs.git` | `modules/home-manager/programs/git` |
 | `modules.programs.herdr` | `modules/home-manager/programs/herdr` |
@@ -561,7 +560,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.opencode1` | `presets/dev/home.nix` |
 | `modules.programs.sesh` | `modules/home-manager/programs/sesh` |
 | `modules.programs.starship` | `modules/home-manager/programs/starship` |
-| `modules.programs.t3code` | `presets/personal/home.nix` |
+| `modules.programs.t3code` | `presets/dev/home.nix` |
 | `modules.programs.tmux` | `modules/home-manager/programs/tmux` |
 | `modules.programs.vivaldi` | `presets/base` |
 | `modules.programs.wezterm` | `presets/base` |
@@ -594,7 +593,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `programs.herdr` | `modules/home-manager/programs/herdr` |
 | `programs.home-manager` | `presets/base` |
 | `programs.hstr` | `presets/base` |
-| `programs.hunk` | `presets/personal/home.nix` |
+| `programs.hunk` | `presets/dev/home.nix` |
 | `programs.jujutsu` | `modules/home-manager/programs/jujutsu` |
 | `programs.k9s` | `modules/home-manager/programs/k9s` |
 | `programs.mcp` | `flakes/ai/hmModules/ai` |
@@ -634,7 +633,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 Packages defined in more than one place. Drop the raw entry when a module already installs it.
 
-### Packages (24)
+### Packages (23)
 
 | Package | Defined by |
 | --- | --- |
@@ -644,7 +643,7 @@ Packages defined in more than one place. Drop the raw entry when a module alread
 | btop | presets/base (system)<br>modules/programs/btop.nix (neoscode; upstream) |
 | cava | presets/desktop (neoscode)<br>presets/desktop (system) |
 | curl | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
-| dictd | presets/personal (system)<br>nixos/modules/services/misc/dictd.nix (system; upstream) |
+| dictd | presets/personal/home.nix (neoscode)<br>nixos/modules/services/misc/dictd.nix (system; upstream) |
 | dms-shell | presets/desktop (neoscode)<br>presets/desktop (system) |
 | fzf | presets/base (system)<br>modules/programs/fzf.nix (neoscode; upstream) |
 | ghostty | modules/home-manager/functionality/defaults (neoscode)<br>modules/programs/ghostty.nix (neoscode; upstream) |
@@ -654,7 +653,6 @@ Packages defined in more than one place. Drop the raw entry when a module alread
 | jujutsu | modules/home-manager/programs/jujutsu (neoscode)<br>modules/programs/jujutsu.nix (neoscode; upstream) |
 | khal | presets/desktop (neoscode)<br>presets/desktop (system) |
 | matugen | presets/desktop (neoscode)<br>presets/desktop (system) |
-| meld | modules/home-manager/programs/jujutsu (neoscode)<br>presets/personal (system) |
 | networkmanager | presets/desktop (neoscode)<br>presets/desktop (system)<br>nixos/modules/services/networking/networkmanager.nix (system; upstream) |
 | niri | presets/desktop (system)<br>nixos/modules/config/xdg/portal.nix (system; upstream) |
 | nushell | presets/base (system)<br>modules/programs/nushell.nix (neoscode; upstream) |

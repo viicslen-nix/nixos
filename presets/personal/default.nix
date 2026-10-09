@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   users,
   config,
   nixosModules,
@@ -28,38 +27,6 @@ in {
     # (Optional but recommended for faster boot with VPNs)
     systemd.network.wait-online.enable = false;
     boot.initrd.systemd.network.wait-online.enable = false;
-
-    environment.systemPackages = with pkgs;
-      [
-        nix-alien
-        nix-init
-        graphviz
-        asciinema
-        yazi
-        android-tools
-        nchat
-        pkgs.inputs.nixvim.default
-        pkgs.inputs.packages.scripts.git-carve-submodule
-        dict
-      ]
-      # GUI apps only on graphical hosts (excluded on WSL/headless).
-      ++ lib.optionals desktop [
-        pkgs.inputs.emacs.default
-        ytmdesktop
-        scrcpy
-        qtscrcpy
-        obsidian
-        legcord
-        discord
-        ferdium
-        drawing
-        drawio
-        kooha
-        luakit
-        meld
-        github-desktop
-        sublime-merge
-      ];
 
     services = {
       dictd.enable = mkDefault true;
