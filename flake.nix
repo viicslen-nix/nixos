@@ -168,8 +168,11 @@
     };
     packages = {
       url = "path:./flakes/packages";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.treefmt-nix.follows = "treefmt-nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        treefmt-nix.follows = "treefmt-nix";
+        llm-agents.follows = "llm-agents";
+      };
     };
     # Theming
     tt-schemes = {

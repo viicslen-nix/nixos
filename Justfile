@@ -127,7 +127,7 @@ outdated:
   @cd flakes/packages && just outdated
 
 # Bump version + hash of a local package in flakes/packages
-# Attr = its path under by-name/, e.g. app-images.t3code, superset.cli, coderabbit
+# Attr = its path under by-name/, e.g. t3code.nightly, superset.cli, coderabbit
 # Usage: just bump coderabbit --version 0.4.5   (or --version skip for hash only)
 bump ATTR *ARGS:
   @cd flakes/packages && just bump {{ATTR}} {{ARGS}}

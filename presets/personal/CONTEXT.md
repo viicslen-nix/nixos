@@ -21,12 +21,12 @@ listed alongside the defaults they would otherwise replace). Binding a key takes
 held it as a default, so `toggleLineNumbers` needs a new home (`ctrl+l`) once
 `l` scrolls the code pane right.
 
-## t3code package
+## t3code
 
-`modules.programs.t3code.package` is `pkgs.inputs.llm-agents.t3code`, not
-`llm-agents.t3code-desktop`. The latter is a `symlinkJoin` of the *stock*
-`t3code.desktop`, so it never sees the module's T3 Connect patch. The module
-installs the desktop output of this same package instead.
+The module comes from the `ai` subflake (`homeManagerModules.t3code`) with its
+default package, llm-agents' `t3code`. Stable is the served one (and keeps its
+desktop app); `t3code.nightly` runs beside it as the desktop app only, with its
+own state under `~/.local/share/t3code-nightly`.
 
 ## AI config
 
