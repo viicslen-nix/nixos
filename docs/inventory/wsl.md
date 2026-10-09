@@ -8,7 +8,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## System
 
-### Packages (113)
+### Packages (114)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -36,6 +36,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | ripgrep | 15.2.0 | `presets/base` |
 | search-package-files |  | `presets/base` |
 | system-upgrade |  | `presets/base` |
+| tlrc | 1.13.1 | `presets/base` |
 | tmux | 3.7c | `presets/base` |
 | tmux-session |  | `presets/base` |
 | unzip | 6.0 | `presets/base` |
@@ -193,7 +194,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (117)
+### Packages (118)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -251,6 +252,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | android-tools | 37.0.0 | `presets/personal/home.nix` |
 | asciinema | 3.2.1 | `presets/personal/home.nix` |
 | dictd | 1.13.3 | `presets/personal/home.nix` |
+| discordo | 0-unstable-2026-08-18 | `presets/personal/home.nix` |
 | nchat | 5.16.9 | `presets/personal/home.nix` |
 | nixvim |  | `presets/personal/home.nix` |
 | yazi | 26.9.1 | `presets/personal/home.nix` |

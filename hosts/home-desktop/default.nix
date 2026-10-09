@@ -42,12 +42,6 @@ with lib; {
     hostName = "home-desktop";
   };
 
-  environment.systemPackages = with pkgs; [
-    rpi-imager
-    orca-slicer
-    platformio
-  ];
-
   users.users.neoscode.extraGroups = ["dialout"];
 
   modules = {

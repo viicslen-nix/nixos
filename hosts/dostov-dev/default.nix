@@ -120,31 +120,11 @@ with lib; {
   };
 
   environment.systemPackages = with pkgs; [
-    # Browsers
-    google-chrome
-    brave
-
-    # IDEs & Editors
-    unstable.code-cursor-fhs
-
-    # Development Tools
-    ghostty
-    postman
-
-    # Communication
-    discordo
-
-    # Office
-    onlyoffice-desktopeditors
-
     # Windows
     winboat
     freerdp
     iptables
 
-    # Misc
-    tlrc
-    vial
     wireshark
   ];
 

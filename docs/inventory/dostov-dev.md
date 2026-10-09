@@ -8,7 +8,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## System
 
-### Packages (211)
+### Packages (203)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -36,6 +36,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | ripgrep | 15.2.0 | `presets/base` |
 | search-package-files |  | `presets/base` |
 | system-upgrade |  | `presets/base` |
+| tlrc | 1.13.1 | `presets/base` |
 | tmux | 3.7c | `presets/base` |
 | tmux-session |  | `presets/base` |
 | unzip | 6.0 | `presets/base` |
@@ -61,20 +62,11 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | wl-clipboard | +16cf9d3 | `presets/desktop` |
 | wmctrl | 1.07 | `presets/desktop` |
 | xdg-utils | 1.2.1 | `presets/desktop` |
-| Vial | 0.7.5 | `hosts/dostov-dev` |
-| brave | 1.95.104 | `hosts/dostov-dev` |
-| cursor | 3.22.7 | `hosts/dostov-dev` |
-| discordo | 0-unstable-2026-08-18 | `hosts/dostov-dev` |
 | freerdp | 3.31.1 | `hosts/dostov-dev` |
 | ghost-backup | 0.4.7 | `hosts/dostov-dev` |
-| ghostty | 1.3.1 | `hosts/dostov-dev` |
 | git | 2.55.0 | `hosts/dostov-dev` |
 | gitleaks | 8.30.1 | `hosts/dostov-dev` |
-| google-chrome | 154.0.8037.57 | `hosts/dostov-dev` |
 | iptables | 1.8.13 | `hosts/dostov-dev` |
-| onlyoffice-desktopeditors | 9.1.0 | `hosts/dostov-dev` |
-| postman | 12.20.1 | `hosts/dostov-dev` |
-| tlrc | 1.13.1 | `hosts/dostov-dev` |
 | winboat | 0.9.2 | `hosts/dostov-dev` |
 | wireshark-qt | 4.6.8 | `hosts/dostov-dev` |
 | miami-bus-overlay |  | `modules/nixos/features/miami-bus-tracker` |
@@ -356,7 +348,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (197)
+### Packages (204)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -377,6 +369,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | cloudflared | 2026.9.1 | `presets/dev/home.nix` |
 | cmake | 4.4.2 | `presets/dev/home.nix` |
 | composer | 2.10.3 | `presets/dev/home.nix` |
+| cursor | 3.22.7 | `presets/dev/home.nix` |
 | dbeaver-bin | 26.2.0 | `presets/dev/home.nix` |
 | delta | 0.19.2 | `presets/dev/home.nix` |
 | devbox | 0.17.5 | `presets/dev/home.nix` |
@@ -414,6 +407,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | php-with-extensions | 8.4.25 | `presets/dev/home.nix` |
 | pi |  | `presets/dev/home.nix` |
 | pkg-config-wrapper | 0.29.2 | `presets/dev/home.nix` |
+| postman | 12.20.1 | `presets/dev/home.nix` |
 | python3 | 3.14.7 | `presets/dev/home.nix` |
 | responsively | 1.18.0 | `presets/dev/home.nix` |
 | sublime-merge | 2125 | `presets/dev/home.nix` |
@@ -429,10 +423,12 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | linode-cli | 5.56.2 | `presets/work/home.nix` |
 | mcp-toolbox | 1.8.0 | `presets/work/home.nix` |
 | prod-db-mcp |  | `presets/work/home.nix` |
+| Vial | 0.7.5 | `presets/personal/home.nix` |
 | android-tools | 37.0.0 | `presets/personal/home.nix` |
 | asciinema | 3.2.1 | `presets/personal/home.nix` |
 | dictd | 1.13.3 | `presets/personal/home.nix` |
 | discord | 1.0.158 | `presets/personal/home.nix` |
+| discordo | 0-unstable-2026-08-18 | `presets/personal/home.nix` |
 | drawing | 1.0.2 | `presets/personal/home.nix` |
 | drawio | 31.4.5 | `presets/personal/home.nix` |
 | ferdium | 7.2.3 | `presets/personal/home.nix` |
@@ -442,10 +438,13 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | nchat | 5.16.9 | `presets/personal/home.nix` |
 | nixvim |  | `presets/personal/home.nix` |
 | obsidian | 1.13.7 | `presets/personal/home.nix` |
+| onlyoffice-desktopeditors | 9.1.0 | `presets/personal/home.nix` |
 | qtscrcpy | 3.3.3 | `presets/personal/home.nix` |
 | scrcpy | 4.1 | `presets/personal/home.nix` |
 | yazi | 26.9.1 | `presets/personal/home.nix` |
 | ytmdesktop | 2.0.12 | `presets/personal/home.nix` |
+| brave | 1.95.104 | `hosts/dostov-dev/home.nix` |
+| google-chrome | 154.0.8037.57 | `hosts/dostov-dev/home.nix` |
 | 1password | 8.12.34 | `modules/home-manager/functionality/defaults` |
 | betterbird | 153.3.0esr-bb9 | `modules/home-manager/functionality/defaults` |
 | ghostty | 1.3.2-dev+683d8db-nix | `modules/home-manager/functionality/defaults` |
@@ -588,12 +587,12 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.nushell` | `modules/home-manager/programs/nushell` |
 | `modules.programs.opencode` | `presets/dev/home.nix` |
 | `modules.programs.opencode1` | `presets/dev/home.nix` |
-| `modules.programs.ray` | `modules/home-manager/programs/ray` |
+| `modules.programs.ray` | `presets/dev/home.nix` |
 | `modules.programs.sesh` | `modules/home-manager/programs/sesh` |
 | `modules.programs.starship` | `modules/home-manager/programs/starship` |
 | `modules.programs.t3code` | `presets/dev/home.nix` |
 | `modules.programs.thunderbird` | `modules/home-manager/programs/thunderbird` |
-| `modules.programs.tinkerwell` | `modules/home-manager/programs/tinkerwell` |
+| `modules.programs.tinkerwell` | `presets/dev/home.nix` |
 | `modules.programs.tmux` | `modules/home-manager/programs/tmux` |
 | `modules.programs.vivaldi` | `presets/base` |
 | `modules.programs.webapps` | `modules/home-manager/programs/webapps` |
@@ -688,7 +687,7 @@ Packages defined in more than one place. Drop the raw entry when a module alread
 | dms-shell | presets/desktop (neoscode)<br>presets/desktop (system) |
 | fzf | presets/base (system)<br>modules/programs/fzf.nix (neoscode; upstream) |
 | ghost-backup | hosts/dostov-dev (system)<br>presets/dev/home.nix (neoscode) |
-| ghostty | hosts/dostov-dev (system)<br>modules/home-manager/functionality/defaults (neoscode)<br>modules/programs/ghostty.nix (neoscode; upstream) |
+| ghostty | modules/home-manager/functionality/defaults (neoscode)<br>modules/programs/ghostty.nix (neoscode; upstream) |
 | git | hosts/dostov-dev (system)<br>presets/base (system)<br>modules/programs/git.nix (neoscode; upstream) |
 | glib | presets/base (system)<br>presets/desktop (neoscode)<br>presets/desktop (system) |
 | glibc | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |

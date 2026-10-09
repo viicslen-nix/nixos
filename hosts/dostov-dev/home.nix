@@ -41,12 +41,14 @@
   '';
 in {
   imports = with homeModules; [
-    programs.ray
-    programs.kitty
-    programs.tinkerwell
     programs.zen-browser
     programs.webapps
     programs.thunderbird
+  ];
+
+  home.packages = with pkgs; [
+    google-chrome
+    brave
   ];
 
   home.autostart = [

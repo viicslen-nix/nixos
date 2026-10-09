@@ -29,6 +29,8 @@ in {
   imports = [
     inputs.ai.homeManagerModules.default
     inputs.hunk.homeManagerModules.default
+    homeModules.programs.ray
+    homeModules.programs.tinkerwell
     homeModules.programs.k9s
     homeModules.programs.krr
   ];
@@ -127,11 +129,13 @@ in {
     ++ lib.optionals desktop [
       # Editors
       jetbrains-toolbox
+      unstable.code-cursor-fhs
       pkgs.inputs.emacs.default
 
       # Databases & APIs
       dbeaver-bin
       insomnia
+      postman
       pkgs.inputs.packages.app-images.responsively
 
       # Git
@@ -200,6 +204,8 @@ in {
   modules.programs = {
     claude-code.mods.readable-output.enable = true;
     zed.enable = desktop;
+    ray.enable = desktop;
+    tinkerwell.enable = desktop;
     t3code = {
       enable = true;
       desktopApp = true;

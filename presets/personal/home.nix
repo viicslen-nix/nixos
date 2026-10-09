@@ -26,6 +26,7 @@ in {
 
       # Chat
       nchat
+      discordo
     ]
     # GUI apps only on graphical hosts (excluded on WSL/headless).
     ++ lib.optionals desktop [
@@ -42,13 +43,17 @@ in {
       ytmdesktop
       kooha
 
-      # Notes & drawing
+      # Office & notes
+      onlyoffice-desktopeditors
       obsidian
       drawing
       drawio
 
       # Browsers
       luakit
+
+      # Keyboard
+      vial
     ];
 
   age.secrets = {
