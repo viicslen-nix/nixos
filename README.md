@@ -71,6 +71,7 @@ Declared in [`hosts/default.nix`](hosts/default.nix), all `x86_64-linux`.
 ├── overlays/        # pkgs.stable, pkgs.unstable, pkgs.local, pkgs.inputs, tweaks
 ├── shells/          # nix develop environments
 ├── secrets/         # agenix-encrypted secrets
+├── docs/inventory/  # generated: what each host installs, per source file
 ├── caches.nix       # every binary cache, declared once
 └── flakes/          # subflakes, each its own repo (git submodules)
 ```
@@ -97,6 +98,9 @@ like its directory:
 
 GUI-only packages in `work` and `personal` are gated on the desktop preset, so
 headless hosts such as `wsl` stay lean.
+
+What each preset actually ends up installing on each host is generated, not
+hand-kept: see [`docs/inventory`](docs/inventory) (`just inventory --all --save`).
 
 ## Subflakes
 
@@ -141,6 +145,7 @@ just update               # bump every subflake, then the root inputs
 just full-upgrade         # update, then rebuild for next boot
 just build home-desktop   # build one host without switching
 just build-all            # nix flake check: every host + all checks
+just inventory            # what this host installs/enables, and which file put it there
 ```
 
 <details>
@@ -159,6 +164,7 @@ just build-all            # nix flake check: every host + all checks
 | | `bump ATTR` / `bump-outdated` / `bump-all` | Update versions and hashes with nix-update |
 | Skills | `skills` / `vendor-skills REPO` / `update-skills` | Manage vendored AI skills |
 | Dev | `fmt` / `lint` / `check-file F` / `repl` | treefmt (fixes), deadnix + statix (report), parse check, REPL |
+| | `inventory [HOST\|--all]` | Packages, modules, programs, services, containers and units per host, each with its source file; `--markdown`, `--json`, `--save` (writes [`docs/inventory`](docs/inventory)) |
 | Servers | `tmux-push HOST [NAME]` | Install the portable tmux config on a non-NixOS server over ssh |
 | Maintenance | `gc` / `optimize` / `clean` / `history` | Store and generation housekeeping |
 | Git | `commit MSG` / `push MSG` | Commit, or commit and push |

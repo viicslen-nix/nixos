@@ -90,6 +90,75 @@ Caveat: modules exported via `flake.modules.*` now assume this extension. An
 outside consumer importing them must extend their lib the same way, or reach
 the helpers directly at `inputs.viicslen-lib.lib.options`.
 
+## `inventory/`
+
+Answers "what does this host install, and which preset put it there?" without
+anyone keeping a list by hand. `default.nix` exposes `flake.inventory.<host>` as
+plain data; `inventory.sh` (the `just inventory` recipe) evaluates it and renders
+it with the `*.jq` programs as the terminal view, markdown, or the cross-host table
+in `docs/inventory/README.md`. The terminal view fits its width: the leading
+columns are capped to what 90% of rows need, and only rows that still overflow
+stack their source(s) underneath. Stacking every row of a section whenever one
+outlier (a `1.7-beta+date=…` version) overflowed doubled the Packages list.
+Piped output is never stacked, so `grep` sees each entry and its source on one
+line. It's a directory, not a file, so the script and
+renderers sit beside the module; the non-recursive `parts/` import loads it
+through `default.nix`.
+
+Attribution comes from `options.<path>.definitionsWithLocations`: every
+definition carries the file that made it, so `environment.systemPackages` splits
+into `presets/work`, `hosts/dostov-dev`, `modules/nixos/programs/podman`, … with
+no annotation in the config. Home-manager users are reached through
+`options.home-manager.users.valueMeta.attrs.<user>.configuration`. A file under
+`self.outPath` is a repo source; anything else is upstream (nixpkgs,
+home-manager, stylix, …). A package added by a module shows that module's file,
+not the preset that enabled the module. The `modules` section bridges that gap,
+because it lists who set each `enable`.
+
+Traps hit while building it:
+
+- `tryEval` catches `throw`/`assert` only. Rename aliases (`visible = false`)
+  can `abort` when read (`services.frp.enable`), so hidden `enable`s are never
+  evaluated. They would also report their target twice.
+- Sub-feature `enable`s often default to true under a disabled service
+  (`services.akkoma.initDb`), so the walk stops at any level whose own `enable`
+  is false.
+- Home-manager's `nixgl.nix` puts `mkIf` on list *elements*, which the merge
+  never discharges; `toString` on one is a type error, not a catchable throw.
+  Packages are unwrapped first.
+- nixpkgs folds every `users.users.<u>.packages` (home-manager's packages,
+  with `useUserPackages`) into `systemPackages` from `users-groups.nix`. That
+  definition is dropped so home packages aren't listed twice.
+- An inline `home-manager.sharedModules` entry (an attrset or function, not a
+  path) has no file, so everything it defined was credited to home-manager's
+  own `nixos/common.nix` and counted as upstream: DMS, its packages and its
+  `dms` unit looked like nobody in the repo had enabled them. The host is
+  re-evaluated with `extendModules`, each such entry wrapped in
+  `{_file = <the file that added it>; imports = [m];}` under `mkForce`. Only
+  the extended eval is read, so this costs no second evaluation. The credit
+  goes to the import site, e.g. `presets/desktop` for the dms subflake.
+- Visible aliases (`services.sshd` → `services.openssh`) repeat their target.
+  They're recognised by having no `default` and no definitions. Never read
+  `description` to spot them: modules here write `mkEnabledOption (mdDoc …)`,
+  and forcing that is an `undefined variable` error, which `tryEval` can't
+  catch either.
+
+Sub-feature toggles were most of the noise (`programs.direnv.nix-direnv`,
+`services.pipewire.pulse`, `services.zfs.trim`), so the walk prunes them. In
+upstream trees it doesn't descend below a level the repo enabled, and it drops
+nested (`ns.a.b`) toggles that no repo file set. A level enabled only upstream
+(`services.displayManager` from `greetd.nix`) is still descended, so a
+repo-set `services.gnome.gnome-keyring` survives. Under `modules.*` only
+direct sub-features are dropped (`modules.programs.mkcert.rootCA`); members of
+a group without its own `enable` stay (`modules.programs.ai.integrations.*`).
+
+Only `services`/`programs`/`virtualisation` and our `modules` trees are walked.
+Units are listed only when the repo creates them: upstream units are hundreds
+of lines of noise, and one the repo merely tweaks (`nix-daemon`, `greetd`, the
+`podman-*` units `oci-containers` generates) isn't installed by it. A unit set
+from several repo files is one row with each source. One host evaluates in
+about 10 s, and `--all` over five hosts takes about 40 s.
+
 ## `modules.nix`
 
 Every `default.nix` under `../modules/{nixos,home-manager}` is itself a
