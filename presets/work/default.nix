@@ -2,15 +2,11 @@
   lib,
   pkgs,
   config,
-  inputs,
   nixosModules,
-  homeModules,
   ...
 }:
 with lib; {
   imports = [
-    inputs.ai.nixosModules.opencode-web
-
     # Development tooling
     nixosModules.programs.corepack
     nixosModules.programs.mkcert
@@ -30,11 +26,7 @@ with lib; {
     nixosModules.containers.buggregator
   ];
   config = {
-    home-manager.sharedModules = [
-      ./home.nix
-      homeModules.programs.k9s
-      homeModules.programs.krr
-    ];
+    home-manager.sharedModules = [ ./home.nix ];
 
     # Cert is public and feeds the build-time bundle; only the key is a secret.
     age.secrets.mkcert-rootCA-key.file = ../../secrets/mkcert/rootCA-key.age;

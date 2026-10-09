@@ -1,9 +1,9 @@
 {
+  lib,
   pkgs,
   config,
-  lib,
-  inputs,
   osConfig,
+  homeModules,
   ...
 }: let
   # Prebuilt static Go binary — no patchelf needed.
@@ -66,9 +66,8 @@
   '';
 in {
   imports = [
-    inputs.ai.homeManagerModules.ai
-    inputs.ai.homeManagerModules.claude-code
-    inputs.ai.homeManagerModules.pi
+    homeModules.programs.k9s
+    homeModules.programs.krr
   ];
 
   age.secrets = {
