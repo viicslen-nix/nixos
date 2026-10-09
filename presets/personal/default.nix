@@ -59,6 +59,7 @@ in {
         meld
         github-desktop
         sublime-merge
+        pkgs.inputs.llm-agents.amp
       ];
 
     services = {
