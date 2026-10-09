@@ -44,7 +44,6 @@ in {
     nixosModules.features.app-images
     nixosModules.core.sound
     nixosModules.core.theming
-    nixosModules.hardware.bluetooth
     nixosModules.services.oom
     nixosModules.services.power-management
     nixosModules.programs.ld
