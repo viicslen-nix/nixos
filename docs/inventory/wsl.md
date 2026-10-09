@@ -8,7 +8,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## System
 
-### Packages (163)
+### Packages (123)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -41,46 +41,6 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | unzip | 6.0 | `presets/base` |
 | wget | 1.25.0 | `presets/base` |
 | zoxide | 0.10.0 | `presets/base` |
-| act | 0.2.89 | `presets/work` |
-| antigravity-cli | 1.3.2 | `presets/work` |
-| atlas | 1.3.0 | `presets/work` |
-| awscli | 1.44.21 | `presets/work` |
-| bc | 1.08.2 | `presets/work` |
-| bun | 1.4.2 | `presets/work` |
-| but | 0.22.3 | `presets/work` |
-| cloudflared | 2026.9.1 | `presets/work` |
-| cmake | 4.4.2 | `presets/work` |
-| composer | 2.10.3 | `presets/work` |
-| delta | 0.19.2 | `presets/work` |
-| devbox | 0.17.5 | `presets/work` |
-| gcc | 15.3.0 | `presets/work` |
-| gcc-wrapper | 13.4.0 | `presets/work` |
-| generate-cert |  | `presets/work` |
-| gh | 2.101.0 | `presets/work` |
-| gh-dash | 4.25.2 | `presets/work` |
-| ghost-backup | 0.4.7 | `presets/work` |
-| glab | 1.114.0 | `presets/work` |
-| gnumake | 4.4.1 | `presets/work` |
-| go | 1.26.7 | `presets/work` |
-| gosec | 2.29.0 | `presets/work` |
-| hunkdiff | 0.20.0 | `presets/work` |
-| kubectl | 1.37.0 | `presets/work` |
-| kubernetes-helm | 4.3.0 | `presets/work` |
-| linode-cli | 5.56.2 | `presets/work` |
-| node-gyp | 13.0.1 | `presets/work` |
-| nodejs | 22.23.3 | `presets/work` |
-| opus-tools | 0.2 | `presets/work` |
-| opusfile | 0.12 | `presets/work` |
-| opustags | 1.10.1 | `presets/work` |
-| perl5.42.3-Percona-Toolkit | 3.7.1-4 | `presets/work` |
-| php-with-extensions | 8.4.25 | `presets/work` |
-| pkg-config-wrapper | 0.29.2 | `presets/work` |
-| python3 | 3.14.7 | `presets/work` |
-| tuicr | 0.24.0 | `presets/work` |
-| uv | 0.12.17 | `presets/work` |
-| vite-plus | 0.3.0 | `presets/work` |
-| wrangler | 4.129.0 | `presets/work` |
-| zig | 0.16.0 | `presets/work` |
 | android-tools | 37.0.0 | `presets/personal` |
 | asciinema | 3.2.1 | `presets/personal` |
 | dictd | 1.13.3 | `presets/personal` |
@@ -243,18 +203,54 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (71)
+### Packages (107)
 
 | Package | Version | Source |
 | --- | --- | --- |
 | oh-my-opencode |  | `presets/base` |
-| gcc-wrapper | 15.3.0 | `presets/dev/home.nix` |
+| act | 0.2.89 | `presets/dev/home.nix` |
+| antigravity |  | `presets/dev/home.nix` |
+| atlas | 1.3.0 | `presets/dev/home.nix` |
+| bc | 1.08.2 | `presets/dev/home.nix` |
+| bun | 1.4.2 | `presets/dev/home.nix` |
+| but | 0.22.3 | `presets/dev/home.nix` |
+| cloudflared | 2026.9.1 | `presets/dev/home.nix` |
+| cmake | 4.4.2 | `presets/dev/home.nix` |
+| composer | 2.10.3 | `presets/dev/home.nix` |
+| delta | 0.19.2 | `presets/dev/home.nix` |
+| devbox | 0.17.5 | `presets/dev/home.nix` |
+| gcc | 15.3.0 | `presets/dev/home.nix` |
+| gcc-wrapper | 13.4.0 | `presets/dev/home.nix` |
+| gh-dash | 4.25.2 | `presets/dev/home.nix` |
+| ghost-backup | 0.4.7 | `presets/dev/home.nix` |
+| glab | 1.114.0 | `presets/dev/home.nix` |
+| gnumake | 4.4.1 | `presets/dev/home.nix` |
+| go | 1.26.7 | `presets/dev/home.nix` |
+| gosec | 2.29.0 | `presets/dev/home.nix` |
+| kubectl | 1.37.0 | `presets/dev/home.nix` |
+| kubernetes-helm | 4.3.0 | `presets/dev/home.nix` |
 | lazygit | 0.65.1 | `presets/dev/home.nix` |
+| node-gyp | 13.0.1 | `presets/dev/home.nix` |
+| nodejs | 22.23.3 | `presets/dev/home.nix` |
 | odiff |  | `presets/dev/home.nix` |
-| antigravity |  | `presets/work/home.nix` |
+| opencode-desktop | 1.18.35 | `presets/dev/home.nix` |
+| opus-tools | 0.2 | `presets/dev/home.nix` |
+| opusfile | 0.12 | `presets/dev/home.nix` |
+| opustags | 1.10.1 | `presets/dev/home.nix` |
+| perl5.42.3-Percona-Toolkit | 3.7.1-4 | `presets/dev/home.nix` |
+| php-with-extensions | 8.4.25 | `presets/dev/home.nix` |
+| pkg-config-wrapper | 0.29.2 | `presets/dev/home.nix` |
+| python3 | 3.14.7 | `presets/dev/home.nix` |
+| tuicr | 0.24.0 | `presets/dev/home.nix` |
+| uv | 0.12.17 | `presets/dev/home.nix` |
+| vite-plus | 0.3.0 | `presets/dev/home.nix` |
+| wrangler | 4.129.0 | `presets/dev/home.nix` |
+| zig | 0.16.0 | `presets/dev/home.nix` |
+| awscli | 1.44.21 | `presets/work/home.nix` |
+| generate-cert |  | `presets/work/home.nix` |
 | grafana-mcp |  | `presets/work/home.nix` |
+| linode-cli | 5.56.2 | `presets/work/home.nix` |
 | mcp-toolbox | 1.8.0 | `presets/work/home.nix` |
-| opencode-desktop | 1.18.35 | `presets/work/home.nix` |
 | prod-db-mcp |  | `presets/work/home.nix` |
 | hunkdiff | 0.20.0 | `presets/personal/home.nix` |
 | pi |  | `presets/personal/home.nix` |
@@ -334,16 +330,16 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.bash` | `modules/home-manager/programs/bash` |
 | `modules.programs.btop` | `modules/home-manager/programs/btop` |
 | `modules.programs.claude-code` | `flakes/ai/hmModules/claude-code` |
-| `modules.programs.claude-code.mods.readable-output` | `presets/work/home.nix`, `presets/personal/home.nix` |
+| `modules.programs.claude-code.mods.readable-output` | `presets/dev/home.nix`, `presets/personal/home.nix` |
 | `modules.programs.git` | `modules/home-manager/programs/git` |
 | `modules.programs.herdr` | `modules/home-manager/programs/herdr` |
 | `modules.programs.ideavim` | `modules/home-manager/programs/ideavim` |
 | `modules.programs.jujutsu` | `modules/home-manager/programs/jujutsu` |
-| `modules.programs.k9s` | `presets/work/home.nix` |
+| `modules.programs.k9s` | `presets/dev/home.nix` |
 | `modules.programs.krr` | `modules/home-manager/programs/krr` |
 | `modules.programs.nushell` | `modules/home-manager/programs/nushell` |
-| `modules.programs.opencode` | `presets/work/home.nix` |
-| `modules.programs.opencode1` | `presets/work/home.nix` |
+| `modules.programs.opencode` | `presets/dev/home.nix` |
+| `modules.programs.opencode1` | `presets/dev/home.nix` |
 | `modules.programs.sesh` | `modules/home-manager/programs/sesh` |
 | `modules.programs.starship` | `modules/home-manager/programs/starship` |
 | `modules.programs.t3code` | `presets/personal/home.nix` |
@@ -355,19 +351,19 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 | Option | Enabled by |
 | --- | --- |
-| `programs.antigravity-cli` | `presets/work/home.nix` |
+| `programs.antigravity-cli` | `presets/dev/home.nix` |
 | `programs.atuin` | `modules/home-manager/programs/atuin` |
 | `programs.bash` | `modules/home-manager/programs/bash` |
 | `programs.btop` | `modules/home-manager/programs/btop` |
 | `programs.carapace` | `presets/base` |
-| `programs.claude-code` | `presets/work/home.nix` |
-| `programs.codex` | `presets/work/home.nix` |
+| `programs.claude-code` | `presets/dev/home.nix` |
+| `programs.codex` | `presets/dev/home.nix` |
 | `programs.direnv` | `presets/base` |
 | `programs.fish` | `modules/home-manager/programs/nushell` |
 | `programs.fzf` | `presets/base` |
 | `programs.gh` | `presets/base` |
 | `programs.git` | `modules/home-manager/programs/git` |
-| `programs.github-copilot-cli` | `presets/work/home.nix` |
+| `programs.github-copilot-cli` | `presets/dev/home.nix` |
 | `programs.helix` | `presets/base` |
 | `programs.herdr` | `modules/home-manager/programs/herdr` |
 | `programs.home-manager` | `presets/base` |
@@ -379,7 +375,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `programs.nushell` | `modules/home-manager/programs/nushell` |
 | `programs.opencode1` | `flakes/ai/hmModules/opencode/v1.nix` |
 | `programs.opencode2` | `flakes/ai/hmModules/opencode/v2.nix` |
-| `programs.pi.coding-agent` | `presets/work/home.nix` |
+| `programs.pi.coding-agent` | `presets/dev/home.nix` |
 | `programs.ssh` | `presets/base` |
 | `programs.starship` | `modules/home-manager/programs/starship` |
 | `programs.tmux` | `modules/home-manager/programs/tmux` |
@@ -399,20 +395,16 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 Packages defined in more than one place. Drop the raw entry when a module already installs it.
 
-### Packages (14)
+### Packages (10)
 
 | Package | Defined by |
 | --- | --- |
-| antigravity-cli | presets/work (system)<br>modules/programs/antigravity-cli.nix (neoscode; upstream) |
 | btop | presets/base (system)<br>modules/programs/btop.nix (neoscode; upstream) |
 | curl | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
 | dictd | presets/personal (system)<br>nixos/modules/services/misc/dictd.nix (system; upstream) |
 | fzf | presets/base (system)<br>modules/programs/fzf.nix (neoscode; upstream) |
-| gcc-wrapper | presets/dev/home.nix (neoscode)<br>presets/work (system) |
-| gh | presets/work (system)<br>modules/programs/gh.nix (neoscode; upstream) |
 | git | presets/base (system)<br>modules/programs/git.nix (neoscode; upstream) |
 | glibc | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
-| hunkdiff | presets/personal/home.nix (neoscode)<br>presets/work (system) |
 | jujutsu | modules/home-manager/programs/jujutsu (neoscode)<br>modules/programs/jujutsu.nix (neoscode; upstream) |
 | nushell | presets/base (system)<br>modules/programs/nushell.nix (neoscode; upstream) |
 | tmux | presets/base (system)<br>modules/programs/tmux.nix (neoscode; upstream) |

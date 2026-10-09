@@ -3,24 +3,25 @@
 The `work` preset. This file holds the reasoning behind `home.nix` — the MCP
 wrappers that reach production and the ssh tunnel they ride on.
 
-## What lives here rather than in a host or user file
+## What lives here
 
-`core.network.hosts` is the union of every work host's local-dev entries; the
-hosts used to carry near-identical copies that drifted (`labreu.test` on one,
-`erpnext.test` on another). Everything resolves to loopback, so the extra
-names cost a headless host nothing.
+Only what the employer provides: the shared servers and their ssh hosts, the
+production MCP wrappers and their secrets, the mkcert root CA, cloud CLIs
+(`awscli`, `linode-cli`), the company skills and commands, and the
+`work.neoscode.com` cloudflared `ProxyCommand`. General coding tools, the AI
+harnesses and the local container stack are in `dev`, which every work host
+also lists.
 
-The kubectl / `vendor/bin/dep` / sail aliases, the intelephense licence
-secret and the `work.neoscode.com` cloudflared `ProxyCommand` are work
-concerns, so they live in `home.nix` and not in `users/<name>`. They use
-`config.home.homeDirectory` because a shared module has no user variable.
-The `dep` alias is `vendor/bin/dep`, not `composer exec -- dep`: home-manager's
-`home.shellAliases` reaches every shell, and the per-project binary is what is
-wanted.
+`core.network.hosts` keeps the work servers and the work projects' `.test`
+names; the generic `*.local` service names are in `dev`. All of them resolve to
+loopback except the servers, so the extra names cost a headless host nothing.
+The hosts used to carry near-identical copies that drifted (`labreu.test` on one,
+`erpnext.test` on another), which is why they live in a preset at all.
 
-`home.nix` imports `inputs.ai.homeManagerModules.{ai,claude-code,pi}` itself: it
-configures all three, and `personal` is not guaranteed to be imported beside
-it.
+`home.nix` imports `inputs.ai.homeManagerModules.ai` itself, for the
+`modules.programs.ai` options it sets (MCPs, skills, jev). The import is keyed,
+so it dedupes against `dev`'s, and `work` stays importable without it. The
+mkcert module is imported for the same reason; `dev` imports it too.
 
 ## `xdgRuntimeDir` exists because mcp-gateway scrubs the environment
 

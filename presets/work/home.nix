@@ -2,8 +2,8 @@
   lib,
   pkgs,
   config,
+  inputs,
   osConfig,
-  homeModules,
   ...
 }: let
   # Prebuilt static Go binary — no patchelf needed.
@@ -65,56 +65,27 @@
     exec ${lib.getExe pkgs.mcp-grafana} "$@"
   '';
 in {
-  imports = [
-    homeModules.programs.k9s
-    homeModules.programs.krr
-  ];
+  imports = [inputs.ai.homeManagerModules.ai];
 
   age.secrets = {
     prod-db-mysql-password.file = ../../secrets/prod-db/mysql-password.age;
     grafana-service-account-token.file = ../../secrets/grafana/service-account-token.age;
     typesafe-api-key.file = ../../secrets/typesafe/api-key.age;
     cliproxyapi-api-key.file = ../../secrets/cliproxyapi/api-key.age;
-    intelephense = {
-      file = ../../secrets/intelephense/licence.age;
-      path = "${config.home.homeDirectory}/intelephense/licence.txt";
-    };
   };
 
-  home.shellAliases = {
-    k = "kubectl";
-    kga = "kubectl get all";
-    kgp = "kubectl get pods";
-    kdp = "kubectl describe pod";
-    kcuc = "kubectl config use-context";
-    krr = "kubectl rollout restart";
+  home.packages = with pkgs;
+    [
+      # Cloud access
+      awscli
+      linode-cli
 
-    dep = "vendor/bin/dep";
-
-    sail = "vendor/bin/sail";
-    s = "vendor/bin/sail";
-    sud = "vendor/bin/sail up -d";
-    sdown = "vendor/bin/sail down";
-    art = "vendor/bin/sail artisan";
-    sa = "vendor/bin/sail artisan";
-    sc = "vendor/bin/sail composer";
-    sp = "vendor/bin/sail php";
-    sn = "vendor/bin/sail npm";
-    st = "vendor/bin/sail tinker";
-    sd = "vendor/bin/sail debug";
-    sda = "vendor/bin/sail debug artisan";
-
-    laravel = "composer global exec laravel --";
-  };
-
-  home.packages = [
-    mcp-toolbox
-    prod-db-mcp
-    grafana-mcp
-    # llm-agents installs the CLI only as `agy`; resolve it from PATH, or the proxy's `agy` launcher is bypassed.
-    (pkgs.writeShellScriptBin "antigravity" ''exec agy "$@"'')
-    pkgs.inputs.llm-agents.opencode-desktop
-  ];
+      # MCP servers
+      mcp-toolbox
+      prod-db-mcp
+      grafana-mcp
+    ]
+    ++ import ./scripts.nix {inherit pkgs;};
 
   programs = {
     ssh.settings = {
@@ -183,32 +154,6 @@ in {
         ControlPersist = "30m";
       };
     };
-
-    claude-code = let
-      claudeCodeRepo = pkgs.fetchFromGitHub {
-        owner = "anthropics";
-        repo = "claude-code";
-        rev = "53f9910f6ef015ddda6a4b5fceab5dd745af7f4c";
-        sha256 = "sha256-ba7eTo6L4Xdb86kS9khFKXOIWWBmlNfUk8W39cSLWeM=";
-      };
-    in {
-      enable = true;
-      package = pkgs.inputs.llm-agents.claude-code;
-      plugins.ralph-wiggum = "${claudeCodeRepo}/plugins/ralph-wiggum";
-    };
-    antigravity-cli = {
-      enable = true;
-      package = pkgs.inputs.llm-agents.antigravity-cli;
-    };
-    github-copilot-cli = {
-      enable = true;
-      package = pkgs.inputs.llm-agents.copilot-cli;
-    };
-    codex = {
-      enable = true;
-      package = pkgs.inputs.llm-agents.codex;
-    };
-    pi.coding-agent.enable = true;
   };
 
   # The gateway firewall flags backticks/`$(...)` as shell injection in every
@@ -220,18 +165,6 @@ in {
   '';
 
   modules.programs = {
-    claude-code.mods.readable-output.enable = true;
-    zed.enable = osConfig.modules.presets.desktop.enable;
-    opencode = {
-      enable = true;
-      default = "v1";
-    };
-    opencode1.enable = true;
-    k9s.enable = true;
-    krr = {
-      enableK9sIntegration = true;
-      package = pkgs.inputs.packages.kubernetes.krr;
-    };
     ai = {
       integrations.gateway.settings.env_files = ["~/.config/mcp-gateway/firewall.env"];
       integrations.jev = {
