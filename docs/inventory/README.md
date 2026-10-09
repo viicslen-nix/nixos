@@ -358,7 +358,7 @@ Only those enabled from this repo.
 | `programs.github-copilot-cli` | `presets/dev/home.nix` | H | H | H |  | H |
 | `programs.helix` | `presets/base` | H | H | H | H | H |
 | `programs.herdr` | `modules/home-manager/programs/herdr` | H | H | H | H | H |
-| `programs.home-manager` | `presets/base` | H | H | H | H | H |
+| `programs.home-manager` | `presets/base/home.nix` | H | H | H | H | H |
 | `programs.hstr` | `presets/base` | H | H | H | H | H |
 | `programs.hunk` | `presets/dev/home.nix` | H | H | H |  | H |
 | `programs.hyprland` | `presets/desktop` |  | S | S |  |  |

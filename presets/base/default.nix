@@ -102,50 +102,7 @@ in {
         homeModules.functionality.autostart
         homeModules.functionality.impermanence
 
-        ({
-          config,
-          osConfig,
-          ...
-        }: {
-          imports = [
-            inputs.agenix.homeManagerModules.default
-            inputs.ai.homeManagerModules.opencode
-            inputs.ai.homeManagerModules.opencode1
-            inputs.zed.homeManagerModules.default
-          ];
-
-          config = {
-            home = {
-              # Set state version
-              stateVersion = mkDefault osConfig.system.stateVersion;
-
-              # Add local bin to PATH
-              sessionPath = ["$HOME/.local/bin"];
-
-              # Every home-manager module that honours this drops its $HOME
-              # dotfile for the XDG dir — and exports the tool's env var with it
-              # (GTK2_RC_FILES, CODEX_HOME, COPILOT_HOME). Flipping it back
-              # strands whatever state already moved.
-              preferXdgDirectories = true;
-            };
-
-            # xresources predates preferXdgDirectories and needs saying twice.
-            xresources.path = "${config.xdg.configHome}/xresources";
-
-            # Allow home-manager to manage itself
-            programs.home-manager.enable = mkDefault true;
-
-            # Use sd-switch to manage systemd services
-            systemd.user.startServices = mkDefault "sd-switch";
-
-            # Configure the package manager
-            xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs.nix;
-
-            # Disable manual
-            manual.manpages.enable = mkDefault false;
-            programs.man.enable = mkDefault false;
-          };
-        })
+        ./home.nix
       ];
 
       users = genAttrs (filter (user: (pathExists ../../users/${user})) (attrNames users)) (name: import ../../users/${name});
