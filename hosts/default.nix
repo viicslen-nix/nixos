@@ -11,22 +11,22 @@ _: {
   hosts = {
     wsl = {
       system = "x86_64-linux";
-      presets = ["base" "work" "personal"];
+      presets = ["base" "dev" "work" "personal"];
     };
 
     dostov-dev = {
       system = "x86_64-linux";
-      presets = ["base" "desktop" "work" "personal"];
+      presets = ["base" "desktop" "dev" "work" "personal"];
     };
 
     home-desktop = {
       system = "x86_64-linux";
-      presets = ["base" "desktop" "work" "personal"];
+      presets = ["base" "desktop" "dev" "work" "personal"];
     };
 
     asus-zephyrus-gu603 = {
       system = "x86_64-linux";
-      presets = ["base" "desktop" "work" "personal"];
+      presets = ["base" "desktop" "dev" "work" "personal"];
     };
 
     lenovo-legion-go = {

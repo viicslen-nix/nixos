@@ -35,7 +35,7 @@
 | --- | --- |
 | **Base** | `nixos-unstable`, with `pkgs.stable` (26.05) and `pkgs.unstable` overlays |
 | **Structure** | [flake-parts](https://flake.parts); every file in `parts/` is auto-imported |
-| **Composition** | Hosts pick presets (`base`, `desktop`, `work`, `personal`) and import modules by path |
+| **Composition** | Hosts pick presets (`base`, `desktop`, `dev`, `work`, `personal`) and import modules by path |
 | **Modules** | ~50 NixOS and ~40 Home Manager modules, discovered automatically |
 | **Inputs** | 19 dependencies resolved lazily through [omniflake](https://github.com/fzakaria/omniflake) |
 | **Desktop** | niri + DankMaterialShell, themed system-wide by Stylix |
@@ -49,11 +49,11 @@ Declared in [`hosts/default.nix`](hosts/default.nix), all `x86_64-linux`.
 
 | Host | Machine | Session | Presets |
 | --- | --- | --- | --- |
-| `dostov-dev` | Intel + NVIDIA workstation, rotated dual monitors | niri, Hyprland | base · desktop · work · personal |
-| `home-desktop` | Intel + NVIDIA desktop, CachyOS kernel | niri, Hyprland | base · desktop · work · personal |
-| `asus-zephyrus-gu603` | ASUS Zephyrus G16 laptop, NVIDIA PRIME | niri | base · desktop · work · personal |
+| `dostov-dev` | Intel + NVIDIA workstation, rotated dual monitors | niri, Hyprland | base · desktop · dev · work · personal |
+| `home-desktop` | Intel + NVIDIA desktop, CachyOS kernel | niri, Hyprland | base · desktop · dev · work · personal |
+| `asus-zephyrus-gu603` | ASUS Zephyrus G16 laptop, NVIDIA PRIME | niri | base · desktop · dev · work · personal |
 | `lenovo-legion-go` | Lenovo Legion Go handheld on [Jovian](https://github.com/Jovian-Experiments/Jovian-NixOS), CachyOS kernel | Steam / Plasma 6 | base · desktop |
-| `wsl` | [NixOS-WSL](https://github.com/nix-community/NixOS-WSL) with Docker Desktop | headless | base · work · personal |
+| `wsl` | [NixOS-WSL](https://github.com/nix-community/NixOS-WSL) with Docker Desktop | headless | base · dev · work · personal |
 
 ## Layout
 
@@ -62,7 +62,7 @@ Declared in [`hosts/default.nix`](hosts/default.nix), all `x86_64-linux`.
 ├── flake.nix        # inputs and the omniflake mapping, nothing else
 ├── parts/           # flake-parts modules, one concern per file
 ├── hosts/           # one directory per machine + the host table
-├── presets/         # base · desktop · work · personal · linode
+├── presets/         # base · desktop · dev · work · personal · linode
 ├── modules/
 │   ├── nixos/           # containers, core, desktop, hardware, programs, services, …
 │   └── home-manager/    # programs and functionality, per user

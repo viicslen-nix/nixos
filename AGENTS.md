@@ -78,7 +78,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **host** — a machine config under `hosts/<name>/`. The set of hosts and the
   presets each one receives is declared in `hosts/default.nix`.
 - **preset** — a composable module bundle in `presets/<name>`
-  (`base`, `desktop`, `work`, `personal`, `linode`). Hosts opt in via their
+  (`base`, `desktop`, `dev`, `work`, `personal`, `linode`). Hosts opt in via their
   `presets = [ … ]` list. `base` is universal/server-safe; `desktop` carries
   **all** graphical/physical-machine config (fonts, printing, avahi, libinput,
   compositor imports, wayland overlay + caches, sound, bluetooth, grub-on-EFI
