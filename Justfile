@@ -23,6 +23,12 @@ lint PATH='.':
 fmt PATH='.' *ARGS:
   nix fmt {{PATH}} {{ARGS}}
 
+# List what a host installs and enables (packages, modules, programs, services,
+# containers, units), each with the preset/host/module file that put it there
+# Usage: just inventory [HOST | --all] [--markdown] [--save] [--json]
+inventory *ARGS:
+  @bash parts/inventory/inventory.sh {{ARGS}}
+
 ############################################################################
 #
 #  Build Commands
