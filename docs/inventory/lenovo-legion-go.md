@@ -511,7 +511,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `programs.git` | `modules/home-manager/programs/git` |
 | `programs.helix` | `presets/base` |
 | `programs.herdr` | `modules/home-manager/programs/herdr` |
-| `programs.home-manager` | `presets/base` |
+| `programs.home-manager` | `presets/base/home.nix` |
 | `programs.hstr` | `presets/base` |
 | `programs.jujutsu` | `modules/home-manager/programs/jujutsu` |
 | `programs.kitty` | `modules/home-manager/programs/kitty` |
