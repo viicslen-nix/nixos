@@ -200,7 +200,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
 - **"What does host X install / who enables Y?" → `just inventory`.** It lists
   packages, `modules.*`, programs, services, containers and repo-defined units
   for the current host (`<host>` or `--all` for others), each with the file that
-  defined it. Use `--json` and filter it rather than grepping presets by hand.
+  defined it. Use `--json` and filter it rather than grepping presets by hand;
+  `--dupes` lists packages defined in more than one place.
   Each host is one capped, foreground eval of about 10 s, so it is within the
   resource rules above. `docs/inventory/` is its `--all --save` output and is
   never hand-edited; regenerate it when a change moves what a host installs.

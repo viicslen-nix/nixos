@@ -675,3 +675,43 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `browser-harness-chrome` | user | `flakes/ai/hmModules/ai` |
 | `mcp-gateway` | user | `flakes/ai/hmModules/ai`, `presets/personal/home.nix` |
 | `t3code` | user | `flakes/ai/hmModules/t3code` |
+
+## Duplicates
+
+Packages defined in more than one place. Drop the raw entry when a module already installs it.
+
+### Packages (31)
+
+| Package | Defined by |
+| --- | --- |
+| 1password | modules/home-manager/functionality/defaults (neoscode)<br>nixos/modules/programs/_1password-gui.nix (system; upstream) |
+| 1password-cli | modules/nixos/programs/one-password (neoscode)<br>nixos/modules/programs/_1password.nix (system; upstream) |
+| antigravity-cli | presets/work (system)<br>modules/programs/antigravity-cli.nix (neoscode; upstream) |
+| betterbird | modules/home-manager/functionality/defaults (neoscode)<br>modules/programs/thunderbird.nix (neoscode; upstream) |
+| bluez | presets/desktop (system)<br>nixos/modules/services/hardware/bluetooth.nix (system; upstream) |
+| btop | presets/base (system)<br>modules/programs/btop.nix (neoscode; upstream) |
+| cava | presets/desktop (neoscode)<br>presets/desktop (system) |
+| curl | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
+| dictd | presets/personal (system)<br>nixos/modules/services/misc/dictd.nix (system; upstream) |
+| dms-shell | presets/desktop (neoscode)<br>presets/desktop (system) |
+| fzf | presets/base (system)<br>modules/programs/fzf.nix (neoscode; upstream) |
+| gcc-wrapper | presets/base (system)<br>presets/work (system) |
+| gh | presets/work (system)<br>modules/programs/gh.nix (neoscode; upstream) |
+| ghost-backup | hosts/dostov-dev (system)<br>presets/work (system) |
+| ghostty | hosts/dostov-dev (system)<br>modules/home-manager/functionality/defaults (neoscode)<br>modules/programs/ghostty.nix (neoscode; upstream) |
+| git | hosts/dostov-dev (system)<br>presets/base (system)<br>modules/programs/git.nix (neoscode; upstream) |
+| glib | presets/base (system)<br>presets/desktop (neoscode)<br>presets/desktop (system) |
+| glibc | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
+| hunkdiff | presets/personal/home.nix (neoscode)<br>presets/work (system) |
+| jujutsu | modules/home-manager/programs/jujutsu (neoscode)<br>presets/base (system)<br>modules/programs/jujutsu.nix (neoscode; upstream) |
+| khal | presets/desktop (neoscode)<br>presets/desktop (system) |
+| matugen | presets/desktop (neoscode)<br>presets/desktop (system) |
+| meld | modules/home-manager/programs/jujutsu (neoscode)<br>presets/personal (system) |
+| networkmanager | presets/desktop (neoscode)<br>presets/desktop (system)<br>nixos/modules/services/networking/networkmanager.nix (system; upstream) |
+| niri | presets/desktop (system)<br>nixos/modules/config/xdg/portal.nix (system; upstream) |
+| nushell | presets/base (system)<br>modules/programs/nushell.nix (neoscode; upstream) |
+| tmux | presets/base (system)<br>modules/programs/tmux.nix (neoscode; upstream) |
+| vivaldi-custom-ui | modules/home-manager/functionality/defaults (neoscode)<br>modules/home-manager/programs/vivaldi (neoscode)<br>modules/programs/chromium.nix (neoscode; upstream) |
+| vscode | modules/home-manager/functionality/defaults (neoscode)<br>presets/work (system) |
+| xdg-utils | presets/desktop (system)<br>nixos/modules/config/xdg/portal.nix (system; upstream)<br>nixos/modules/services/misc/graphical-desktop.nix (system; upstream)<br>nixos/modules/services/printing/cupsd.nix (system; upstream) |
+| zoxide | presets/base (system)<br>modules/programs/zoxide.nix (neoscode; upstream) |

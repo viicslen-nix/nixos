@@ -25,7 +25,7 @@ fmt PATH='.' *ARGS:
 
 # List what a host installs and enables (packages, modules, programs, services,
 # containers, units), each with the preset/host/module file that put it there
-# Usage: just inventory [HOST | --all] [--markdown] [--save] [--json]
+# Usage: just inventory [HOST | --all] [--markdown] [--save] [--json] [--dupes]
 inventory *ARGS:
   @bash parts/inventory/inventory.sh {{ARGS}}
 

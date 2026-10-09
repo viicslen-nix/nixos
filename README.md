@@ -164,7 +164,7 @@ just inventory            # what this host installs/enables, and which file put 
 | | `bump ATTR` / `bump-outdated` / `bump-all` | Update versions and hashes with nix-update |
 | Skills | `skills` / `vendor-skills REPO` / `update-skills` | Manage vendored AI skills |
 | Dev | `fmt` / `lint` / `check-file F` / `repl` | treefmt (fixes), deadnix + statix (report), parse check, REPL |
-| | `inventory [HOST\|--all]` | Packages, modules, programs, services, containers and units per host, each with its source file; `--markdown`, `--json`, `--save` (writes [`docs/inventory`](docs/inventory)) |
+| | `inventory [HOST\|--all]` | Packages, modules, programs, services, containers and units per host, each with its source file; `--markdown`, `--json`, `--save` (writes [`docs/inventory`](docs/inventory)), `--dupes` (packages defined in more than one place) |
 | Servers | `tmux-push HOST [NAME]` | Install the portable tmux config on a non-NixOS server over ssh |
 | Maintenance | `gc` / `optimize` / `clean` / `history` | Store and generation housekeeping |
 | Git | `commit MSG` / `push MSG` | Commit, or commit and push |

@@ -530,3 +530,33 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | --- | --- | --- |
 | `dms` | user | `presets/desktop` |
 | `autostart-1password` | user | `modules/home-manager/functionality/autostart` |
+
+## Duplicates
+
+Packages defined in more than one place. Drop the raw entry when a module already installs it.
+
+### Packages (21)
+
+| Package | Defined by |
+| --- | --- |
+| 1password | modules/home-manager/functionality/defaults (neoscode)<br>nixos/modules/programs/_1password-gui.nix (system; upstream) |
+| 1password-cli | modules/nixos/programs/one-password (neoscode)<br>nixos/modules/programs/_1password.nix (system; upstream) |
+| bluez | presets/desktop (system)<br>nixos/modules/services/hardware/bluetooth.nix (system; upstream) |
+| btop | presets/base (system)<br>modules/programs/btop.nix (neoscode; upstream) |
+| cava | presets/desktop (neoscode)<br>presets/desktop (system) |
+| curl | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
+| dms-shell | presets/desktop (neoscode)<br>presets/desktop (system) |
+| fzf | presets/base (system)<br>modules/programs/fzf.nix (neoscode; upstream) |
+| ghostty | modules/home-manager/functionality/defaults (neoscode)<br>modules/programs/ghostty.nix (neoscode; upstream) |
+| git | presets/base (system)<br>modules/programs/git.nix (neoscode; upstream) |
+| glib | presets/base (system)<br>presets/desktop (neoscode)<br>presets/desktop (system) |
+| glibc | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
+| jujutsu | modules/home-manager/programs/jujutsu (neoscode)<br>presets/base (system)<br>modules/programs/jujutsu.nix (neoscode; upstream) |
+| khal | presets/desktop (neoscode)<br>presets/desktop (system) |
+| matugen | presets/desktop (neoscode)<br>presets/desktop (system) |
+| networkmanager | presets/desktop (neoscode)<br>presets/desktop (system)<br>nixos/modules/services/networking/networkmanager.nix (system; upstream) |
+| nushell | presets/base (system)<br>modules/programs/nushell.nix (neoscode; upstream) |
+| qtvirtualkeyboard | hosts/lenovo-legion-go (system)<br>nixos/modules/services/desktop-managers/plasma6.nix (system; upstream) |
+| tmux | presets/base (system)<br>modules/programs/tmux.nix (neoscode; upstream) |
+| vivaldi-custom-ui | modules/home-manager/functionality/defaults (neoscode)<br>modules/home-manager/programs/vivaldi (neoscode)<br>modules/programs/chromium.nix (neoscode; upstream) |
+| zoxide | presets/base (system)<br>modules/programs/zoxide.nix (neoscode; upstream) |
