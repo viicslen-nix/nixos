@@ -52,7 +52,7 @@ in {
   ];
 
   config = {
-    # Flag graphical hosts so work/personal can gate their GUI-only packages.
+    # Flag graphical hosts so dev/work/personal can gate their GUI-only packages.
     modules.presets.desktop.enable = true;
 
     home-manager.sharedModules = [./home.nix];

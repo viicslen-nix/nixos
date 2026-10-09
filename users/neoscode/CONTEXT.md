@@ -7,10 +7,10 @@ configs.
 ## Every host loads this file
 
 It is applied to headless `wsl` and the base+desktop handheld alike, so only
-identity and shell-level config sit here unconditionally. Work-only items
-(intelephense licence, kubectl/sail/deployer aliases, the cloudflared
-`ProxyCommand`) live in the `work` preset's `home.nix`; the avante key in
-`personal`. GUI items stay here but are gated on
+identity and shell-level config sit here unconditionally. Coding items
+(intelephense licence, kubectl/sail/deployer aliases) live in the `dev`
+preset's `home.nix`, the cloudflared `ProxyCommand` in `work`'s, the avante key
+in `personal`'s. GUI items stay here but are gated on
 `osConfig.modules.presets.desktop.enable`: the `defaults` slots, the 1Password
 autostart, and the ghostty/wezterm/vivaldi `enable`s. The imports themselves
 cannot be conditional, so the gate is on each module's `enable`.

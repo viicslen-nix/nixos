@@ -92,11 +92,13 @@ like its directory:
 | --- | --- |
 | **base** | Every host, server-safe. Home Manager, agenix, NUR, nh, zsh, CLI tooling, binary caches, the flake registry |
 | **desktop** | Everything graphical: niri, Hyprland, DMS and its greeter, Stylix, fonts, sound, Bluetooth, printing, Plymouth, 1Password |
-| **work** | Development stack: Docker/Podman, local containers (Traefik, MySQL, Redis, Meilisearch, Qdrant, …), mkcert CA, PHP, Node, Go, cloud and Kubernetes CLIs, AI harnesses |
-| **personal** | QMK, Emacs, Discord, Obsidian, LocalSend, the Neovim build, the personal AI profile |
-| **linode** | Linode networking and support tools (no host uses it today) |
+| **dev** | General coding tools: Docker/Podman, local containers (Traefik, MySQL, Redis, Meilisearch, Qdrant, …), toolchains (PHP, Node, Go, …), git and Kubernetes CLIs, editors, database clients, the AI harnesses and apps |
+| **work** | Employer access only: shared servers and their ssh hosts, production MCPs, cloud CLIs, company skills, the mkcert CA |
+| **personal** | Your own apps: chat, media, notes, phone tools, QMK, LocalSend, the Neovim build, personal AI integrations |
+| **linode** | Server template: Linode networking and support tools. No host uses it yet; a Linode host would list `base` + `linode` |
 
-GUI-only packages in `work` and `personal` are gated on the desktop preset, so
+Each preset is a `default.nix` (system) plus a `home.nix` (Home Manager). GUI-only
+packages in `dev`, `work` and `personal` are gated on the desktop preset, so
 headless hosts such as `wsl` stay lean.
 
 What each preset actually ends up installing on each host is generated, not
