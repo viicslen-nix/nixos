@@ -85,7 +85,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | freerdp | `hosts/dostov-dev` |  | S |  |  |  |
 | fzf | `presets/base` | S | S | S | S | S |
 | gcc | `presets/work` | S | S | S |  | S |
-| gcc-wrapper | `presets/base`, `presets/work` | S | S | S | S | S |
+| gcc-wrapper | `presets/dev/home.nix`, `presets/work` | H S | H S | H S |  | H S |
 | generate-cert | `presets/work` | S | S | S |  | S |
 | gh | `presets/work` | S | S | S |  | S |
 | gh-dash | `presets/work` | S | S | S |  | S |
@@ -119,7 +119,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | jev | `flakes/ai/hmModules/ai` | H | H | H |  |  |
 | jj-starship | `modules/home-manager/programs/starship` | H | H | H | H | H |
 | jq | `presets/base` | S | S | S | S | S |
-| jujutsu | `modules/home-manager/programs/jujutsu`, `presets/base` | H S | H S | H S | H S | H S |
+| jujutsu | `modules/home-manager/programs/jujutsu` | H | H | H | H | H |
 | just | `presets/base` | S | S | S | S | S |
 | keymapviz | `modules/nixos/programs/qmk` | S | S | S |  |  |
 | khal | `presets/desktop` | H S | H S | H S | H S |  |
@@ -127,7 +127,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | krr | `modules/home-manager/programs/krr` | H | H | H |  | H |
 | kubectl | `presets/work` | S | S | S |  | S |
 | kubernetes-helm | `presets/work` | S | S | S |  | S |
-| lazygit | `presets/base` | S | S | S | S | S |
+| lazygit | `presets/dev/home.nix` | H | H | H |  | H |
 | lazyjj | `modules/home-manager/programs/jujutsu` | H | H | H | H | H |
 | legcord | `presets/personal` | S | S | S |  |  |
 | lens-desktop | `presets/work` | S | S | S |  |  |
@@ -169,7 +169,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | nushell | `presets/base` | S | S | S | S | S |
 | nvtop | `modules/nixos/hardware/nvidia` | S | S | S |  |  |
 | obsidian | `presets/personal` | S | S | S |  |  |
-| odiff | `presets/base` | S | S | S | S | S |
+| odiff | `presets/dev/home.nix` | H | H | H |  | H |
 | oh-my-opencode | `presets/base` | H | H | H | H | H |
 | onlyoffice-desktopeditors | `hosts/dostov-dev` |  | S |  |  |  |
 | op1 | `flakes/ai/hmModules/opencode/v1.nix` | H | H | H |  | H |
