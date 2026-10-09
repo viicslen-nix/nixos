@@ -8,7 +8,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## System
 
-### Packages (291)
+### Packages (292)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -36,6 +36,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | ripgrep | 15.2.0 | `presets/base` |
 | search-package-files |  | `presets/base` |
 | system-upgrade |  | `presets/base` |
+| tlrc | 1.13.1 | `presets/base` |
 | tmux | 3.7c | `presets/base` |
 | tmux-session |  | `presets/base` |
 | unzip | 6.0 | `presets/base` |
@@ -390,7 +391,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (72)
+### Packages (74)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -456,6 +457,8 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | herdr | 0.9.1 | `modules/programs/herdr.nix` |
 | hstr | 3.2 | `modules/programs/hstr.nix` |
 | jujutsu | 0.45.1 | `modules/programs/jujutsu.nix` |
+| kitty | 0.49.0 | `modules/programs/kitty.nix` |
+| nerd-fonts-fira-code | 3.5.0+6.2 | `modules/programs/kitty.nix` |
 | nushell | 0.115.1 | `modules/programs/nushell.nix` |
 | quickshell | 0.3.1 | `modules/programs/quickshell.nix` |
 | starship | 1.26.0 | `modules/programs/starship.nix` |
@@ -467,7 +470,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | zsh | 5.9.2 | `modules/programs/zsh` |
 | oh-my-zsh | 2026-08-16 | `modules/programs/zsh/plugins/oh-my-zsh.nix` |
 
-### Modules (16)
+### Modules (17)
 
 | Option | Enabled by |
 | --- | --- |
@@ -479,6 +482,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.herdr` | `modules/home-manager/programs/herdr` |
 | `modules.programs.ideavim` | `modules/home-manager/programs/ideavim` |
 | `modules.programs.jujutsu` | `modules/home-manager/programs/jujutsu` |
+| `modules.programs.kitty` | `modules/home-manager/programs/kitty` |
 | `modules.programs.nushell` | `modules/home-manager/programs/nushell` |
 | `modules.programs.sesh` | `modules/home-manager/programs/sesh` |
 | `modules.programs.starship` | `modules/home-manager/programs/starship` |
@@ -488,7 +492,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.worktrunk` | `modules/home-manager/programs/worktrunk` |
 | `modules.programs.zsh` | `modules/home-manager/programs/zsh` |
 
-### Programs (27)
+### Programs (28)
 
 | Option | Enabled by |
 | --- | --- |
@@ -510,6 +514,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `programs.home-manager` | `presets/base` |
 | `programs.hstr` | `presets/base` |
 | `programs.jujutsu` | `modules/home-manager/programs/jujutsu` |
+| `programs.kitty` | `modules/home-manager/programs/kitty` |
 | `programs.nushell` | `modules/home-manager/programs/nushell` |
 | `programs.quickshell` | `presets/desktop` |
 | `programs.ssh` | `presets/base` |

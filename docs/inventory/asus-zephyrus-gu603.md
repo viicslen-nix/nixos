@@ -8,7 +8,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## System
 
-### Packages (214)
+### Packages (215)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -36,6 +36,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | ripgrep | 15.2.0 | `presets/base` |
 | search-package-files |  | `presets/base` |
 | system-upgrade |  | `presets/base` |
+| tlrc | 1.13.1 | `presets/base` |
 | tmux | 3.7c | `presets/base` |
 | tmux-session |  | `presets/base` |
 | unzip | 6.0 | `presets/base` |
@@ -353,7 +354,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (180)
+### Packages (189)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -374,6 +375,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | cloudflared | 2026.9.1 | `presets/dev/home.nix` |
 | cmake | 4.4.2 | `presets/dev/home.nix` |
 | composer | 2.10.3 | `presets/dev/home.nix` |
+| cursor | 3.22.7 | `presets/dev/home.nix` |
 | dbeaver-bin | 26.2.0 | `presets/dev/home.nix` |
 | delta | 0.19.2 | `presets/dev/home.nix` |
 | devbox | 0.17.5 | `presets/dev/home.nix` |
@@ -411,6 +413,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | php-with-extensions | 8.4.25 | `presets/dev/home.nix` |
 | pi |  | `presets/dev/home.nix` |
 | pkg-config-wrapper | 0.29.2 | `presets/dev/home.nix` |
+| postman | 12.20.1 | `presets/dev/home.nix` |
 | python3 | 3.14.7 | `presets/dev/home.nix` |
 | responsively | 1.18.0 | `presets/dev/home.nix` |
 | sublime-merge | 2125 | `presets/dev/home.nix` |
@@ -426,10 +429,12 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | linode-cli | 5.56.2 | `presets/work/home.nix` |
 | mcp-toolbox | 1.8.0 | `presets/work/home.nix` |
 | prod-db-mcp |  | `presets/work/home.nix` |
+| Vial | 0.7.5 | `presets/personal/home.nix` |
 | android-tools | 37.0.0 | `presets/personal/home.nix` |
 | asciinema | 3.2.1 | `presets/personal/home.nix` |
 | dictd | 1.13.3 | `presets/personal/home.nix` |
 | discord | 1.0.158 | `presets/personal/home.nix` |
+| discordo | 0-unstable-2026-08-18 | `presets/personal/home.nix` |
 | drawing | 1.0.2 | `presets/personal/home.nix` |
 | drawio | 31.4.5 | `presets/personal/home.nix` |
 | ferdium | 7.2.3 | `presets/personal/home.nix` |
@@ -439,6 +444,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | nchat | 5.16.9 | `presets/personal/home.nix` |
 | nixvim |  | `presets/personal/home.nix` |
 | obsidian | 1.13.7 | `presets/personal/home.nix` |
+| onlyoffice-desktopeditors | 9.1.0 | `presets/personal/home.nix` |
 | qtscrcpy | 3.3.3 | `presets/personal/home.nix` |
 | scrcpy | 4.1 | `presets/personal/home.nix` |
 | yazi | 26.9.1 | `presets/personal/home.nix` |
@@ -453,11 +459,13 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | meld | 3.24.0 | `modules/home-manager/programs/jujutsu` |
 | mergiraf | 0.19.1 | `modules/home-manager/programs/jujutsu` |
 | krr | 1.30.0 | `modules/home-manager/programs/krr` |
+| ray | 2.8.1 | `modules/home-manager/programs/ray` |
 | eza | 0.23.5 | `modules/home-manager/programs/sesh` |
 | sesh | 2.30.1 | `modules/home-manager/programs/sesh` |
 | sesh-list |  | `modules/home-manager/programs/sesh` |
 | jj-starship | 0.7.1-292224a | `modules/home-manager/programs/starship` |
 | starship-smart-dir |  | `modules/home-manager/programs/starship` |
+| tinkerwell | 4.19.0 | `modules/home-manager/programs/tinkerwell` |
 | vivaldi-custom-ui | 8.3.4175.3 | `modules/home-manager/programs/vivaldi` |
 | worktrunk | 0.74.0 | `modules/home-manager/programs/worktrunk` |
 | wt-dashboard |  | `modules/home-manager/programs/worktrunk` |
@@ -499,6 +507,8 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | qtstyleplugin-kvantum | 1.1.8 | `modules/misc/qt` |
 | qtstyleplugin-kvantum5 | 1.1.8 | `modules/misc/qt` |
 | browser-harness-profile.desktop |  | `modules/misc/xdg/desktop-entries.nix` |
+| ray.desktop |  | `modules/misc/xdg/desktop-entries.nix` |
+| tinkerwell.desktop |  | `modules/misc/xdg/desktop-entries.nix` |
 | dummy-xdg-mime-dirs1 |  | `modules/misc/xdg/mime.nix` |
 | dummy-xdg-mime-dirs2 |  | `modules/misc/xdg/mime.nix` |
 | shared-mime-info | 2.4 | `modules/misc/xdg/mime.nix` |
@@ -538,7 +548,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | oh-my-zsh | 2026-08-16 | `modules/programs/zsh/plugins/oh-my-zsh.nix` |
 | flameshot | 14.0.0 | `modules/services/flameshot.nix` |
 
-### Modules (33)
+### Modules (35)
 
 | Option | Enabled by |
 | --- | --- |
@@ -566,9 +576,11 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.nushell` | `modules/home-manager/programs/nushell` |
 | `modules.programs.opencode` | `presets/dev/home.nix` |
 | `modules.programs.opencode1` | `presets/dev/home.nix` |
+| `modules.programs.ray` | `presets/dev/home.nix` |
 | `modules.programs.sesh` | `modules/home-manager/programs/sesh` |
 | `modules.programs.starship` | `modules/home-manager/programs/starship` |
 | `modules.programs.t3code` | `presets/dev/home.nix` |
+| `modules.programs.tinkerwell` | `presets/dev/home.nix` |
 | `modules.programs.tmux` | `modules/home-manager/programs/tmux` |
 | `modules.programs.vivaldi` | `presets/base` |
 | `modules.programs.wezterm` | `presets/base` |

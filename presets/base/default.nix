@@ -177,6 +177,7 @@ in {
           glibc
           glib
           just
+          tlrc
           busybox
 
           # Keep explicit: environment.shells advertises nu, but the shell is zsh.

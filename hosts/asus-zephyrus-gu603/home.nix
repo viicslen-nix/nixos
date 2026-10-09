@@ -1,12 +1,4 @@
-{
-  lib,
-  homeModules,
-  ...
-}: {
-  imports = with homeModules; [
-    programs.kitty
-  ];
-
+{lib, ...}: {
   dconf.settings = {
     "org/gnome/shell/extensions/arcmenu" = {
       menu-button-border-color = lib.hm.gvariant.mkTuple [true "transparent"];
