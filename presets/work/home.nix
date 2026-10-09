@@ -103,6 +103,8 @@ in {
     st = "vendor/bin/sail tinker";
     sd = "vendor/bin/sail debug";
     sda = "vendor/bin/sail debug artisan";
+
+    laravel = "composer global exec laravel --";
   };
 
   home.packages = [

@@ -157,9 +157,12 @@ with lib; {
         act
         gh-dash
         percona-toolkit
+        unstable.but
         pkgs.inputs.hunk.hunk
         # pkgs.inputs.gitura.default
         pkgs.inputs.ghost-backup.default
+        pkgs.inputs.llm-agents.antigravity-cli
+        pkgs.inputs.tuicr.default
       ]
       ++ import ./scripts.nix {inherit pkgs;}
       # GUI apps only on graphical hosts (excluded on WSL/headless)
@@ -169,9 +172,8 @@ with lib; {
         lens
         insomnia
         dbeaver-bin
-        pkgs.inputs.tuicr.default
+        gitbutler
         pkgs.inputs.llm-agents.claude-desktop
-        pkgs.inputs.llm-agents.antigravity-cli
         pkgs.inputs.packages.app-images.responsively
         pkgs.inputs.packages.superset.desktop
         pkgs.inputs.packages.github.copilot-desktop
