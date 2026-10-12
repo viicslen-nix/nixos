@@ -28,3 +28,6 @@
 [submodule "flakes/home"]
 	path = flakes/home
 	url = https://github.com/viicslen-nix/home
+[submodule "flakes/android"]
+	path = flakes/android
+	url = https://github.com/viicslen-nix/android
