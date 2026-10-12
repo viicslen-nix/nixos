@@ -28,7 +28,7 @@
 in {
   imports = [
     inputs.ai.homeManagerModules.default
-    inputs.hunk.homeManagerModules.default
+    homeModules.programs.hunk
     homeModules.programs.ray
     homeModules.programs.tinkerwell
     homeModules.programs.k9s
@@ -187,27 +187,6 @@ in {
       package = pkgs.inputs.llm-agents.codex;
     };
     pi.coding-agent.enable = true;
-    hunk = {
-      enable = true;
-      enableGitIntegration = true;
-      settings = {
-        mode = "auto";
-        wrap_lines = false;
-        line_numbers = true;
-        transparent_background = false;
-
-        # Binding a key steals it from its default holder — rehome, don't drop.
-        keybindings = {
-          "hunk.review.scrollCodeLeft" = ["h" "left" "shift+left"];
-          "hunk.review.scrollCodeRight" = ["l" "right" "shift+right"];
-          "hunk.view.toggleLineNumbers" = "ctrl+l";
-          "hunk.review.pageDown" = ["ctrl+f" "pagedown" "space"];
-          "hunk.review.pageUp" = ["ctrl+b" "pageup" "shift+space"];
-          "hunk.review.halfPageDown" = ["ctrl+d" "d"];
-          "hunk.review.halfPageUp" = ["ctrl+u" "u"];
-        };
-      };
-    };
   };
 
   modules.programs = {

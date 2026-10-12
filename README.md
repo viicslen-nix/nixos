@@ -112,7 +112,7 @@ Under `flakes/`, each a submodule backed by its own `viicslen-nix/*` repo.
 | --- | --- |
 | [`lib`](flakes/lib) | Helper library: option helpers, module discovery, omniflake wiring, skill and container helpers |
 | [`packages`](flakes/packages) | Local packages (Superset, Vivaldi builds, PHP, AppImages, scripts, …) with bump tooling |
-| [`home`](flakes/home) | Shell home-manager modules shared with the phone: zsh, bash, tmux, starship, atuin, git, jujutsu, btop, nushell, and the shell profile |
+| [`home`](flakes/home) | Shell home-manager modules shared with the phone: zsh, bash, tmux, starship, atuin, git, gh, ssh, hunk, jujutsu, btop, nushell, and the shell profile |
 | [`ai`](flakes/ai) | Portable AI-harness config for Claude Code, opencode, Codex, Copilot CLI and Antigravity: skills, MCP servers, integrations |
 | [`niri`](flakes/niri) | niri-unstable, keybinds, window rules, scratchpads, which-key menus |
 | [`hyprland`](flakes/hyprland) | Hyprland via UWSM, Lua config, hyprsplit, DMS integration |

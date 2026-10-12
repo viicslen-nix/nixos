@@ -29,6 +29,8 @@ in {
     exo
     noctalia
     git
+    gh
+    ssh
     jujutsu
     sesh
     vivaldi
@@ -51,23 +53,6 @@ in {
     };
 
     packages = [pkgs.inputs.ai.oh-my-opencode];
-
-    # Don't drop: ssh will not open a control socket if this directory is missing.
-    file.".ssh/controlmasters/.keep".text = "";
-  };
-
-  xdg = {
-    configFile = {
-      "gh/hosts.yml".source = (pkgs.formats.yaml {}).generate "hosts.yml" {
-        "github.com" = {
-          user = "viicslen";
-          git_protocol = "https";
-          users = {
-            viicslen = "";
-          };
-        };
-      };
-    };
   };
 
   programs = let
@@ -96,21 +81,7 @@ in {
 
     helix.enable = true;
 
-    gh = {
-      enable = true;
-      gitCredentialHelper.enable = true;
-      settings.prompts = "disabled";
-      extensions = with pkgs; [
-        gh-stack
-        github-copilot-cli
-      ];
-    };
-
-    ssh = {
-      enable = true;
-      enableDefaultConfig = false;
-      settings."*".ControlPath = "${osConfig.users.users.${user}.home}/.ssh/controlmasters/%r@%h:%p";
-    };
+    gh.extensions = [pkgs.github-copilot-cli];
   };
 
   modules = {

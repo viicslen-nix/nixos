@@ -393,7 +393,6 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | go | 1.26.7 | `presets/dev/home.nix` |
 | gosec | 2.29.0 | `presets/dev/home.nix` |
 | graphviz | 15.1.1 | `presets/dev/home.nix` |
-| hunkdiff | 0.20.0 | `presets/dev/home.nix` |
 | insomnia | 13.0.0 | `presets/dev/home.nix` |
 | jetbrains-toolbox | 3.8.1.88030 | `presets/dev/home.nix` |
 | kubectl | 1.37.0 | `presets/dev/home.nix` |
@@ -481,6 +480,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | opencode1 |  | `flakes/ai/hmModules/opencode/v1.nix` |
 | opencode2 |  | `flakes/ai/hmModules/opencode/v2.nix` |
 | t3code | 0.0.46-nightly.20261009.2873 | `flakes/ai/hmModules/t3code` |
+| hunkdiff | 0.20.0 | `flakes/home/modules/hunk` |
 | jujutsu | 0.45.1 | `flakes/home/modules/jujutsu` |
 | lazyjj | 0.6.1 | `flakes/home/modules/jujutsu` |
 | meld | 3.24.0 | `flakes/home/modules/jujutsu` |
@@ -548,7 +548,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | oh-my-zsh | 2026-08-16 | `modules/programs/zsh/plugins/oh-my-zsh.nix` |
 | flameshot | 14.0.0 | `modules/services/flameshot.nix` |
 
-### Modules (36)
+### Modules (39)
 
 | Option | Enabled by |
 | --- | --- |
@@ -565,9 +565,11 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.btop` | `flakes/home/modules/btop` |
 | `modules.programs.claude-code` | `flakes/ai/hmModules/claude-code` |
 | `modules.programs.claude-code.mods.readable-output` | `presets/dev/home.nix` |
+| `modules.programs.gh` | `flakes/home/modules/gh` |
 | `modules.programs.ghostty` | `presets/base` |
 | `modules.programs.git` | `flakes/home/modules/git` |
 | `modules.programs.herdr` | `modules/home-manager/programs/herdr` |
+| `modules.programs.hunk` | `flakes/home/modules/hunk` |
 | `modules.programs.ideavim` | `modules/home-manager/programs/ideavim` |
 | `modules.programs.jujutsu` | `flakes/home/modules/jujutsu` |
 | `modules.programs.k9s` | `presets/dev/home.nix` |
@@ -579,6 +581,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.ray` | `presets/dev/home.nix` |
 | `modules.programs.sesh` | `modules/home-manager/programs/sesh` |
 | `modules.programs.shellProfile` | `flakes/home/modules/profile` |
+| `modules.programs.ssh` | `flakes/home/modules/ssh` |
 | `modules.programs.starship` | `flakes/home/modules/starship` |
 | `modules.programs.t3code` | `presets/dev/home.nix` |
 | `modules.programs.tinkerwell` | `presets/dev/home.nix` |
@@ -606,7 +609,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `programs.direnv` | `flakes/home/modules/profile` |
 | `programs.fish` | `flakes/home/modules/nushell` |
 | `programs.fzf` | `flakes/home/modules/profile` |
-| `programs.gh` | `presets/base` |
+| `programs.gh` | `flakes/home/modules/gh` |
 | `programs.ghostty` | `modules/home-manager/programs/ghostty` |
 | `programs.git` | `flakes/home/modules/git` |
 | `programs.github-copilot-cli` | `presets/dev/home.nix` |
@@ -614,7 +617,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `programs.herdr` | `modules/home-manager/programs/herdr` |
 | `programs.home-manager` | `presets/base/home.nix` |
 | `programs.hstr` | `flakes/home/modules/profile` |
-| `programs.hunk` | `presets/dev/home.nix` |
+| `programs.hunk` | `flakes/home/modules/hunk` |
 | `programs.jujutsu` | `flakes/home/modules/jujutsu` |
 | `programs.k9s` | `modules/home-manager/programs/k9s` |
 | `programs.kitty` | `modules/home-manager/programs/kitty` |
@@ -624,7 +627,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `programs.opencode2` | `flakes/ai/hmModules/opencode/v2.nix` |
 | `programs.pi.coding-agent` | `presets/dev/home.nix` |
 | `programs.quickshell` | `presets/desktop` |
-| `programs.ssh` | `presets/base` |
+| `programs.ssh` | `flakes/home/modules/ssh` |
 | `programs.starship` | `flakes/home/modules/starship` |
 | `programs.tmux` | `flakes/home/modules/tmux` |
 | `programs.wezterm` | `modules/home-manager/programs/wezterm` |

@@ -45,6 +45,7 @@
         nixpkgs.follows = "nixpkgs";
         viicslen-lib.follows = "viicslen-lib";
         treefmt-nix.follows = "treefmt-nix";
+        hunk.inputs.bun2nix.inputs.systems.follows = "systems-linux";
       };
     };
     laravel-sail = {
@@ -192,11 +193,6 @@
     ghost-backup = {
       url = "github:FmTod/ghost-backup";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hunk = {
-      url = "github:modem-dev/hunk";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.bun2nix.inputs.systems.follows = "systems-linux";
     };
   };
 
