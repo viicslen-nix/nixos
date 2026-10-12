@@ -47,6 +47,10 @@
         treefmt-nix.follows = "treefmt-nix";
       };
     };
+    laravel-sail = {
+      url = "github:ariaieboy/laravel-sail";
+      flake = false;
+    };
     zjstatus = {
       url = "github:dj95/zjstatus";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -1045,7 +1045,6 @@
       "inputs": {
         "fzf-tab": "fzf-tab",
         "jj-starship": "jj-starship",
-        "laravel-sail": "laravel-sail",
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -2566,7 +2565,8 @@
         "viicslen-lib": "viicslen-lib",
         "worktrunk": "worktrunk",
         "zed": "zed",
-        "zjstatus": "zjstatus"
+        "zjstatus": "zjstatus",
+        "laravel-sail": "laravel-sail"
       }
     },
     "rust-analyzer-src": {
