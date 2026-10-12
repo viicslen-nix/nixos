@@ -56,6 +56,24 @@ Same trick as prod-db-mcp: the token can't live in the MCP `env` block (that
 lands in a world-readable JSON config, and in the repo), so the wrapper reads
 it from the agenix secret at spawn time instead.
 
+## discord-logs-mcp
+
+Reads the app's production log channels in Discord. It uses its own bot,
+*MyListerHub Logs*, rather than the app's bot. A Discord bot has exactly one
+token, and its permissions come from guild roles, not the token, so read-only
+needs a separate bot. It holds View Channel + Read Message History only, with
+Send Messages denied on the category (bots inherit `@everyone`), and has the
+Message Content intent on. Without that intent, Discord returns embeds and
+attachments empty over REST too, and that is where the log text lives.
+
+`@discord-mcp/cli` is the server because it returns full embeds and attachment
+URLs; `mcp-discord` and `@quadslab.io/discord-mcp` return only counts.
+`MCP_CATEGORIES=messages` cuts the advertised tools from 221 to 22, and
+`MCP_WRITE_MODE=preview` turns any write into a no-op. Both are set in the
+wrapper rather than the `env` block so they hold however the script is
+spawned. It is not packaged, so it runs through a version-pinned `npx`, with the
+npm cache moved under XDG.
+
 ## The `db-prod-read-tunnel` ssh host
 
 The tunnel for the read-only MCP database server (`~/.local/bin/prod-db-mcp`).

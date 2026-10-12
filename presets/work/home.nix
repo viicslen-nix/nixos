@@ -64,12 +64,24 @@
     export GRAFANA_SERVICE_ACCOUNT_TOKEN
     exec ${lib.getExe pkgs.mcp-grafana} "$@"
   '';
+
+  discord-logs-mcp = pkgs.writeShellScriptBin "discord-logs-mcp" ''
+    set -euo pipefail
+    ${xdgRuntimeDir}
+    DISCORD_TOKEN="$(cat ${config.age.secrets.discord-logs-bot-token.path})"
+    export DISCORD_TOKEN
+    export MCP_CATEGORIES=messages MCP_WRITE_MODE=preview
+    export npm_config_cache="''${XDG_CACHE_HOME:-$HOME/.cache}/npm"
+    export PATH="${pkgs.nodejs_22}/bin:$PATH"
+    exec npx -y @discord-mcp/cli@0.31.1
+  '';
 in {
   imports = [inputs.ai.homeManagerModules.ai];
 
   age.secrets = {
     prod-db-mysql-password.file = ../../secrets/prod-db/mysql-password.age;
     grafana-service-account-token.file = ../../secrets/grafana/service-account-token.age;
+    discord-logs-bot-token.file = ../../secrets/discord/logs-bot-token.age;
     typesafe-api-key.file = ../../secrets/typesafe/api-key.age;
     cliproxyapi-api-key.file = ../../secrets/cliproxyapi/api-key.age;
   };
@@ -84,6 +96,7 @@ in {
       mcp-toolbox
       prod-db-mcp
       grafana-mcp
+      discord-logs-mcp
     ]
     ++ import ./scripts.nix {inherit pkgs;};
 
@@ -185,6 +198,7 @@ in {
         ci-pipeline = ./ai/ci-pipeline.md;
         cd-pipeline = ./ai/cd-pipeline.md;
         prod-db-operations = ./ai/prod-db-operations.md;
+        discord-logs = ./ai/discord-logs.md;
       };
       mcps = with lib;
       with pkgs; {
@@ -193,6 +207,7 @@ in {
           command = getExe grafana-mcp;
           env.GRAFANA_URL = "https://grafana.mylisterhub.com";
         };
+        discord-logs.command = getExe discord-logs-mcp;
       };
     };
   };
