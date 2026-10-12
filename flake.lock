@@ -380,6 +380,30 @@
         "type": "github"
       }
     },
+    "dank-pinentry": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "dms",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1779590881,
+        "narHash": "sha256-f7vGlkuTunR90+ERR6oW3XxHeKRhO72lpkr8m8V9TsM=",
+        "owner": "pacman99",
+        "repo": "DankPinentry",
+        "rev": "2a403dd67be8d346687af119cbd5314fe789bc94",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pacman99",
+        "repo": "DankPinentry",
+        "type": "github"
+      }
+    },
     "dank-qml-common": {
       "flake": false,
       "locked": {
@@ -415,6 +439,7 @@
     "dms": {
       "inputs": {
         "dank-greeter": "dank-greeter",
+        "dank-pinentry": "dank-pinentry",
         "dms": "dms_2",
         "dms-plugin-registry": "dms-plugin-registry",
         "nixpkgs": [
