@@ -40,6 +40,15 @@ in {
     path = "${config.home.homeDirectory}/intelephense/licence.txt";
   };
 
+  # mkAfter keeps it after the shared zsh module's fzf-tab.
+  programs.zsh.plugins = lib.mkAfter [
+    {
+      name = "laravel-sail";
+      src = inputs.laravel-sail;
+      file = "laravel-sail.plugin.zsh";
+    }
+  ];
+
   home.shellAliases = {
     k = "kubectl";
     kga = "kubectl get all";
