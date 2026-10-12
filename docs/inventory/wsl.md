@@ -255,16 +255,10 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | nchat | 5.16.9 | `presets/personal/home.nix` |
 | nixvim |  | `presets/personal/home.nix` |
 | yazi | 26.9.1 | `presets/personal/home.nix` |
-| jujutsu | 0.45.1 | `modules/home-manager/programs/jujutsu` |
-| lazyjj | 0.6.1 | `modules/home-manager/programs/jujutsu` |
-| meld | 3.24.0 | `modules/home-manager/programs/jujutsu` |
-| mergiraf | 0.19.1 | `modules/home-manager/programs/jujutsu` |
 | krr | 1.30.0 | `modules/home-manager/programs/krr` |
 | eza | 0.23.5 | `modules/home-manager/programs/sesh` |
 | sesh | 2.30.1 | `modules/home-manager/programs/sesh` |
 | sesh-list |  | `modules/home-manager/programs/sesh` |
-| jj-starship | 0.7.1-292224a | `modules/home-manager/programs/starship` |
-| starship-smart-dir |  | `modules/home-manager/programs/starship` |
 | worktrunk | 0.74.0 | `modules/home-manager/programs/worktrunk` |
 | wt-dashboard |  | `modules/home-manager/programs/worktrunk` |
 | browser-harness | 0.1.13 | `flakes/ai/hmModules/ai` |
@@ -282,6 +276,12 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | opencode1 |  | `flakes/ai/hmModules/opencode/v1.nix` |
 | opencode2 |  | `flakes/ai/hmModules/opencode/v2.nix` |
 | t3code | 0.0.46-nightly.20261009.2873 | `flakes/ai/hmModules/t3code` |
+| jujutsu | 0.45.1 | `flakes/home/modules/jujutsu` |
+| lazyjj | 0.6.1 | `flakes/home/modules/jujutsu` |
+| meld | 3.24.0 | `flakes/home/modules/jujutsu` |
+| mergiraf | 0.19.1 | `flakes/home/modules/jujutsu` |
+| jj-starship | 0.7.1-292224a | `flakes/home/modules/starship` |
+| starship-smart-dir |  | `flakes/home/modules/starship` |
 | hm-session-vars.sh |  | `modules/home-environment.nix` |
 | dummy-fc-dir1 |  | `modules/misc/fontconfig.nix` |
 | dummy-fc-dir2 |  | `modules/misc/fontconfig.nix` |
@@ -316,7 +316,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | zsh | 5.9.2 | `modules/programs/zsh` |
 | oh-my-zsh | 2026-08-16 | `modules/programs/zsh/plugins/oh-my-zsh.nix` |
 
-### Modules (27)
+### Modules (28)
 
 | Option | Enabled by |
 | --- | --- |
@@ -327,62 +327,63 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.ai.integrations.mempalace` | `flakes/ai/hmModules/profile.nix` |
 | `modules.programs.ai.integrations.openwiki` | `flakes/ai/hmModules/profile.nix` |
 | `modules.programs.aiProfile` | `presets/dev/home.nix` |
-| `modules.programs.atuin` | `modules/home-manager/programs/atuin` |
-| `modules.programs.bash` | `modules/home-manager/programs/bash` |
-| `modules.programs.btop` | `modules/home-manager/programs/btop` |
+| `modules.programs.atuin` | `flakes/home/modules/atuin` |
+| `modules.programs.bash` | `flakes/home/modules/bash` |
+| `modules.programs.btop` | `flakes/home/modules/btop` |
 | `modules.programs.claude-code` | `flakes/ai/hmModules/claude-code` |
 | `modules.programs.claude-code.mods.readable-output` | `presets/dev/home.nix` |
-| `modules.programs.git` | `modules/home-manager/programs/git` |
+| `modules.programs.git` | `flakes/home/modules/git` |
 | `modules.programs.herdr` | `modules/home-manager/programs/herdr` |
 | `modules.programs.ideavim` | `modules/home-manager/programs/ideavim` |
-| `modules.programs.jujutsu` | `modules/home-manager/programs/jujutsu` |
+| `modules.programs.jujutsu` | `flakes/home/modules/jujutsu` |
 | `modules.programs.k9s` | `presets/dev/home.nix` |
 | `modules.programs.krr` | `modules/home-manager/programs/krr` |
-| `modules.programs.nushell` | `modules/home-manager/programs/nushell` |
+| `modules.programs.nushell` | `flakes/home/modules/nushell` |
 | `modules.programs.opencode` | `presets/dev/home.nix` |
 | `modules.programs.opencode1` | `presets/dev/home.nix` |
 | `modules.programs.sesh` | `modules/home-manager/programs/sesh` |
-| `modules.programs.starship` | `modules/home-manager/programs/starship` |
+| `modules.programs.shellProfile` | `flakes/home/modules/profile` |
+| `modules.programs.starship` | `flakes/home/modules/starship` |
 | `modules.programs.t3code` | `presets/dev/home.nix` |
-| `modules.programs.tmux` | `modules/home-manager/programs/tmux` |
+| `modules.programs.tmux` | `flakes/home/modules/tmux` |
 | `modules.programs.worktrunk` | `modules/home-manager/programs/worktrunk` |
-| `modules.programs.zsh` | `modules/home-manager/programs/zsh` |
+| `modules.programs.zsh` | `flakes/home/modules/zsh` |
 
 ### Programs (31)
 
 | Option | Enabled by |
 | --- | --- |
 | `programs.antigravity-cli` | `presets/dev/home.nix` |
-| `programs.atuin` | `modules/home-manager/programs/atuin` |
-| `programs.bash` | `modules/home-manager/programs/bash` |
-| `programs.btop` | `modules/home-manager/programs/btop` |
-| `programs.carapace` | `presets/base` |
+| `programs.atuin` | `flakes/home/modules/atuin` |
+| `programs.bash` | `flakes/home/modules/bash` |
+| `programs.btop` | `flakes/home/modules/btop` |
+| `programs.carapace` | `flakes/home/modules/profile` |
 | `programs.claude-code` | `presets/dev/home.nix` |
 | `programs.codex` | `presets/dev/home.nix` |
-| `programs.direnv` | `presets/base` |
-| `programs.fish` | `modules/home-manager/programs/nushell` |
-| `programs.fzf` | `presets/base` |
+| `programs.direnv` | `flakes/home/modules/profile` |
+| `programs.fish` | `flakes/home/modules/nushell` |
+| `programs.fzf` | `flakes/home/modules/profile` |
 | `programs.gh` | `presets/base` |
-| `programs.git` | `modules/home-manager/programs/git` |
+| `programs.git` | `flakes/home/modules/git` |
 | `programs.github-copilot-cli` | `presets/dev/home.nix` |
 | `programs.helix` | `presets/base` |
 | `programs.herdr` | `modules/home-manager/programs/herdr` |
 | `programs.home-manager` | `presets/base/home.nix` |
-| `programs.hstr` | `presets/base` |
+| `programs.hstr` | `flakes/home/modules/profile` |
 | `programs.hunk` | `presets/dev/home.nix` |
-| `programs.jujutsu` | `modules/home-manager/programs/jujutsu` |
+| `programs.jujutsu` | `flakes/home/modules/jujutsu` |
 | `programs.k9s` | `modules/home-manager/programs/k9s` |
 | `programs.mcp` | `flakes/ai/hmModules/ai` |
-| `programs.nushell` | `modules/home-manager/programs/nushell` |
+| `programs.nushell` | `flakes/home/modules/nushell` |
 | `programs.opencode1` | `flakes/ai/hmModules/opencode/v1.nix` |
 | `programs.opencode2` | `flakes/ai/hmModules/opencode/v2.nix` |
 | `programs.pi.coding-agent` | `presets/dev/home.nix` |
 | `programs.ssh` | `presets/base` |
-| `programs.starship` | `modules/home-manager/programs/starship` |
-| `programs.tmux` | `modules/home-manager/programs/tmux` |
+| `programs.starship` | `flakes/home/modules/starship` |
+| `programs.tmux` | `flakes/home/modules/tmux` |
 | `programs.worktrunk` | `modules/home-manager/programs/worktrunk` |
-| `programs.zoxide` | `presets/base` |
-| `programs.zsh` | `modules/home-manager/programs/zsh` |
+| `programs.zoxide` | `flakes/home/modules/profile` |
+| `programs.zsh` | `flakes/home/modules/zsh` |
 
 ### Units (3)
 
@@ -406,7 +407,7 @@ Packages defined in more than one place. Drop the raw entry when a module alread
 | fzf | presets/base (system)<br>modules/programs/fzf.nix (neoscode; upstream) |
 | git | presets/base (system)<br>modules/programs/git.nix (neoscode; upstream) |
 | glibc | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
-| jujutsu | modules/home-manager/programs/jujutsu (neoscode)<br>modules/programs/jujutsu.nix (neoscode; upstream) |
+| jujutsu | flakes/home/modules/jujutsu (neoscode)<br>modules/programs/jujutsu.nix (neoscode; upstream) |
 | nushell | presets/base (system)<br>modules/programs/nushell.nix (neoscode; upstream) |
 | tmux | presets/base (system)<br>modules/programs/tmux.nix (neoscode; upstream) |
 | zoxide | presets/base (system)<br>modules/programs/zoxide.nix (neoscode; upstream) |

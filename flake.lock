@@ -872,7 +872,7 @@
     },
     "flake-utils_3": {
       "inputs": {
-        "systems": "systems_7"
+        "systems": "systems_5"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -1041,6 +1041,34 @@
         "type": "github"
       }
     },
+    "home": {
+      "inputs": {
+        "fzf-tab": "fzf-tab",
+        "jj-starship": "jj-starship",
+        "laravel-sail": "laravel-sail",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nu-scripts": "nu-scripts",
+        "tmux-1password": "tmux-1password",
+        "tmux-tokyo-night": "tmux-tokyo-night",
+        "treefmt-nix": [
+          "treefmt-nix"
+        ],
+        "viicslen-lib": [
+          "viicslen-lib"
+        ]
+      },
+      "locked": {
+        "path": "./flakes/home",
+        "type": "path"
+      },
+      "original": {
+        "path": "./flakes/home",
+        "type": "path"
+      },
+      "parent": []
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -1068,7 +1096,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "systems": "systems_5"
+        "systems": "systems_6"
       },
       "locked": {
         "lastModified": 1787677252,
@@ -1185,7 +1213,7 @@
         "hyprwire": "hyprwire",
         "nixpkgs": "nixpkgs_4",
         "pre-commit-hooks": "pre-commit-hooks",
-        "systems": "systems_6",
+        "systems": "systems_7",
         "xdph": "xdph"
       },
       "locked": {
@@ -1552,6 +1580,7 @@
       "inputs": {
         "flake-utils": "flake-utils_3",
         "nixpkgs": [
+          "home",
           "nixpkgs"
         ]
       },
@@ -2511,16 +2540,14 @@
         "emacs": "emacs",
         "exo": "exo",
         "flake-parts": "flake-parts_3",
-        "fzf-tab": "fzf-tab",
         "ghost-backup": "ghost-backup",
         "ghostty": "ghostty",
         "gitura": "gitura",
+        "home": "home",
         "hunk": "hunk",
         "hyprland": "hyprland",
         "ignis": "ignis",
-        "jj-starship": "jj-starship",
         "lan-mouse": "lan-mouse",
-        "laravel-sail": "laravel-sail",
         "llm-agents": "llm-agents",
         "nilastia": "nilastia",
         "niri": "niri",
@@ -2529,13 +2556,10 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixvim": "nixvim",
         "noctalia": "noctalia",
-        "nu-scripts": "nu-scripts",
         "omniflake": "omniflake",
         "one-password-shell-plugins": "one-password-shell-plugins",
         "packages": "packages",
         "systems-linux": "systems-linux",
-        "tmux-1password": "tmux-1password",
-        "tmux-tokyo-night": "tmux-tokyo-night",
         "treefmt-nix": "treefmt-nix_5",
         "tt-schemes": "tt-schemes",
         "tuicr": "tuicr",
@@ -2870,6 +2894,21 @@
     },
     "systems_5": {
       "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_6": {
+      "locked": {
         "lastModified": 1776166891,
         "narHash": "sha256-bI8yrEGjrohR5hkQox7UrxDH7XqrYMwI8SL/LrJ1+S8=",
         "owner": "nix-systems",
@@ -2883,7 +2922,7 @@
         "type": "github"
       }
     },
-    "systems_6": {
+    "systems_7": {
       "locked": {
         "lastModified": 1689347949,
         "narHash": "sha256-12tWmuL2zgBgZkdoB6qXZsgJEH9LR3oUgpaQq2RbI80=",
@@ -2895,21 +2934,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default-linux",
-        "type": "github"
-      }
-    },
-    "systems_7": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
         "type": "github"
       }
     },

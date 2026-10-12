@@ -121,8 +121,19 @@ already happened. Treat every heavy Nix invocation as dangerous.
   imports by `key`, and the flake-parts wrappers carry none, so without it a
   double import fails with `option … is already declared`.
 - **subflake** — a git submodule flake under `flakes/*` (`lib`, `packages`,
-  `ai`, `zed`, `nixvim`, `niri`, `hyprland`, `dms`, `emacs`).
+  `home`, `ai`, `zed`, `nixvim`, `niri`, `hyprland`, `dms`, `emacs`).
   Each is a separate upstream repo (`viicslen-nix/*`).
+- **`home` subflake** — `flakes/home`, the shell modules shared with the phone
+  (zsh, bash, tmux, starship, atuin, git, jujutsu, btop, nushell) plus
+  `profile` (aliases, fzf/zoxide/direnv, commit identity). `parts/modules.nix`
+  routes them through `flake.modules.homeManager`, so they stay
+  `homeModules.programs.<name>`. Keep that routing: definitions merge
+  deepest-first, and wrapping them any other way reorders `home.packages`
+  and lets stylix's tmux/nushell colours win over ours.
+  `users/neoscode` imports `profile` directly. Its modules close over the
+  flake's own inputs, and gate impermanence on the option existing.
+  `flakes/android` (nix-on-droid) consumes it from GitHub and is **not** a
+  root input.
 - **vlib / viicslen-lib** — helper library exported from `flakes/lib`; provides
   `defaultSystems`, `genSystems`, `pkgsFor`, and the namespaced helper sets
   `options` (`mkEnabledOption`, `mkDefaultAttrs`), `discovery` (`discover`,

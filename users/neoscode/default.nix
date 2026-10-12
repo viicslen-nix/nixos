@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  inputs,
   osConfig,
   homeModules,
   ...
@@ -10,6 +11,7 @@
   desktop = osConfig.modules.presets.desktop.enable;
 in {
   imports = with homeModules.programs; [
+    inputs.home.homeManagerModules.profile
     zsh
     bash
     tmux
@@ -38,12 +40,7 @@ in {
     username = osConfig.users.users.${user}.name;
     homeDirectory = osConfig.users.users.${user}.home;
 
-    # Every shell gets these: home-manager feeds home.shellAliases into bash,
-    # zsh, fish and nushell alike.
     shellAliases = {
-      pn = "pnpm";
-      vim = "nvim";
-      cat = "bat";
       ts = "tmux-session";
       ds = "dev-shell";
       dsl = "dev-shell laravel";
@@ -51,22 +48,12 @@ in {
       o = "xdg-open";
       spf = "search-package-files";
       ss = "sesh-sessions";
-
-      g = "git";
-      gdf = "git diff";
-      gst = "git status";
-      gpl = "git pull";
-      gph = "git push";
     };
 
-    packages = with pkgs; [
-      inputs.ai.oh-my-opencode
-    ];
+    packages = [pkgs.inputs.ai.oh-my-opencode];
 
     # Don't drop: ssh will not open a control socket if this directory is missing.
     file.".ssh/controlmasters/.keep".text = "";
-
-    sessionVariables.EDITOR = "nvim";
   };
 
   xdg = {
@@ -96,24 +83,10 @@ in {
         done
       fi
     '';
-
-    # lsd stands in for coreutils ls in the posix shells only — nushell keeps
-    # its own structured `ls`.
-    lsAliases = {
-      ls = "lsd -1";
-      l = "ls -l";
-      la = "ls -a";
-      lla = "ls -la";
-      lt = "ls --tree";
-    };
   in {
-    bash = {
-      shellAliases = lsAliases;
-      initExtra = reattachWayland;
-    };
+    bash.initExtra = reattachWayland;
 
     zsh = {
-      shellAliases = lsAliases;
       initContent =
         reattachWayland
         + ''
@@ -121,8 +94,6 @@ in {
         '';
     };
 
-    carapace.enable = true;
-    zoxide.enable = true;
     helix.enable = true;
 
     gh = {
@@ -133,24 +104,6 @@ in {
         gh-stack
         github-copilot-cli
       ];
-    };
-
-    direnv = {
-      enable = true;
-      enableZshIntegration = true;
-      nix-direnv.enable = true;
-    };
-
-    fzf = {
-      enable = true;
-      enableZshIntegration = true;
-      tmux.enableShellIntegration = true;
-      historyWidget.command = "";
-    };
-
-    hstr = {
-      enable = true;
-      enableZshIntegration = true;
     };
 
     ssh = {
@@ -175,16 +128,7 @@ in {
       # Imported but off: `wt-dashboard` (worktrunk's popup) replaced its dashboard.
       workmux.enable = false;
 
-      git = {
-        user = osConfig.users.users.${user}.description;
-        email = "39545521+viicslen@users.noreply.github.com";
-        signingKey = builtins.readFile ./ssh/git-signing-key.pub;
-      };
-      jujutsu = {
-        userName = osConfig.users.users.${user}.description;
-        userEmail = "39545521+viicslen@users.noreply.github.com";
-        signingKey = builtins.readFile ./ssh/git-signing-key.pub;
-      };
+      nushell.extraConfig = builtins.readFile ../../parts/inventory/inventory.nu;
       sesh = {
         enableNushellIntegration = true;
         enableTmuxIntegration = true;

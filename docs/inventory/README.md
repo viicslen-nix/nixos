@@ -115,9 +115,9 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | jetbrains-jdk-jcef | `hosts/wsl` |  |  |  |  | S |
 | jetbrains-toolbox | `presets/dev/home.nix` | H | H | H |  |  |
 | jev | `flakes/ai/hmModules/ai` | H | H | H |  |  |
-| jj-starship | `modules/home-manager/programs/starship` | H | H | H | H | H |
+| jj-starship | `flakes/home/modules/starship` | H | H | H | H | H |
 | jq | `presets/base` | S | S | S | S | S |
-| jujutsu | `modules/home-manager/programs/jujutsu` | H | H | H | H | H |
+| jujutsu | `flakes/home/modules/jujutsu` | H | H | H | H | H |
 | just | `presets/base` | S | S | S | S | S |
 | keymapviz | `modules/nixos/programs/qmk` | S | S | S |  |  |
 | khal | `presets/desktop` | H S | H S | H S | H S |  |
@@ -126,7 +126,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | kubectl | `presets/dev/home.nix` | H | H | H |  | H |
 | kubernetes-helm | `presets/dev/home.nix` | H | H | H |  | H |
 | lazygit | `presets/dev/home.nix` | H | H | H |  | H |
-| lazyjj | `modules/home-manager/programs/jujutsu` | H | H | H | H | H |
+| lazyjj | `flakes/home/modules/jujutsu` | H | H | H | H | H |
 | legcord | `presets/personal/home.nix` | H | H | H |  |  |
 | lens-desktop | `presets/dev/home.nix` | H | H | H |  |  |
 | libinput | `presets/desktop` | S | S | S | S |  |
@@ -142,9 +142,9 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | matugen | `presets/desktop` | H S | H S | H S | H S |  |
 | mcp-gateway | `flakes/ai/hmModules/ai` | H | H | H |  | H |
 | mcp-toolbox | `presets/work/home.nix` | H | H | H |  | H |
-| meld | `modules/home-manager/programs/jujutsu` | H | H | H | H | H |
+| meld | `flakes/home/modules/jujutsu` | H | H | H | H | H |
 | mempalace | `flakes/ai/hmModules/ai` | H | H | H |  | H |
-| mergiraf | `modules/home-manager/programs/jujutsu` | H | H | H | H | H |
+| mergiraf | `flakes/home/modules/jujutsu` | H | H | H | H | H |
 | miami-bus-overlay | `modules/nixos/features/miami-bus-tracker` |  | S |  |  |  |
 | miami-bus-tracker | `modules/nixos/features/miami-bus-tracker` |  | S |  |  |  |
 | miami-find-stop | `modules/nixos/features/miami-bus-tracker` |  | S |  |  |  |
@@ -206,7 +206,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | search-package-files | `presets/base` | S | S | S | S | S |
 | sesh | `modules/home-manager/programs/sesh` | H | H | H | H | H |
 | sesh-list | `modules/home-manager/programs/sesh` | H | H | H | H | H |
-| starship-smart-dir | `modules/home-manager/programs/starship` | H | H | H | H | H |
+| starship-smart-dir | `flakes/home/modules/starship` | H | H | H | H | H |
 | sublime-merge | `presets/dev/home.nix` | H | H | H |  |  |
 | supergfxctl | `modules/nixos/hardware/asus` | S |  |  |  |  |
 | superset | `presets/dev/home.nix` | H | H | H |  |  |
@@ -287,24 +287,24 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | `modules.programs.ai.integrations.orca` | `hosts/dostov-dev/home.nix` |  | H |  |  |  |
 | `modules.programs.ai.integrations.superset` | `hosts/dostov-dev/home.nix` |  | H |  |  |  |
 | `modules.programs.aiProfile` | `presets/dev/home.nix` | H | H | H |  | H |
-| `modules.programs.atuin` | `modules/home-manager/programs/atuin` | H | H | H | H | H |
-| `modules.programs.bash` | `modules/home-manager/programs/bash` | H | H | H | H | H |
-| `modules.programs.btop` | `modules/home-manager/programs/btop` | H | H | H | H | H |
+| `modules.programs.atuin` | `flakes/home/modules/atuin` | H | H | H | H | H |
+| `modules.programs.bash` | `flakes/home/modules/bash` | H | H | H | H | H |
+| `modules.programs.btop` | `flakes/home/modules/btop` | H | H | H | H | H |
 | `modules.programs.claude-code` | `flakes/ai/hmModules/claude-code` | H | H | H |  | H |
 | `modules.programs.claude-code.mods.readable-output` | `presets/dev/home.nix` | H | H | H |  | H |
 | `modules.programs.corepack` | `modules/nixos/programs/corepack` | S | S | S |  | S |
 | `modules.programs.docker` | `modules/nixos/programs/docker` | S |  |  | S | S |
 | `modules.programs.ghostty` | `presets/base` | H | H | H | H |  |
-| `modules.programs.git` | `modules/home-manager/programs/git` | H | H | H | H | H |
+| `modules.programs.git` | `flakes/home/modules/git` | H | H | H | H | H |
 | `modules.programs.herdr` | `modules/home-manager/programs/herdr` | H | H | H | H | H |
 | `modules.programs.ideavim` | `modules/home-manager/programs/ideavim` | H | H | H | H | H |
-| `modules.programs.jujutsu` | `modules/home-manager/programs/jujutsu` | H | H | H | H | H |
+| `modules.programs.jujutsu` | `flakes/home/modules/jujutsu` | H | H | H | H | H |
 | `modules.programs.k9s` | `presets/dev/home.nix` | H | H | H |  | H |
 | `modules.programs.kitty` | `modules/home-manager/programs/kitty` | H | H | H | H |  |
 | `modules.programs.krr` | `modules/home-manager/programs/krr` | H | H | H |  | H |
 | `modules.programs.ld` | `modules/nixos/programs/ld` | S | S | S | S |  |
 | `modules.programs.mkcert` | `modules/nixos/programs/mkcert` | S | S | S |  | S |
-| `modules.programs.nushell` | `modules/home-manager/programs/nushell` | H | H | H | H | H |
+| `modules.programs.nushell` | `flakes/home/modules/nushell` | H | H | H | H | H |
 | `modules.programs.onePassword` | `modules/nixos/programs/one-password` | S | S | S | S |  |
 | `modules.programs.opencode` | `presets/dev/home.nix` | H | H | H |  | H |
 | `modules.programs.opencode1` | `presets/dev/home.nix` | H | H | H |  | H |
@@ -312,19 +312,20 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | `modules.programs.qmk` | `presets/personal` | S | S | S |  |  |
 | `modules.programs.ray` | `presets/dev/home.nix` | H | H | H |  |  |
 | `modules.programs.sesh` | `modules/home-manager/programs/sesh` | H | H | H | H | H |
-| `modules.programs.starship` | `modules/home-manager/programs/starship` | H | H | H | H | H |
+| `modules.programs.shellProfile` | `flakes/home/modules/profile` | H | H | H | H | H |
+| `modules.programs.starship` | `flakes/home/modules/starship` | H | H | H | H | H |
 | `modules.programs.steam` | `modules/nixos/functionality/gaming` | S |  | S |  |  |
 | `modules.programs.t3code` | `presets/dev/home.nix` | H | H | H |  | H |
 | `modules.programs.thunderbird` | `modules/home-manager/programs/thunderbird` |  | H |  |  |  |
 | `modules.programs.tinkerwell` | `presets/dev/home.nix` | H | H | H |  |  |
-| `modules.programs.tmux` | `modules/home-manager/programs/tmux` | H | H | H | H | H |
+| `modules.programs.tmux` | `flakes/home/modules/tmux` | H | H | H | H | H |
 | `modules.programs.vivaldi` | `presets/base` | H | H | H | H |  |
 | `modules.programs.webapps` | `modules/home-manager/programs/webapps` |  | H |  |  |  |
 | `modules.programs.wezterm` | `presets/base` | H | H | H | H |  |
 | `modules.programs.worktrunk` | `modules/home-manager/programs/worktrunk` | H | H | H | H | H |
 | `modules.programs.zed` | `presets/dev/home.nix` | H | H | H |  |  |
 | `modules.programs.zen-browser` | `modules/home-manager/programs/zen-browser` |  | H |  |  |  |
-| `modules.programs.zsh` | `modules/home-manager/programs/zsh` | H | H | H | H | H |
+| `modules.programs.zsh` | `flakes/home/modules/zsh` | H | H | H | H | H |
 | `modules.services.oom` | `modules/nixos/services/oom` | S | S | S |  |  |
 | `modules.services.powerManagement` | `modules/nixos/services/power-management` | S | S | S | S |  |
 
@@ -338,31 +339,31 @@ Only those enabled from this repo.
 | `programs._1password-gui` | `modules/nixos/programs/one-password` | S | S | S | S |  |
 | `programs._1password-shell-plugins` | `modules/nixos/programs/one-password` | H | H | H | H |  |
 | `programs.antigravity-cli` | `presets/dev/home.nix` | H | H | H |  | H |
-| `programs.atuin` | `modules/home-manager/programs/atuin` | H | H | H | H | H |
-| `programs.bash` | `modules/home-manager/programs/bash` | H | H | H | H | H |
-| `programs.btop` | `modules/home-manager/programs/btop` | H | H | H | H | H |
-| `programs.carapace` | `presets/base` | H | H | H | H | H |
+| `programs.atuin` | `flakes/home/modules/atuin` | H | H | H | H | H |
+| `programs.bash` | `flakes/home/modules/bash` | H | H | H | H | H |
+| `programs.btop` | `flakes/home/modules/btop` | H | H | H | H | H |
+| `programs.carapace` | `flakes/home/modules/profile` | H | H | H | H | H |
 | `programs.chromium` | `modules/home-manager/programs/vivaldi` | H | H | H | H |  |
 | `programs.claude-code` | `presets/dev/home.nix` | H | H | H |  | H |
 | `programs.codex` | `presets/dev/home.nix` | H | H | H |  | H |
 | `programs.dank-material-shell` | `presets/desktop` | H S | H S | H S | H S |  |
-| `programs.direnv` | `presets/base` | H S | H S | H S | H S | H S |
+| `programs.direnv` | `flakes/home/modules/profile`, `presets/base` | H S | H S | H S | H S | H S |
 | `programs.dms-greeter` | `presets/desktop` | S | S | S |  |  |
-| `programs.fish` | `modules/home-manager/programs/nushell` | H | H | H | H | H |
-| `programs.fzf` | `presets/base` | H | H | H | H | H |
+| `programs.fish` | `flakes/home/modules/nushell` | H | H | H | H | H |
+| `programs.fzf` | `flakes/home/modules/profile` | H | H | H | H | H |
 | `programs.gamemode` | `modules/nixos/functionality/gaming` | S |  | S |  |  |
 | `programs.gamescope` | `modules/nixos/functionality/gaming` | S |  | S |  |  |
 | `programs.gh` | `presets/base` | H | H | H | H | H |
 | `programs.ghostty` | `modules/home-manager/programs/ghostty` | H | H | H | H |  |
-| `programs.git` | `modules/home-manager/programs/git` | H | H | H | H | H |
+| `programs.git` | `flakes/home/modules/git` | H | H | H | H | H |
 | `programs.github-copilot-cli` | `presets/dev/home.nix` | H | H | H |  | H |
 | `programs.helix` | `presets/base` | H | H | H | H | H |
 | `programs.herdr` | `modules/home-manager/programs/herdr` | H | H | H | H | H |
 | `programs.home-manager` | `presets/base/home.nix` | H | H | H | H | H |
-| `programs.hstr` | `presets/base` | H | H | H | H | H |
+| `programs.hstr` | `flakes/home/modules/profile` | H | H | H | H | H |
 | `programs.hunk` | `presets/dev/home.nix` | H | H | H |  | H |
 | `programs.hyprland` | `presets/desktop` |  | S | S |  |  |
-| `programs.jujutsu` | `modules/home-manager/programs/jujutsu` | H | H | H | H | H |
+| `programs.jujutsu` | `flakes/home/modules/jujutsu` | H | H | H | H | H |
 | `programs.k9s` | `modules/home-manager/programs/k9s` | H | H | H |  | H |
 | `programs.kitty` | `modules/home-manager/programs/kitty` | H | H | H | H |  |
 | `programs.localsend` | `presets/personal` | S | S | S |  |  |
@@ -370,16 +371,16 @@ Only those enabled from this repo.
 | `programs.nh` | `presets/base` | S | S | S | S | S |
 | `programs.niri` | `presets/desktop` | S | S | S |  |  |
 | `programs.nix-ld` | `modules/nixos/programs/ld` | S | S | S | S |  |
-| `programs.nushell` | `modules/home-manager/programs/nushell` | H | H | H | H | H |
+| `programs.nushell` | `flakes/home/modules/nushell` | H | H | H | H | H |
 | `programs.opencode1` | `flakes/ai/hmModules/opencode/v1.nix` | H | H | H |  | H |
 | `programs.opencode2` | `flakes/ai/hmModules/opencode/v2.nix` | H | H | H |  | H |
 | `programs.pi.coding-agent` | `presets/dev/home.nix` | H | H | H |  | H |
 | `programs.quickshell` | `presets/desktop` | H | H | H | H |  |
 | `programs.ssh` | `presets/base` | H | H | H | H | H |
-| `programs.starship` | `modules/home-manager/programs/starship` | H | H | H | H | H |
+| `programs.starship` | `flakes/home/modules/starship` | H | H | H | H | H |
 | `programs.steam` | `modules/nixos/programs/steam` | S |  | S |  |  |
 | `programs.thunderbird` | `modules/home-manager/programs/thunderbird` |  | H |  |  |  |
-| `programs.tmux` | `modules/home-manager/programs/tmux` | H | H | H | H | H |
+| `programs.tmux` | `flakes/home/modules/tmux` | H | H | H | H | H |
 | `programs.vscode` | `hosts/lenovo-legion-go` |  |  |  | S |  |
 | `programs.wezterm` | `modules/home-manager/programs/wezterm` | H | H | H | H |  |
 | `programs.wireshark` | `hosts/dostov-dev` |  | S |  |  |  |
@@ -387,8 +388,8 @@ Only those enabled from this repo.
 | `programs.zed-editor` | `flakes/zed/hmModules` | H | H | H |  |  |
 | `programs.zed-editor-extensions` | `flakes/zed/hmModules` | H | H | H |  |  |
 | `programs.zen-browser` | `modules/home-manager/programs/zen-browser` |  | H |  |  |  |
-| `programs.zoxide` | `presets/base` | H | H | H | H | H |
-| `programs.zsh` | `modules/home-manager/programs/zsh`, `presets/base` | H S | H S | H S | H S | H S |
+| `programs.zoxide` | `flakes/home/modules/profile` | H | H | H | H | H |
+| `programs.zsh` | `flakes/home/modules/zsh`, `presets/base` | H S | H S | H S | H S | H S |
 
 ## Services
 
