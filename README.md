@@ -120,6 +120,7 @@ Under `flakes/`, each a submodule backed by its own `viicslen-nix/*` repo.
 | [`nixvim`](flakes/nixvim) | Standalone Neovim: LSPs, Telescope, Avante, Laravel tooling |
 | [`emacs`](flakes/emacs) | Emacs from emacs-overlay, mirroring the Neovim setup |
 | [`zed`](flakes/zed) | Zed from upstream with Nix-managed extensions |
+| [`android`](flakes/android) | nix-on-droid phone config; consumes `home` from GitHub and is not a root input |
 
 ## Desktop
 

@@ -121,7 +121,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
   imports by `key`, and the flake-parts wrappers carry none, so without it a
   double import fails with `option … is already declared`.
 - **subflake** — a git submodule flake under `flakes/*` (`lib`, `packages`,
-  `home`, `ai`, `zed`, `nixvim`, `niri`, `hyprland`, `dms`, `emacs`).
+  `home`, `ai`, `zed`, `nixvim`, `niri`, `hyprland`, `dms`, `emacs`, and
+  `android`, the nix-on-droid phone config, which is not a root input).
   Each is a separate upstream repo (`viicslen-nix/*`).
 - **`home` subflake** — `flakes/home`, the shell modules shared with the phone
   (zsh, bash, tmux, starship, atuin, git, jujutsu, btop, nushell) plus
