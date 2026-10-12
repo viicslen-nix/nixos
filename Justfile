@@ -207,7 +207,7 @@ tmux-push HOST NAME='':
     if [ -f ~/.tmux.conf ]; then mv ~/.tmux.conf "$dir/tmux.conf.pre-push"; fi; \
     cat > "$dir/tmux.conf"; \
     if [ -n "{{NAME}}" ]; then echo "set -g @server_name {{NAME}}" > "$dir/local.conf"; fi; \
-    tmux source-file "$dir/tmux.conf" 2>/dev/null || true' < modules/home-manager/programs/tmux/server.conf
+    tmux source-file "$dir/tmux.conf" 2>/dev/null || true' < flakes/home/modules/tmux/server.conf
 
 ############################################################################
 #

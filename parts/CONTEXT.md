@@ -106,7 +106,7 @@ stack their source(s) underneath. Stacking every row of a section whenever one
 outlier (a `1.7-beta+date=…` version) overflowed doubled the Packages list.
 Piped output is never stacked, so `grep` sees each entry and its source on one
 line. Under nushell, `just inventory` is a custom command
-(`modules/home-manager/programs/nushell/inventory.nu`) that reads `--json` and
+(`parts/inventory/inventory.nu`) that reads `--json` and
 returns one flat table (`scope kind name detail source upstream`). Nushell
 then handles the width, and the result can be queried. It hands off to the
 real `just` when the nearest justfile isn't this repo's, so another project's

@@ -38,22 +38,14 @@
       inputs.treefmt-nix.follows = "treefmt-nix";
     };
 
-    # Shell
-    laravel-sail = {
-      url = "github:ariaieboy/laravel-sail";
-      flake = false;
-    };
-    fzf-tab = {
-      url = "github:Aloxaf/fzf-tab";
-      flake = false;
-    };
-    nu-scripts = {
-      url = "github:nushell/nu_scripts";
-      flake = false;
-    };
-    tmux-tokyo-night = {
-      url = "github:janoamaral/tokyo-night-tmux";
-      flake = false;
+    # Shell: zsh, tmux, starship, nushell and the rest, shared with flakes/android.
+    home = {
+      url = "path:./flakes/home";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        viicslen-lib.follows = "viicslen-lib";
+        treefmt-nix.follows = "treefmt-nix";
+      };
     };
     zjstatus = {
       url = "github:dj95/zjstatus";
@@ -61,10 +53,6 @@
     };
 
     # 1Password
-    tmux-1password = {
-      url = "github:yardnsm/tmux-1password";
-      flake = false;
-    };
     one-password-shell-plugins = {
       url = "github:1Password/shell-plugins";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -195,10 +183,6 @@
     tuicr.url = "github:agavra/tuicr";
     worktrunk = {
       url = "github:max-sixty/worktrunk";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    jj-starship = {
-      url = "github:dmmulroy/jj-starship";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ghost-backup = {
