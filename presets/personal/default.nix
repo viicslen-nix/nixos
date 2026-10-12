@@ -16,7 +16,14 @@ in {
   config = {
     home-manager.sharedModules = [./home.nix];
 
-    users.users = mapAttrs (_: _: {extraGroups = ["adbusers"];}) users;
+    users.users =
+      mapAttrs (_: _: {
+        extraGroups = [
+          "adbusers"
+          "dialout"
+        ];
+      })
+      users;
 
     modules = {
       programs.qmk.enable = desktop;
