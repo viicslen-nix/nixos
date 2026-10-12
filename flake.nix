@@ -86,6 +86,7 @@
       url = "path:./flakes/dms";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.treefmt-nix.follows = "treefmt-nix";
+      inputs.dank-pinentry.inputs.flake-parts.follows = "flake-parts";
     };
     caelestia = {
       url = "github:caelestia-dots/shell";

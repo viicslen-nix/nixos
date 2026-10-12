@@ -54,3 +54,15 @@ all it needs is a display.
 
 `sudo -n` still never prompts. That is the right behaviour, so a caller has to
 drop `-n` to get the dialog.
+
+The program is `modules.desktop.askpass`, declared here with
+`lxqt-openssh-askpass` as the default. When DMS is the selected shell, the dms
+subflake replaces it with `dms-askpass`, which shows the prompt in the
+`dankPinentry` plugin's themed modal. The plugin speaks pinentry's Assuan
+protocol, not askpass, so the wrapper translates between the two. DMS can be
+selected but not running (it crashed, or the session is not up yet), so the
+wrapper first checks `dms ipc list` for the plugin and otherwise runs the
+lxqt default. The plugin's prompt is also the only one of DMS's dialogs that
+works here: its polkit modal has the session problem described above, while
+`dms ipc` reaches the shell through a socket under `$XDG_RUNTIME_DIR`, which
+the `systemd --user` services share.

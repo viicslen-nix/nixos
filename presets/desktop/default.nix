@@ -50,6 +50,12 @@ in {
     nixosModules.programs.one-password
   ];
 
+  options.modules.desktop.askpass = mkOption {
+    type = types.path;
+    default = getExe pkgs.lxqt.lxqt-openssh-askpass;
+    description = mdDoc "Program sudo runs to ask for a password when it has no terminal.";
+  };
+
   config = {
     # Flag graphical hosts so dev/work/personal can gate their GUI-only packages.
     modules.presets.desktop.enable = true;
@@ -157,7 +163,7 @@ in {
       etc."sudo.conf" = {
         mode = "0444";
         text = ''
-          Path askpass ${getExe pkgs.lxqt.lxqt-openssh-askpass}
+          Path askpass ${config.modules.desktop.askpass}
         '';
       };
     };
