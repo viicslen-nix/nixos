@@ -470,13 +470,14 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | zsh | 5.9.2 | `modules/programs/zsh` |
 | oh-my-zsh | 2026-08-16 | `modules/programs/zsh/plugins/oh-my-zsh.nix` |
 
-### Modules (18)
+### Modules (20)
 
 | Option | Enabled by |
 | --- | --- |
 | `modules.programs.atuin` | `flakes/home/modules/atuin` |
 | `modules.programs.bash` | `flakes/home/modules/bash` |
 | `modules.programs.btop` | `flakes/home/modules/btop` |
+| `modules.programs.gh` | `flakes/home/modules/gh` |
 | `modules.programs.ghostty` | `presets/base` |
 | `modules.programs.git` | `flakes/home/modules/git` |
 | `modules.programs.herdr` | `modules/home-manager/programs/herdr` |
@@ -486,6 +487,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.nushell` | `flakes/home/modules/nushell` |
 | `modules.programs.sesh` | `modules/home-manager/programs/sesh` |
 | `modules.programs.shellProfile` | `flakes/home/modules/profile` |
+| `modules.programs.ssh` | `flakes/home/modules/ssh` |
 | `modules.programs.starship` | `flakes/home/modules/starship` |
 | `modules.programs.tmux` | `flakes/home/modules/tmux` |
 | `modules.programs.vivaldi` | `presets/base` |
@@ -507,7 +509,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `programs.direnv` | `flakes/home/modules/profile` |
 | `programs.fish` | `flakes/home/modules/nushell` |
 | `programs.fzf` | `flakes/home/modules/profile` |
-| `programs.gh` | `presets/base` |
+| `programs.gh` | `flakes/home/modules/gh` |
 | `programs.ghostty` | `modules/home-manager/programs/ghostty` |
 | `programs.git` | `flakes/home/modules/git` |
 | `programs.helix` | `presets/base` |
@@ -518,7 +520,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `programs.kitty` | `modules/home-manager/programs/kitty` |
 | `programs.nushell` | `flakes/home/modules/nushell` |
 | `programs.quickshell` | `presets/desktop` |
-| `programs.ssh` | `presets/base` |
+| `programs.ssh` | `flakes/home/modules/ssh` |
 | `programs.starship` | `flakes/home/modules/starship` |
 | `programs.tmux` | `flakes/home/modules/tmux` |
 | `programs.wezterm` | `modules/home-manager/programs/wezterm` |

@@ -33,14 +33,6 @@ an eval. That is why only `gcc13` is listed: base's default `gcc` and work's
 `gcc13` both ship `bin/gcc`, and gcc 13 was the one that won in the system
 profile.
 
-## hunk keybindings
-
-hunk's defaults are already vim-ish (`j`/`k`, `g`/`G`, `d`/`u`, `[`/`]`); the
-`keybindings` block only fills the gaps (vim's `ctrl+` page/half-page scrolls,
-listed alongside the defaults they would otherwise replace). Binding a key takes
-it from whatever held it as a default, so `toggleLineNumbers` needs a new home
-(`ctrl+l`) once `l` scrolls the code pane right.
-
 ## t3code
 
 The module comes from the `ai` subflake (`homeManagerModules.t3code`). Its

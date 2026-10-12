@@ -125,8 +125,9 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `android`, the nix-on-droid phone config, which is not a root input).
   Each is a separate upstream repo (`viicslen-nix/*`).
 - **`home` subflake** — `flakes/home`, the shell modules shared with the phone
-  (zsh, bash, tmux, starship, atuin, git, jujutsu, btop, nushell) plus
-  `profile` (aliases, fzf/zoxide/direnv, commit identity). `parts/modules.nix`
+  (zsh, bash, tmux, starship, atuin, git, gh, ssh, hunk, jujutsu, btop,
+  nushell) plus `profile` (aliases, fzf/zoxide/direnv, commit identity,
+  `preferXdgDirectories`). `parts/modules.nix`
   routes them through `flake.modules.homeManager`, so they stay
   `homeModules.programs.<name>`. Keep that routing: definitions merge
   deepest-first, and wrapping them any other way reorders `home.packages`

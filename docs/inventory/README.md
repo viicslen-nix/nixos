@@ -106,7 +106,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | grafana-mcp | `presets/work/home.nix` | H | H | H |  | H |
 | graphviz | `presets/dev/home.nix` | H | H | H |  | H |
 | heroic | `modules/nixos/functionality/gaming` | S |  | S |  |  |
-| hunkdiff | `presets/dev/home.nix` | H | H | H |  | H |
+| hunkdiff | `flakes/home/modules/hunk` | H | H | H |  | H |
 | hunspell | `presets/desktop` | S | S | S | S |  |
 | hunspell-dict-en-us-wordlist | `presets/desktop` | S | S | S | S |  |
 | insomnia | `presets/dev/home.nix` | H | H | H |  |  |
@@ -294,9 +294,11 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | `modules.programs.claude-code.mods.readable-output` | `presets/dev/home.nix` | H | H | H |  | H |
 | `modules.programs.corepack` | `modules/nixos/programs/corepack` | S | S | S |  | S |
 | `modules.programs.docker` | `modules/nixos/programs/docker` | S |  |  | S | S |
+| `modules.programs.gh` | `flakes/home/modules/gh` | H | H | H | H | H |
 | `modules.programs.ghostty` | `presets/base` | H | H | H | H |  |
 | `modules.programs.git` | `flakes/home/modules/git` | H | H | H | H | H |
 | `modules.programs.herdr` | `modules/home-manager/programs/herdr` | H | H | H | H | H |
+| `modules.programs.hunk` | `flakes/home/modules/hunk` | H | H | H |  | H |
 | `modules.programs.ideavim` | `modules/home-manager/programs/ideavim` | H | H | H | H | H |
 | `modules.programs.jujutsu` | `flakes/home/modules/jujutsu` | H | H | H | H | H |
 | `modules.programs.k9s` | `presets/dev/home.nix` | H | H | H |  | H |
@@ -313,6 +315,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | `modules.programs.ray` | `presets/dev/home.nix` | H | H | H |  |  |
 | `modules.programs.sesh` | `modules/home-manager/programs/sesh` | H | H | H | H | H |
 | `modules.programs.shellProfile` | `flakes/home/modules/profile` | H | H | H | H | H |
+| `modules.programs.ssh` | `flakes/home/modules/ssh` | H | H | H | H | H |
 | `modules.programs.starship` | `flakes/home/modules/starship` | H | H | H | H | H |
 | `modules.programs.steam` | `modules/nixos/functionality/gaming` | S |  | S |  |  |
 | `modules.programs.t3code` | `presets/dev/home.nix` | H | H | H |  | H |
@@ -353,7 +356,7 @@ Only those enabled from this repo.
 | `programs.fzf` | `flakes/home/modules/profile` | H | H | H | H | H |
 | `programs.gamemode` | `modules/nixos/functionality/gaming` | S |  | S |  |  |
 | `programs.gamescope` | `modules/nixos/functionality/gaming` | S |  | S |  |  |
-| `programs.gh` | `presets/base` | H | H | H | H | H |
+| `programs.gh` | `flakes/home/modules/gh` | H | H | H | H | H |
 | `programs.ghostty` | `modules/home-manager/programs/ghostty` | H | H | H | H |  |
 | `programs.git` | `flakes/home/modules/git` | H | H | H | H | H |
 | `programs.github-copilot-cli` | `presets/dev/home.nix` | H | H | H |  | H |
@@ -361,7 +364,7 @@ Only those enabled from this repo.
 | `programs.herdr` | `modules/home-manager/programs/herdr` | H | H | H | H | H |
 | `programs.home-manager` | `presets/base/home.nix` | H | H | H | H | H |
 | `programs.hstr` | `flakes/home/modules/profile` | H | H | H | H | H |
-| `programs.hunk` | `presets/dev/home.nix` | H | H | H |  | H |
+| `programs.hunk` | `flakes/home/modules/hunk` | H | H | H |  | H |
 | `programs.hyprland` | `presets/desktop` |  | S | S |  |  |
 | `programs.jujutsu` | `flakes/home/modules/jujutsu` | H | H | H | H | H |
 | `programs.k9s` | `modules/home-manager/programs/k9s` | H | H | H |  | H |
@@ -376,7 +379,7 @@ Only those enabled from this repo.
 | `programs.opencode2` | `flakes/ai/hmModules/opencode/v2.nix` | H | H | H |  | H |
 | `programs.pi.coding-agent` | `presets/dev/home.nix` | H | H | H |  | H |
 | `programs.quickshell` | `presets/desktop` | H | H | H | H |  |
-| `programs.ssh` | `presets/base` | H | H | H | H | H |
+| `programs.ssh` | `flakes/home/modules/ssh` | H | H | H | H | H |
 | `programs.starship` | `flakes/home/modules/starship` | H | H | H | H | H |
 | `programs.steam` | `modules/nixos/programs/steam` | S |  | S |  |  |
 | `programs.thunderbird` | `modules/home-manager/programs/thunderbird` |  | H |  |  |  |
