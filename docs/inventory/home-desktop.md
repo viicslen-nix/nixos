@@ -8,7 +8,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## System
 
-### Packages (206)
+### Packages (207)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -163,6 +163,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | fuse | 3.18.2 | `nixos/modules/programs/fuse.nix` |
 | gamemode | 1.8.2 | `nixos/modules/programs/gamemode.nix` |
 | gamescope |  | `nixos/modules/programs/gamescope.nix` |
+| gpu-screen-recorder | 6.1.2 | `nixos/modules/programs/gpu-screen-recorder.nix` |
 | less | 704 | `nixos/modules/programs/less.nix` |
 | localsend | 1.18.0 | `nixos/modules/programs/localsend.nix` |
 | nano | 9.2 | `nixos/modules/programs/nano.nix` |
@@ -255,7 +256,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.services.oom` | `modules/nixos/services/oom` |
 | `modules.services.powerManagement` | `modules/nixos/services/power-management` |
 
-### Programs (22)
+### Programs (23)
 
 | Option | Enabled by |
 | --- | --- |
@@ -270,6 +271,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `programs.fuse` | `nixos/modules/services/desktops/gvfs.nix`, `nixos/modules/config/xdg/portal.nix` |
 | `programs.gamemode` | `modules/nixos/functionality/gaming` |
 | `programs.gamescope` | `modules/nixos/functionality/gaming` |
+| `programs.gpu-screen-recorder` | `presets/desktop` |
 | `programs.hyprland` | `presets/desktop` |
 | `programs.less` | `nixos/modules/programs/environment.nix` |
 | `programs.localsend` | `presets/personal` |
@@ -346,17 +348,24 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (192)
+### Packages (201)
 
 | Package | Version | Source |
 | --- | --- | --- |
 | oh-my-opencode |  | `presets/base` |
 | cava | 1.0.0 | `presets/desktop` |
 | dms-shell | 1.7-beta+date=2026-09-18_292a959 | `presets/desktop` |
+| ffmpeg | 9.0.1 | `presets/desktop` |
+| file | 5.48 | `presets/desktop` |
 | glib | 2.88.3 | `presets/desktop` |
 | khal | 0.14.1 | `presets/desktop` |
+| libnotify | 0.8.8 | `presets/desktop` |
+| linux-wallpaperengine | 0.0.1-unstable-2026-06-09 | `presets/desktop` |
 | matugen | 4.2.0 | `presets/desktop` |
 | networkmanager | 1.58.1 | `presets/desktop` |
+| pulseaudio | 17.0 | `presets/desktop` |
+| slurp | +a3998d3 | `presets/desktop` |
+| sqlite | 3.53.3 | `presets/desktop` |
 | act | 0.2.89 | `presets/dev/home.nix` |
 | antigravity |  | `presets/dev/home.nix` |
 | atlas | 1.3.0 | `presets/dev/home.nix` |
@@ -378,7 +387,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | ghost-backup | 0.4.7 | `presets/dev/home.nix` |
 | git-carve-submodule |  | `presets/dev/home.nix` |
 | gitbutler | 0.19.9 | `presets/dev/home.nix` |
-| github-copilot-desktop | 1.1.27 | `presets/dev/home.nix` |
+| github-copilot-desktop | 1.1.29 | `presets/dev/home.nix` |
 | github-desktop | 3.6.6 | `presets/dev/home.nix` |
 | glab | 1.114.0 | `presets/dev/home.nix` |
 | gnumake | 4.4.1 | `presets/dev/home.nix` |
@@ -408,13 +417,14 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | python3 | 3.14.7 | `presets/dev/home.nix` |
 | responsively | 1.18.0 | `presets/dev/home.nix` |
 | sublime-merge | 2125 | `presets/dev/home.nix` |
-| superset | 1.36.0 | `presets/dev/home.nix` |
+| superset | 1.37.0 | `presets/dev/home.nix` |
 | tuicr | 0.24.0 | `presets/dev/home.nix` |
 | uv | 0.12.17 | `presets/dev/home.nix` |
 | vite-plus | 0.3.0 | `presets/dev/home.nix` |
 | wrangler | 4.129.0 | `presets/dev/home.nix` |
 | zig | 0.16.0 | `presets/dev/home.nix` |
 | awscli | 1.44.21 | `presets/work/home.nix` |
+| discord-logs-mcp |  | `presets/work/home.nix` |
 | generate-cert |  | `presets/work/home.nix` |
 | grafana-mcp |  | `presets/work/home.nix` |
 | linode-cli | 5.56.2 | `presets/work/home.nix` |
@@ -446,7 +456,8 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | 1password | 8.12.34 | `modules/home-manager/functionality/defaults` |
 | ghostty | 1.3.2-dev+683d8db-nix | `modules/home-manager/functionality/defaults` |
 | nautilus | 50.2.2 | `modules/home-manager/functionality/defaults` |
-| vivaldi-custom-ui | 8.3.4175.3 | `modules/home-manager/functionality/defaults` |
+| showtime | 50.0 | `modules/home-manager/functionality/defaults` |
+| vivaldi-custom-ui | 8.3.4185.3 | `modules/home-manager/functionality/defaults` |
 | vscode | 1.137.0 | `modules/home-manager/functionality/defaults` |
 | krr | 1.30.0 | `modules/home-manager/programs/krr` |
 | ray | 2.8.1 | `modules/home-manager/programs/ray` |
@@ -454,17 +465,17 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | sesh | 2.30.1 | `modules/home-manager/programs/sesh` |
 | sesh-list |  | `modules/home-manager/programs/sesh` |
 | tinkerwell | 4.19.0 | `modules/home-manager/programs/tinkerwell` |
-| vivaldi-custom-ui | 8.3.4175.3 | `modules/home-manager/programs/vivaldi` |
+| vivaldi-custom-ui | 8.3.4185.3 | `modules/home-manager/programs/vivaldi` |
 | worktrunk | 0.74.0 | `modules/home-manager/programs/worktrunk` |
 | wt-dashboard |  | `modules/home-manager/programs/worktrunk` |
 | 1password-cli | 2.39.0 | `modules/nixos/programs/one-password` |
 | browser-harness | 0.1.13 | `flakes/ai/hmModules/ai` |
 | browser-harness-profile |  | `flakes/ai/hmModules/ai` |
-| coderabbit | 0.8.2 | `flakes/ai/hmModules/ai` |
+| coderabbit | 0.9.0 | `flakes/ai/hmModules/ai` |
 | jev |  | `flakes/ai/hmModules/ai` |
 | mcp-gateway | 3.5.1 | `flakes/ai/hmModules/ai` |
 | mempalace | 3.10.0 | `flakes/ai/hmModules/ai` |
-| openwiki | 0.7.1 | `flakes/ai/hmModules/ai` |
+| openwiki | 0.7.2 | `flakes/ai/hmModules/ai` |
 | agy |  | `flakes/ai/hmModules/ai/proxy.nix` |
 | agy-direct |  | `flakes/ai/hmModules/ai/proxy.nix` |
 | claude-direct |  | `flakes/ai/hmModules/ai/proxy.nix` |
@@ -474,7 +485,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | op1 |  | `flakes/ai/hmModules/opencode/v1.nix` |
 | opencode1 |  | `flakes/ai/hmModules/opencode/v1.nix` |
 | opencode2 |  | `flakes/ai/hmModules/opencode/v2.nix` |
-| t3code | 0.0.46-nightly.20261009.2873 | `flakes/ai/hmModules/t3code` |
+| t3code | 0.0.46-nightly.20261013.3066 | `flakes/ai/hmModules/t3code` |
 | hunkdiff | 0.20.0 | `flakes/home/modules/hunk` |
 | jujutsu | 0.45.1 | `flakes/home/modules/jujutsu` |
 | lazyjj | 0.6.1 | `flakes/home/modules/jujutsu` |
@@ -512,7 +523,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | bash-interactive | 5.3p15 | `modules/programs/bash.nix` |
 | btop | 1.4.7 | `modules/programs/btop.nix` |
 | carapace | 1.7.3 | `modules/programs/carapace.nix` |
-| vivaldi-custom-ui | 8.3.4175.3 | `modules/programs/chromium.nix` |
+| vivaldi-custom-ui | 8.3.4185.3 | `modules/programs/chromium.nix` |
 | claude-code | 2.1.295 | `modules/programs/claude-code` |
 | codex | 0.162.0 | `modules/programs/codex` |
 | direnv | 2.37.1 | `modules/programs/direnv.nix` |

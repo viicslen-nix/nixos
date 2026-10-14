@@ -194,7 +194,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (117)
+### Packages (118)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -242,6 +242,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | wrangler | 4.129.0 | `presets/dev/home.nix` |
 | zig | 0.16.0 | `presets/dev/home.nix` |
 | awscli | 1.44.21 | `presets/work/home.nix` |
+| discord-logs-mcp |  | `presets/work/home.nix` |
 | generate-cert |  | `presets/work/home.nix` |
 | grafana-mcp |  | `presets/work/home.nix` |
 | linode-cli | 5.56.2 | `presets/work/home.nix` |
@@ -261,10 +262,10 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | worktrunk | 0.74.0 | `modules/home-manager/programs/worktrunk` |
 | wt-dashboard |  | `modules/home-manager/programs/worktrunk` |
 | browser-harness | 0.1.13 | `flakes/ai/hmModules/ai` |
-| coderabbit | 0.8.2 | `flakes/ai/hmModules/ai` |
+| coderabbit | 0.9.0 | `flakes/ai/hmModules/ai` |
 | mcp-gateway | 3.5.1 | `flakes/ai/hmModules/ai` |
 | mempalace | 3.10.0 | `flakes/ai/hmModules/ai` |
-| openwiki | 0.7.1 | `flakes/ai/hmModules/ai` |
+| openwiki | 0.7.2 | `flakes/ai/hmModules/ai` |
 | agy |  | `flakes/ai/hmModules/ai/proxy.nix` |
 | agy-direct |  | `flakes/ai/hmModules/ai/proxy.nix` |
 | claude-direct |  | `flakes/ai/hmModules/ai/proxy.nix` |
@@ -274,7 +275,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | op1 |  | `flakes/ai/hmModules/opencode/v1.nix` |
 | opencode1 |  | `flakes/ai/hmModules/opencode/v1.nix` |
 | opencode2 |  | `flakes/ai/hmModules/opencode/v2.nix` |
-| t3code | 0.0.46-nightly.20261009.2873 | `flakes/ai/hmModules/t3code` |
+| t3code | 0.0.46-nightly.20261013.3066 | `flakes/ai/hmModules/t3code` |
 | hunkdiff | 0.20.0 | `flakes/home/modules/hunk` |
 | jujutsu | 0.45.1 | `flakes/home/modules/jujutsu` |
 | lazyjj | 0.6.1 | `flakes/home/modules/jujutsu` |

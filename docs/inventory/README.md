@@ -70,6 +70,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | devbox | `presets/dev/home.nix` | H | H | H |  | H |
 | dictd | `presets/personal/home.nix` | H | H | H |  | H |
 | discord | `presets/personal/home.nix` | H | H | H |  |  |
+| discord-logs-mcp | `presets/work/home.nix` | H | H | H |  | H |
 | discordo | `presets/personal/home.nix` | H | H | H |  | H |
 | dive | `modules/nixos/programs/podman` |  | S | S |  |  |
 | dms-shell | `presets/desktop` | H S | H S | H S | H S |  |
@@ -81,6 +82,8 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | emacs-configured | `presets/dev/home.nix` | H | H | H |  |  |
 | eza | `modules/home-manager/programs/sesh` | H | H | H | H | H |
 | ferdium | `presets/personal/home.nix` | H | H | H |  |  |
+| ffmpeg | `presets/desktop` | H | H | H | H |  |
+| file | `presets/desktop` | H | H | H | H |  |
 | freerdp | `hosts/dostov-dev` |  | S |  |  |  |
 | fzf | `presets/base` | S | S | S | S | S |
 | gcc | `presets/dev/home.nix` | H | H | H |  | H |
@@ -130,8 +133,10 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | legcord | `presets/personal/home.nix` | H | H | H |  |  |
 | lens-desktop | `presets/dev/home.nix` | H | H | H |  |  |
 | libinput | `presets/desktop` | S | S | S | S |  |
+| libnotify | `presets/desktop` | H | H | H | H |  |
 | libsecret | `presets/base` | S | S | S | S | S |
 | linode-cli | `presets/work/home.nix` | H | H | H |  | H |
+| linux-wallpaperengine | `presets/desktop` | H | H | H | H |  |
 | lsd | `presets/base` | S | S | S | S | S |
 | lshw | `presets/base` | S | S | S | S | S |
 | luakit | `presets/personal/home.nix` | H | H | H |  |  |
@@ -191,6 +196,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | postman | `presets/dev/home.nix` | H | H | H |  |  |
 | prod-db-mcp | `presets/work/home.nix` | H | H | H |  | H |
 | protonplus | `hosts/lenovo-legion-go`, `modules/nixos/functionality/gaming` | S |  | S | S |  |
+| pulseaudio | `presets/desktop` | H | H | H | H |  |
 | pv | `presets/base` | S | S | S | S | S |
 | python3 | `presets/dev/home.nix` | H | H | H |  | H |
 | qmk | `modules/nixos/programs/qmk` | S | S | S |  |  |
@@ -206,6 +212,9 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | search-package-files | `presets/base` | S | S | S | S | S |
 | sesh | `modules/home-manager/programs/sesh` | H | H | H | H | H |
 | sesh-list | `modules/home-manager/programs/sesh` | H | H | H | H | H |
+| showtime | `modules/home-manager/functionality/defaults` | H | H | H | H |  |
+| slurp | `presets/desktop` | H | H | H | H |  |
+| sqlite | `presets/desktop` | H | H | H | H |  |
 | starship-smart-dir | `flakes/home/modules/starship` | H | H | H | H | H |
 | sublime-merge | `presets/dev/home.nix` | H | H | H |  |  |
 | supergfxctl | `modules/nixos/hardware/asus` | S |  |  |  |  |
@@ -360,6 +369,7 @@ Only those enabled from this repo.
 | `programs.ghostty` | `modules/home-manager/programs/ghostty` | H | H | H | H |  |
 | `programs.git` | `flakes/home/modules/git` | H | H | H | H | H |
 | `programs.github-copilot-cli` | `presets/dev/home.nix` | H | H | H |  | H |
+| `programs.gpu-screen-recorder` | `presets/desktop` | S | S | S | S |  |
 | `programs.helix` | `presets/base` | H | H | H | H | H |
 | `programs.herdr` | `modules/home-manager/programs/herdr` | H | H | H | H | H |
 | `programs.home-manager` | `presets/base/home.nix` | H | H | H | H | H |

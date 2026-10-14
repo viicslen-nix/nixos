@@ -68,6 +68,13 @@
             for mailto links and email messages.
           '';
         };
+        videoPlayer = mkOption {
+          type = types.nullOr types.package;
+          default = null;
+          description = ''
+            The default video player to use for common video MIME types.
+          '';
+        };
       };
 
       config = mkMerge [
@@ -141,6 +148,27 @@
             "message/rfc822" = [desktopFile];
             "x-scheme-handler/net.thunderbird" = [desktopFile];
           };
+        })
+        (mkIf (cfg.videoPlayer != null) {
+          home = {
+            packages = [cfg.videoPlayer];
+          };
+          # mimeapps.list has no wildcards, so `video/*` would match nothing.
+          xdg.mimeApps.defaultApplications = genAttrs [
+            "video/mp4"
+            "video/mpeg"
+            "video/webm"
+            "video/ogg"
+            "video/quicktime"
+            "video/x-matroska"
+            "video/x-msvideo"
+            "video/x-m4v"
+            "video/x-flv"
+            "video/x-ms-wmv"
+            "video/x-ogm+ogg"
+            "video/3gpp"
+            "video/mp2t"
+          ] (_: [(getDesktopFileName cfg.videoPlayer)]);
         })
       ];
     };
