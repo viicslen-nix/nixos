@@ -87,7 +87,7 @@ in {
   modules = {
     functionality.defaults = with pkgs; {
       editor = lib.mkIf desktop vscode-fhs;
-      fileManager = lib.mkIf desktop nautilus;
+      fileManager = lib.mkIf desktop (nautilus // {desktopFileName = "org.gnome.Nautilus";});
       passwordManager = lib.mkIf desktop _1password-gui;
       terminal = lib.mkIf desktop pkgs.inputs.ghostty.default;
       browser = lib.mkIf desktop config.modules.programs.vivaldi.finalPackage;
