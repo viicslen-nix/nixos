@@ -8,7 +8,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## System
 
-### Packages (292)
+### Packages (293)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -141,6 +141,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | direnv | 2.37.1 | `nixos/modules/programs/direnv.nix` |
 | fuse | 2.9.9 | `nixos/modules/programs/fuse.nix` |
 | fuse | 3.18.2 | `nixos/modules/programs/fuse.nix` |
+| gpu-screen-recorder | 6.1.2 | `nixos/modules/programs/gpu-screen-recorder.nix` |
 | akonadi | 26.08.1 | `nixos/modules/programs/kde-pim.nix` |
 | kdepim-runtime | 26.08.1 | `nixos/modules/programs/kde-pim.nix` |
 | less | 704 | `nixos/modules/programs/less.nix` |
@@ -320,7 +321,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.onePassword` | `modules/nixos/programs/one-password` |
 | `modules.services.powerManagement` | `modules/nixos/services/power-management` |
 
-### Programs (17)
+### Programs (18)
 
 | Option | Enabled by |
 | --- | --- |
@@ -332,6 +333,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `programs.dconf` | `modules/gtk/nixos.nix`, `nixos/modules/services/desktop-managers/plasma6.nix` |
 | `programs.direnv` | `presets/base` |
 | `programs.fuse` | `nixos/modules/services/desktop-managers/plasma6.nix`, `nixos/modules/services/desktops/gvfs.nix`, `nixos/modules/services/desktops/flatpak.nix`, `nixos/modules/config/xdg/portal.nix` |
+| `programs.gpu-screen-recorder` | `presets/desktop` |
 | `programs.kde-pim` | `nixos/modules/services/desktop-managers/plasma6.nix` |
 | `programs.less` | `nixos/modules/programs/environment.nix` |
 | `programs.nano` | `nixos/modules/programs/nano.nix` |
@@ -391,26 +393,34 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (74)
+### Packages (82)
 
 | Package | Version | Source |
 | --- | --- | --- |
 | oh-my-opencode |  | `presets/base` |
 | cava | 1.0.0 | `presets/desktop` |
 | dms-shell | 1.7-beta+date=2026-09-18_292a959 | `presets/desktop` |
+| ffmpeg | 9.0.1 | `presets/desktop` |
+| file | 5.48 | `presets/desktop` |
 | glib | 2.88.3 | `presets/desktop` |
 | khal | 0.14.1 | `presets/desktop` |
+| libnotify | 0.8.8 | `presets/desktop` |
+| linux-wallpaperengine | 0.0.1-unstable-2026-06-09 | `presets/desktop` |
 | matugen | 4.2.0 | `presets/desktop` |
 | networkmanager | 1.58.1 | `presets/desktop` |
+| pulseaudio | 17.0 | `presets/desktop` |
+| slurp | +a3998d3 | `presets/desktop` |
+| sqlite | 3.53.3 | `presets/desktop` |
 | 1password | 8.12.34 | `modules/home-manager/functionality/defaults` |
 | ghostty | 1.3.2-dev+683d8db-nix | `modules/home-manager/functionality/defaults` |
 | nautilus | 50.2.2 | `modules/home-manager/functionality/defaults` |
-| vivaldi-custom-ui | 8.3.4175.3 | `modules/home-manager/functionality/defaults` |
+| showtime | 50.0 | `modules/home-manager/functionality/defaults` |
+| vivaldi-custom-ui | 8.3.4185.3 | `modules/home-manager/functionality/defaults` |
 | vscode | 1.137.0 | `modules/home-manager/functionality/defaults` |
 | eza | 0.23.5 | `modules/home-manager/programs/sesh` |
 | sesh | 2.30.1 | `modules/home-manager/programs/sesh` |
 | sesh-list |  | `modules/home-manager/programs/sesh` |
-| vivaldi-custom-ui | 8.3.4175.3 | `modules/home-manager/programs/vivaldi` |
+| vivaldi-custom-ui | 8.3.4185.3 | `modules/home-manager/programs/vivaldi` |
 | worktrunk | 0.74.0 | `modules/home-manager/programs/worktrunk` |
 | wt-dashboard |  | `modules/home-manager/programs/worktrunk` |
 | 1password-cli | 2.39.0 | `modules/nixos/programs/one-password` |
@@ -445,7 +455,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | bash-interactive | 5.3p15 | `modules/programs/bash.nix` |
 | btop | 1.4.7 | `modules/programs/btop.nix` |
 | carapace | 1.7.3 | `modules/programs/carapace.nix` |
-| vivaldi-custom-ui | 8.3.4175.3 | `modules/programs/chromium.nix` |
+| vivaldi-custom-ui | 8.3.4185.3 | `modules/programs/chromium.nix` |
 | direnv | 2.37.1 | `modules/programs/direnv.nix` |
 | fish | 4.9.3 | `modules/programs/fish.nix` |
 | hm-session-vars.fish |  | `modules/programs/fish.nix` |
