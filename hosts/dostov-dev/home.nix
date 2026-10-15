@@ -51,13 +51,6 @@ in {
     brave
   ];
 
-  home.autostart = [
-    {
-      package = pkgs.jetbrains-toolbox;
-      delay = 5;
-    }
-  ];
-
   modules.functionality.defaults.mailClient = config.modules.programs.thunderbird.finalPackage;
 
   modules.programs.ai.integrations = {
