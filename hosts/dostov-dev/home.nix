@@ -53,11 +53,6 @@ in {
 
   modules.functionality.defaults.mailClient = config.modules.programs.thunderbird.finalPackage;
 
-  modules.programs.ai.integrations = {
-    orca.enable = true;
-    superset.enable = true;
-  };
-
   programs = {
     niri.settings = lib.mkIf osConfig.programs.niri.enable {
       workspaces = {
