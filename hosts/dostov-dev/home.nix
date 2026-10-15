@@ -99,7 +99,7 @@ in {
           # Pinned only — nothing launches these at login.
           matches = [
             {app-id = "^jetbrains-phpstorm$";}
-            {app-id = "^(webapp-)?t3code(-nightly)?$";}
+            {app-id = "^t3code(-nightly)?$";}
             {app-id = "(?i)^superset$";}
           ];
           open-on-workspace = "Editor";

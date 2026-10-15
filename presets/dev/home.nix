@@ -196,7 +196,6 @@ in {
     tinkerwell.enable = desktop;
     t3code = {
       enable = true;
-      desktopApp = true;
       serve.enable = true;
       package = pkgs.inputs.packages.t3code.nightly;
     };
