@@ -95,6 +95,10 @@ vendor-skills REPO *ARGS:
 update-skills *ARGS:
   cd flakes/ai && just update-skills {{ARGS}}
 
+# Show upstream changes to skill inputs and vendored skills since our pins
+skill-changes:
+  @cd flakes/ai && just skill-changes
+
 # Regenerate flake.nix's nixConfig block from caches.nix. Needed because nix
 # rejects a computed flake config value — the list and its strings must both be
 # syntactic — so this is the one place the table cannot simply be imported.
