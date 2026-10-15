@@ -201,7 +201,7 @@ in {
     };
     opencode = {
       enable = true;
-      default = "v1";
+      default = "v2";
     };
     opencode1.enable = true;
     k9s.enable = true;

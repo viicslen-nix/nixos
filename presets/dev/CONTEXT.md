@@ -14,7 +14,7 @@ holds what is not tied to an employer, so `work` keeps only employer access and
   vitess is not here: only `dostov-dev` imports it.
 - `home.nix`: everything else, as `home.packages` grouped under comment
   headers, plus the AI harnesses (`programs.claude-code`, codex, copilot,
-  antigravity, pi, opencode v1 as the default), zed, t3code, hunk, k9s/krr, the
+  antigravity, pi, opencode v2 as the default), zed, t3code, hunk, k9s/krr, the
   kubectl and sail aliases and the intelephense licence.
 
 A package a module already installs is not listed here too: `vscode-fhs` is
