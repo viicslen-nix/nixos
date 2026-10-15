@@ -179,7 +179,8 @@ in {
 
   modules.programs = {
     ai = {
-      integrations.gateway.settings.env_files = ["~/.config/mcp-gateway/firewall.env"];
+      # Not `~`: the gateway runs with HOME set to its state dir.
+      integrations.gateway.settings.env_files = ["${config.xdg.configHome}/mcp-gateway/firewall.env"];
       integrations.jev = {
         enable = osConfig.modules.presets.desktop.enable;
         typesafeApiKeyFile = config.age.secrets.typesafe-api-key.path;
