@@ -279,7 +279,9 @@ already happened. Treat every heavy Nix invocation as dangerous.
   second loader with nixpkgs dropped from the override set, so they keep
   their author's pin — and still share the one home-manager. Declare it on
   the matching cache entry in
-  `caches.nix`, not in `flake.nix` — the routing is derived. The one user today
+  `caches.nix`, not in `flake.nix` — the routing is derived. `enabled = false`
+  on an entry takes a dead cache out of every substituter list without
+  dropping its `ownNixpkgs` routing (deleting the entry would). The one user today
   is `lantian` → `nix-cachyos-kernel`: xddxdd publishes the CachyOS kernels to
   that attic, and unifying nixpkgs moved the path off it, so every rebuild
   compiled a kernel. Note its `overlays.pinned` does **not** protect you — it

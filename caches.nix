@@ -5,6 +5,7 @@
   checkDrift ? true,
 }: let
   # scope: "base" every host, "desktop" graphical only — don't promote a bleeding-edge cache to base.
+  # enabled = false drops a dead cache from every substituter list but keeps its ownNixpkgs routing.
   caches = {
     nix-community = {
       scope = "base";
@@ -14,6 +15,8 @@
 
     lantian = {
       scope = "base";
+      # 503 since 2026-10-19; flip back once nix-cache-info answers 200.
+      enabled = false;
       url = "https://attic.xuyh0120.win/lantian";
       key = "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=";
       # xddxdd's own cache: unifying nixpkgs would miss it and compile a kernel.
@@ -60,7 +63,8 @@
     };
   };
 
-  all = lib.attrValues caches;
+  every = lib.attrValues caches;
+  all = lib.filter (c: c.enabled or true) every;
   inScope = scope: lib.filter (c: c.scope == scope) all;
 
   # Must stay a `readFile` of the text — importing flake.nix here would be IFD and a cycle.
@@ -90,5 +94,5 @@ in
     trustedKeys = scope: map (c: c.key) (inScope scope);
 
     # omniflake index attributes that must keep their author's nixpkgs pin.
-    ownNixpkgs = lib.concatMap (c: c.ownNixpkgs or []) all;
+    ownNixpkgs = lib.concatMap (c: c.ownNixpkgs or []) every;
   }
