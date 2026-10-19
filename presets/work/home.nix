@@ -102,8 +102,6 @@ in {
 
   programs = {
     ssh.settings = {
-      "work.neoscode.com".ProxyCommand = "${lib.getExe pkgs.cloudflared} access ssh --hostname %h";
-
       "FmTod" = {
         HostName = "webapps";
         User = "fmtod";
