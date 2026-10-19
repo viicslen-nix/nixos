@@ -47,9 +47,17 @@ inside fzf, which supplies the table, the git-log preview, filtering and the
 key bindings. Hidden tab fields (branch, path, session, url) feed the bindings;
 `--with-nth 5` shows the rendered row. Two details:
 
-- `reload-sync` on `start`: the fast list (~0.5 s) appears at once and the
-  `--full` one (~1.7 s, forge round-trips) replaces it when ready. `ctrl-r`
-  refetches.
+- Stale-while-revalidate: `wt list` is slow because it runs `git status` in
+  every worktree (17 worktrees: ~4.3 s of subprocess time, ~1.5 s wall, one
+  cold index alone 1.2 s) and has no way to skip it. So the popup opens on the
+  last render, cached per repo under `$XDG_CACHE_HOME/wt-dashboard/`, and a
+  one-shot `load:unbind(load)+reload-sync(list full)` replaces it when `wt`
+  answers (`ctrl-r` refetches). First paint dropped from ~1.5–2.2 s to ~0.13 s.
+  `--track --id-nth 1` keeps the cursor on the same branch across that swap.
+  Two traps: a `start:reload` empties the list the moment it fires, so nothing
+  paints until `wt` finishes (and `start:reload-sync` held the first paint
+  back the same way); and `load` fires after every reload, hence the
+  `unbind`. The very first run in a repo has no cache and still waits once.
 - `NO_COLOR=1` on the `wt list` call: otherwise `display.statusline` carries
   OSC 8 hyperlinks whose BEL byte is invalid JSON and jq refuses the document.
   The script reads schema 2 (`.items`), which `list.json-schema = 2` selects.
