@@ -125,6 +125,17 @@ cached() {
   cat "$(cache_file)" 2>/dev/null || true
 }
 
+refreshing=' worktrees · refreshing… '
+
+# Bound to fzf's `load`, which fires after the cached input and after every reload:
+# the first one starts the refresh, the one its reload ends with clears the label.
+settle() {
+  case ${FZF_BORDER_LABEL:-} in
+  *loading*) echo "change-border-label($refreshing)+reload-sync($self list full)" ;;
+  *refreshing*) echo "change-border-label( worktrees )" ;;
+  esac
+}
+
 preview() {
   git -C "$1" -c color.status=always status --short --branch | head -n 12
   echo
@@ -197,13 +208,12 @@ dashboard() {
     exit 1
   fi
   cached | fzf --ansi --delimiter '\t' --with-nth 5 --header-lines 1 \
-    --track --id-nth 1 \
     --layout reverse --no-sort --no-info --prompt '  ' --pointer '▶' \
-    --border rounded --border-label ' worktrees ' \
+    --border rounded --border-label ' worktrees · loading… ' \
     --header '↵ switch · ^n new (query) · ^x remove · ^p prune · ^k close · ^o url · ^r refresh' \
     --preview "$self preview {2}" --preview-window "right,45%,border-left,<$narrow(down,40%,border-top)" \
-    --bind "load:unbind(load)+reload-sync($self list full)" \
-    --bind "ctrl-r:reload($self list full)" \
+    --bind "load:transform($self settle)" \
+    --bind "ctrl-r:change-border-label($refreshing)+reload-sync($self list full)" \
     --bind "resize:reload($self list full)" \
     --bind "enter:become($self switch {1})" \
     --bind "ctrl-n:become($self create {q})" \
@@ -216,6 +226,7 @@ dashboard() {
 case "${1:-}" in
 '') dashboard ;;
 list) list "${2:-}" ;;
+settle) settle ;;
 preview) preview "$2" ;;
 switch) exec wt tmux "$2" ;;
 create)

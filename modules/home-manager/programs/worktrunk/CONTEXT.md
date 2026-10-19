@@ -50,14 +50,22 @@ key bindings. Hidden tab fields (branch, path, session, url) feed the bindings;
 - Stale-while-revalidate: `wt list` is slow because it runs `git status` in
   every worktree (17 worktrees: ~4.3 s of subprocess time, ~1.5 s wall, one
   cold index alone 1.2 s) and has no way to skip it. So the popup opens on the
-  last render, cached per repo under `$XDG_CACHE_HOME/wt-dashboard/`, and a
-  one-shot `load:unbind(load)+reload-sync(list full)` replaces it when `wt`
-  answers (`ctrl-r` refetches). First paint dropped from ~1.5–2.2 s to ~0.13 s.
-  `--track --id-nth 1` keeps the cursor on the same branch across that swap.
-  Two traps: a `start:reload` empties the list the moment it fires, so nothing
-  paints until `wt` finishes (and `start:reload-sync` held the first paint
-  back the same way); and `load` fires after every reload, hence the
-  `unbind`. The very first run in a repo has no cache and still waits once.
+  last render, cached per repo under `$XDG_CACHE_HOME/wt-dashboard/`, and the
+  first `load` event (the cached input finishing) starts a `reload-sync(list
+  full)` that replaces it when `wt` answers. The border label says `loading…`,
+  then `refreshing…`, then nothing, so a stale list is never silent. First
+  paint dropped from ~1.5–2.2 s to ~0.13 s. Traps:
+  - `--track --id-nth 1` (meant to keep the cursor on its branch across the
+    swap) pins the cursor to the first row — Down does nothing. Don't.
+  - A `start:reload` empties the list the moment it fires, so nothing paints
+    until `wt` finishes (`start:reload-sync` held the first paint back the same
+    way). `load` is the event that fires after the cache has painted.
+  - Actions chained after `reload`/`reload-sync` run immediately, not when it
+    ends, so `…+reload-sync(…)+change-border-label(done)` flips the label back
+    at once. `load` fires again when a reload ends, and `settle` (a `transform`
+    bound to it) reads `$FZF_BORDER_LABEL` to tell the first load from the
+    last; that label is the only state.
+  - The very first run in a repo has no cache and still waits once.
 - `NO_COLOR=1` on the `wt list` call: otherwise `display.statusline` carries
   OSC 8 hyperlinks whose BEL byte is invalid JSON and jq refuses the document.
   The script reads schema 2 (`.items`), which `list.json-schema = 2` selects.
