@@ -103,12 +103,26 @@ columns() {
   echo $((${cols:-0} > 6 ? cols - 6 : ${COLUMNS:-80}))
 }
 
+cache_file() {
+  local key
+  key=$(git rev-parse --path-format=absolute --git-common-dir | cksum | cut -d' ' -f1)
+  echo "${XDG_CACHE_HOME:-$HOME/.cache}/wt-dashboard/$key.tsv"
+}
+
 list() {
-  local full=()
+  local full=() rows cache
   [ "${1:-}" = full ] && full=(--full)
-  NO_COLOR=1 wt list --format=json --no-progressive "${full[@]}" |
+  rows=$(NO_COLOR=1 wt list --format=json --no-progressive "${full[@]}" |
     jq -r --argjson sessions "$(sessions_json)" --arg current "$(current_session)" \
-      --argjson cols "$(columns)" --argjson narrow "$narrow" "$jq_rows"
+      --argjson cols "$(columns)" --argjson narrow "$narrow" "$jq_rows") || return
+  printf '%s\n' "$rows"
+  cache=$(cache_file)
+  mkdir -p "${cache%/*}"
+  printf '%s\n' "$rows" >"$cache.$$" && mv "$cache.$$" "$cache"
+}
+
+cached() {
+  cat "$(cache_file)" 2>/dev/null || true
 }
 
 preview() {
@@ -182,12 +196,13 @@ dashboard() {
     pause 'not inside a git repository'
     exit 1
   fi
-  list | fzf --ansi --delimiter '\t' --with-nth 5 --header-lines 1 \
+  cached | fzf --ansi --delimiter '\t' --with-nth 5 --header-lines 1 \
+    --track --id-nth 1 \
     --layout reverse --no-sort --no-info --prompt '  ' --pointer '▶' \
     --border rounded --border-label ' worktrees ' \
     --header '↵ switch · ^n new (query) · ^x remove · ^p prune · ^k close · ^o url · ^r refresh' \
     --preview "$self preview {2}" --preview-window "right,45%,border-left,<$narrow(down,40%,border-top)" \
-    --bind "start:reload-sync($self list full)" \
+    --bind "load:unbind(load)+reload-sync($self list full)" \
     --bind "ctrl-r:reload($self list full)" \
     --bind "resize:reload($self list full)" \
     --bind "enter:become($self switch {1})" \
