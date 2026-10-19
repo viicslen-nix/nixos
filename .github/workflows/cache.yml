@@ -1,0 +1,46 @@
+name: Cache
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Let a running build finish; only the newest pending run is kept.
+concurrency:
+  group: cache
+  cancel-in-progress: false
+
+env:
+  CACHIX_CACHE: viicslen-nix
+  # The flake's nixConfig mirrors caches.nix, so dry-runs see what hosts can substitute.
+  NIX_CONFIG: accept-flake-config = true
+
+jobs:
+  cache:
+    runs-on: ubuntu-latest
+    name: Build & push allowlisted paths
+    timeout-minutes: 300
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - name: Setup Nix Build Environment
+        uses: ./.github/actions/setup-nix-build
+
+      - name: Setup Cachix (${{ env.CACHIX_CACHE }})
+        uses: cachix/cachix-action@v17
+        with:
+          name: ${{ env.CACHIX_CACHE }}
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          # The script pushes allowlisted closures only; the post-job push would upload everything built.
+          skipPush: true
+
+      # Hosts that evaluate (see parts/checks.nix); one job so shared derivations build once.
+      - name: Build and push
+        run: |
+          .github/scripts/cache.sh "$CACHIX_CACHE" \
+            dostov-dev \
+            home-desktop \
+            asus-zephyrus-gu603

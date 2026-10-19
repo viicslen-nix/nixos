@@ -16,10 +16,18 @@ flake's own `checks` outputs, so CI and a local `nix flake check` agree:
   `nix flake check`, which would evaluate *every* `nixosConfiguration` and trip
   over those two.
 
-Nothing here builds the host toplevels or caches them — this workflow is
-eval-only. (This used to be covered by garnix, which [shut
-down](https://garnix.io/blog/shutting-down/) in July 2026.) The
-`flakes/packages` locals therefore build from source on each host rebuild.
+This workflow is eval-only; caching is `cache.yml`'s job.
+
+## Cache (`cache.yml`)
+
+Runs on every push to `main` and on demand. `.github/scripts/cache.sh`
+dry-runs each evaluable host's toplevel, keeps the derivations that would be
+built whose names match `.github/cache-allowlist`, builds them and pushes
+their closures to the public `viicslen-nix` Cachix cache (5 GB free tier).
+Paths already on cache.nixos.org are skipped by Cachix itself.
+
+To cache another package, add its name to the allowlist — free software
+only, the cache is public. Needs the `CACHIX_AUTH_TOKEN` repository secret.
 
 ## Secret Scan (`gitleaks.yml`)
 

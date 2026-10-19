@@ -258,6 +258,7 @@
       "https://nixpkgs-wayland.cachix.org"
       "https://cache.numtide.com"
       "https://pi.cachix.org"
+      "https://viicslen-nix.cachix.org"
     ];
     extra-trusted-public-keys = [
       "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
@@ -267,6 +268,7 @@
       "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "pi.cachix.org-1:lGeoGJaZ5ZDabuRzkcD5EBTNnDM4HJ1vqeOxlWk1Flk="
+      "viicslen-nix.cachix.org-1:4Ts2m4uHyGKtWs9XDSesqjw3MIOQsOo1EOdxNVLRfpE="
     ];
     # END generated
   };
