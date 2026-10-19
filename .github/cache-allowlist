@@ -1,0 +1,35 @@
+# Package names (ERE, anchored) whose derivations CI may push to the public
+# Cachix cache. The script requires a `-<digit>` version after the name, which
+# keeps out unversioned config glue (worktrunk-config, emacs-configured, …).
+# Free software only: the cache is public, so anything unfree or
+# vendor-redistributed must never match here.
+
+# niri: built from the host's pkgs (nixpkgs-wayland overlay), so niri's own cache misses
+niri-unstable
+niri-scratchpad
+
+# DankMaterialShell stack
+dms-[A-Za-z-]+
+quickshell(-wrapped)?
+pinentry-dms
+
+# Local packages and tool inputs
+openwiki
+opencode(-desktop)?
+worktrunk
+tuicr
+jj-starship
+mempalace
+mcp-hub
+discordo
+
+# nixpkgs packages our overlays shift off cache.nixos.org
+python3\.[0-9]+-[A-Za-z0-9_-]+
+flameshot
+meld
+gtksourceview
+composer
+
+# Editor plugins
+emacs-[A-Za-z0-9-]+
+vimplugin-[A-Za-z0-9.-]+

@@ -41,7 +41,7 @@
 | **Desktop** | niri + DankMaterialShell, themed system-wide by Stylix |
 | **Secrets** | agenix, every secret encrypted to one portable key |
 | **Disks** | disko layouts, btrfs on LVM |
-| **CI** | Formatting, secret scanning, and evaluation of the niri hosts |
+| **CI** | Formatting, secret scanning, evaluation of the niri hosts, and a Cachix cache of what they compile |
 
 ## Hosts
 

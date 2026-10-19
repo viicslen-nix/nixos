@@ -391,6 +391,13 @@ already happened. Treat every heavy Nix invocation as dangerous.
   in the running daemon's `nix.conf` until a rebuild, so the first rebuild that
   needs it passes `--option extra-substituters <url> --option
   extra-trusted-public-keys <key>`.
+- **The CI cache is an allowlist, built from the root.** `.github/workflows/cache.yml`
+  pushes to the public `viicslen-nix` Cachix cache only derivations whose names
+  match `.github/cache-allowlist` (followed by `-<version>`) among those the
+  hosts would build. To cache a package, add its name there — free software
+  only, since the cache is public. Don't add per-subflake cache CI: subflakes
+  follow the root's nixpkgs and host overlays, so their own builds never
+  produce the paths hosts request (`.github/workflows/CONTEXT.md`).
 - **A flake's `nixConfig` cannot be computed.** Both the set and every value
   must be literal: a `let … in` there fails with `expected a set but got a
   thunk`, and even a literal set with a computed value fails with `flake

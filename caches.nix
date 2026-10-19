@@ -13,6 +13,13 @@
       key = "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
     };
 
+    viicslen-nix = {
+      scope = "base";
+      url = "https://viicslen-nix.cachix.org";
+      key = "viicslen-nix.cachix.org-1:4Ts2m4uHyGKtWs9XDSesqjw3MIOQsOo1EOdxNVLRfpE=";
+      # Filled by .github/workflows/cache.yml from .github/cache-allowlist.
+    };
+
     lantian = {
       scope = "base";
       # 503 since 2026-10-19; flip back once nix-cache-info answers 200.
