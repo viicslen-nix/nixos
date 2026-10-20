@@ -93,3 +93,10 @@ The alias body is rendered once by the alias engine (which substitutes
 again by `wt switch` with the worktree in context. `--no-cd` because the
 post-switch script handles navigation; `--execute` replaces the `wt` process,
 so nothing runs after it.
+
+Since worktrunk 0.76 `--execute` names one program and each argument after
+`--` is a literal argv entry. Before that it was a shell string whose
+template values worktrunk shell-quoted, so the old `"{{ worktree_path }}"`
+form passed a path containing `@` with its quotes still on; tmux could not
+find that directory and started the session in `~`. Don't wrap the values
+in an inner shell string again.
