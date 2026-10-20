@@ -80,6 +80,12 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `hosts/<name>/home.nix` is added to `home-manager.sharedModules`
   automatically by `parts/hosts.nix` — don't import it from the host's
   `default.nix`.
+- **home host** — a host with `kind = "home"` and a `user`: a non-NixOS
+  machine that gets only `hosts/<name>/home.nix` plus each preset's `home.nix`,
+  as a standalone `homeConfigurations."<user>@<name>"` instead of a
+  `nixosConfigurations` entry. There is no `osConfig`, so only presets whose
+  `home.nix` never reads it work there — today just `ai`. The only one is
+  `openclaw` (deploying it: `hosts/openclaw/CONTEXT.md`).
 - **preset** — a composable module bundle in `presets/<name>`
   (`base`, `desktop`, `dev`, `work`, `personal`, `linode`, `ai`). Hosts opt in via their
   `presets = [ … ]` list. `base` is universal/server-safe; `desktop` carries

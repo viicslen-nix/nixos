@@ -54,6 +54,11 @@ Declared in [`hosts/default.nix`](hosts/default.nix), all `x86_64-linux`.
 | `asus-zephyrus-gu603` | ASUS Zephyrus G16 laptop, NVIDIA PRIME | niri | base · desktop · dev · work · personal |
 | `lenovo-legion-go` | Lenovo Legion Go handheld on [Jovian](https://github.com/Jovian-Experiments/Jovian-NixOS), CachyOS kernel | Steam / Plasma 6 | base · desktop |
 | `wsl` | [NixOS-WSL](https://github.com/nix-community/NixOS-WSL) with Docker Desktop | headless | base · dev · work · personal |
+| `openclaw` | Debian LXC on Proxmox, not NixOS (`kind = "home"`) | headless | ai |
+
+A `kind = "home"` host becomes a standalone Home Manager config,
+`homeConfigurations."<user>@<host>"`, built from its `home.nix` and its presets'
+`home.nix`.
 
 ## Layout
 
