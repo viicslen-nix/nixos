@@ -81,7 +81,7 @@ already happened. Treat every heavy Nix invocation as dangerous.
   automatically by `parts/hosts.nix` — don't import it from the host's
   `default.nix`.
 - **preset** — a composable module bundle in `presets/<name>`
-  (`base`, `desktop`, `dev`, `work`, `personal`, `linode`). Hosts opt in via their
+  (`base`, `desktop`, `dev`, `work`, `personal`, `linode`, `ai`). Hosts opt in via their
   `presets = [ … ]` list. `base` is universal/server-safe; `desktop` carries
   **all** graphical/physical-machine config (fonts, printing, avahi, libinput,
   compositor imports, wayland overlay + caches, sound, bluetooth, grub-on-EFI
@@ -95,7 +95,9 @@ already happened. Treat every heavy Nix invocation as dangerous.
   (home-manager, wired with `home-manager.sharedModules = [./home.nix]`). User
   apps go in `home.packages`; `environment.systemPackages` is only for what root
   or the system needs. Hosts carry machine facts and host-only apps; `dev` is
-  general coding tools, `work` only employer access, `personal` your own apps.
+  general coding tools, `work` only employer access, `personal` your own apps,
+  `ai` the AI harnesses and the CLIProxyAPI proxy (`dev` imports it; a home
+  host lists it directly).
   A package a module already installs is never listed raw too (`just inventory
   --dupes`). Moving a package into `home.packages` needs a collision check:
   `home.path` is a plain `buildEnv`, unlike the system profile, which silently

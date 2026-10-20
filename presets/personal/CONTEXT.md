@@ -22,10 +22,11 @@ and a server has no reason to carry the group.
 ## AI config
 
 What is left of the personal AI config after the portable half moved to the
-`ai` subflake. The harnesses and the profile are `dev`'s; `home.nix` imports
-only the `ai` module, for the options it sets, and adds what cannot travel: a
-credential, the one MCP backend that needs it, and the browser-harness
-integration.
+`ai` subflake. The harnesses, the profile and the CLIProxyAPI proxy are the `ai`
+preset's; `home.nix` imports only the `ai` module, for the options it sets, and
+adds what cannot travel: the agenix-backed proxy key (overriding the preset's
+plain-file default), the one MCP backend that needs a credential, and the
+browser-harness integration.
 
 Skills, commands, prompts, plugins and the credential-free MCP backends live in
 `flakes/ai/content` and `flakes/ai/hmModules/profile.nix`, and their story moved

@@ -77,35 +77,7 @@ in {
         url = "https://stitch.googleapis.com/mcp";
         headers."X-Goog-Api-Key" = "\${STITCH_API_KEY}";
       };
-      proxy = {
-        default = true;
-        baseUrl = "https://cliproxyapi.tailb6b9b6.ts.net";
-        apiKeyFile = config.age.secrets.cliproxyapi-api-key.path;
-        models = let
-          thinking = api: name: {
-            inherit api name;
-            reasoning = true;
-          };
-        in {
-          claude-opus-5-5 = thinking "anthropic" "Claude Opus 5.5";
-          claude-sonnet-5-5 = thinking "anthropic" "Claude Sonnet 5.5";
-          claude-haiku-5-5 = thinking "anthropic" "Claude Haiku 5.5";
-          claude-fable-5-1 = thinking "anthropic" "Claude Fable 5.1";
-          titan = thinking "anthropic" "Titan (Opus 5.5)";
-          vanguard = thinking "anthropic" "Vanguard (Sonnet 5.5)";
-          spark = thinking "anthropic" "Spark (Haiku 5.5)";
-          "gpt-6.1-sol" = thinking "openai" "GPT-6.1 Sol";
-          gpt-6-sol = thinking "openai" "GPT-6 Sol";
-          gpt-6-luna = thinking "openai" "GPT-6 Luna";
-          "gpt-5.6-sol" = thinking "openai" "GPT-5.6 Sol";
-          "gemini-3.8-flash-high" = thinking "gemini" "Gemini 3.8 Flash (High)";
-          gemini-pro-agent = thinking "gemini" "Gemini Pro Agent";
-        };
-        launchers = {
-          codex.model = "gpt-6.1-sol";
-          copilot.model = "claude-sonnet-5-5";
-        };
-      };
+      proxy.apiKeyFile = config.age.secrets.cliproxyapi-api-key.path;
     };
   };
 

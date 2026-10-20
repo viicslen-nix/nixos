@@ -62,7 +62,7 @@ Declared in [`hosts/default.nix`](hosts/default.nix), all `x86_64-linux`.
 ├── flake.nix        # inputs and the omniflake mapping, nothing else
 ├── parts/           # flake-parts modules, one concern per file
 ├── hosts/           # one directory per machine + the host table
-├── presets/         # base · desktop · dev · work · personal · linode
+├── presets/         # base · desktop · dev · work · personal · linode · ai
 ├── modules/
 │   ├── nixos/           # containers, core, desktop, hardware, programs, services, …
 │   └── home-manager/    # programs and functionality, per user
@@ -92,7 +92,8 @@ like its directory:
 | --- | --- |
 | **base** | Every host, server-safe. Home Manager, agenix, NUR, nh, zsh, CLI tooling, binary caches, the flake registry |
 | **desktop** | Everything graphical: niri, Hyprland, DMS and its greeter, Stylix, fonts, sound, Bluetooth, printing, Plymouth, 1Password |
-| **dev** | General coding tools: Docker/Podman, local containers (Traefik, MySQL, Redis, Meilisearch, Qdrant, …), toolchains (PHP, Node, Go, …), git and Kubernetes CLIs, editors, database clients, the AI harnesses and apps |
+| **dev** | General coding tools: Docker/Podman, local containers (Traefik, MySQL, Redis, Meilisearch, Qdrant, …), toolchains (PHP, Node, Go, …), git and Kubernetes CLIs, editors, database clients, AI desktop apps; imports `ai` |
+| **ai** | The AI harnesses (Claude Code, opencode, Codex, Copilot, Antigravity, pi), the shared AI profile and the CLIProxyAPI proxy. Home-only, so a non-NixOS host can use it |
 | **work** | Employer access only: shared servers and their ssh hosts, production MCPs, cloud CLIs, company skills, the mkcert CA |
 | **personal** | Your own apps: chat, media, notes, phone tools, QMK, LocalSend, the Neovim build, personal AI integrations |
 | **linode** | Server template: Linode networking and support tools. No host uses it yet; a Linode host would list `base` + `linode` |

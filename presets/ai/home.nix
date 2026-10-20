@@ -1,0 +1,79 @@
+{
+  lib,
+  pkgs,
+  config,
+  inputs,
+  ...
+}: {
+  imports = [inputs.ai.homeManagerModules.default];
+
+  # llm-agents installs the CLI only as `agy`; resolve it from PATH, or the proxy's `agy` launcher is bypassed.
+  home.packages = [(pkgs.writeShellScriptBin "antigravity" ''exec agy "$@"'')];
+
+  programs = {
+    claude-code = let
+      claudeCodeRepo = pkgs.fetchFromGitHub {
+        owner = "anthropics";
+        repo = "claude-code";
+        rev = "53f9910f6ef015ddda6a4b5fceab5dd745af7f4c";
+        sha256 = "sha256-ba7eTo6L4Xdb86kS9khFKXOIWWBmlNfUk8W39cSLWeM=";
+      };
+    in {
+      enable = true;
+      package = pkgs.inputs.llm-agents.claude-code;
+      plugins.ralph-wiggum = "${claudeCodeRepo}/plugins/ralph-wiggum";
+    };
+    antigravity-cli = {
+      enable = true;
+      package = pkgs.inputs.llm-agents.antigravity-cli;
+    };
+    github-copilot-cli = {
+      enable = true;
+      package = pkgs.inputs.llm-agents.copilot-cli;
+    };
+    codex = {
+      enable = true;
+      package = pkgs.inputs.llm-agents.codex;
+    };
+    pi.coding-agent.enable = true;
+  };
+
+  modules.programs = {
+    claude-code.mods.readable-output.enable = true;
+    opencode = {
+      enable = true;
+      default = "v2";
+    };
+    opencode1.enable = true;
+
+    ai.proxy = {
+      default = true;
+      baseUrl = "https://cliproxyapi.tailb6b9b6.ts.net";
+      apiKeyFile = lib.mkDefault "${config.xdg.configHome}/cliproxyapi/api-key";
+      models = let
+        thinking = api: name: {
+          inherit api name;
+          reasoning = true;
+        };
+      in {
+        claude-opus-5-5 = thinking "anthropic" "Claude Opus 5.5";
+        claude-sonnet-5-5 = thinking "anthropic" "Claude Sonnet 5.5";
+        claude-haiku-5-5 = thinking "anthropic" "Claude Haiku 5.5";
+        claude-fable-5-1 = thinking "anthropic" "Claude Fable 5.1";
+        titan = thinking "anthropic" "Titan (Opus 5.5)";
+        vanguard = thinking "anthropic" "Vanguard (Sonnet 5.5)";
+        spark = thinking "anthropic" "Spark (Haiku 5.5)";
+        "gpt-6.1-sol" = thinking "openai" "GPT-6.1 Sol";
+        gpt-6-sol = thinking "openai" "GPT-6 Sol";
+        gpt-6-luna = thinking "openai" "GPT-6 Luna";
+        "gpt-5.6-sol" = thinking "openai" "GPT-5.6 Sol";
+        "gemini-3.8-flash-high" = thinking "gemini" "Gemini 3.8 Flash (High)";
+        gemini-pro-agent = thinking "gemini" "Gemini Pro Agent";
+      };
+      launchers = {
+        codex.model = "gpt-6.1-sol";
+        copilot.model = "claude-sonnet-5-5";
+      };
+    };
+  };
+}
