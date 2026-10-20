@@ -33,5 +33,12 @@ _: {
       system = "x86_64-linux";
       presets = ["base" "desktop"];
     };
+
+    openclaw = {
+      kind = "home";
+      user = "root";
+      system = "x86_64-linux";
+      presets = ["ai"];
+    };
   };
 }
