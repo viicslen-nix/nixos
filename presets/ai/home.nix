@@ -20,21 +20,11 @@
       };
     in {
       enable = true;
-      package = pkgs.inputs.llm-agents.claude-code;
       plugins.ralph-wiggum = "${claudeCodeRepo}/plugins/ralph-wiggum";
     };
-    antigravity-cli = {
-      enable = true;
-      package = pkgs.inputs.llm-agents.antigravity-cli;
-    };
-    github-copilot-cli = {
-      enable = true;
-      package = pkgs.inputs.llm-agents.copilot-cli;
-    };
-    codex = {
-      enable = true;
-      package = pkgs.inputs.llm-agents.codex;
-    };
+    antigravity-cli.enable = true;
+    github-copilot-cli.enable = true;
+    codex.enable = true;
     pi.coding-agent.enable = true;
   };
 
