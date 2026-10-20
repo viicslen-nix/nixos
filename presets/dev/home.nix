@@ -27,7 +27,6 @@
   };
 in {
   imports = [
-    inputs.ai.homeManagerModules.default
     homeModules.programs.hunk
     homeModules.programs.ray
     homeModules.programs.tinkerwell
@@ -128,10 +127,6 @@ in {
       wrangler
       atlas
       percona-toolkit
-
-      # AI
-      # llm-agents installs the CLI only as `agy`; resolve it from PATH, or the proxy's `agy` launcher is bypassed.
-      (writeShellScriptBin "antigravity" ''exec agy "$@"'')
     ]
     ++ import ./scripts.nix {inherit pkgs;}
     ++ lib.optionals desktop [
@@ -161,36 +156,7 @@ in {
       pkgs.inputs.packages.github.copilot-desktop
     ];
 
-  programs = {
-    claude-code = let
-      claudeCodeRepo = pkgs.fetchFromGitHub {
-        owner = "anthropics";
-        repo = "claude-code";
-        rev = "53f9910f6ef015ddda6a4b5fceab5dd745af7f4c";
-        sha256 = "sha256-ba7eTo6L4Xdb86kS9khFKXOIWWBmlNfUk8W39cSLWeM=";
-      };
-    in {
-      enable = true;
-      package = pkgs.inputs.llm-agents.claude-code;
-      plugins.ralph-wiggum = "${claudeCodeRepo}/plugins/ralph-wiggum";
-    };
-    antigravity-cli = {
-      enable = true;
-      package = pkgs.inputs.llm-agents.antigravity-cli;
-    };
-    github-copilot-cli = {
-      enable = true;
-      package = pkgs.inputs.llm-agents.copilot-cli;
-    };
-    codex = {
-      enable = true;
-      package = pkgs.inputs.llm-agents.codex;
-    };
-    pi.coding-agent.enable = true;
-  };
-
   modules.programs = {
-    claude-code.mods.readable-output.enable = true;
     zed.enable = desktop;
     ray.enable = desktop;
     tinkerwell.enable = desktop;
@@ -199,11 +165,6 @@ in {
       serve.enable = true;
       package = pkgs.inputs.packages.t3code.nightly;
     };
-    opencode = {
-      enable = true;
-      default = "v2";
-    };
-    opencode1.enable = true;
     k9s.enable = true;
     krr = {
       enableK9sIntegration = true;

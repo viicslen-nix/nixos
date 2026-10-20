@@ -13,9 +13,9 @@ holds what is not tied to an employer, so `work` keeps only employer access and
   `permittedInsecurePackages` (`useGlobalPkgs` ignores the home-manager one).
   vitess is not here: only `dostov-dev` imports it.
 - `home.nix`: everything else, as `home.packages` grouped under comment
-  headers, plus the AI harnesses (`programs.claude-code`, codex, copilot,
-  antigravity, pi, opencode v2 as the default), zed, t3code, hunk, k9s/krr, the
-  kubectl and sail aliases and the intelephense licence.
+  headers, plus zed, t3code, hunk, k9s/krr, the kubectl and sail aliases and
+  the intelephense licence. The AI harnesses are the `ai` preset's, which
+  `default.nix` imports.
 
 A package a module already installs is not listed here too: `vscode-fhs` is
 `users/neoscode`'s `defaults.editor`, `gh` is `programs.gh`, `hunk` is

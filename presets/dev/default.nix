@@ -1,5 +1,6 @@
 {nixosModules, ...}: {
   imports = [
+    ../ai
     nixosModules.programs.corepack
     nixosModules.programs.mkcert
     nixosModules.programs.docker
