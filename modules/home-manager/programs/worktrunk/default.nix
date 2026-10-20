@@ -63,7 +63,7 @@
           default = {
             merge.squash = false;
             commit.generation.command = "${commitScript}";
-            worktree-path = "../{{ repo }}@{{ branch | sanitize }}";
+            worktree-path = "../.worktrees/{{ repo }}/{{ branch | sanitize }}";
             list = {
               summary = false;
               json-schema = 2;
@@ -73,11 +73,8 @@
               delete = "wt remove --force -D  {{ args }}";
               workspace = "wt switch --base=@ --create  {{ args }}";
               since-main = "git log --oneline {{ default_branch }}..HEAD";
-              prune = ''
-                for branch in $(wt list --format=json --no-progressive | ${getExe pkgs.jq} -r '.items[] | select(.display.state == "integrated") | .branch'); do
-                  wt remove {{ args }} "$branch" || wt remove --no-hooks {{ args }} "$branch"
-                done
-              '';
+              # RAYON_NUM_THREADS caps both the integration scan and the removal workers.
+              prune = "RAYON_NUM_THREADS=4 wt step prune --min-age=2h {{ args }}";
               mv = ''
                 if git diff --quiet HEAD && test -z "$(git ls-files --others --exclude-standard)"; then
                   wt switch --create {{ to }} --execute="{{ args }}"
@@ -126,8 +123,8 @@
           # The session template is repeated in `dashboard.sh`'s jq; change all three together.
           tmuxSettings = optionalAttrs cfg.tmux.enable {
             pre-remove.tmux = "${killSessionScript} '{{ repo }}@{{ branch | sanitize }}'";
-            # `{% raw %}` survives the alias engine's pass so `wt switch` renders the inner template.
-            aliases.tmux = "wt switch {{ args }} --no-cd --execute='${postSwitchScript} \"{% raw %}{{ repo }}@{{ branch | sanitize }}{% endraw %}\" \"{% raw %}{{ worktree_path }}{% endraw %}\"'";
+            # `{% raw %}` survives the alias engine's pass so `wt switch` renders the inner template; each arg after `--` is one literal argv entry.
+            aliases.tmux = "wt switch {{ args }} --no-cd --execute=${postSwitchScript} -- '{% raw %}{{ repo }}@{{ branch | sanitize }}{% endraw %}' '{% raw %}{{ worktree_path }}{% endraw %}'";
           };
           mergedSettings = recursiveUpdate cfg.settings tmuxSettings;
         in
