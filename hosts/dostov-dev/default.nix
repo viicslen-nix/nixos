@@ -46,7 +46,6 @@ with lib; {
   };
 
   services = {
-    blueman.enable = true;
     ghost-backup.enable = true;
 
     tailscale = {
