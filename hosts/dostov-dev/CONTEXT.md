@@ -54,3 +54,11 @@ the raw PDL port is advertised over `_pdl-datastream._tcp` and was verified by
 piping PostScript at it and watching the SNMP lifetime page counter
 (`1.3.6.1.2.1.43.10.2.1.4.1.1`) advance. The cost is that CUPS gets no job or
 supply status back.
+
+## Bluetooth: the Naga drops, the Corne doesn't
+
+Both are paired to `hci1`, the RTL8851BE combo chip (USB `0489:e112`), whose
+Wi-Fi half `wlp5s0` shares its single antenna and is the default route ahead of
+`eno1`. The Naga reconnected every 20–40 s on 2026-10-21 while the Corne held.
+The udev rules pin both BT adapters' `power/control` to `on`; whether autosuspend
+or Wi-Fi coexistence is the real cause was not confirmed with `btmon`.
