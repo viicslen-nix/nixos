@@ -197,7 +197,8 @@ in {
         ci-pipeline = ./ai/ci-pipeline.md;
         cd-pipeline = ./ai/cd-pipeline.md;
         prod-db-operations = ./ai/prod-db-operations.md;
-        discord-logs = ./ai/discord-logs.md;
+        discord-logs = ./ai/discord-logs;
+        t3-dispatch = ./ai/t3-dispatch;
       };
       mcps = with lib;
       with pkgs; {

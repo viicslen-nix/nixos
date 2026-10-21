@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+# Red GitHub Actions workflows (latest completed run failed or timed out) on master, the newest
+# releases/* branch, and the scheduled workflows, whose run is not yet marked triaged.
+# Prints a JSON array ([] when nothing new); a one-line summary goes to stderr.
+#   ci-red-runs [-R owner/repo]
+#   ci-red-runs --mark RUN_ID...   record runs as triaged
+set -euo pipefail
+
+REPO=FmTod/mylisterhub-main-app
+SCHEDULED=(tia-baseline openwiki-update build-images create-release)
+STATE=${XDG_STATE_HOME:-$HOME/.local/state}/t3-dispatch
+SEEN=$STATE/ci-red-runs.seen
+mkdir -p "$STATE"
+touch "$SEEN"
+
+case ${1:-} in
+  --mark)
+    shift
+    (($#)) || { echo "usage: ci-red-runs --mark RUN_ID..." >&2; exit 2; }
+    printf '%s\n' "$@" >>"$SEEN"
+    tail -n 1000 "$SEEN" >"$SEEN.tmp" && mv "$SEEN.tmp" "$SEEN"
+    exit 0
+    ;;
+  -R) REPO=${2:?owner/repo required} ;;
+  "") ;;
+  *) echo "usage: ci-red-runs [-R owner/repo] | --mark RUN_ID..." >&2; exit 2 ;;
+esac
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+# `wait` alone never reports a failed background job.
+pids=()
+wait_all() {
+  local p
+  for p in "${pids[@]}"; do wait "$p"; done
+  pids=()
+}
+
+fields=databaseId,workflowName,conclusion,status,headSha,headBranch,createdAt,url,event
+release=$(gh api "repos/$REPO/git/matching-refs/heads/releases/" -q '.[].ref' | sed 's|^refs/heads/||' | sort -V | tail -n 1)
+for b in master ${release:+"$release"}; do
+  gh run list -R "$REPO" --branch "$b" --limit 30 --json "$fields" >"$tmp/runs-branch-${b//\//_}.json" &
+  pids+=($!)
+done
+for w in "${SCHEDULED[@]}"; do
+  gh run list -R "$REPO" --workflow "$w.yml" --limit 5 --json "$fields" >"$tmp/runs-wf-$w.json" &
+  pids+=($!)
+done
+wait_all
+
+jq -s --rawfile seen "$SEEN" '
+  ($seen | split("\n")) as $seen
+  | map(
+      map(select(.status == "completed" and (.conclusion | IN("skipped", "cancelled") | not)))
+      | group_by(.workflowName) | map(max_by(.createdAt))
+    )
+  | add | unique_by(.databaseId)
+  | map(select(.conclusion | IN("failure", "timed_out")) | .new = ((.databaseId | tostring) | IN($seen[]) | not))
+' "$tmp"/runs-*.json >"$tmp/red.json"
+
+# Keep the excerpt between the first test-failure marker and the job's first ##[error].
+excerpt() {
+  gh run view "$1" -R "$REPO" --log-failed | awk -F'\t' '
+    {
+      j = $1; l = $0
+      sub(/^[^\t]*\t[^\t]*\t[^ ]* ?/, "", l)
+      # gh prints escape codes as literal "^[" text
+      gsub(/(\033|\^\[)\[[0-9;]*[A-Za-z]/, "", l)
+      if (!(j in n)) order[++jobs] = j
+      L[j, ++n[j]] = l
+      if (!(j in fail) && l ~ /FAILED|✗|[Ee]rror:/) fail[j] = n[j]
+      if (!(j in err) && l ~ /^##\[error\]/) err[j] = n[j]
+    }
+    END {
+      for (k = 1; k <= jobs; k++) {
+        j = order[k]; e = (j in err) ? err[j] : n[j]
+        s = (j in fail && fail[j] <= e && e - fail[j] <= 400) ? fail[j] : e - 60
+        if (s < 1) s = 1
+        print "== " j
+        for (i = s; i <= e; i++) print substr(L[j, i], 1, 300)
+      }
+    }' | head -c 12000
+}
+
+for id in $(jq -r '.[] | select(.new) | .databaseId' "$tmp/red.json"); do
+  { excerpt "$id" >"$tmp/$id.log" || echo "(log unavailable)" >"$tmp/$id.log"; } &
+  pids+=($!)
+  { gh run view "$id" -R "$REPO" --json jobs \
+    -q '[.jobs[] | select(.conclusion | IN("failure", "timed_out")) | {name, url, failed_steps: [.steps[] | select(.conclusion == "failure") | .name]}]' >"$tmp/$id.jobs" ||
+    echo '[]' >"$tmp/$id.jobs"; } &
+  pids+=($!)
+done
+wait_all
+
+jq -r '"ci-red-runs: \(length) red, \(map(select(.new)) | length) new\(if length > 0 then ": " + (map("\(.headBranch)/\(.workflowName)\(if .new then "" else " (seen)" end)") | join(", ")) else "" end)"' "$tmp/red.json" >&2
+
+jq -c '.[] | select(.new) | del(.new)' "$tmp/red.json" | while read -r run; do
+  id=$(jq -r .databaseId <<<"$run")
+  jq -c --slurpfile jobs "$tmp/$id.jobs" --rawfile log "$tmp/$id.log" \
+    '{run_id: .databaseId, workflow: .workflowName, branch: .headBranch, sha: .headSha, conclusion, event, created_at: .createdAt, url, failed_jobs: $jobs[0], log_excerpt: $log}' <<<"$run"
+done | jq -cs .

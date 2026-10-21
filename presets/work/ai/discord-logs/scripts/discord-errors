@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+# #general-errors records posted since the stored cursor, grouped by message + origin; prints a JSON array.
+#   discord-errors [--since DATE]   collect; without a cursor, start at DATE (default "2 hours ago")
+#   discord-errors --commit         advance the cursor past the last collected run
+# An empty result ([]) advances the cursor by itself.
+set -euo pipefail
+
+CHANNEL=1339248499665010688 GUILD=1308652724119933008
+STATE=${XDG_STATE_HOME:-$HOME/.local/state}/t3-dispatch
+CURSOR=$STATE/discord-errors.cursor PENDING=$STATE/discord-errors.pending
+mkdir -p "$STATE"
+
+since="2 hours ago"
+case ${1:-} in
+  --commit)
+    if [[ -s $PENDING ]]; then mv "$PENDING" "$CURSOR"; fi
+    exit 0
+    ;;
+  --since) since=${2:?DATE required} ;;
+  "") ;;
+  *) echo "usage: discord-errors [--since DATE | --commit]" >&2; exit 2 ;;
+esac
+
+snowflake() { echo $((($(date -ud "$1" +%s%3N) - 1420070400000) << 22)); }
+
+# Same secret the discord-logs MCP server reads.
+TOKEN=$(cat "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/agenix/discord-logs-bot-token")
+
+api() {
+  local out code
+  while :; do
+    out=$(curl -sS -w '\n%{http_code}' -H "Authorization: Bot $TOKEN" "https://discord.com/api/v10$1")
+    code=${out##*$'\n'} out=${out%$'\n'*}
+    case $code in
+      200) printf '%s\n' "$out"; return ;;
+      429) sleep "$(jq -r '.retry_after // 1' <<<"$out")" ;;
+      *) echo "discord-errors: HTTP $code on $1: $out" >&2; return 1 ;;
+    esac
+  done
+}
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+after=$(cat "$CURSOR" 2>/dev/null || snowflake "$since")
+# A record's trace file lands a moment after its main message; leave the newest ones for the next run.
+cut=$(snowflake "30 seconds ago")
+
+while :; do
+  api "/channels/$CHANNEL/messages?limit=100&after=$after" >"$tmp/page"
+  cat "$tmp/page" >>"$tmp/pages"
+  (($(jq length "$tmp/page") == 100)) || break
+  after=$(jq -r 'map(.id) | max_by([length, .])' "$tmp/page")
+done
+
+jq -s --arg cut "$cut" '
+  add | map(select([(.id | length), .id] < [($cut | length), $cut])) | sort_by([(.id | length), .id])
+' "$tmp/pages" >"$tmp/msgs"
+
+if (($(jq length "$tmp/msgs") == 0)); then
+  echo '[]'
+  exit 0
+fi
+jq -r '.[-1].id' "$tmp/msgs" >"$PENDING"
+
+# Pair each file message with the latest earlier main message whose title timestamp matches the file name.
+jq -r '
+  def key: gsub("[^0-9]"; "");
+  reduce .[] as $m ({mains: {}, out: []};
+    if ($m.embeds | length) > 0 then
+      .mains[($m.embeds[0].title // "" | capture("\\[(?<t>[^]]+)\\]").t) // "" | key] = $m.id
+    else
+      ($m.attachments[]? | select(.filename | test("^[0-9]{14}_")) | .filename[:14]) as $k
+      | if .mains[$k] then .out += [[.mains[$k], $m.attachments[0].url]] else . end
+    end)
+  | .out | to_entries[] | [.key, .value[]] | @tsv
+' "$tmp/msgs" >"$tmp/files"
+
+mkdir "$tmp/t"
+# One output file per download: parallel writers to a shared file interleave lines.
+# shellcheck disable=SC2016
+T=$tmp/t xargs -r -P 16 -L 1 bash -c 'curl -sS --max-time 20 "$2" | jq -Rsc --arg id "$1" "{id: \$id, text: .}" >"$T/$0"' <"$tmp/files"
+
+jq -c -n --slurpfile msgs "$tmp/msgs" --slurpfile texts <(find "$tmp/t" -type f -exec cat {} + | jq -s .) \
+  --arg link "https://discord.com/channels/$GUILD/$CHANNEL/" '
+  def strip: gsub("/var/www/html/"; "");
+  def jsonish: (try (.[index("{"):rindex("}") + 1] | fromjson) catch null) | if type == "object" then . else {} end;
+  def norm: gsub("[0-9a-fA-F]{8}-[0-9a-fA-F-]{27}"; "<uuid>") | gsub("\"[^\"]*\""; "\"…\"")
+    | gsub("'"'"'[^'"'"']*'"'"'"; "'"'"'…'"'"'") | gsub("[0-9]+"; "#") | .[:300];
+  ($texts[0] | group_by(.id) | map({key: .[0].id, value: map(.text)}) | from_entries) as $files
+  | [$msgs[0][] | select((.embeds | length) > 0) | . as $m
+     | ($files[$m.id] // []) as $f
+     | ($f | map(select(startswith("On "))) | first) as $trace
+     | ([$m.embeds[1:][].description // "" | jsonish] + ($f | map(select(startswith("On ") | not) | jsonish)) | add // {}) as $ctx
+     # Queue failures carry the exception in their context instead of a trace file.
+     | ($ctx["Exception Trace"] // [] | if type == "string" then try fromjson catch [] else . end | map(strip)) as $qt
+     | (if $trace then $trace | strip | split("\n") else $qt end) as $tl
+     | ($tl[0] // "" | capture("^(On )?(?<f>[^ ]+):(?<l>[0-9]+)") // null) as $o
+     | ([$tl[] | capture("^(#[0-9]+ )?(?<f>app/[^(:]+)[(:](?<l>[0-9]+)")] | first) as $a
+     | ($m.embeds[0].description // "" | sub("^:black_small_square: ?"; "")) as $msg
+     | {
+         id: $m.id,
+         ts: $m.timestamp,
+         level: ($m.embeds[0].title // "" | capture("\\.(?<l>[A-Z]+)$").l // null),
+         message: (if $ctx["Exception Message"] then "\($msg): \($ctx["Job Name"] // "?") — \($ctx["Exception Message"])" else $msg end),
+         origin: (if $o then "\($o.f):\($o.l)" else null end),
+         origin_file: $o.f,
+         app_frame: (if $o and ($o.f | startswith("app/")) then null elif $a then "\($a.f):\($a.l)" else null end),
+         tenant: (($ctx.tenant // $ctx.Tenant) as $t | if $t then "\($t) \($ctx.organization // "")" | rtrimstr(" ") else null end),
+         trace: (if ($tl | length) > 0 then $tl[:16] | join("\n") else null end)
+       }]
+  | group_by([(.message | norm), .origin_file, (.app_frame // "" | sub(":[0-9]+$"; ""))])
+  | map(sort_by(.ts) | {
+      message: (last.message | .[:500]),
+      level: last.level,
+      origin: last.origin,
+      app_frame: last.app_frame,
+      count: length,
+      tenants: (map(.tenant // empty) | unique),
+      first_seen: first.ts,
+      last_seen: last.ts,
+      links: (.[-5:] | map($link + .id)),
+      trace: (map(.trace // empty) | last)
+    })
+  | sort_by(-.count, -(.tenants | length))
+' >"$tmp/out"
+
+if [[ $(cat "$tmp/out") == "[]" ]]; then mv "$PENDING" "$CURSOR"; fi
+cat "$tmp/out"

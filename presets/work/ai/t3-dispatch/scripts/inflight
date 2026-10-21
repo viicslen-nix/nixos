@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# Open PRs and local worktrees that already touch any of the given terms (class names, file paths,
+# test names; case-insensitive substrings). Run inside a checkout of the repo.
+# Prints {"<term>": {"prs": [...], "worktrees": [...]}} as JSON; a term with no matches has two empty lists.
+#   inflight [-R owner/repo] TERM...
+set -euo pipefail
+
+REPO=FmTod/mylisterhub-main-app
+if [[ ${1:-} == -R ]]; then
+  REPO=${2:?owner/repo required}
+  shift 2
+fi
+(($#)) || { echo "usage: inflight [-R owner/repo] TERM..." >&2; exit 2; }
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+gh pr list -R "$REPO" --state open --limit 300 --json number,title,headRefName,url,body,files >"$tmp/prs.json" &
+prs=$!
+
+# Per worktree: files changed since it forked from origin/master (committed, staged, unstaged,
+# untracked) and the matching diff text.
+index_worktree() {
+  local dir=$1 out=$2 base
+  base=$(git -C "$dir" merge-base origin/master HEAD 2>/dev/null) || base=HEAD
+  {
+    git -C "$dir" diff --name-only "$base"
+    git -C "$dir" ls-files --others --exclude-standard
+  } | sort -u >"$out.files"
+  git -C "$dir" diff "$base" >"$out.diff"
+  jq -n --arg path "$dir" --arg branch "$(git -C "$dir" branch --show-current)" \
+    --argjson ahead "$(git -C "$dir" rev-list --count "$base..HEAD")" \
+    --argjson dirty "$(git -C "$dir" status --porcelain | wc -l)" \
+    '{path: $path, branch: $branch, ahead: $ahead, dirty: $dirty}' >"$out.json"
+}
+
+pids=()
+i=0
+while read -r dir; do
+  [[ -d $dir ]] || continue
+  i=$((i + 1))
+  index_worktree "$dir" "$tmp/wt$i" </dev/null &
+  pids+=($!)
+done < <(git worktree list --porcelain | sed -n 's/^worktree //p')
+for p in "${pids[@]}"; do wait "$p"; done
+wait "$prs"
+
+for wt in "$tmp"/wt*.json; do
+  [[ -e $wt ]] || continue
+  w=${wt%.json}
+  for term in "$@"; do
+    files=$(grep -iF -- "$term" "$w.files" | head -n 5 || true)
+    if [[ -n $files ]] || grep -qiF -- "$term" "$w.diff"; then
+      jq -c --arg term "$term" --arg files "$files" \
+        '{term: $term, wt: (. + {matched: (if $files == "" then "diff" else $files | split("\n") end)})}' "$wt"
+    fi
+  done
+done >"$tmp/wt-matches"
+
+jq -n --slurpfile prs "$tmp/prs.json" --slurpfile wts "$tmp/wt-matches" --args '
+  $ARGS.positional | map(. as $t | ascii_downcase as $lt | {
+    key: $t,
+    value: {
+      prs: [$prs[0][]
+        | {number, title, url, branch: .headRefName, matched: [
+            (if (.title | ascii_downcase | contains($lt)) then "title" else empty end),
+            (if (.headRefName | ascii_downcase | contains($lt)) then "branch" else empty end),
+            (if (.body // "" | ascii_downcase | contains($lt)) then "body" else empty end),
+            (.files[]?.path | select(ascii_downcase | contains($lt)))
+          ][:5]}
+        | select(.matched | length > 0)],
+      worktrees: [$wts[] | select(.term == $t) | .wt]
+    }
+  }) | from_entries
+' "$@"
