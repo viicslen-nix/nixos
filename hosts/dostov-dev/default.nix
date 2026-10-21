@@ -48,6 +48,12 @@ with lib; {
   services = {
     ghost-backup.enable = true;
 
+    # Keep both BT adapters (TP-Link, onboard RTL8851BE) out of USB autosuspend.
+    udev.extraRules = ''
+      ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="2357", ATTR{idProduct}=="0604", ATTR{power/control}="on"
+      ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0489", ATTR{idProduct}=="e112", ATTR{power/control}="on"
+    '';
+
     tailscale = {
       enable = true;
       openFirewall = true;
