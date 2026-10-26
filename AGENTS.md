@@ -87,7 +87,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `home.nix` never reads it work there — today just `ai`. The only one is
   `openclaw` (deploying it: `hosts/openclaw/CONTEXT.md`).
 - **preset** — a composable module bundle in `presets/<name>`
-  (`base`, `desktop`, `dev`, `work`, `personal`, `linode`, `ai`). Hosts opt in via their
+  (`base`, `desktop`, `dev`, `personal`, `linode`, `ai`), plus `work`, which is
+  the private `viicslen-nix/work` repo as the `work` flake input. Hosts opt in via their
   `presets = [ … ]` list. `base` is universal/server-safe; `desktop` carries
   **all** graphical/physical-machine config (fonts, printing, avahi, libinput,
   compositor imports, wayland overlay + caches, sound, bluetooth, grub-on-EFI
@@ -377,9 +378,9 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `tag = "v${version}"` (or `"v${finalAttrs.version}"`), never a literal
   `rev = "v3.2.1"` — with a literal rev, nix-update rewrites `version` only, so
   the package silently keeps building the old source at the old hash.
-- **mkcert has one shared CA: cert plain, key encrypted.** `secrets/mkcert/rootCA.pem`
-  is committed as-is (public, must be a store path for `security.pki`);
-  `rootCA-key.age` is the secret. The `work` preset wires both into
+- **mkcert has one shared CA: cert plain, key encrypted.** The private `work`
+  input holds `secrets/mkcert/rootCA.pem` as-is (must be a store path for
+  `security.pki`) and `rootCA-key.age`, the secret. The `work` preset wires both into
   `modules.programs.mkcert.rootCA`; the module also imports the CA into each
   user's `~/.pki/nssdb`, which is the only store Chromium/Electron read.
   `CAROOT` is set session-wide, so user-side `mkcert` calls issue from it too.

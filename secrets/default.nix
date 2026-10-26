@@ -9,12 +9,7 @@ in {
   "secrets/github/nix-token.age".publicKeys = [sshKey];
   "secrets/intelephense/licence.age".publicKeys = [sshKey];
   "secrets/avante/anthropic-api-key.age".publicKeys = [sshKey];
-  "secrets/mkcert/rootCA-key.age".publicKeys = [sshKey];
-  "secrets/prod-db/mysql-password.age".publicKeys = [sshKey];
-  "secrets/grafana/service-account-token.age".publicKeys = [sshKey];
-  "secrets/discord/logs-bot-token.age".publicKeys = [sshKey];
   # Dotenv (`STITCH_API_KEY=…`) — mcp-gateway reads it as an `env_files` entry.
   "secrets/stitch/api-key.age".publicKeys = [sshKey];
   "secrets/cliproxyapi/api-key.age".publicKeys = [sshKey];
-  "secrets/typesafe/api-key.age".publicKeys = [sshKey];
 }

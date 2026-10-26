@@ -132,6 +132,12 @@
       };
     };
 
+    # Private; fetched only when a host lists the `work` preset.
+    work = {
+      url = "github:viicslen-nix/work";
+      flake = false;
+    };
+
     # Leave `nixpkgs` un-overridden — it is what keeps cache.numtide.com hitting.
     llm-agents = {
       url = "github:numtide/llm-agents.nix";

@@ -2608,6 +2608,7 @@
         "tt-schemes": "tt-schemes",
         "tuicr": "tuicr",
         "viicslen-lib": "viicslen-lib",
+        "work": "work",
         "worktrunk": "worktrunk",
         "zed": "zed",
         "zjstatus": "zjstatus"
@@ -3244,6 +3245,22 @@
         "type": "path"
       },
       "parent": []
+    },
+    "work": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793045760,
+        "narHash": "sha256-hz+GgjKmzOYs1SfNJbdkgV5Yw6z/vIwOcl6dRru8JRQ=",
+        "owner": "viicslen-nix",
+        "repo": "work",
+        "rev": "dcce1f8b6a20aa7bedba3c50571158f91e2c12db",
+        "type": "github"
+      },
+      "original": {
+        "owner": "viicslen-nix",
+        "repo": "work",
+        "type": "github"
+      }
     },
     "worktrunk": {
       "inputs": {

@@ -241,7 +241,8 @@ in {
     nix = {
       # This will add each flake input as a registry
       # To make nix3 commands consistent with your flake
-      registry = (lib.mapAttrs (_: flake: {inherit flake;})) ((lib.filterAttrs (_: lib.isType "flake")) inputs);
+      # `work` is skipped by name first: the type check would fetch the private input on every host.
+      registry = (lib.mapAttrs (_: flake: {inherit flake;})) ((lib.filterAttrs (name: v: name != "work" && lib.isType "flake" v)) inputs);
 
       # This will additionally add your inputs to the system's legacy channels
       # Making legacy nix commands consistent as well, awesome!
