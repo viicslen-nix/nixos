@@ -9,6 +9,9 @@
 }: let
   user = "neoscode";
   desktop = osConfig.modules.presets.desktop.enable;
+  inherit (osConfig.networking) hostName;
+  # Every key below lives in 1Password; hosts without its agent can't sign with them.
+  onePassword = osConfig.programs._1password-gui.enable;
 in {
   imports = with homeModules.programs; [
     inputs.home.homeManagerModules.profile
@@ -55,6 +58,29 @@ in {
     packages = [pkgs.inputs.ai.oh-my-opencode];
   };
 
+  # TODO: drop the whole-vault entries once the old per-server keys are retired.
+  xdg.configFile."1Password/ssh/agent.toml" = lib.mkIf onePassword {
+    text = ''
+      [[ssh-keys]]
+      item = "neoscode@${hostName}"
+      vault = "Personal"
+
+      [[ssh-keys]]
+      item = "GitHub Auth Key"
+      vault = "Personal"
+
+      [[ssh-keys]]
+      item = "GitHub Signing Key"
+      vault = "Personal"
+
+      [[ssh-keys]]
+      vault = "Personal"
+
+      [[ssh-keys]]
+      vault = "SSH"
+    '';
+  };
+
   programs = let
     # Don't drop: superset's scrubbed PTY env carries no WAYLAND_DISPLAY.
     reattachWayland = ''
@@ -80,6 +106,15 @@ in {
     };
 
     helix.enable = true;
+
+    # IdentitiesOnly stops the agent offering every key and tripping MaxAuthTries.
+    ssh.settings = lib.mkIf onePassword {
+      "*" = {
+        IdentitiesOnly = "yes";
+        IdentityFile = "${./ssh + "/${hostName}.pub"}";
+      };
+      "github.com".IdentityFile = "${./ssh/github-auth.pub}";
+    };
 
     gh.extensions = [pkgs.github-copilot-cli];
   };
