@@ -10,6 +10,14 @@
   # llm-agents installs the CLI only as `agy`; resolve it from PATH, or the proxy's `agy` launcher is bypassed.
   home.packages = [(pkgs.writeShellScriptBin "antigravity" ''exec agy "$@"'')];
 
+  # The gateway firewall flags backticks/`$(...)` as shell injection in every
+  # argument except these keys; the list replaces its built-in defaults (the
+  # first 15), so keep them. Only the shell scan is skipped — SQL and
+  # path-traversal scans still run on these keys.
+  xdg.configFile."mcp-gateway/firewall.env".text = ''
+    MCP_GATEWAY_FIREWALL_SKIP_KEYS=description,body,summary,content,message,prompt,comment,comment_body,title,rationale,context,notes,rollback,ac,acceptance_criteria,sql,text,old_string,new_string
+  '';
+
   programs = {
     claude-code = let
       claudeCodeRepo = pkgs.fetchFromGitHub {
@@ -35,6 +43,9 @@
       default = "v2";
     };
     opencode1.enable = true;
+
+    # Not `~`: the gateway runs with HOME set to its state dir.
+    ai.integrations.gateway.settings.env_files = ["${config.xdg.configHome}/mcp-gateway/firewall.env"];
 
     ai.proxy = {
       default = true;
