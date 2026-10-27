@@ -213,6 +213,26 @@ tmux-push HOST NAME='':
     if [ -n "{{NAME}}" ]; then echo "set -g @server_name {{NAME}}" > "$dir/local.conf"; fi; \
     tmux source-file "$dir/tmux.conf" 2>/dev/null || true' < flakes/home/modules/tmux/server.conf
 
+# (Re-)register this host's actions-runner container: drops its saved
+# registration, writes a fresh token and restarts it. Run within the hour.
+# Usage: just register-runner [OWNER/REPO]
+register-runner REPO='FmTod/mylisterhub-main-app':
+  #!/usr/bin/env bash
+  set -euo pipefail
+  dir=/var/lib/actions-runner
+  token=$(gh api -X POST "repos/{{REPO}}/actions/runners/registration-token" -q .token)
+  sudo install -d -m 700 "$dir" "$dir/config"
+  sudo find "$dir/config" -mindepth 1 -delete
+  printf 'RUNNER_TOKEN=%s\n' "$token" | sudo install -m 600 /dev/stdin "$dir/token.env"
+  for unit in podman-actions-runner docker-actions-runner; do
+    if systemctl cat "$unit.service" &>/dev/null; then
+      sudo systemctl restart "$unit.service"
+      echo "registered via $unit; check: gh api repos/{{REPO}}/actions/runners -q '.runners[].name'"
+      exit 0
+    fi
+  done
+  echo "token written; the runner registers on the next rebuild (token expires in 1h)"
+
 ############################################################################
 #
 #  Maintenance Commands

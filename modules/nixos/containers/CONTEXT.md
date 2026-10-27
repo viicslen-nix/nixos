@@ -196,6 +196,7 @@ out because sibling containers resolve job paths on the host.
 
 Registration reads `RUNNER_TOKEN` from `/var/lib/actions-runner/token.env`
 once; the config it produces persists in `/var/lib/actions-runner/config`, so
-an expired token is harmless afterwards. To re-register, empty that directory
-and write a fresh token from
-`gh api -X POST repos/FmTod/mylisterhub-main-app/actions/runners/registration-token -q .token`.
+an expired token is harmless afterwards. Re-registering (after a wipe, or once
+GitHub drops a runner offline for ~14 days) is `just register-runner`. The
+token is not an agenix secret: it expires an hour after it is issued, so an
+encrypted copy would already be dead by the next registration.
