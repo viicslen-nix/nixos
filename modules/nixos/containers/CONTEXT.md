@@ -173,10 +173,16 @@ only. A new terminal tab inherits the old environment; it takes a fresh login.
 
 ## actions-runner
 
-A self-hosted GitHub Actions runner for `FmTod/mylisterhub-main-app`, added
-when both the GitHub-hosted and Blacksmith budgets ran out. Workflows opt in
-through the repo variable `CI_RUNNER=mlh-local`; deleting the variable sends
-them back to their hosted labels.
+A self-hosted GitHub Actions runner registered to the `FmTod` org, added when
+both the GitHub-hosted and Blacksmith budgets ran out. It is the last fallback:
+the `mylisterhub-status` Cloudflare Worker checks usage every 15 minutes, and
+once a free tier passes 90% it sets the org variables `HOSTED_RUNNER_OVERRIDE`
+/ `BLACKSMITH_RUNNER_OVERRIDE` that every FmTod `runs-on` reads, moving jobs
+GitHub-hosted → Blacksmith → `mlh-local`. The main-app repo variable
+`CI_RUNNER=mlh-local` still forces main-app onto it by hand.
+
+If this host is off while a tier is full, jobs routed to `mlh-local` queue until
+it is back.
 
 It is the `myoung34/github-runner` Ubuntu image rather than nixpkgs'
 `services.github-runners` (the `programs/github-runner` module) because the
@@ -184,8 +190,8 @@ workflows assume an Ubuntu host: `sudo apt-get install`, `setup-php`. A native
 NixOS runner fails those steps.
 
 It mounts the rootful podman socket for job `services:` and image builds, so
-any workflow in that repo is root on this host. That is accepted for a private
-repo; do not point it at a public one. The socket mount also exempts it from
+any workflow in any private FmTod repo is root on this host. That is accepted
+because the org's Default runner group excludes public repos; keep it that way. The socket mount also exempts it from
 `settings.userns`.
 
 `--network=host` because job services publish their ports on the host and the

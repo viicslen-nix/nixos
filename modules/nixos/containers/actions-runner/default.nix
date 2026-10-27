@@ -14,10 +14,10 @@
       options.modules.${namespace}.${name} = {
         enable = mkEnabledOption (mdDoc name);
 
-        repo = mkOption {
+        org = mkOption {
           type = types.str;
-          example = "https://github.com/owner/repo";
-          description = "Repository the runner registers against.";
+          example = "FmTod";
+          description = "GitHub organization the runner registers against.";
         };
 
         labels = mkOption {
@@ -37,8 +37,8 @@
         virtualisation.oci-containers.containers.actions-runner = {
           image = "myoung34/github-runner:ubuntu-noble";
           environment = {
-            REPO_URL = cfg.repo;
-            RUNNER_SCOPE = "repo";
+            ORG_NAME = cfg.org;
+            RUNNER_SCOPE = "org";
             RUNNER_NAME = config.networking.hostName;
             LABELS = cfg.labels;
             CONFIGURED_ACTIONS_RUNNER_FILES_DIR = "/runner/config";

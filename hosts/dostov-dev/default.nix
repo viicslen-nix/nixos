@@ -157,7 +157,7 @@ with lib; {
 
     containers.actions-runner = {
       enable = true;
-      repo = "https://github.com/FmTod/mylisterhub-main-app";
+      org = "FmTod";
     };
 
     core.theming.disabledTargets = ["chromium"];
