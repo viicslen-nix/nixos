@@ -15,6 +15,7 @@ with lib; {
     nixosModules.hardware.nvidia
     nixosModules.hardware.razer
     nixosModules.containers.vitess
+    nixosModules.containers.actions-runner
     nixosModules.features.miami-bus-tracker
   ];
 
@@ -152,6 +153,11 @@ with lib; {
     containers.settings = {
       backend = "podman";
       userns = "auto";
+    };
+
+    containers.actions-runner = {
+      enable = true;
+      repo = "https://github.com/FmTod/mylisterhub-main-app";
     };
 
     core.theming.disabledTargets = ["chromium"];

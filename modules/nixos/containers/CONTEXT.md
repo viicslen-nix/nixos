@@ -170,3 +170,32 @@ services from the file provider instead of labels. Traefik has exactly one
 Consequence worth remembering: these variables are `environment.sessionVariables`,
 written to `/etc/set-environment` and sourced by `/etc/profile` — login shells
 only. A new terminal tab inherits the old environment; it takes a fresh login.
+
+## actions-runner
+
+A self-hosted GitHub Actions runner for `FmTod/mylisterhub-main-app`, added
+when both the GitHub-hosted and Blacksmith budgets ran out. Workflows opt in
+through the repo variable `CI_RUNNER=mlh-local`; deleting the variable sends
+them back to their hosted labels.
+
+It is the `myoung34/github-runner` Ubuntu image rather than nixpkgs'
+`services.github-runners` (the `programs/github-runner` module) because the
+workflows assume an Ubuntu host: `sudo apt-get install`, `setup-php`. A native
+NixOS runner fails those steps.
+
+It mounts the rootful podman socket for job `services:` and image builds, so
+any workflow in that repo is root on this host. That is accepted for a private
+repo; do not point it at a public one. The socket mount also exempts it from
+`settings.userns`.
+
+`--network=host` because job services publish their ports on the host and the
+steps reach them at `127.0.0.1`. The workflows publish ephemeral host ports
+(`- 3306`, not `- 3306:3306`): the dev `mysql` and `redis` containers already
+hold the fixed ones. The work dir is bind-mounted at the same path inside and
+out because sibling containers resolve job paths on the host.
+
+Registration reads `RUNNER_TOKEN` from `/var/lib/actions-runner/token.env`
+once; the config it produces persists in `/var/lib/actions-runner/config`, so
+an expired token is harmless afterwards. To re-register, empty that directory
+and write a fresh token from
+`gh api -X POST repos/FmTod/mylisterhub-main-app/actions/runners/registration-token -q .token`.
