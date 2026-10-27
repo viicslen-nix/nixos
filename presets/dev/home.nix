@@ -125,6 +125,8 @@ in {
       kubernetes-helm
       cloudflared
       wrangler
+      unstable.cf
+      pkgs.inputs.packages.blacksmith
       atlas
       percona-toolkit
     ]
