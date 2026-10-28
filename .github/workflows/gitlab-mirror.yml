@@ -1,0 +1,28 @@
+name: Mirror to GitLab
+
+on:
+  push:
+  delete:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gitlab-mirror
+
+jobs:
+  mirror:
+    # Dependabot runs get no Actions secrets; the next push mirrors its branches anyway.
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Push all branches and tags to gitlab.neoscode.com
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          REPO: ${{ github.event.repository.name }}
+        run: |
+          git clone --bare "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" repo.git
+          git -C repo.git push --prune "https://oauth2:${GITLAB_TOKEN}@gitlab.neoscode.com/nix/${REPO}.git" \
+            '+refs/heads/*:refs/heads/*' '+refs/tags/*:refs/tags/*'
