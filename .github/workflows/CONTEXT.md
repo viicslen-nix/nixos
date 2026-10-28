@@ -54,3 +54,20 @@ Dependabot PR fails the required evals with an empty `private-key`. The key
 itself is in 1Password (Personal, "viicslen-nix-ci GitHub App private key").
 To rotate it, generate a new key in the app's settings, update both secrets
 and the 1Password document, then delete the old key there.
+
+## Why setup no longer frees disk space, and why the input cache has one writer
+
+Measured 2026-10-28: `jlumbroso/free-disk-space` took 2–8 minutes per job,
+nearly all of setup and more than the actual work in Format & lint, while the
+runners already had 86 GB free before cleanup. Evals build nothing and Cache
+compiles a GB or two, so only `build-host.yml`, which builds and exports a
+whole closure (dostov-dev's is 62 GB), still opts in.
+
+About 4.5 of each eval's 5 minutes went to fetching roughly 100 flake inputs
+one by one, not to evaluating them. `~/.cache/nix` holds the fetched trees, so
+every job restores it, but only the Cache job saves it. That job dry-runs every
+host, so its copy has every input. Jobs running in parallel that all saved
+would race for the same key, and the first one to finish (Format & lint, which
+fetches the fewest inputs) would leave the cache without most host inputs.
+Sources that Nix substitutes straight into `/nix/store` are still downloaded
+every run: caching the store would need a third-party action.

@@ -1,5 +1,5 @@
 name: 'Setup Nix Build Environment'
-description: 'Sets up Nix with flakes, Cachix, and frees up disk space for building'
+description: 'Sets up Nix with flakes and Cachix, and restores the cached flake inputs'
 inputs:
   cachix-auth-token:
     description: 'Cachix authentication token'
@@ -9,10 +9,22 @@ inputs:
     description: 'Token nix uses for github.com fetches; defaults to the workflow token'
     required: false
     default: ''
+  free-disk-space:
+    description: "'true' to delete preinstalled toolchains first (2-8 min); only full host builds need the room"
+    required: false
+    default: 'false'
+outputs:
+  input-cache-key:
+    description: 'Exact key for the flake input cache; pass it to actions/cache/save'
+    value: ${{ steps.inputs.outputs.cache-primary-key }}
+  input-cache-hit:
+    description: "'true' when the input cache matched exactly, so there is nothing new to save"
+    value: ${{ steps.inputs.outputs.cache-hit }}
 runs:
   using: 'composite'
-  steps: 
+  steps:
     - name: Free Disk Space (Ubuntu)
+      if: inputs.free-disk-space == 'true'
       uses: jlumbroso/free-disk-space@ceedf095f4ec1a097402bc6bd80831f2e1a6fde6 # v2.0.0
 
     - name: Install Nix
@@ -28,3 +40,14 @@ runs:
       with:
         name: nix-community
         authToken: ${{ inputs.cachix-auth-token }}
+
+    # Restore only: the Cache workflow, which fetches every host's inputs, is the one writer.
+    - name: Restore flake inputs
+      id: inputs
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: |
+          ~/.cache/nix
+          !~/.cache/nix/eval-cache-*
+        key: nix-inputs-${{ runner.os }}-${{ hashFiles('flake.lock', 'flakes/*/flake.lock') }}
+        restore-keys: nix-inputs-${{ runner.os }}-

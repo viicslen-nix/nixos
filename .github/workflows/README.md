@@ -20,7 +20,10 @@ This workflow is eval-only; caching is `cache.yml`'s job.
 
 ## Cache (`cache.yml`)
 
-Runs on every push to `main` and on demand. `.github/scripts/cache.sh`
+Runs on demand and on pushes to `main` that touch something a host builds
+from: pushes that change only Markdown, `docs/` or other workflows skip it.
+It is also the only job that saves the flake input cache (see below).
+`.github/scripts/cache.sh`
 dry-runs each evaluable host's toplevel, keeps the derivations that would be
 built whose names match `.github/cache-allowlist`, builds them and pushes
 their closures to the public `viicslen-nix` Cachix cache (5 GB free tier).
@@ -41,5 +44,7 @@ a NAR artifact, kept for `artifact_retention_days`.
 
 ## Shared setup (`.github/actions/setup-nix-build`)
 
-Composite action used by the jobs above: frees runner disk space, installs Nix
-with flakes, and configures the nix-community Cachix cache.
+Composite action used by the jobs above: installs Nix with flakes, configures
+the nix-community Cachix cache, and restores `~/.cache/nix` (the fetched flake
+inputs) keyed on every `flake.lock`. Pass `free-disk-space: 'true'` to delete
+the runner's preinstalled toolchains first; only `build-host.yml` does.

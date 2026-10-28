@@ -3,6 +3,16 @@ name: Cache
 on:
   push:
     branches: [main]
+    # Skip pushes that cannot change what hosts build: docs and the other workflows.
+    paths:
+      - '**'
+      - '!**.md'
+      - '!docs/**'
+      - '!.github/**'
+      - '.github/cache-allowlist'
+      - '.github/scripts/**'
+      - '.github/actions/**'
+      - '.github/workflows/cache.yml'
   workflow_dispatch:
 
 # Let a running build finish; only the newest pending run is kept.
@@ -39,6 +49,7 @@ jobs:
           permission-contents: read
 
       - name: Setup Nix Build Environment
+        id: setup
         uses: ./.github/actions/setup-nix-build
         with:
           github-token: ${{ steps.app-token.outputs.token }}
@@ -58,3 +69,13 @@ jobs:
             dostov-dev \
             home-desktop \
             asus-zephyrus-gu603
+
+      # The one writer of the input cache: the dry-runs above fetch every host's inputs.
+      - name: Save flake inputs
+        if: always() && steps.setup.outputs.input-cache-hit != 'true' && steps.setup.outputs.input-cache-key != ''
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cache/nix
+            !~/.cache/nix/eval-cache-*
+          key: ${{ steps.setup.outputs.input-cache-key }}

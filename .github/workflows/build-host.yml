@@ -55,6 +55,8 @@ jobs:
 
       - name: Setup Nix Build Environment
         uses: ./.github/actions/setup-nix-build
+        with:
+          free-disk-space: 'true'
 
       - name: Validate host exists
         run: |
