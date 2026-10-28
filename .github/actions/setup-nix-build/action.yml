@@ -5,6 +5,10 @@ inputs:
     description: 'Cachix authentication token'
     required: false
     default: ''
+  github-token:
+    description: 'Token nix uses for github.com fetches; defaults to the workflow token'
+    required: false
+    default: ''
 runs:
   using: 'composite'
   steps: 
@@ -19,7 +23,7 @@ runs:
         nix_path: nixpkgs=channel:nixos-unstable
         extra_nix_config: |
           experimental-features = nix-command flakes
-          access-tokens = github.com=${{ github.token }}
+          access-tokens = github.com=${{ inputs.github-token || github.token }}
 
     - name: Setup Cachix
       uses: cachix/cachix-action@v17
