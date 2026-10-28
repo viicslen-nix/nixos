@@ -54,8 +54,6 @@ in {
       spf = "search-package-files";
       ss = "sesh-sessions";
     };
-
-    packages = [pkgs.inputs.ai.oh-my-opencode];
   };
 
   # TODO: drop the whole-vault entries once the old per-server keys are retired.

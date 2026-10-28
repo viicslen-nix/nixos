@@ -194,17 +194,17 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (118)
+### Packages (119)
 
 | Package | Version | Source |
 | --- | --- | --- |
-| oh-my-opencode |  | `presets/base` |
 | act | 0.2.89 | `presets/dev/home.nix` |
-| antigravity |  | `presets/dev/home.nix` |
 | atlas | 1.3.0 | `presets/dev/home.nix` |
 | bc | 1.08.2 | `presets/dev/home.nix` |
+| blacksmith | 0.5.3 | `presets/dev/home.nix` |
 | bun | 1.4.2 | `presets/dev/home.nix` |
 | but | 0.22.3 | `presets/dev/home.nix` |
+| cf | 1.0.0-beta.21 | `presets/dev/home.nix` |
 | cloudflared | 2026.9.1 | `presets/dev/home.nix` |
 | cmake | 4.4.2 | `presets/dev/home.nix` |
 | composer | 2.10.3 | `presets/dev/home.nix` |
@@ -212,6 +212,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | devbox | 0.17.5 | `presets/dev/home.nix` |
 | gcc | 15.3.0 | `presets/dev/home.nix` |
 | gcc-wrapper | 13.4.0 | `presets/dev/home.nix` |
+| generate-cert |  | `presets/dev/home.nix` |
 | gh-dash | 4.25.2 | `presets/dev/home.nix` |
 | ghost-backup | 0.4.7 | `presets/dev/home.nix` |
 | git-carve-submodule |  | `presets/dev/home.nix` |
@@ -233,7 +234,6 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | opustags | 1.10.1 | `presets/dev/home.nix` |
 | perl5.42.3-Percona-Toolkit | 3.7.1-4 | `presets/dev/home.nix` |
 | php-with-extensions | 8.4.25 | `presets/dev/home.nix` |
-| pi |  | `presets/dev/home.nix` |
 | pkg-config-wrapper | 0.29.2 | `presets/dev/home.nix` |
 | python3 | 3.14.7 | `presets/dev/home.nix` |
 | tuicr | 0.24.0 | `presets/dev/home.nix` |
@@ -241,13 +241,6 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | vite-plus | 0.3.0 | `presets/dev/home.nix` |
 | wrangler | 4.129.0 | `presets/dev/home.nix` |
 | zig | 0.16.0 | `presets/dev/home.nix` |
-| awscli | 1.44.21 | `presets/work/home.nix` |
-| discord-logs-mcp |  | `presets/work/home.nix` |
-| generate-cert |  | `presets/work/home.nix` |
-| grafana-mcp |  | `presets/work/home.nix` |
-| linode-cli | 5.56.2 | `presets/work/home.nix` |
-| mcp-toolbox | 1.8.0 | `presets/work/home.nix` |
-| prod-db-mcp |  | `presets/work/home.nix` |
 | android-tools | 37.0.0 | `presets/personal/home.nix` |
 | asciinema | 3.2.1 | `presets/personal/home.nix` |
 | dictd | 1.13.3 | `presets/personal/home.nix` |
@@ -255,16 +248,18 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | nchat | 5.16.9 | `presets/personal/home.nix` |
 | nixvim |  | `presets/personal/home.nix` |
 | yazi | 26.9.1 | `presets/personal/home.nix` |
-| krr | 1.30.0 | `modules/home-manager/programs/krr` |
+| antigravity |  | `presets/ai/home.nix` |
+| pi |  | `presets/ai/home.nix` |
+| krr | 1.31.0 | `modules/home-manager/programs/krr` |
 | eza | 0.23.5 | `modules/home-manager/programs/sesh` |
 | sesh | 2.30.1 | `modules/home-manager/programs/sesh` |
 | sesh-list |  | `modules/home-manager/programs/sesh` |
-| worktrunk | 0.74.0 | `modules/home-manager/programs/worktrunk` |
+| worktrunk | 0.80.0 | `modules/home-manager/programs/worktrunk` |
 | wt-dashboard |  | `modules/home-manager/programs/worktrunk` |
 | browser-harness | 0.1.13 | `flakes/ai/hmModules/ai` |
 | coderabbit | 0.9.0 | `flakes/ai/hmModules/ai` |
 | mcp-gateway | 3.5.1 | `flakes/ai/hmModules/ai` |
-| mempalace | 3.10.0 | `flakes/ai/hmModules/ai` |
+| mempalace | 3.11.0 | `flakes/ai/hmModules/ai` |
 | openwiki | 0.7.2 | `flakes/ai/hmModules/ai` |
 | agy |  | `flakes/ai/hmModules/ai/proxy.nix` |
 | agy-direct |  | `flakes/ai/hmModules/ai/proxy.nix` |
@@ -272,10 +267,10 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | codex-direct |  | `flakes/ai/hmModules/ai/proxy.nix` |
 | copilot |  | `flakes/ai/hmModules/ai/proxy.nix` |
 | copilot-direct |  | `flakes/ai/hmModules/ai/proxy.nix` |
-| op1 |  | `flakes/ai/hmModules/opencode/v1.nix` |
-| opencode1 |  | `flakes/ai/hmModules/opencode/v1.nix` |
+| opencode-default |  | `flakes/ai/hmModules/opencode/v2.nix` |
 | opencode2 |  | `flakes/ai/hmModules/opencode/v2.nix` |
-| t3code | 0.0.46-nightly.20261013.3066 | `flakes/ai/hmModules/t3code` |
+| t3 |  | `flakes/ai/hmModules/t3code` |
+| t3code | 0.1.4-nightly.20261028.3824 | `flakes/ai/hmModules/t3code` |
 | hunkdiff | 0.20.0 | `flakes/home/modules/hunk` |
 | jujutsu | 0.45.1 | `flakes/home/modules/jujutsu` |
 | lazyjj | 0.6.1 | `flakes/home/modules/jujutsu` |
@@ -283,26 +278,32 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | mergiraf | 0.19.1 | `flakes/home/modules/jujutsu` |
 | jj-starship | 0.7.1-292224a | `flakes/home/modules/starship` |
 | starship-smart-dir |  | `flakes/home/modules/starship` |
+| awscli | 1.44.21 | `home.nix` |
+| discord-logs-mcp |  | `home.nix` |
+| grafana-mcp |  | `home.nix` |
+| linode-cli | 5.56.2 | `home.nix` |
+| mcp-toolbox | 1.8.0 | `home.nix` |
+| prod-db-mcp |  | `home.nix` |
 | hm-session-vars.sh |  | `modules/home-environment.nix` |
 | dummy-fc-dir1 |  | `modules/misc/fontconfig.nix` |
 | dummy-fc-dir2 |  | `modules/misc/fontconfig.nix` |
 | dummy-xdg-mime-dirs1 |  | `modules/misc/xdg/mime.nix` |
 | dummy-xdg-mime-dirs2 |  | `modules/misc/xdg/mime.nix` |
 | shared-mime-info | 2.4 | `modules/misc/xdg/mime.nix` |
-| antigravity-cli | 1.3.2 | `modules/programs/antigravity-cli.nix` |
+| antigravity-cli | 1.4.8 | `modules/programs/antigravity-cli.nix` |
 | atuin | 18.21.0 | `modules/programs/atuin.nix` |
 | bash-interactive | 5.3p15 | `modules/programs/bash.nix` |
 | btop | 1.4.7 | `modules/programs/btop.nix` |
 | carapace | 1.7.3 | `modules/programs/carapace.nix` |
-| claude-code | 2.1.295 | `modules/programs/claude-code` |
-| codex | 0.162.0 | `modules/programs/codex` |
+| claude-code | 2.1.312 | `modules/programs/claude-code` |
+| codex | 0.165.0 | `modules/programs/codex` |
 | direnv | 2.37.1 | `modules/programs/direnv.nix` |
 | fish | 4.9.3 | `modules/programs/fish.nix` |
 | hm-session-vars.fish |  | `modules/programs/fish.nix` |
 | fzf | 0.74.4 | `modules/programs/fzf.nix` |
 | gh | 2.101.0 | `modules/programs/gh.nix` |
 | git | 2.55.0 | `modules/programs/git.nix` |
-| copilot-cli | 1.0.94 | `modules/programs/github-copilot-cli.nix` |
+| copilot-cli | 1.0.104 | `modules/programs/github-copilot-cli.nix` |
 | helix | 25.07.1 | `modules/programs/helix.nix` |
 | herdr | 0.9.1 | `modules/programs/herdr.nix` |
 | hstr | 3.2 | `modules/programs/hstr.nix` |
@@ -327,12 +328,13 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.ai.integrations.gateway` | `flakes/ai/hmModules/profile.nix` |
 | `modules.programs.ai.integrations.mempalace` | `flakes/ai/hmModules/profile.nix` |
 | `modules.programs.ai.integrations.openwiki` | `flakes/ai/hmModules/profile.nix` |
-| `modules.programs.aiProfile` | `presets/dev/home.nix` |
+| `modules.programs.ai.integrations.ponytail` | `flakes/ai/hmModules/profile.nix` |
+| `modules.programs.aiProfile` | `presets/ai/home.nix` |
 | `modules.programs.atuin` | `flakes/home/modules/atuin` |
 | `modules.programs.bash` | `flakes/home/modules/bash` |
 | `modules.programs.btop` | `flakes/home/modules/btop` |
 | `modules.programs.claude-code` | `flakes/ai/hmModules/claude-code` |
-| `modules.programs.claude-code.mods.readable-output` | `presets/dev/home.nix` |
+| `modules.programs.claude-code.mods.readable-output` | `presets/ai/home.nix` |
 | `modules.programs.gh` | `flakes/home/modules/gh` |
 | `modules.programs.git` | `flakes/home/modules/git` |
 | `modules.programs.herdr` | `modules/home-manager/programs/herdr` |
@@ -342,8 +344,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.k9s` | `presets/dev/home.nix` |
 | `modules.programs.krr` | `modules/home-manager/programs/krr` |
 | `modules.programs.nushell` | `flakes/home/modules/nushell` |
-| `modules.programs.opencode` | `presets/dev/home.nix` |
-| `modules.programs.opencode1` | `presets/dev/home.nix` |
+| `modules.programs.opencode` | `presets/ai/home.nix` |
 | `modules.programs.sesh` | `modules/home-manager/programs/sesh` |
 | `modules.programs.shellProfile` | `flakes/home/modules/profile` |
 | `modules.programs.ssh` | `flakes/home/modules/ssh` |
@@ -353,23 +354,23 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.programs.worktrunk` | `modules/home-manager/programs/worktrunk` |
 | `modules.programs.zsh` | `flakes/home/modules/zsh` |
 
-### Programs (31)
+### Programs (30)
 
 | Option | Enabled by |
 | --- | --- |
-| `programs.antigravity-cli` | `presets/dev/home.nix` |
+| `programs.antigravity-cli` | `presets/ai/home.nix` |
 | `programs.atuin` | `flakes/home/modules/atuin` |
 | `programs.bash` | `flakes/home/modules/bash` |
 | `programs.btop` | `flakes/home/modules/btop` |
 | `programs.carapace` | `flakes/home/modules/profile` |
-| `programs.claude-code` | `presets/dev/home.nix` |
-| `programs.codex` | `presets/dev/home.nix` |
+| `programs.claude-code` | `presets/ai/home.nix` |
+| `programs.codex` | `presets/ai/home.nix` |
 | `programs.direnv` | `flakes/home/modules/profile` |
 | `programs.fish` | `flakes/home/modules/nushell` |
 | `programs.fzf` | `flakes/home/modules/profile` |
 | `programs.gh` | `flakes/home/modules/gh` |
 | `programs.git` | `flakes/home/modules/git` |
-| `programs.github-copilot-cli` | `presets/dev/home.nix` |
+| `programs.github-copilot-cli` | `presets/ai/home.nix` |
 | `programs.helix` | `presets/base` |
 | `programs.herdr` | `modules/home-manager/programs/herdr` |
 | `programs.home-manager` | `presets/base/home.nix` |
@@ -379,9 +380,8 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `programs.k9s` | `modules/home-manager/programs/k9s` |
 | `programs.mcp` | `flakes/ai/hmModules/ai` |
 | `programs.nushell` | `flakes/home/modules/nushell` |
-| `programs.opencode1` | `flakes/ai/hmModules/opencode/v1.nix` |
 | `programs.opencode2` | `flakes/ai/hmModules/opencode/v2.nix` |
-| `programs.pi.coding-agent` | `presets/dev/home.nix` |
+| `programs.pi.coding-agent` | `presets/ai/home.nix` |
 | `programs.ssh` | `flakes/home/modules/ssh` |
 | `programs.starship` | `flakes/home/modules/starship` |
 | `programs.tmux` | `flakes/home/modules/tmux` |

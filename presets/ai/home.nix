@@ -42,7 +42,6 @@
       enable = true;
       default = "v2";
     };
-    opencode1.enable = true;
 
     # Not `~`: the gateway runs with HOME set to its state dir.
     ai.integrations.gateway.settings.env_files = ["${config.xdg.configHome}/mcp-gateway/firewall.env"];

@@ -45,7 +45,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | bluez | 5.87 | `presets/desktop` |
 | bluez-tools | 0-unstable-2020-10-24 | `presets/desktop` |
 | cava | 1.0.0 | `presets/desktop` |
-| dms-shell | 1.7-beta+date=2026-09-18_292a959 | `presets/desktop` |
+| dms-shell | 1.7-beta+date=2026-10-19_317d939 | `presets/desktop` |
 | glib | 2.88.3 | `presets/desktop` |
 | hunspell | 1.7.3 | `presets/desktop` |
 | hunspell-dict-en-us-wordlist | 2026.02.25 | `presets/desktop` |
@@ -53,7 +53,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | libinput | 1.31.3 | `presets/desktop` |
 | matugen | 4.2.0 | `presets/desktop` |
 | networkmanager | 1.58.1 | `presets/desktop` |
-| quickshell-wrapped | 0.3.1 | `presets/desktop` |
+| quickshell-wrapped | 0.3.2 | `presets/desktop` |
 | wl-clipboard | +16cf9d3 | `presets/desktop` |
 | wmctrl | 1.07 | `presets/desktop` |
 | maliit-framework | 2.3.0-unstable-2024-06-24 | `hosts/lenovo-legion-go` |
@@ -393,19 +393,17 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (82)
+### Packages (80)
 
 | Package | Version | Source |
 | --- | --- | --- |
-| oh-my-opencode |  | `presets/base` |
 | cava | 1.0.0 | `presets/desktop` |
-| dms-shell | 1.7-beta+date=2026-09-18_292a959 | `presets/desktop` |
+| dms-shell | 1.7-beta+date=2026-10-19_317d939 | `presets/desktop` |
 | ffmpeg | 9.0.1 | `presets/desktop` |
 | file | 5.48 | `presets/desktop` |
 | glib | 2.88.3 | `presets/desktop` |
 | khal | 0.14.1 | `presets/desktop` |
 | libnotify | 0.8.8 | `presets/desktop` |
-| linux-wallpaperengine | 0.0.1-unstable-2026-06-09 | `presets/desktop` |
 | matugen | 4.2.0 | `presets/desktop` |
 | networkmanager | 1.58.1 | `presets/desktop` |
 | pulseaudio | 17.0 | `presets/desktop` |
@@ -421,7 +419,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | sesh | 2.30.1 | `modules/home-manager/programs/sesh` |
 | sesh-list |  | `modules/home-manager/programs/sesh` |
 | vivaldi-custom-ui | 8.3.4185.3 | `modules/home-manager/programs/vivaldi` |
-| worktrunk | 0.74.0 | `modules/home-manager/programs/worktrunk` |
+| worktrunk | 0.80.0 | `modules/home-manager/programs/worktrunk` |
 | wt-dashboard |  | `modules/home-manager/programs/worktrunk` |
 | 1password-cli | 2.39.0 | `modules/nixos/programs/one-password` |
 | jujutsu | 0.45.1 | `flakes/home/modules/jujutsu` |
