@@ -46,3 +46,11 @@ token too. It expires after an hour, which is fine as long as inputs are
 fetched at eval time, at the start of the job. Format & lint never forces
 `work`, so it keeps the workflow token. Pull requests from forks get no
 secrets, so these jobs fail there.
+
+Workflows triggered by Dependabot read only *Dependabot* secrets, so
+`APP_PRIVATE_KEY` is stored twice, as an Actions secret and as a Dependabot
+secret (`gh secret set --app dependabot`). Without the second copy every
+Dependabot PR fails the required evals with an empty `private-key`. The key
+itself is in 1Password (Personal, "viicslen-nix-ci GitHub App private key").
+To rotate it, generate a new key in the app's settings, update both secrets
+and the 1Password document, then delete the old key there.
