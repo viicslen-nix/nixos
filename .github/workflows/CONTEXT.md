@@ -39,7 +39,7 @@ path the job built, including build-only inputs.
 Since the work preset moved to the private `viicslen-nix/work` repo
 (2026-10-26), any job that evaluates a host has to fetch it, and the
 workflow's own `github.token` can read only this repo, so the fetch returns a
-404. Each such job (host evals, cache) creates a read-only installation token
+404. Each such job (host evals, cache, host builds) creates a read-only installation token
 for `work` from a GitHub App (`vars.APP_CLIENT_ID`, `secrets.APP_PRIVATE_KEY`)
 and uses it as nix's `access-tokens`. Public github.com fetches work with that
 token too. It expires after an hour, which is fine as long as inputs are

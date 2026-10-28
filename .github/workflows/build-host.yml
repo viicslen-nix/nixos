@@ -53,10 +53,20 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Create token for the private work input
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          repositories: work
+          permission-contents: read
+
       - name: Setup Nix Build Environment
         uses: ./.github/actions/setup-nix-build
         with:
           free-disk-space: 'true'
+          github-token: ${{ steps.app-token.outputs.token }}
 
       - name: Validate host exists
         run: |
