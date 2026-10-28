@@ -400,6 +400,14 @@ already happened. Treat every heavy Nix invocation as dangerous.
   in the running daemon's `nix.conf` until a rebuild, so the first rebuild that
   needs it passes `--option extra-substituters <url> --option
   extra-trusted-public-keys <key>`.
+- **GitHub enforces the repo's security settings.** Actions run only when pinned
+  to a full commit SHA (`uses: owner/repo@<sha> # vX.Y.Z`), and only GitHub's own
+  actions plus `cachix/*` and `jlumbroso/free-disk-space` are allowed; adding a
+  new third-party action means adding it to the allowlist too. Every workflow
+  declares `permissions: contents: read`, so widen it per job, never repo-wide.
+  `main` here and in every subflake repo rejects unsigned commits, force-pushes
+  and deletion; the owner's admin role bypasses the pull request requirement, so
+  direct pushes still work.
 - **The CI cache is an allowlist, built from the root.** `.github/workflows/cache.yml`
   pushes to the public `viicslen-nix` Cachix cache only derivations whose names
   match `.github/cache-allowlist` (followed by `-<version>`) among those the

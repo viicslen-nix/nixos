@@ -11,6 +11,9 @@ concurrency:
   group: checks-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   # Fast gate: treefmt (deadnix/statix/alejandra/shfmt) and the pre-commit
   # hooks. These are the flake's own checks, so CI and local
@@ -20,7 +23,7 @@ jobs:
     name: Format & lint
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           submodules: recursive
 
@@ -52,13 +55,13 @@ jobs:
           - asus-zephyrus-gu603
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           submodules: recursive
 
       - name: Create token for the private work input
         id: app-token
-        uses: actions/create-github-app-token@v3
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           client-id: ${{ vars.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
