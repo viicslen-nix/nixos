@@ -405,9 +405,10 @@ already happened. Treat every heavy Nix invocation as dangerous.
   actions plus `cachix/*` and `jlumbroso/free-disk-space` are allowed; adding a
   new third-party action means adding it to the allowlist too. Every workflow
   declares `permissions: contents: read`, so widen it per job, never repo-wide.
-  `main` here and in every subflake repo rejects unsigned commits, force-pushes
-  and deletion; the owner's admin role bypasses the pull request requirement, so
-  direct pushes still work.
+  The `main` ruleset here and in every subflake repo (signed commits, linear
+  history, no force-push or deletion, PR plus passing checks) binds everyone
+  except the owner's admin role, which bypasses it, so direct pushes still work.
+  That bypass is not a licence: never force-push `main` or push unsigned commits.
 - **The CI cache is an allowlist, built from the root.** `.github/workflows/cache.yml`
   pushes to the public `viicslen-nix` Cachix cache only derivations whose names
   match `.github/cache-allowlist` (followed by `-<version>`) among those the
