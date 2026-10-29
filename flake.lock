@@ -22,6 +22,7 @@
         "treefmt-nix": [
           "treefmt-nix"
         ],
+        "tstack-skills": "tstack-skills",
         "typesafe-skills": "typesafe-skills",
         "viicslen-lib": [
           "viicslen-lib"
@@ -3153,6 +3154,22 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "tstack-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793155082,
+        "narHash": "sha256-WpJgIBFphxPff89/CoPegyFQa8x3Orb/bkP7Nd+kMNk=",
+        "owner": "t3dotgg",
+        "repo": "tstack",
+        "rev": "1085050f3baed1ac724caa4a8166145fb2ac88af",
+        "type": "github"
+      },
+      "original": {
+        "owner": "t3dotgg",
+        "repo": "tstack",
         "type": "github"
       }
     },
