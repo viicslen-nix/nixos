@@ -445,7 +445,7 @@
         "dms": "dms_2",
         "dms-plugin-registry": "dms-plugin-registry",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "quickshell": "quickshell_2",
         "treefmt-nix": [
