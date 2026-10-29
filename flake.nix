@@ -85,7 +85,8 @@
     dms = {
       url = "path:./flakes/dms";
       inputs = {
-        nixpkgs.follows = "nixpkgs";
+        # Not "nixpkgs": dms tracks go_1_27 patch releases ahead of our pin.
+        nixpkgs.follows = "nixpkgs-unstable";
         treefmt-nix.follows = "treefmt-nix";
         dank-pinentry.inputs.flake-parts.follows = "flake-parts";
       };

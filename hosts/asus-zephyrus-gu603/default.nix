@@ -12,6 +12,7 @@ with lib; {
     inputs.disko.nixosModules.disko
     (diskoLayouts.btrfs-lvm {device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_223766801969";})
     ./hardware.nix
+    ./refind.nix
 
     nixosModules.hardware.asus
     nixosModules.hardware.intel
@@ -40,7 +41,16 @@ with lib; {
     # Disable the built-in keyboard
     udev.extraRules = lib.mkAfter ''
       KERNEL=="event*", ATTRS{name}=="AT Translated Set 2 keyboard", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+
+      # GL9755 SD reader never powers back up from D3cold after s2idle.
+      ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x17a0", ATTR{device}=="0x9755", ATTR{d3cold_allowed}="0"
     '';
+
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      extraUpFlags = ["--ssh"];
+    };
   };
 
   modules = {

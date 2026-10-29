@@ -121,8 +121,9 @@
           passthru = (moddedPackage.passthru or {}) // {inherit desktopFileName;};
         } ''
           mkdir -p $out/bin
+          # Not $HOME: mcp-gateway opens OAuth pages with HOME set to its state dir.
           makeWrapper ${moddedPackage}/bin/${binaryName} $out/bin/${binaryName} \
-            --add-flags "--user-data-dir=\$HOME/${cfg.profileDir}" \
+            --add-flags "--user-data-dir=${config.home.homeDirectory}/${cfg.profileDir}" \
             ${optionalString cfg.enableWayland ''
             --add-flags "--ozone-platform=wayland" \
             --add-flags "--enable-features=${concatStringsSep "," features}"

@@ -28,7 +28,6 @@
 in {
   imports = [
     homeModules.programs.hunk
-    homeModules.programs.ray
     homeModules.programs.tinkerwell
     homeModules.programs.k9s
     homeModules.programs.krr
@@ -133,7 +132,7 @@ in {
     ++ import ./scripts.nix {inherit pkgs;}
     ++ lib.optionals desktop [
       # Editors
-      jetbrains-toolbox
+      # jetbrains-toolbox
       unstable.code-cursor-fhs
       pkgs.inputs.emacs.default
 
@@ -160,12 +159,12 @@ in {
 
   modules.programs = {
     zed.enable = desktop;
-    ray.enable = desktop;
     tinkerwell.enable = desktop;
     t3code = {
       enable = true;
       serve.enable = true;
       package = pkgs.inputs.packages.t3code.nightly;
+      stateDir = "${config.xdg.dataHome}/t3code";
     };
     k9s.enable = true;
     krr = {

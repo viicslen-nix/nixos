@@ -70,6 +70,15 @@ the index keys on the *repository* name. Find the right-hand side with
   decided crates.io 403'd nix's curl User-Agent from here, so the rebuild died
   on `cannot download download-adler2-2.0.1 from any mirror`. That 403 was gone
   by 2026-09, so the pin may no longer be needed. Costs 7 lock nodes.
+- **dms** — upstream builds with `go_1_${minor}` taken from `core/go.mod`, and
+  on 2026-10-26 it required go 1.27.3 while our nixpkgs had 1.27.1. The whole
+  subflake (quickshell, greeter, pinentry included) therefore follows
+  `nixpkgs-unstable`, an input `pkgs.unstable` already pulls in. That alone
+  does nothing for the shell itself: upstream's modules build `dms-shell` from
+  the *host* `pkgs`, so `flakes/dms` sets both modules' `package` to
+  `inputs.dms.packages.<system>.dms-shell`, the flake's own build. When dms needs
+  a newer go, `just update-input nixpkgs-unstable`. Once our nixpkgs catches
+  up, following `nixpkgs` again drops the second nixpkgs instance.
 
 ## `flake.nix` — other input notes
 
