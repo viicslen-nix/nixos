@@ -153,7 +153,6 @@ in {
       # AI
       pkgs.inputs.llm-agents.claude-desktop
       pkgs.inputs.llm-agents.opencode-desktop
-      pkgs.inputs.packages.superset.desktop
       pkgs.inputs.packages.github.copilot-desktop
     ];
 
