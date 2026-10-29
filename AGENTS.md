@@ -244,7 +244,11 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `just update-subflake <x>` for one. `update-subflake`'s second step, the root
   `nix flake update <x>`, is the one hosts see — per **Submodules + locking**
   (except `lib`, whose root input is `viicslen-lib`: that step matches nothing,
-  so follow it with `just update-input viicslen-lib`).
+  so follow it with `just update-input viicslen-lib`). `just update-ai` is the
+  AI stack in one go: the `ai` subflake's lock, its vendored skills, a
+  `bump-outdated` of the `AI_PACKAGES` list in the root `Justfile` (add a new
+  AI package there), then the root `ai` and `llm-agents` (which `ai` and `packages` follow, so
+  `update-subflake ai` alone never moves it).
 - **omniflake.** 19 dependencies are no longer flake inputs: they are pins in
   [omniflake](https://github.com/fzakaria/omniflake)'s `index.json`, fetched
   lazily at evaluation. The wiring lives in `flakes/lib/omni.nix`

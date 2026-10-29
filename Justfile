@@ -83,6 +83,17 @@ update-subflake NAME *ARGS:
   nix flake update --flake "path:flakes/{{NAME}}"
   nix flake update "{{NAME}}" {{ARGS}}
 
+AI_PACKAGES := "ccstatusline coderabbit github.copilot-cli github.copilot-desktop nvim.mcp-hub openwiki openwork python.browser-harness python.cdp-use python.fetch-use python.jev-ultrafast python.mempalace superset.cli superset.desktop t3code.app-image t3code.nightly"
+
+# Update the AI stack: the ai subflake's inputs (opencode, pi, skill repos),
+# its vendored skills, the AI packages in flakes/packages, and the root
+# llm-agents + ai pins hosts actually build
+update-ai:
+  nix flake update --flake "path:flakes/ai"
+  cd flakes/ai && just update-skills
+  cd flakes/packages && just bump-outdated {{AI_PACKAGES}}
+  nix flake update ai llm-agents
+
 # Vendor an upstream AI skill collection into the ai subflake, for repos too
 # large to carry as a flake input. Commit the result inside flakes/ai.
 # Usage: just vendor-skills plannotator/effective-html --all
@@ -137,7 +148,7 @@ bump ATTR *ARGS:
   @cd flakes/packages && just bump {{ATTR}} {{ARGS}}
 
 # Bump every package `just outdated` reports as behind, to that exact version
-# Usage: just bump-outdated [--commit]
+# Usage: just bump-outdated [ATTR...] [--commit]
 bump-outdated *ARGS:
   @cd flakes/packages && just bump-outdated {{ARGS}}
 

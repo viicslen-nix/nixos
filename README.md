@@ -168,6 +168,7 @@ just inventory            # what this host installs/enables, and which file put 
 | | `commit-and-upgrade MSG [cmd]` | Commit, then rebuild |
 | Update | `update` / `update-main` | Everything / root inputs only |
 | | `update-input X` / `update-subflake X` | One input / one subflake (re-locked in the root) |
+| | `update-ai` | ai subflake inputs, vendored skills, AI packages (`AI_PACKAGES`), and the root `ai` + `llm-agents` pins |
 | | `omniflake-search TERM` | Find a flake in the omniflake index |
 | | `sync-caches` | Regenerate the flake's `nixConfig` from `caches.nix` |
 | Packages | `packages` / `outdated` | List local packages / compare with upstream |
