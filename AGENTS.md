@@ -355,7 +355,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `just bump <attr>` wraps `nix-update --flake`; the attr is the path under
   `by-name/` (`t3code.nightly`, `superset.cli`, bare `coderabbit`). A package
   directory may carry a `nix-update-args` file (one argument per line) that
-  `bump` passes first — `t3code.nightly` uses it to track nightly tags.
+  `bump` passes first — `t3code.nightly` uses it to track nightly tags, and
+  the script moves it to a stable release published after the last nightly.
   Version autodetect only works for github/gitlab/pypi/npm/crates upstreams —
   otherwise pass `--version <x>` (or `--version skip` to refresh the hash of a
   re-uploaded binary). `vivaldi-stable` / `vivaldi-snapshot` are the exception:
