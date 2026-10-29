@@ -71,3 +71,22 @@ would race for the same key, and the first one to finish (Format & lint, which
 fetches the fewest inputs) would leave the cache without most host inputs.
 Sources that Nix substitutes straight into `/nix/store` are still downloaded
 every run: caching the store would need a third-party action.
+
+## Why every repo pushes itself to GitLab
+
+`gitlab-mirror.yml` exists in each non-archived viicslen-nix repo except
+`foundry-vtt` (deliberately not mirrored) and pushes
+all branches and tags (with `--prune`) to `nix/<repo>` on gitlab.neoscode.com.
+GitHub is the source of truth. GitLab only receives copies. Two simpler options
+do not work here. The self-hosted GitLab is CE, and pull mirroring is
+Premium-only. GitLab's push mirrors run in the wrong direction, and they used to
+fail on an SSH key. Had they ever authenticated, they would have force-pushed a
+stale copy over GitHub. The workflow pushes through Cloudflare, which rejects
+request bodies over 100 MB. A first push of a large repo has to go over the
+LAN instead.
+
+`GITLAB_TOKEN` is a Maintainer group access token on `nix`
+(`github-mirror`, `write_repository`), expiring 2027-10-28. It is stored as a
+repo secret in each of the 14 mirrored repos. To rotate it, create a new token and `gh secret set` it in
+every repo. `main` on GitLab allows force-push because GitHub history has been
+rewritten before; `nixos` shared no ancestor with GitLab's copy in 2026-10.
