@@ -3266,11 +3266,11 @@
     "work": {
       "flake": false,
       "locked": {
-        "lastModified": 1793198944,
-        "narHash": "sha256-y7ObKwUNI8SvUnSBd/nHb/WQIrubZUWUncIGvZK1vL0=",
+        "lastModified": 1793376239,
+        "narHash": "sha256-0Tpy2/tvht1JVKdVf4CjblYkLXTcFL0hbRW8lfWU1Tk=",
         "owner": "viicslen-nix",
         "repo": "work",
-        "rev": "9f9f164489ca1d920650a24bb936350952548b1c",
+        "rev": "420cce063deb72a6794c6d63b5c3a1cd7dde2103",
         "type": "github"
       },
       "original": {
