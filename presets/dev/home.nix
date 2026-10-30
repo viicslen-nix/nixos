@@ -128,6 +128,7 @@ in {
       pkgs.inputs.packages.blacksmith
       atlas
       percona-toolkit
+      awscli2
     ]
     ++ import ./scripts.nix {inherit pkgs;}
     ++ lib.optionals desktop [
