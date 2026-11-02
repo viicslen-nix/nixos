@@ -62,3 +62,11 @@ Wi-Fi half `wlp5s0` shares its single antenna and is the default route ahead of
 `eno1`. The Naga reconnected every 20–40 s on 2026-10-21 while the Corne held.
 The udev rules pin both BT adapters' `power/control` to `on`; whether autosuspend
 or Wi-Fi coexistence is the real cause was not confirmed with `btmon`.
+
+The rules match `ACTION=="add"` only, so a `switch` never applies them to an
+adapter already present: until the next boot, check
+`/sys/bus/usb/devices/1-14/power/control` and write `on` there by hand. That is
+what happened after the 2026-10-21 fix: on 2026-11-02 the adapter still read
+`auto`, had been runtime-suspended ~10.8 of 13.9 days uptime, and both devices
+were still reconnecting every 10–60 min with `wlp5s0` down. So the udev fix was
+untested until then, and coexistence cannot explain drops while Wi-Fi is off.
