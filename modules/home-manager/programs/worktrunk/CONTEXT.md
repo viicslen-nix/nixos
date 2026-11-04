@@ -73,13 +73,21 @@ key bindings. Hidden tab fields (branch, path, session, url) feed the bindings;
 The layout follows the width, because the portrait monitor is a real
 terminal here: below `$narrow` columns the preview moves under the list
 (fzf's `<SIZE(...)` alternative layout) and the row gets the whole width;
-above it the row gets ~55%. The jq shrinks the branch column to fit and drops
+above it the row gets ~55%. fzf compares that threshold with the *preview
+pane's* size, not the terminal's, so the flag carries 45% of `$narrow`; a bare
+`<110` with `right,45%` kept the stacked layout below ~245 columns while the
+jq rendered rows for the split one. The jq shrinks the branch column to fit and drops
 the diff and commit columns under 90 columns of list, and a `resize` reload
 re-renders on rotation. The width comes from `stty size </dev/tty`, minus the
 two border columns — not from `FZF_COLUMNS`, which fzf exports as `0` to the
 `start` reload because it has not laid itself out yet, and not from
 `tput cols`, which answers 80 when stdout is the reload pipe. That `0` is what
 rendered the table at the 20-column minimum inside a full-width popup.
+
+`prefix + W` names `wt-dashboard` through PATH, not its store path. A tmux
+server outlives rebuilds and only rereads `tmux.conf` on `prefix + r`, so a
+store-path binding pointed at a garbage-collected script. `display-popup -E`
+then closed at once with no error.
 
 It is a popup, not a window: `enter` ends in `become(wt tmux …)`, whose
 post-switch script runs `tmux switch-client`, after which the process exits and

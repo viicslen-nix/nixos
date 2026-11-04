@@ -134,8 +134,9 @@
 
         home.packages = mkIf cfg.tmux.enable [dashboard];
 
+        # By name, not store path: a long-lived tmux server keeps the old binding past a rebuild and GC.
         programs.tmux.extraConfig = mkIf cfg.tmux.enable (mkAfter ''
-          bind-key W display-popup -E -d "#{pane_current_path}" -w 90% -h 85% -T " worktrees " '${getExe dashboard}'
+          bind-key W display-popup -E -d "#{pane_current_path}" -w 90% -h 85% -T " worktrees " wt-dashboard
         '');
       };
     };

@@ -91,7 +91,8 @@ current_session() {
   tmux display -p '#S' 2>/dev/null || true
 }
 
-# Below this many columns the preview moves under the list; keep in step with --preview-window.
+# Below this many columns the preview moves under the list. fzf's `<N(...)` threshold measures the
+# preview pane, not the terminal, so --preview-window scales it by the same 45%.
 narrow=110
 
 # Not FZF_COLUMNS: it is 0 in the `start` reload, and `tput cols` on a pipe says 80.
@@ -211,7 +212,7 @@ dashboard() {
     --layout reverse --no-sort --no-info --prompt '  ' --pointer '▶' \
     --border rounded --border-label ' worktrees · loading… ' \
     --header '↵ switch · ^n new (query) · ^x remove · ^p prune · ^k close · ^o url · ^r refresh' \
-    --preview "$self preview {2}" --preview-window "right,45%,border-left,<$narrow(down,40%,border-top)" \
+    --preview "$self preview {2}" --preview-window "right,45%,border-left,<$((narrow * 45 / 100))(down,40%,border-top)" \
     --bind "load:transform($self settle)" \
     --bind "ctrl-r:change-border-label($refreshing)+reload-sync($self list full)" \
     --bind "resize:reload($self list full)" \
