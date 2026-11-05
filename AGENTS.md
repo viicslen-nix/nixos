@@ -239,8 +239,11 @@ already happened. Treat every heavy Nix invocation as dangerous.
   Each host is one capped, foreground eval of about 10 s, so it is within the
   resource rules above. `docs/inventory/` is its `--all --save` output and is
   never hand-edited; regenerate it when a change moves what a host installs.
-- **Update recipes.** `just update` updates every subflake *and* all root
-  inputs; `just update-main` = root inputs only; `just update-input <x>` /
+- **Update recipes.** `just update` updates every subflake's lock except
+  `android` (not a root input), re-pulls vendored skills, runs
+  `bump-outdated` over all local packages, then re-locks all root inputs —
+  last, so the root copies every subflake pin. It takes no arguments: an input
+  name there would skip that copy, so use `update-input`. `just update-main` = root inputs only; `just update-input <x>` /
   `just update-subflake <x>` for one. `update-subflake`'s second step, the root
   `nix flake update <x>`, is the one hosts see — per **Submodules + locking**
   (except `lib`, whose root input is `viicslen-lib`: that step matches nothing,
@@ -376,9 +379,12 @@ already happened. Treat every heavy Nix invocation as dangerous.
   the published `package.json` with `devDependencies` and `scripts` stripped
   (npm errors with `Cannot read properties of null (reading 'edgesOut')` if they
   stay; since 0.7 `deepagents` pins `langsmith <0.10` against openwiki's own
-  `^0.10.5`, hence the flag, which `npmFlags` repeats). `just bump openwiki` only
-  rewrites `version`/`src`: regenerate the lock, then `npmDepsHash`, or npm
-  tries to re-resolve offline and dies on `ENOTCACHED`. better-sqlite3 compiles from source here, so budget for that too.
+  `^0.10.5`, hence the flag, which `npmFlags` repeats). `just bump openwiki`
+  (and so `bump-outdated` / `just update`) runs nix-update `--src-only`, then
+  `openwiki_lock` in `packages.sh` regenerates the lock and `npmDepsHash`; a
+  stale lock makes npm re-resolve offline and die on `ENOTCACHED`. Both it and
+  `postPatch` strip `package.json` with `strip-package-json.js`. better-sqlite3
+  compiles from source here, so budget for that too.
 - **Local packages must interpolate the version into the tag.** Write
   `tag = "v${version}"` (or `"v${finalAttrs.version}"`), never a literal
   `rev = "v3.2.1"` — with a literal rev, nix-update rewrites `version` only, so

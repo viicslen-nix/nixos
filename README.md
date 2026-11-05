@@ -151,7 +151,7 @@ Recipes live in the [`Justfile`](Justfile); `just --list` shows them all.
 
 ```bash
 just upgrade              # rebuild and switch via nh (boot / test also work)
-just update               # bump every subflake, then the root inputs
+just update               # subflakes (not android), skills, outdated packages, then root inputs
 just full-upgrade         # update, then rebuild for next boot
 just build home-desktop   # build one host without switching
 just build-all            # nix flake check: every host + all checks
