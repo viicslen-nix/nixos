@@ -104,7 +104,6 @@
             flac
             libglut
             libjpeg
-            libpng12
             libpulseaudio
             libsamplerate
             libmikmod
