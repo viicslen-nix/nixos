@@ -47,10 +47,6 @@
         text = builtins.readFile ./dashboard.sh;
       };
     in {
-      imports = [
-        inputs.worktrunk.homeModules.default
-      ];
-
       options.modules.${namespace}.${name} = {
         enable = mkEnabledOption (mdDoc name);
 
@@ -113,6 +109,7 @@
       config = mkIf cfg.enable {
         programs.worktrunk = {
           enable = true;
+          package = inputs.worktrunk.packages.${pkgs.stdenv.hostPlatform.system}.worktrunk;
           enableBashIntegration = true;
           enableZshIntegration = true;
           enableFishIntegration = true;
