@@ -34,7 +34,7 @@ in {
     mkEnableOption "graphical desktop host (set by the desktop preset)";
 
   config = {
-    system.stateVersion = "26.05";
+    system.stateVersion = "26.11";
     systemd.settings.Manager.DefaultTimeoutStopSec = mkDefault "20s";
 
     # Every host trusts its LAN; `mkForce` means a host cannot re-enable this.

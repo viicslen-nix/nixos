@@ -119,3 +119,15 @@ Two things bite when the flag changes:
   session. Until a re-login, anything launched from the desktop — IDE agent
   extensions especially — still writes the old path and quietly recreates the
   directory that was just moved.
+
+## `stateVersion` bumps are audited, not routine
+
+`home.stateVersion` follows `system.stateVersion`, so one bump moves both.
+Before bumping, grep the locked nixpkgs `nixos/modules` and home-manager
+`modules` for the new version string and check each gated default against the
+hosts. 26.05 → 26.11 (2026-11): on the NixOS side it gates postgresql 18,
+mysql's first-run setup, nextcloud, grav, netbox, hyphanet and ZFS
+`forceImportRoot` — none used here (the databases are containers). On the
+home-manager side only nushell's `loadSessionVariables` (now true) reached
+these hosts; claude-code's `configDir` is set explicitly in the `ai` subflake,
+and every `fonts.fontconfig.configFile` entry sets `enable` itself.
