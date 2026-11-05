@@ -52,10 +52,13 @@ build-all *ARGS:
 #
 ############################################################################
 
-# Update all subflakes then all root flake inputs
-update *ARGS:
-  for d in flakes/*/; do nix flake update --flake "path:$d"; done
-  nix flake update {{ARGS}}
+# Update everything hosts build: subflake locks, vendored skills, outdated
+# local packages, then every root input (last, so it copies all of the above)
+update:
+  for d in flakes/*/; do [[ $d == flakes/android/ ]] || nix flake update --flake "path:$d"; done
+  cd flakes/ai && just update-skills
+  cd flakes/packages && just bump-outdated
+  nix flake update
 
 # Update root flake inputs only
 update-main *ARGS:
