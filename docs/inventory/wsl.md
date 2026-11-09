@@ -13,39 +13,39 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | Package | Version | Source |
 | --- | --- | --- |
 | bat | 0.26.1 | `presets/base` |
-| btop | 1.4.7 | `presets/base` |
+| btop | 1.4.8 | `presets/base` |
 | busybox | 1.37.0 | `presets/base` |
 | curl | 8.22.0 | `presets/base` |
 | dev-shell |  | `presets/base` |
-| fzf | 0.74.4 | `presets/base` |
-| git | 2.55.0 | `presets/base` |
+| fzf | 0.74.5 | `presets/base` |
+| git | 2.56.0 | `presets/base` |
 | glib | 2.88.3 | `presets/base` |
-| glibc | 2.42 | `presets/base` |
-| jc | 1.25.7 | `presets/base` |
+| glibc | 2.44 | `presets/base` |
+| jc | 1.26.0 | `presets/base` |
 | jq | 1.8.2 | `presets/base` |
-| just | 1.58.0 | `presets/base` |
+| just | 1.59.0 | `presets/base` |
 | libsecret | 0.21.7 | `presets/base` |
 | lsd | 1.2.0 | `presets/base` |
 | lshw | 02.20 | `presets/base` |
 | nil | 2026-07-23 | `presets/base` |
-| nixd | 2.9.2 | `presets/base` |
+| nixd | 2.9.4 | `presets/base` |
 | nixos-upgrade |  | `presets/base` |
-| nushell | 0.115.1 | `presets/base` |
+| nushell | 0.116.1 | `presets/base` |
 | pigz | 2.8 | `presets/base` |
 | pv | 1.12.0 | `presets/base` |
 | ripgrep | 15.2.0 | `presets/base` |
 | search-package-files |  | `presets/base` |
 | system-upgrade |  | `presets/base` |
 | tlrc | 1.13.1 | `presets/base` |
-| tmux | 3.7c | `presets/base` |
+| tmux | 3.8 | `presets/base` |
 | tmux-session |  | `presets/base` |
 | unzip | 6.0 | `presets/base` |
 | wget | 1.25.0 | `presets/base` |
 | zoxide | 0.10.0 | `presets/base` |
 | jetbrains-jdk-jcef | 25.0.3-b508.4 | `hosts/wsl` |
 | corepack | 0.36.0 | `modules/nixos/programs/corepack` |
-| docker-buildx | 0.35.0 | `modules/nixos/programs/docker` |
-| docker-credential-helpers | 0.9.9 | `modules/nixos/programs/docker` |
+| docker-buildx | 0.38.1 | `modules/nixos/programs/docker` |
+| docker-credential-helpers | 0.9.12 | `modules/nixos/programs/docker` |
 | mkcert | 1.4.4 | `modules/nixos/programs/mkcert` |
 | mkcert-dev |  | `modules/nixos/programs/mkcert` |
 | nss | 3.112.5 | `modules/nixos/programs/mkcert` |
@@ -53,48 +53,48 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | nixos-wsl-version |  | `modules/version.nix` |
 | nixos-wsl-welcome |  | `modules/welcome.nix` |
 | fontconfig | 2.18.3 | `nixos/modules/config/fonts/fontconfig.nix` |
-| glibc-locales | 2.42 | `nixos/modules/config/i18n.nix` |
-| nix | 2.34.8 | `nixos/modules/config/nix.nix` |
+| glibc-locales | 2.44 | `nixos/modules/config/i18n.nix` |
+| nix | 2.34.9 | `nixos/modules/config/nix.nix` |
 | nix-bash-completions | 0.6.8 | `nixos/modules/config/nix.nix` |
 | nix-info |  | `nixos/modules/config/nix.nix` |
 | acl | 2.4.0 | `nixos/modules/config/system-path.nix` |
 | attr | 2.6.0 | `nixos/modules/config/system-path.nix` |
-| bash-interactive | 5.3p15 | `nixos/modules/config/system-path.nix` |
-| bind | 9.20.29 | `nixos/modules/config/system-path.nix` |
+| bash-interactive | 5.3p20 | `nixos/modules/config/system-path.nix` |
+| bind | 9.20.30 | `nixos/modules/config/system-path.nix` |
 | bzip2 | 1.0.8 | `nixos/modules/config/system-path.nix` |
-| coreutils-full | 9.11 | `nixos/modules/config/system-path.nix` |
+| coreutils-full | 9.12 | `nixos/modules/config/system-path.nix` |
 | cpio | 2.15 | `nixos/modules/config/system-path.nix` |
 | curl | 8.22.0 | `nixos/modules/config/system-path.nix` |
 | diffutils | 3.12 | `nixos/modules/config/system-path.nix` |
 | findutils | 4.11.0 | `nixos/modules/config/system-path.nix` |
 | gawk | 5.4.1 | `nixos/modules/config/system-path.nix` |
-| glibc | 2.42 | `nixos/modules/config/system-path.nix` |
+| glibc | 2.44 | `nixos/modules/config/system-path.nix` |
 | gnugrep | 3.12 | `nixos/modules/config/system-path.nix` |
 | gnused | 4.10 | `nixos/modules/config/system-path.nix` |
 | gnutar | 1.35 | `nixos/modules/config/system-path.nix` |
-| gzip | 1.14 | `nixos/modules/config/system-path.nix` |
+| gzip | 1.15 | `nixos/modules/config/system-path.nix` |
 | hostname-debian | 3.25 | `nixos/modules/config/system-path.nix` |
-| iproute2 | 7.1.0 | `nixos/modules/config/system-path.nix` |
+| iproute2 | 7.2.0 | `nixos/modules/config/system-path.nix` |
 | iputils | 20250605 | `nixos/modules/config/system-path.nix` |
-| less | 704 | `nixos/modules/config/system-path.nix` |
+| less | 710 | `nixos/modules/config/system-path.nix` |
 | libcap | 2.78 | `nixos/modules/config/system-path.nix` |
 | libressl | 4.3.2 | `nixos/modules/config/system-path.nix` |
 | mkpasswd | 5.6.6 | `nixos/modules/config/system-path.nix` |
 | ncurses | 6.6 | `nixos/modules/config/system-path.nix` |
-| openssh | 10.5p1 | `nixos/modules/config/system-path.nix` |
+| openssh | 10.6p1 | `nixos/modules/config/system-path.nix` |
 | patch | 2.8 | `nixos/modules/config/system-path.nix` |
 | perl | 5.42.3 | `nixos/modules/config/system-path.nix` |
 | procps | 4.0.7 | `nixos/modules/config/system-path.nix` |
 | rsync | 3.5.0 | `nixos/modules/config/system-path.nix` |
-| shadow | 4.20.2 | `nixos/modules/config/system-path.nix` |
-| strace | 7.2 | `nixos/modules/config/system-path.nix` |
+| shadow | 4.20.3 | `nixos/modules/config/system-path.nix` |
+| strace | 7.3 | `nixos/modules/config/system-path.nix` |
 | time | 1.10 | `nixos/modules/config/system-path.nix` |
-| util-linux | 2.42.3 | `nixos/modules/config/system-path.nix` |
+| util-linux | 2.42.4 | `nixos/modules/config/system-path.nix` |
 | which | 2.25 | `nixos/modules/config/system-path.nix` |
-| xz | 5.8.3 | `nixos/modules/config/system-path.nix` |
+| xz | 5.8.4 | `nixos/modules/config/system-path.nix` |
 | zstd | 1.5.7 | `nixos/modules/config/system-path.nix` |
 | hicolor-icon-theme | 0.18 | `nixos/modules/config/xdg/icons.nix` |
-| shared-mime-info | 2.4 | `nixos/modules/config/xdg/mime.nix` |
+| shared-mime-info | 2.5.1 | `nixos/modules/config/xdg/mime.nix` |
 | sound-theme-freedesktop | 0.8 | `nixos/modules/config/xdg/sounds.nix` |
 | nixos-build-vms |  | `nixos/modules/installer/tools/tools.nix` |
 | nixos-enter |  | `nixos/modules/installer/tools/tools.nix` |
@@ -104,11 +104,11 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | nixos-rebuild-ng | 26.11 | `nixos/modules/installer/tools/tools.nix` |
 | nixos-version |  | `nixos/modules/installer/tools/tools.nix` |
 | man-db | 2.13.1 | `nixos/modules/misc/man-db.nix` |
-| direnv | 2.37.1 | `nixos/modules/programs/direnv.nix` |
-| less | 704 | `nixos/modules/programs/less.nix` |
-| nano | 9.2 | `nixos/modules/programs/nano.nix` |
+| direnv | 2.38.2 | `nixos/modules/programs/direnv.nix` |
+| less | 710 | `nixos/modules/programs/less.nix` |
+| nano | 9.3 | `nixos/modules/programs/nano.nix` |
 | nh | 4.4.2 | `nixos/modules/programs/nh.nix` |
-| bash-interactive | 5.3p15 | `nixos/modules/programs/shadow.nix` |
+| bash-interactive | 5.3p20 | `nixos/modules/programs/shadow.nix` |
 | nix-zsh-completions | 0.5.1-unstable-2025-12-12 | `nixos/modules/programs/zsh/zsh.nix` |
 | zsh | 5.9.2 | `nixos/modules/programs/zsh/zsh.nix` |
 | linux-pam | 1.7.2 | `nixos/modules/security/pam.nix` |
@@ -121,7 +121,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | dbus | 1.16.2 | `nixos/modules/services/system/dbus.nix` |
 | dbus-broker | 37 | `nixos/modules/services/system/dbus.nix` |
 | kexec-tools | 2.0.32 | `nixos/modules/system/boot/kexec.nix` |
-| systemd | 261.2 | `nixos/modules/system/boot/systemd.nix` |
+| systemd | 262 | `nixos/modules/system/boot/systemd.nix` |
 | bcache-tools | 1.1 | `nixos/modules/tasks/bcache.nix` |
 | dosfstools | 4.2 | `nixos/modules/tasks/filesystems.nix` |
 | envfs | 1.2.0 | `nixos/modules/tasks/filesystems/envfs.nix` |
@@ -194,73 +194,74 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (119)
+### Packages (122)
 
 | Package | Version | Source |
 | --- | --- | --- |
-| act | 0.2.89 | `presets/dev/home.nix` |
+| act | 0.2.92 | `presets/dev/home.nix` |
 | atlas | 1.3.0 | `presets/dev/home.nix` |
+| awscli2 | 2.36.31 | `presets/dev/home.nix` |
 | bc | 1.08.2 | `presets/dev/home.nix` |
 | blacksmith | 0.5.3 | `presets/dev/home.nix` |
-| bun | 1.4.2 | `presets/dev/home.nix` |
+| bun | 1.4.4 | `presets/dev/home.nix` |
 | but | 0.22.3 | `presets/dev/home.nix` |
-| cf | 1.0.0-beta.21 | `presets/dev/home.nix` |
-| cloudflared | 2026.9.1 | `presets/dev/home.nix` |
-| cmake | 4.4.2 | `presets/dev/home.nix` |
+| cf | 1.0.0-beta.27 | `presets/dev/home.nix` |
+| cloudflared | 2026.10.7 | `presets/dev/home.nix` |
+| cmake | 4.4.4 | `presets/dev/home.nix` |
 | composer | 2.10.3 | `presets/dev/home.nix` |
-| delta | 0.19.2 | `presets/dev/home.nix` |
-| devbox | 0.17.5 | `presets/dev/home.nix` |
-| gcc | 15.3.0 | `presets/dev/home.nix` |
-| gcc-wrapper | 13.4.0 | `presets/dev/home.nix` |
+| delta | 0.20.1 | `presets/dev/home.nix` |
+| devbox | 0.18.4 | `presets/dev/home.nix` |
+| gcc | 16.2.0 | `presets/dev/home.nix` |
+| gcc-wrapper | 13.5.0 | `presets/dev/home.nix` |
 | generate-cert |  | `presets/dev/home.nix` |
-| gh-dash | 4.25.2 | `presets/dev/home.nix` |
+| gh-dash | 4.26.2 | `presets/dev/home.nix` |
 | ghost-backup | 0.4.7 | `presets/dev/home.nix` |
 | git-carve-submodule |  | `presets/dev/home.nix` |
-| glab | 1.114.0 | `presets/dev/home.nix` |
+| gitura | 0.5.1 | `presets/dev/home.nix` |
+| glab | 1.126.0 | `presets/dev/home.nix` |
 | gnumake | 4.4.1 | `presets/dev/home.nix` |
-| go | 1.26.7 | `presets/dev/home.nix` |
-| gosec | 2.29.0 | `presets/dev/home.nix` |
+| go | 1.26.10 | `presets/dev/home.nix` |
+| gosec | 2.30.0 | `presets/dev/home.nix` |
 | graphviz | 15.1.1 | `presets/dev/home.nix` |
-| kubectl | 1.37.0 | `presets/dev/home.nix` |
-| kubernetes-helm | 4.3.0 | `presets/dev/home.nix` |
-| lazygit | 0.65.1 | `presets/dev/home.nix` |
-| nix-alien | 0.1.0+git_df422df | `presets/dev/home.nix` |
+| kubectl | 1.37.2 | `presets/dev/home.nix` |
+| kubernetes-helm | 4.3.1 | `presets/dev/home.nix` |
+| lazygit | 0.66.2 | `presets/dev/home.nix` |
+| nix-alien | 0.1.0+git_07c41bf | `presets/dev/home.nix` |
 | nix-init | 0.3.6 | `presets/dev/home.nix` |
-| node-gyp | 13.0.1 | `presets/dev/home.nix` |
-| nodejs | 22.23.3 | `presets/dev/home.nix` |
+| node-gyp | 13.1.0 | `presets/dev/home.nix` |
+| nodejs | 22.23.4 | `presets/dev/home.nix` |
 | odiff |  | `presets/dev/home.nix` |
 | opus-tools | 0.2 | `presets/dev/home.nix` |
 | opusfile | 0.12 | `presets/dev/home.nix` |
 | opustags | 1.10.1 | `presets/dev/home.nix` |
 | perl5.42.3-Percona-Toolkit | 3.7.1-4 | `presets/dev/home.nix` |
-| php-with-extensions | 8.4.25 | `presets/dev/home.nix` |
+| php-with-extensions | 8.5.12 | `presets/dev/home.nix` |
 | pkg-config-wrapper | 0.29.2 | `presets/dev/home.nix` |
-| python3 | 3.14.7 | `presets/dev/home.nix` |
-| tuicr | 0.24.0 | `presets/dev/home.nix` |
-| uv | 0.12.17 | `presets/dev/home.nix` |
-| vite-plus | 0.3.0 | `presets/dev/home.nix` |
-| wrangler | 4.129.0 | `presets/dev/home.nix` |
-| zig | 0.16.0 | `presets/dev/home.nix` |
-| android-tools | 37.0.0 | `presets/personal/home.nix` |
+| python3 | 3.14.8 | `presets/dev/home.nix` |
+| tuicr | 0.28.0 | `presets/dev/home.nix` |
+| uv | 0.13.5 | `presets/dev/home.nix` |
+| vite-plus | 1.4.0 | `presets/dev/home.nix` |
+| wrangler | 4.156.0 | `presets/dev/home.nix` |
+| zig | 0.17.0 | `presets/dev/home.nix` |
+| android-tools | 37.0.0p1 | `presets/personal/home.nix` |
 | asciinema | 3.2.1 | `presets/personal/home.nix` |
 | dictd | 1.13.3 | `presets/personal/home.nix` |
 | discordo | 0-unstable-2026-08-18 | `presets/personal/home.nix` |
-| nchat | 5.16.9 | `presets/personal/home.nix` |
+| nchat | 5.19.18 | `presets/personal/home.nix` |
 | nixvim |  | `presets/personal/home.nix` |
 | yazi | 26.9.1 | `presets/personal/home.nix` |
 | antigravity |  | `presets/ai/home.nix` |
 | pi |  | `presets/ai/home.nix` |
-| krr | 1.31.0 | `modules/home-manager/programs/krr` |
+| krr | 1.31.3 | `modules/home-manager/programs/krr` |
 | eza | 0.23.5 | `modules/home-manager/programs/sesh` |
-| sesh | 2.30.1 | `modules/home-manager/programs/sesh` |
+| sesh | 2.34.0 | `modules/home-manager/programs/sesh` |
 | sesh-list |  | `modules/home-manager/programs/sesh` |
-| worktrunk | 0.80.0 | `modules/home-manager/programs/worktrunk` |
 | wt-dashboard |  | `modules/home-manager/programs/worktrunk` |
 | browser-harness | 0.1.13 | `flakes/ai/hmModules/ai` |
-| coderabbit | 0.9.0 | `flakes/ai/hmModules/ai` |
+| coderabbit | 0.9.3 | `flakes/ai/hmModules/ai` |
 | mcp-gateway | 3.5.1 | `flakes/ai/hmModules/ai` |
 | mempalace | 3.11.0 | `flakes/ai/hmModules/ai` |
-| openwiki | 0.7.2 | `flakes/ai/hmModules/ai` |
+| openwiki | 0.9.0 | `flakes/ai/hmModules/ai` |
 | agy |  | `flakes/ai/hmModules/ai/proxy.nix` |
 | agy-direct |  | `flakes/ai/hmModules/ai/proxy.nix` |
 | claude-direct |  | `flakes/ai/hmModules/ai/proxy.nix` |
@@ -270,16 +271,17 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | opencode-default |  | `flakes/ai/hmModules/opencode/v2.nix` |
 | opencode2 |  | `flakes/ai/hmModules/opencode/v2.nix` |
 | t3 |  | `flakes/ai/hmModules/t3code` |
-| t3code | 0.1.4-nightly.20261028.3824 | `flakes/ai/hmModules/t3code` |
+| t3code | 0.1.8-nightly.20261109.4399 | `flakes/ai/hmModules/t3code` |
 | hunkdiff | 0.20.0 | `flakes/home/modules/hunk` |
-| jujutsu | 0.45.1 | `flakes/home/modules/jujutsu` |
+| jujutsu | 0.46.0 | `flakes/home/modules/jujutsu` |
 | lazyjj | 0.6.1 | `flakes/home/modules/jujutsu` |
-| meld | 3.24.0 | `flakes/home/modules/jujutsu` |
-| mergiraf | 0.19.1 | `flakes/home/modules/jujutsu` |
+| meld | 3.24.1 | `flakes/home/modules/jujutsu` |
+| mergiraf | 0.20.0 | `flakes/home/modules/jujutsu` |
 | jj-starship | 0.7.1-292224a | `flakes/home/modules/starship` |
 | starship-smart-dir |  | `flakes/home/modules/starship` |
-| awscli | 1.44.21 | `home.nix` |
+| awscli2 | 2.36.31 | `home.nix` |
 | discord-logs-mcp |  | `home.nix` |
+| google-cloud-sdk | 591.0.0 | `home.nix` |
 | grafana-mcp |  | `home.nix` |
 | linode-cli | 5.56.2 | `home.nix` |
 | mcp-toolbox | 1.8.0 | `home.nix` |
@@ -289,30 +291,31 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | dummy-fc-dir2 |  | `modules/misc/fontconfig.nix` |
 | dummy-xdg-mime-dirs1 |  | `modules/misc/xdg/mime.nix` |
 | dummy-xdg-mime-dirs2 |  | `modules/misc/xdg/mime.nix` |
-| shared-mime-info | 2.4 | `modules/misc/xdg/mime.nix` |
-| antigravity-cli | 1.4.8 | `modules/programs/antigravity-cli.nix` |
-| atuin | 18.21.0 | `modules/programs/atuin.nix` |
-| bash-interactive | 5.3p15 | `modules/programs/bash.nix` |
-| btop | 1.4.7 | `modules/programs/btop.nix` |
-| carapace | 1.7.3 | `modules/programs/carapace.nix` |
-| claude-code | 2.1.312 | `modules/programs/claude-code` |
-| codex | 0.165.0 | `modules/programs/codex` |
-| direnv | 2.37.1 | `modules/programs/direnv.nix` |
+| shared-mime-info | 2.5.1 | `modules/misc/xdg/mime.nix` |
+| antigravity-cli | 1.5.3 | `modules/programs/antigravity-cli.nix` |
+| atuin | 18.24.4 | `modules/programs/atuin.nix` |
+| bash-interactive | 5.3p20 | `modules/programs/bash.nix` |
+| btop | 1.4.8 | `modules/programs/btop.nix` |
+| carapace | 1.8.1 | `modules/programs/carapace.nix` |
+| claude-code | 2.1.319 | `modules/programs/claude-code` |
+| codex | 0.167.0 | `modules/programs/codex` |
+| direnv | 2.38.2 | `modules/programs/direnv.nix` |
 | fish | 4.9.3 | `modules/programs/fish.nix` |
 | hm-session-vars.fish |  | `modules/programs/fish.nix` |
-| fzf | 0.74.4 | `modules/programs/fzf.nix` |
-| gh | 2.101.0 | `modules/programs/gh.nix` |
-| git | 2.55.0 | `modules/programs/git.nix` |
-| copilot-cli | 1.0.104 | `modules/programs/github-copilot-cli.nix` |
+| fzf | 0.74.5 | `modules/programs/fzf.nix` |
+| gh | 2.103.3 | `modules/programs/gh.nix` |
+| git | 2.56.0 | `modules/programs/git.nix` |
+| copilot-cli | 1.0.107 | `modules/programs/github-copilot-cli.nix` |
 | helix | 25.07.1 | `modules/programs/helix.nix` |
-| herdr | 0.9.1 | `modules/programs/herdr.nix` |
+| herdr | 0.9.5 | `modules/programs/herdr.nix` |
 | hstr | 3.2 | `modules/programs/hstr.nix` |
-| jujutsu | 0.45.1 | `modules/programs/jujutsu.nix` |
+| jujutsu | 0.46.0 | `modules/programs/jujutsu.nix` |
 | k9s | 0.51.0 | `modules/programs/k9s.nix` |
-| nushell | 0.115.1 | `modules/programs/nushell.nix` |
-| starship | 1.26.0 | `modules/programs/starship.nix` |
-| tmux | 3.7c | `modules/programs/tmux.nix` |
-| tmuxinator | 3.4.1 | `modules/programs/tmuxinator.nix` |
+| nushell | 0.116.1 | `modules/programs/nushell.nix` |
+| starship | 1.27.0 | `modules/programs/starship.nix` |
+| tmux | 3.8 | `modules/programs/tmux.nix` |
+| tmuxinator | 3.4.2 | `modules/programs/tmuxinator.nix` |
+| worktrunk | 0.81.0 | `modules/programs/worktrunk.nix` |
 | zoxide | 0.10.0 | `modules/programs/zoxide.nix` |
 | nix-zsh-completions | 0.5.1-unstable-2025-12-12 | `modules/programs/zsh` |
 | zsh | 5.9.2 | `modules/programs/zsh` |
@@ -401,10 +404,11 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 Packages defined in more than one place. Drop the raw entry when a module already installs it.
 
-### Packages (10)
+### Packages (11)
 
 | Package | Defined by |
 | --- | --- |
+| awscli2 | presets/dev/home.nix (neoscode)<br>home.nix (neoscode; upstream) |
 | btop | presets/base (system)<br>modules/programs/btop.nix (neoscode; upstream) |
 | curl | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
 | dictd | presets/personal/home.nix (neoscode)<br>nixos/modules/services/misc/dictd.nix (system; upstream) |

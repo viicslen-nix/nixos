@@ -36,6 +36,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | asciinema | `presets/personal/home.nix` | H | H | H |  | H |
 | asusctl | `modules/nixos/hardware/asus` | S |  |  |  |  |
 | atlas | `presets/dev/home.nix` | H | H | H |  | H |
+| awscli2 | `presets/dev/home.nix` | H | H | H |  | H |
 | bat | `presets/base` | S | S | S | S | S |
 | bc | `presets/dev/home.nix` | H | H | H |  | H |
 | betterbird | `modules/home-manager/functionality/defaults` |  | H |  |  |  |
@@ -98,6 +99,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | github-copilot-desktop | `presets/dev/home.nix` | H | H | H |  |  |
 | github-desktop | `presets/dev/home.nix` | H | H | H |  |  |
 | gitleaks | `hosts/dostov-dev` |  | S |  |  |  |
+| gitura | `presets/dev/home.nix` | H | H | H |  | H |
 | glab | `presets/dev/home.nix` | H | H | H |  | H |
 | glib | `presets/base`, `presets/desktop` | H S | H S | H S | H S | S |
 | glibc | `presets/base` | S | S | S | S | S |
@@ -115,7 +117,6 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | iptables | `hosts/dostov-dev` |  | S |  |  |  |
 | jc | `presets/base` | S | S | S | S | S |
 | jetbrains-jdk-jcef | `hosts/wsl` |  |  |  |  | S |
-| jetbrains-toolbox | `presets/dev/home.nix` | H | H | H |  |  |
 | jev | `flakes/ai/hmModules/ai` | H | H | H |  |  |
 | jj-starship | `flakes/home/modules/starship` | H | H | H | H | H |
 | jq | `presets/base` | S | S | S | S | S |
@@ -196,7 +197,6 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | qtscrcpy | `presets/personal/home.nix` | H | H | H |  |  |
 | qtvirtualkeyboard | `hosts/lenovo-legion-go` |  |  |  | S |  |
 | quickshell-wrapped | `presets/desktop` | S | S | S | S |  |
-| ray | `modules/home-manager/programs/ray` | H | H | H |  |  |
 | responsively | `presets/dev/home.nix` | H | H | H |  |  |
 | ripgrep | `presets/base` | S | S | S | S | S |
 | rpi-imager | `hosts/home-desktop/home.nix` |  |  | H |  |  |
@@ -210,7 +210,6 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | starship-smart-dir | `flakes/home/modules/starship` | H | H | H | H | H |
 | sublime-merge | `presets/dev/home.nix` | H | H | H |  |  |
 | supergfxctl | `modules/nixos/hardware/asus` | S |  |  |  |  |
-| superset | `presets/dev/home.nix` | H | H | H |  |  |
 | system-upgrade | `presets/base` | S | S | S | S | S |
 | t3 | `flakes/ai/hmModules/t3code` | H | H | H |  | H |
 | t3code | `flakes/ai/hmModules/t3code` | H | H | H |  | H |
@@ -235,7 +234,6 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | wireshark-qt | `hosts/dostov-dev` |  | S |  |  |  |
 | wl-clipboard | `presets/desktop` | S | S | S | S |  |
 | wmctrl | `presets/desktop` | S | S | S | S |  |
-| worktrunk | `modules/home-manager/programs/worktrunk` | H | H | H | H | H |
 | wrangler | `presets/dev/home.nix` | H | H | H |  | H |
 | wt-dashboard | `modules/home-manager/programs/worktrunk` | H | H | H | H | H |
 | wvkbd | `hosts/lenovo-legion-go` |  |  |  | S |  |
@@ -311,7 +309,6 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | `modules.programs.opencode` | `presets/ai/home.nix` | H | H | H |  | H |
 | `modules.programs.podman` | `modules/nixos/programs/podman` |  | S | S |  |  |
 | `modules.programs.qmk` | `presets/personal` | S | S | S |  |  |
-| `modules.programs.ray` | `presets/dev/home.nix` | H | H | H |  |  |
 | `modules.programs.sesh` | `modules/home-manager/programs/sesh` | H | H | H | H | H |
 | `modules.programs.shellProfile` | `flakes/home/modules/profile` | H | H | H | H | H |
 | `modules.programs.ssh` | `flakes/home/modules/ssh` | H | H | H | H | H |
@@ -423,7 +420,7 @@ Only those enabled from this repo.
 | `services.printing` | `presets/desktop` | S | S | S | S |  |
 | `services.seatd` | `hosts/lenovo-legion-go` |  |  |  | S |  |
 | `services.supergfxd` | `modules/nixos/hardware/asus` | S |  |  |  |  |
-| `services.tailscale` | `hosts/dostov-dev`, `hosts/home-desktop` |  | S | S |  |  |
+| `services.tailscale` | `hosts/asus-zephyrus-gu603`, `hosts/dostov-dev`, `hosts/home-desktop` | S | S | S |  |  |
 | `services.tailscale-systray` | `hosts/dostov-dev/home.nix`, `hosts/home-desktop/home.nix` |  | H | H |  |  |
 | `services.tlp` | `modules/nixos/services/power-management` | S | S | S | S |  |
 | `services.trayscale` | `hosts/dostov-dev/home.nix` |  | H |  |  |  |
