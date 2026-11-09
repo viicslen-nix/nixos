@@ -109,7 +109,7 @@ in {
       gh-dash
       act
       unstable.but
-      # pkgs.inputs.gitura.default
+      pkgs.inputs.gitura.default
       pkgs.inputs.ghost-backup.default
       pkgs.inputs.tuicr.default
       pkgs.inputs.packages.scripts.git-carve-submodule
