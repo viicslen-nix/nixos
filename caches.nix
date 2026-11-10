@@ -22,10 +22,8 @@
 
     lantian = {
       scope = "base";
-      # 503 since 2026-10-19; flip back once nix-cache-info answers 200.
-      enabled = false;
-      url = "https://attic.xuyh0120.win/lantian";
-      key = "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=";
+      url = "https://cache.lantian.pub/lantian";
+      key = "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ=";
       # xddxdd's own cache: unifying nixpkgs would miss it and compile a kernel.
       ownNixpkgs = ["nix-cachyos-kernel"];
     };
