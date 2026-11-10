@@ -72,6 +72,12 @@ home-manager module, under the same
 That placement is the point: a bind belongs to the thing it drives. A third
 shell adds its own binds in its own module and touches nothing here.
 
+The one exception is `Mod+O`. The base niri config binds it to niri's own
+hotkey overlay; under dms, `flakes/dms/hm.nix` `mkForce`s it to dms's cheat
+sheet (`dms ipc call keybinds toggle niri`). That goes through
+`programs.niri.settings`, not `binds.kdl`, which is dms's runtime state. Other
+shells keep niri's overlay.
+
 Caelestia's five on niri (`Mod+Space` launcher, `Mod+G` dashboard, `Mod+Shift+Q` session,
 `Mod+Shift+N` nexus, `Mod+Alt+L` lock) were chosen from keys the base niri
 config leaves free, so no `mkForce` is involved — if a future bind collides the
