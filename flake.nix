@@ -200,10 +200,6 @@
       url = "github:max-sixty/worktrunk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ghost-backup = {
-      url = "github:FmTod/ghost-backup";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = inputs @ {flake-parts, ...}: let

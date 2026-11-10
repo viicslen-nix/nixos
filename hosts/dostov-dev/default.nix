@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  inputs,
   nixosModules,
   ...
 }:
@@ -9,7 +8,6 @@ with lib; {
   imports = [
     # Include the results of the hardware scan.
     ./hardware.nix
-    inputs.ghost-backup.nixosModules.default
 
     nixosModules.hardware.intel
     nixosModules.hardware.nvidia
@@ -47,8 +45,6 @@ with lib; {
   };
 
   services = {
-    ghost-backup.enable = true;
-
     # Keep both BT adapters (TP-Link, onboard RTL8851BE) out of USB autosuspend.
     udev.extraRules = ''
       ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="2357", ATTR{idProduct}=="0604", ATTR{power/control}="on"

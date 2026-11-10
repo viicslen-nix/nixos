@@ -8,7 +8,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## System
 
-### Packages (202)
+### Packages (199)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -63,9 +63,6 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | wmctrl | 1.07 | `presets/desktop` |
 | xdg-utils | 1.2.1 | `presets/desktop` |
 | freerdp | 3.32.2 | `hosts/dostov-dev` |
-| ghost-backup | 0.4.7 | `hosts/dostov-dev` |
-| git | 2.56.0 | `hosts/dostov-dev` |
-| gitleaks | 8.30.1 | `hosts/dostov-dev` |
 | iptables | 1.8.13 | `hosts/dostov-dev` |
 | winboat | 0.9.2 | `hosts/dostov-dev` |
 | wireshark-qt | 4.6.9 | `hosts/dostov-dev` |
@@ -276,7 +273,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `programs.xwayland` | `nixos/modules/programs/wayland/hyprland.nix` |
 | `programs.zsh` | `presets/base` |
 
-### Services (38)
+### Services (37)
 
 | Option | Enabled by |
 | --- | --- |
@@ -292,7 +289,6 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `services.fstrim` | `nixos/modules/services/misc/fstrim.nix` |
 | `services.geoclue2` | `presets/desktop` |
 | `services.getty` | `nixos/modules/services/ttys/getty.nix` |
-| `services.ghost-backup` | `hosts/dostov-dev` |
 | `services.gnome.gnome-keyring` | `presets/desktop` |
 | `services.graphical-desktop` | `nixos/modules/programs/wayland/hyprland.nix` |
 | `services.greetd` | `presets/desktop` |
@@ -335,12 +331,11 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | traefik | `traefik:latest` | `modules/nixos/containers/traefik` |
 | vitess | `vitess/vttestserver:mysql84` | `modules/nixos/containers/vitess` |
 
-### Units (7)
+### Units (6)
 
 | Unit | Scope | Source |
 | --- | --- | --- |
 | `niri-flake-polkit` | user | `presets/desktop` |
-| `ghost-backup` | user | `hosts/dostov-dev` |
 | `init-container-network` | system | `modules/nixos/containers` |
 | `traefik-tls-config` | system | `modules/nixos/containers/traefik` |
 | `miami-bus-notify` | system | `modules/nixos/features/miami-bus-tracker` |
@@ -349,7 +344,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (208)
+### Packages (207)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -373,7 +368,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | bun | 1.4.4 | `presets/dev/home.nix` |
 | but | 0.22.3 | `presets/dev/home.nix` |
 | cf | 1.0.0-beta.27 | `presets/dev/home.nix` |
-| claude-desktop | 4.23118.0 | `presets/dev/home.nix` |
+| claude-desktop | 4.23118.1 | `presets/dev/home.nix` |
 | cloudflared | 2026.10.7 | `presets/dev/home.nix` |
 | cmake | 4.4.4 | `presets/dev/home.nix` |
 | composer | 2.10.3 | `presets/dev/home.nix` |
@@ -386,12 +381,11 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | gcc-wrapper | 13.5.0 | `presets/dev/home.nix` |
 | generate-cert |  | `presets/dev/home.nix` |
 | gh-dash | 4.26.2 | `presets/dev/home.nix` |
-| ghost-backup | 0.4.7 | `presets/dev/home.nix` |
 | git-carve-submodule |  | `presets/dev/home.nix` |
 | gitbutler | 0.19.9 | `presets/dev/home.nix` |
 | github-copilot-desktop | 1.1.35 | `presets/dev/home.nix` |
 | github-desktop | 3.6.6 | `presets/dev/home.nix` |
-| gitura | 0.5.1 | `presets/dev/home.nix` |
+| gitura | 0.13.0 | `presets/dev/home.nix` |
 | glab | 1.126.0 | `presets/dev/home.nix` |
 | gnumake | 4.4.1 | `presets/dev/home.nix` |
 | go | 1.26.10 | `presets/dev/home.nix` |
@@ -468,7 +462,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | 1password-cli | 2.41.1 | `modules/nixos/programs/one-password` |
 | browser-harness | 0.1.13 | `flakes/ai/hmModules/ai` |
 | browser-harness-profile |  | `flakes/ai/hmModules/ai` |
-| coderabbit | 0.9.3 | `flakes/ai/hmModules/ai` |
+| coderabbit | 0.9.4 | `flakes/ai/hmModules/ai` |
 | jev |  | `flakes/ai/hmModules/ai` |
 | mcp-gateway | 3.5.1 | `flakes/ai/hmModules/ai` |
 | mempalace | 3.11.0 | `flakes/ai/hmModules/ai` |
@@ -482,7 +476,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | opencode-default |  | `flakes/ai/hmModules/opencode/v2.nix` |
 | opencode2 |  | `flakes/ai/hmModules/opencode/v2.nix` |
 | t3 |  | `flakes/ai/hmModules/t3code` |
-| t3code | 0.1.8-nightly.20261109.4399 | `flakes/ai/hmModules/t3code` |
+| t3code | 0.1.9-nightly.20261110.4465 | `flakes/ai/hmModules/t3code` |
 | hunkdiff | 0.20.0 | `flakes/home/modules/hunk` |
 | jujutsu | 0.46.0 | `flakes/home/modules/jujutsu` |
 | lazyjj | 0.6.1 | `flakes/home/modules/jujutsu` |
@@ -523,13 +517,13 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | dummy-xdg-mime-dirs1 |  | `modules/misc/xdg/mime.nix` |
 | dummy-xdg-mime-dirs2 |  | `modules/misc/xdg/mime.nix` |
 | shared-mime-info | 2.5.1 | `modules/misc/xdg/mime.nix` |
-| antigravity-cli | 1.5.3 | `modules/programs/antigravity-cli.nix` |
+| antigravity-cli | 1.5.4 | `modules/programs/antigravity-cli.nix` |
 | atuin | 18.24.4 | `modules/programs/atuin.nix` |
 | bash-interactive | 5.3p20 | `modules/programs/bash.nix` |
 | btop | 1.4.8 | `modules/programs/btop.nix` |
 | carapace | 1.8.1 | `modules/programs/carapace.nix` |
 | vivaldi-custom-ui | 8.3.4191.23 | `modules/programs/chromium.nix` |
-| claude-code | 2.1.319 | `modules/programs/claude-code` |
+| claude-code | 2.1.322 | `modules/programs/claude-code` |
 | codex | 0.167.0 | `modules/programs/codex` |
 | direnv | 2.38.2 | `modules/programs/direnv.nix` |
 | fish | 4.9.3 | `modules/programs/fish.nix` |
@@ -538,7 +532,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | gh | 2.103.3 | `modules/programs/gh.nix` |
 | ghostty | 1.4.1-dev+03bd7e7-nix | `modules/programs/ghostty.nix` |
 | git | 2.56.0 | `modules/programs/git.nix` |
-| copilot-cli | 1.0.107 | `modules/programs/github-copilot-cli.nix` |
+| copilot-cli | 1.0.108 | `modules/programs/github-copilot-cli.nix` |
 | helix | 25.07.1 | `modules/programs/helix.nix` |
 | herdr | 0.9.5 | `modules/programs/herdr.nix` |
 | hstr | 3.2 | `modules/programs/hstr.nix` |
@@ -676,7 +670,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 Packages defined in more than one place. Drop the raw entry when a module already installs it.
 
-### Packages (26)
+### Packages (25)
 
 | Package | Defined by |
 | --- | --- |
@@ -691,9 +685,8 @@ Packages defined in more than one place. Drop the raw entry when a module alread
 | dictd | presets/personal/home.nix (neoscode)<br>nixos/modules/services/misc/dictd.nix (system; upstream) |
 | dms-shell | presets/desktop (neoscode)<br>presets/desktop (system) |
 | fzf | presets/base (system)<br>modules/programs/fzf.nix (neoscode; upstream) |
-| ghost-backup | hosts/dostov-dev (system)<br>presets/dev/home.nix (neoscode) |
 | ghostty | modules/home-manager/functionality/defaults (neoscode)<br>modules/programs/ghostty.nix (neoscode; upstream) |
-| git | hosts/dostov-dev (system)<br>presets/base (system)<br>modules/programs/git.nix (neoscode; upstream) |
+| git | presets/base (system)<br>modules/programs/git.nix (neoscode; upstream) |
 | glib | presets/base (system)<br>presets/desktop (neoscode)<br>presets/desktop (system) |
 | glibc | presets/base (system)<br>nixos/modules/config/system-path.nix (system; upstream) |
 | jujutsu | flakes/home/modules/jujutsu (neoscode)<br>modules/programs/jujutsu.nix (neoscode; upstream) |

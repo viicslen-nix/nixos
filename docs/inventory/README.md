@@ -91,14 +91,12 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | gcc-wrapper | `presets/dev/home.nix` | H | H | H |  | H |
 | generate-cert | `presets/dev/home.nix` | H | H | H |  | H |
 | gh-dash | `presets/dev/home.nix` | H | H | H |  | H |
-| ghost-backup | `hosts/dostov-dev`, `presets/dev/home.nix` | H | H S | H |  | H |
 | ghostty | `modules/home-manager/functionality/defaults` | H | H | H | H |  |
-| git | `hosts/dostov-dev`, `presets/base` | S | S | S | S | S |
+| git | `presets/base` | S | S | S | S | S |
 | git-carve-submodule | `presets/dev/home.nix` | H | H | H |  | H |
 | gitbutler | `presets/dev/home.nix` | H | H | H |  |  |
 | github-copilot-desktop | `presets/dev/home.nix` | H | H | H |  |  |
 | github-desktop | `presets/dev/home.nix` | H | H | H |  |  |
-| gitleaks | `hosts/dostov-dev` |  | S |  |  |  |
 | gitura | `presets/dev/home.nix` | H | H | H |  | H |
 | glab | `presets/dev/home.nix` | H | H | H |  | H |
 | glib | `presets/base`, `presets/desktop` | H S | H S | H S | H S | S |
@@ -407,7 +405,6 @@ Only those enabled from this repo.
 | `services.flameshot` | `presets/personal/home.nix` | H | H | H |  |  |
 | `services.flatpak` | `hosts/lenovo-legion-go` |  |  |  | S |  |
 | `services.geoclue2` | `presets/desktop` | S | S | S | S |  |
-| `services.ghost-backup` | `hosts/dostov-dev` |  | S |  |  |  |
 | `services.gnome.gnome-keyring` | `presets/desktop` | S | S | S |  |  |
 | `services.greetd` | `presets/desktop` | S | S | S |  |  |
 | `services.gvfs` | `presets/desktop` | S | S | S | S |  |
@@ -456,7 +453,6 @@ systemd units defined in this repo.
 | `autostart-1password (user)` | `modules/home-manager/functionality/autostart` | H | H | H | H |  |
 | `browser-harness-chrome (user)` | `flakes/ai/hmModules/ai` | H | H | H |  | H |
 | `dms (user)` | `presets/desktop` | H | H | H | H |  |
-| `ghost-backup (user)` | `hosts/dostov-dev` |  | S |  |  |  |
 | `init-container-network (system)` | `modules/nixos/containers` | S | S | S | S | S |
 | `mcp-gateway (user)` | `flakes/ai/hmModules/ai`, `presets/personal/home.nix` | H | H | H |  | H |
 | `miami-bus-notify (system)` | `modules/nixos/features/miami-bus-tracker` |  | S |  |  |  |

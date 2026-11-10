@@ -28,8 +28,7 @@ list, with a mandatory `-<version>` suffix so personal config derivations
 (`worktrunk-config`, `emacs-configured`, `opencode-default`) stay out.
 
 Deliberately not allowlisted: `claude-agent-acp` (bundles Anthropic's
-proprietary agent SDK), `ghost-backup` (public repo, no licence), the CachyOS
-kernel (lantian's attic serves it when up).
+proprietary agent SDK), the CachyOS kernel (lantian's attic serves it when up).
 
 `cachix-action` runs with `skipPush`: its post-job hook would upload every
 path the job built, including build-only inputs.
