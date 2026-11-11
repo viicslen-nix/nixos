@@ -33,8 +33,8 @@
 
           nvidiaSupport = mkOption {
             type = types.bool;
-            default = config.modules.hardware.nvidia.enable or false;
-            defaultText = literalExpression "config.modules.hardware.nvidia.enable or false";
+            default = config.hardware.nvidia.enabled;
+            defaultText = literalExpression "config.hardware.nvidia.enabled";
             description = ''
               Enable support for NVIDIA GPUs in the container backend.
             '';
