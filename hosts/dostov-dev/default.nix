@@ -147,9 +147,16 @@ with lib; {
       };
     };
 
-    features.macos-vm = {
-      release = "tahoe";
-      gpu = true;
+    features.macos-vm.instances = {
+      tahoe = {
+        release = "tahoe";
+        display = 0;
+      };
+      sequoia = {
+        release = "sequoia";
+        display = 1;
+        gpu = true;
+      };
     };
 
     containers.settings = {
