@@ -15,6 +15,7 @@ with lib; {
     nixosModules.containers.vitess
     nixosModules.containers.actions-runner
     nixosModules.features.miami-bus-tracker
+    nixosModules.features.macos-vm
   ];
 
   boot.loader.efi.canTouchEfiVariables = true;
@@ -144,6 +145,11 @@ with lib; {
           y = 635;
         };
       };
+    };
+
+    features.macos-vm = {
+      release = "tahoe";
+      gpu = true;
     };
 
     containers.settings = {
