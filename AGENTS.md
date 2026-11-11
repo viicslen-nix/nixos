@@ -60,6 +60,13 @@ already happened. Treat every heavy Nix invocation as dangerous.
   when a directory earns one. This file holds the rules, vocabulary and
   workflows an agent follows; `CONTEXT.md` holds the story behind what is
   already written. Keep each fact in exactly one of the two.
+- **Modules stay decoupled.** A module under `modules/` learns about the rest
+  of the system from upstream NixOS / home-manager options
+  (`virtualisation.oci-containers.backend`,
+  `hardware.nvidia-container-toolkit.enable`), never from another repo
+  module's `modules.*` options. The one exception is the `containers`
+  submodules, which share `modules.containers.settings`. Presets and hosts
+  set `modules.*` freely; that is configuration, not coupling.
 - **Never put a dotfile or dotdir directly in `$HOME`.** Config belongs in
   `$XDG_CONFIG_HOME`, mutable data in `$XDG_DATA_HOME`, logs/history in
   `$XDG_STATE_HOME`, throwaway output in `$XDG_CACHE_HOME` — read each with its
