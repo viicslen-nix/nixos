@@ -125,6 +125,7 @@ in {
       wrangler
       unstable.cf
       pkgs.inputs.packages.blacksmith
+      pkgs.inputs.packages.php.laravel-cloud-cli
       atlas
       percona-toolkit
       awscli2

@@ -8,7 +8,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## System
 
-### Packages (199)
+### Packages (202)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -56,7 +56,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | libinput | 1.31.3 | `presets/desktop` |
 | matugen | 4.2.0 | `presets/desktop` |
 | networkmanager | 1.58.1 | `presets/desktop` |
-| niri | unstable-2026-10-19-f51d761 | `presets/desktop` |
+| niri | unstable-2026-11-05-3c06daf | `presets/desktop` |
 | niri-scratchpad | 2.0.0 | `presets/desktop` |
 | quickshell-wrapped | 0.3.2 | `presets/desktop` |
 | wl-clipboard | +5ec4f89 | `presets/desktop` |
@@ -66,6 +66,9 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | iptables | 1.8.13 | `hosts/dostov-dev` |
 | winboat | 0.9.2 | `hosts/dostov-dev` |
 | wireshark-qt | 4.6.9 | `hosts/dostov-dev` |
+| macos-sequoia.desktop |  | `modules/nixos/features/macos-vm` |
+| macos-tahoe.desktop |  | `modules/nixos/features/macos-vm` |
+| macos-vm |  | `modules/nixos/features/macos-vm` |
 | miami-bus-overlay |  | `modules/nixos/features/miami-bus-tracker` |
 | miami-bus-tracker |  | `modules/nixos/features/miami-bus-tracker` |
 | miami-find-stop |  | `modules/nixos/features/miami-bus-tracker` |
@@ -132,7 +135,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | hicolor-icon-theme | 0.18 | `nixos/modules/config/xdg/icons.nix` |
 | shared-mime-info | 2.5.1 | `nixos/modules/config/xdg/mime.nix` |
 | gnome-keyring | 50.0 | `nixos/modules/config/xdg/portal.nix` |
-| niri | unstable-2026-10-19-f51d761 | `nixos/modules/config/xdg/portal.nix` |
+| niri | unstable-2026-11-05-3c06daf | `nixos/modules/config/xdg/portal.nix` |
 | xdg-desktop-portal | 1.22.1 | `nixos/modules/config/xdg/portal.nix` |
 | xdg-desktop-portal-gnome | 50.0 | `nixos/modules/config/xdg/portal.nix` |
 | xdg-desktop-portal-gtk | 1.15.3 | `nixos/modules/config/xdg/portal.nix` |
@@ -212,7 +215,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | podman | 6.1.4 | `nixos/modules/virtualisation/podman` |
 | podman-docker-compat | 6.1.4 | `nixos/modules/virtualisation/podman` |
 
-### Modules (31)
+### Modules (32)
 
 | Option | Enabled by |
 | --- | --- |
@@ -234,6 +237,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `modules.desktop.hyprland` | `hosts/dostov-dev` |
 | `modules.desktop.niri` | `hosts/dostov-dev` |
 | `modules.features.appImages` | `modules/nixos/features/app-images` |
+| `modules.features.macos-vm` | `modules/nixos/features/macos-vm` |
 | `modules.hardware.bluetooth` | `modules/nixos/hardware/bluetooth` |
 | `modules.hardware.intel` | `modules/nixos/hardware/intel` |
 | `modules.hardware.nvidia` | `modules/nixos/hardware/nvidia` |
@@ -315,7 +319,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | `virtualisation.containers` | `modules/nixos/programs/podman`, `nixos/modules/virtualisation/podman` |
 | `virtualisation.podman` | `modules/nixos/programs/podman`, `nixos/modules/virtualisation/oci-containers.nix` |
 
-### Containers (11)
+### Containers (13)
 
 | Container | Image | Source |
 | --- | --- | --- |
@@ -323,6 +327,8 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | buggregator | `ghcr.io/buggregator/server:latest` | `modules/nixos/containers/buggregator` |
 | centrifugo | `centrifugo/centrifugo:latest` | `modules/nixos/containers/centrifugo` |
 | homarr | `ghcr.io/ajnart/homarr:latest` | `modules/nixos/containers/homarr` |
+| macos-sequoia | `localhost/dockurr-macos:16a5b470cdd6` | `modules/nixos/features/macos-vm` |
+| macos-tahoe | `localhost/dockurr-macos:16a5b470cdd6` | `modules/nixos/features/macos-vm` |
 | meilisearch | `getmeili/meilisearch:latest` | `modules/nixos/containers/meilisearch` |
 | mysql | `percona/percona-server:latest` | `modules/nixos/containers/mysql` |
 | qdrant | `qdrant/qdrant:latest` | `modules/nixos/containers/qdrant` |
@@ -331,20 +337,21 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | traefik | `traefik:latest` | `modules/nixos/containers/traefik` |
 | vitess | `vitess/vttestserver:mysql84` | `modules/nixos/containers/vitess` |
 
-### Units (6)
+### Units (7)
 
 | Unit | Scope | Source |
 | --- | --- | --- |
 | `niri-flake-polkit` | user | `presets/desktop` |
 | `init-container-network` | system | `modules/nixos/containers` |
 | `traefik-tls-config` | system | `modules/nixos/containers/traefik` |
+| `macos-vm-image` | system | `modules/nixos/features/macos-vm` |
 | `miami-bus-notify` | system | `modules/nixos/features/miami-bus-tracker` |
 | `miami-bus-overlay` | user | `modules/nixos/features/miami-bus-tracker` |
 | `mkcert-generate-certs` | system | `modules/nixos/programs/mkcert` |
 
 ## User `neoscode`
 
-### Packages (207)
+### Packages (208)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -368,7 +375,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | bun | 1.4.4 | `presets/dev/home.nix` |
 | but | 0.22.3 | `presets/dev/home.nix` |
 | cf | 1.0.0-beta.27 | `presets/dev/home.nix` |
-| claude-desktop | 4.23118.1 | `presets/dev/home.nix` |
+| claude-desktop | 5.1231.0 | `presets/dev/home.nix` |
 | cloudflared | 2026.10.7 | `presets/dev/home.nix` |
 | cmake | 4.4.4 | `presets/dev/home.nix` |
 | composer | 2.10.3 | `presets/dev/home.nix` |
@@ -383,9 +390,9 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | gh-dash | 4.26.2 | `presets/dev/home.nix` |
 | git-carve-submodule |  | `presets/dev/home.nix` |
 | gitbutler | 0.19.9 | `presets/dev/home.nix` |
-| github-copilot-desktop | 1.1.35 | `presets/dev/home.nix` |
+| github-copilot-desktop | 1.2.0 | `presets/dev/home.nix` |
 | github-desktop | 3.6.6 | `presets/dev/home.nix` |
-| gitura | 0.13.0 | `presets/dev/home.nix` |
+| gitura | 0.14.0 | `presets/dev/home.nix` |
 | glab | 1.126.0 | `presets/dev/home.nix` |
 | gnumake | 4.4.1 | `presets/dev/home.nix` |
 | go | 1.26.10 | `presets/dev/home.nix` |
@@ -394,6 +401,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | insomnia | 13.3.1 | `presets/dev/home.nix` |
 | kubectl | 1.37.2 | `presets/dev/home.nix` |
 | kubernetes-helm | 4.3.1 | `presets/dev/home.nix` |
+| laravel-cloud-cli | 0.7.3 | `presets/dev/home.nix` |
 | lazygit | 0.66.2 | `presets/dev/home.nix` |
 | lens-desktop | 2026.10.261408 | `presets/dev/home.nix` |
 | nix-alien | 0.1.0+git_07c41bf | `presets/dev/home.nix` |
@@ -462,7 +470,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | 1password-cli | 2.41.1 | `modules/nixos/programs/one-password` |
 | browser-harness | 0.1.13 | `flakes/ai/hmModules/ai` |
 | browser-harness-profile |  | `flakes/ai/hmModules/ai` |
-| coderabbit | 0.9.4 | `flakes/ai/hmModules/ai` |
+| coderabbit | 0.9.5 | `flakes/ai/hmModules/ai` |
 | jev |  | `flakes/ai/hmModules/ai` |
 | mcp-gateway | 3.5.1 | `flakes/ai/hmModules/ai` |
 | mempalace | 3.11.0 | `flakes/ai/hmModules/ai` |
@@ -476,7 +484,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | opencode-default |  | `flakes/ai/hmModules/opencode/v2.nix` |
 | opencode2 |  | `flakes/ai/hmModules/opencode/v2.nix` |
 | t3 |  | `flakes/ai/hmModules/t3code` |
-| t3code | 0.1.9-nightly.20261110.4465 | `flakes/ai/hmModules/t3code` |
+| t3code | 0.1.9 | `flakes/ai/hmModules/t3code` |
 | hunkdiff | 0.20.0 | `flakes/home/modules/hunk` |
 | jujutsu | 0.46.0 | `flakes/home/modules/jujutsu` |
 | lazyjj | 0.6.1 | `flakes/home/modules/jujutsu` |
@@ -517,14 +525,14 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | dummy-xdg-mime-dirs1 |  | `modules/misc/xdg/mime.nix` |
 | dummy-xdg-mime-dirs2 |  | `modules/misc/xdg/mime.nix` |
 | shared-mime-info | 2.5.1 | `modules/misc/xdg/mime.nix` |
-| antigravity-cli | 1.5.4 | `modules/programs/antigravity-cli.nix` |
+| antigravity-cli | 1.5.5 | `modules/programs/antigravity-cli.nix` |
 | atuin | 18.24.4 | `modules/programs/atuin.nix` |
 | bash-interactive | 5.3p20 | `modules/programs/bash.nix` |
 | btop | 1.4.8 | `modules/programs/btop.nix` |
 | carapace | 1.8.1 | `modules/programs/carapace.nix` |
 | vivaldi-custom-ui | 8.3.4191.23 | `modules/programs/chromium.nix` |
 | claude-code | 2.1.322 | `modules/programs/claude-code` |
-| codex | 0.167.0 | `modules/programs/codex` |
+| codex | 0.167.1 | `modules/programs/codex` |
 | direnv | 2.38.2 | `modules/programs/direnv.nix` |
 | fish | 4.9.3 | `modules/programs/fish.nix` |
 | hm-session-vars.fish |  | `modules/programs/fish.nix` |
@@ -532,7 +540,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | gh | 2.103.3 | `modules/programs/gh.nix` |
 | ghostty | 1.4.1-dev+03bd7e7-nix | `modules/programs/ghostty.nix` |
 | git | 2.56.0 | `modules/programs/git.nix` |
-| copilot-cli | 1.0.108 | `modules/programs/github-copilot-cli.nix` |
+| copilot-cli | 1.0.109 | `modules/programs/github-copilot-cli.nix` |
 | helix | 25.07.1 | `modules/programs/helix.nix` |
 | herdr | 0.9.5 | `modules/programs/herdr.nix` |
 | hstr | 3.2 | `modules/programs/hstr.nix` |

@@ -126,6 +126,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | krr | `modules/home-manager/programs/krr` | H | H | H |  | H |
 | kubectl | `presets/dev/home.nix` | H | H | H |  | H |
 | kubernetes-helm | `presets/dev/home.nix` | H | H | H |  | H |
+| laravel-cloud-cli | `presets/dev/home.nix` | H | H | H |  | H |
 | lazygit | `presets/dev/home.nix` | H | H | H |  | H |
 | lazyjj | `flakes/home/modules/jujutsu` | H | H | H | H | H |
 | legcord | `presets/personal/home.nix` | H | H | H |  |  |
@@ -137,6 +138,9 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | lshw | `presets/base` | S | S | S | S | S |
 | luakit | `presets/personal/home.nix` | H | H | H |  |  |
 | lutris | `modules/nixos/functionality/gaming` | S |  | S |  |  |
+| macos-sequoia.desktop | `modules/nixos/features/macos-vm` |  | S |  |  |  |
+| macos-tahoe.desktop | `modules/nixos/features/macos-vm` |  | S |  |  |  |
+| macos-vm | `modules/nixos/features/macos-vm` |  | S |  |  |  |
 | maliit-framework | `hosts/lenovo-legion-go` |  |  |  | S |  |
 | maliit-keyboard | `hosts/lenovo-legion-go` |  |  |  | S |  |
 | mangohud | `modules/nixos/functionality/gaming` | S |  | S |  |  |
@@ -266,6 +270,7 @@ Packages declared in this repo; upstream module defaults are in the per-host fil
 | `modules.desktop.hyprland` | `hosts/dostov-dev`, `hosts/home-desktop` |  | S | S |  |  |
 | `modules.desktop.niri` | `hosts/asus-zephyrus-gu603`, `hosts/dostov-dev`, `hosts/home-desktop` | S | S | S |  |  |
 | `modules.features.appImages` | `modules/nixos/features/app-images` | S | S | S | S |  |
+| `modules.features.macos-vm` | `modules/nixos/features/macos-vm` |  | S |  |  |  |
 | `modules.functionality.gaming` | `modules/nixos/functionality/gaming` | S |  | S |  |  |
 | `modules.hardware.asus` | `modules/nixos/hardware/asus` | S |  |  |  |  |
 | `modules.hardware.bluetooth` | `modules/nixos/hardware/bluetooth` | S | S | S |  |  |
@@ -436,6 +441,8 @@ Only those enabled from this repo.
 | `buggregator` | `ghcr.io/buggregator/server:latest` | ✓ | ✓ | ✓ |  | ✓ |
 | `centrifugo` | `centrifugo/centrifugo:latest` | ✓ | ✓ | ✓ |  | ✓ |
 | `homarr` | `ghcr.io/ajnart/homarr:latest` | ✓ | ✓ | ✓ |  |  |
+| `macos-sequoia` | `localhost/dockurr-macos:16a5b470cdd6` |  | ✓ |  |  |  |
+| `macos-tahoe` | `localhost/dockurr-macos:16a5b470cdd6` |  | ✓ |  |  |  |
 | `meilisearch` | `getmeili/meilisearch:latest` | ✓ | ✓ | ✓ |  | ✓ |
 | `mysql` | `percona/percona-server:latest` | ✓ | ✓ | ✓ |  | ✓ |
 | `qdrant` | `qdrant/qdrant:latest` | ✓ | ✓ | ✓ |  | ✓ |
@@ -454,6 +461,7 @@ systemd units defined in this repo.
 | `browser-harness-chrome (user)` | `flakes/ai/hmModules/ai` | H | H | H |  | H |
 | `dms (user)` | `presets/desktop` | H | H | H | H |  |
 | `init-container-network (system)` | `modules/nixos/containers` | S | S | S | S | S |
+| `macos-vm-image (system)` | `modules/nixos/features/macos-vm` |  | S |  |  |  |
 | `mcp-gateway (user)` | `flakes/ai/hmModules/ai`, `presets/personal/home.nix` | H | H | H |  | H |
 | `miami-bus-notify (system)` | `modules/nixos/features/miami-bus-tracker` |  | S |  |  |  |
 | `miami-bus-overlay (user)` | `modules/nixos/features/miami-bus-tracker` |  | S |  |  |  |

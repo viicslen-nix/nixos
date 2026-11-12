@@ -194,7 +194,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 
 ## User `neoscode`
 
-### Packages (121)
+### Packages (122)
 
 | Package | Version | Source |
 | --- | --- | --- |
@@ -216,7 +216,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | generate-cert |  | `presets/dev/home.nix` |
 | gh-dash | 4.26.2 | `presets/dev/home.nix` |
 | git-carve-submodule |  | `presets/dev/home.nix` |
-| gitura | 0.13.0 | `presets/dev/home.nix` |
+| gitura | 0.14.0 | `presets/dev/home.nix` |
 | glab | 1.126.0 | `presets/dev/home.nix` |
 | gnumake | 4.4.1 | `presets/dev/home.nix` |
 | go | 1.26.10 | `presets/dev/home.nix` |
@@ -224,6 +224,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | graphviz | 15.1.1 | `presets/dev/home.nix` |
 | kubectl | 1.37.2 | `presets/dev/home.nix` |
 | kubernetes-helm | 4.3.1 | `presets/dev/home.nix` |
+| laravel-cloud-cli | 0.7.3 | `presets/dev/home.nix` |
 | lazygit | 0.66.2 | `presets/dev/home.nix` |
 | nix-alien | 0.1.0+git_07c41bf | `presets/dev/home.nix` |
 | nix-init | 0.3.6 | `presets/dev/home.nix` |
@@ -257,7 +258,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | sesh-list |  | `modules/home-manager/programs/sesh` |
 | wt-dashboard |  | `modules/home-manager/programs/worktrunk` |
 | browser-harness | 0.1.13 | `flakes/ai/hmModules/ai` |
-| coderabbit | 0.9.4 | `flakes/ai/hmModules/ai` |
+| coderabbit | 0.9.5 | `flakes/ai/hmModules/ai` |
 | mcp-gateway | 3.5.1 | `flakes/ai/hmModules/ai` |
 | mempalace | 3.11.0 | `flakes/ai/hmModules/ai` |
 | openwiki | 0.9.0 | `flakes/ai/hmModules/ai` |
@@ -270,7 +271,7 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | opencode-default |  | `flakes/ai/hmModules/opencode/v2.nix` |
 | opencode2 |  | `flakes/ai/hmModules/opencode/v2.nix` |
 | t3 |  | `flakes/ai/hmModules/t3code` |
-| t3code | 0.1.9-nightly.20261110.4465 | `flakes/ai/hmModules/t3code` |
+| t3code | 0.1.9 | `flakes/ai/hmModules/t3code` |
 | hunkdiff | 0.20.0 | `flakes/home/modules/hunk` |
 | jujutsu | 0.46.0 | `flakes/home/modules/jujutsu` |
 | lazyjj | 0.6.1 | `flakes/home/modules/jujutsu` |
@@ -291,20 +292,20 @@ Sources are the files that defined each entry. Paths outside this repo are upstr
 | dummy-xdg-mime-dirs1 |  | `modules/misc/xdg/mime.nix` |
 | dummy-xdg-mime-dirs2 |  | `modules/misc/xdg/mime.nix` |
 | shared-mime-info | 2.5.1 | `modules/misc/xdg/mime.nix` |
-| antigravity-cli | 1.5.4 | `modules/programs/antigravity-cli.nix` |
+| antigravity-cli | 1.5.5 | `modules/programs/antigravity-cli.nix` |
 | atuin | 18.24.4 | `modules/programs/atuin.nix` |
 | bash-interactive | 5.3p20 | `modules/programs/bash.nix` |
 | btop | 1.4.8 | `modules/programs/btop.nix` |
 | carapace | 1.8.1 | `modules/programs/carapace.nix` |
 | claude-code | 2.1.322 | `modules/programs/claude-code` |
-| codex | 0.167.0 | `modules/programs/codex` |
+| codex | 0.167.1 | `modules/programs/codex` |
 | direnv | 2.38.2 | `modules/programs/direnv.nix` |
 | fish | 4.9.3 | `modules/programs/fish.nix` |
 | hm-session-vars.fish |  | `modules/programs/fish.nix` |
 | fzf | 0.74.5 | `modules/programs/fzf.nix` |
 | gh | 2.103.3 | `modules/programs/gh.nix` |
 | git | 2.56.0 | `modules/programs/git.nix` |
-| copilot-cli | 1.0.108 | `modules/programs/github-copilot-cli.nix` |
+| copilot-cli | 1.0.109 | `modules/programs/github-copilot-cli.nix` |
 | helix | 25.07.1 | `modules/programs/helix.nix` |
 | herdr | 0.9.5 | `modules/programs/herdr.nix` |
 | hstr | 3.2 | `modules/programs/hstr.nix` |
