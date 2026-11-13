@@ -71,6 +71,7 @@ in {
         enable = true;
         headless.enable = true;
       };
+      integrations.agent-desktop.enable = mkIf desktop true;
       # Stays here, not in the ai flake: it needs a credential only this host has.
       # Not `oauth.enabled` — accounts.google.com has no registration_endpoint.
       mcps.google_stitch = {
