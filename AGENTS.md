@@ -94,8 +94,11 @@ already happened. Treat every heavy Nix invocation as dangerous.
   `home.nix` never reads it work there — today just `ai`. The only one is
   `openclaw` (deploying it: `hosts/openclaw/CONTEXT.md`).
 - **preset** — a composable module bundle in `presets/<name>`
-  (`base`, `desktop`, `dev`, `personal`, `linode`, `ai`), plus `work`, which is
-  the private `viicslen-nix/work` repo as the `work` flake input. Hosts opt in via their
+  (`base`, `desktop`, `dev`, `personal`, `linode`, `ai`), plus `work` and
+  `homelab`, the private `viicslen-nix/work` and `viicslen-nix/homelab` repos
+  as same-named `flake = false` inputs. `homelab` holds the homelab skills and
+  inventory; anything that maps the homelab goes there, never in this public
+  repo. Hosts opt in via their
   `presets = [ … ]` list. `base` is universal/server-safe; `desktop` carries
   **all** graphical/physical-machine config (fonts, printing, avahi, libinput,
   compositor imports, wayland overlay + caches, sound, bluetooth, grub-on-EFI

@@ -133,9 +133,14 @@
       };
     };
 
-    # Private; fetched only when a host lists the `work` preset.
+    # Private; each is fetched only when a host lists its preset.
     work = {
       url = "github:viicslen-nix/work";
+      flake = false;
+    };
+
+    homelab = {
+      url = "github:viicslen-nix/homelab";
       flake = false;
     };
 

@@ -12,8 +12,11 @@
 
   presets =
     lib.genAttrs names (name: presetsPath + "/${name}")
-    # Must stay a lazy attr: hosts without `work` never fetch the private input.
-    // {work = inputs.work.outPath;};
+    # Must stay lazy attrs: a host never fetches a private input it doesn't list.
+    // {
+      work = inputs.work.outPath;
+      homelab = inputs.homelab.outPath;
+    };
 in {
   # Deliberately NOT under flake.nixosModules: that attrset is the pool of
   # feature modules every host imports, whereas presets are selected per host.

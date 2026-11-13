@@ -1079,6 +1079,22 @@
         "type": "github"
       }
     },
+    "homelab": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794579796,
+        "narHash": "sha256-nquHTcEhyn8JoseYSr+gfO38oTdwdG20BbgGEEVsWfI=",
+        "owner": "viicslen-nix",
+        "repo": "homelab",
+        "rev": "a34655e1b97674487ce0a02281d36ff6f941caf8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "viicslen-nix",
+        "repo": "homelab",
+        "type": "github"
+      }
+    },
     "hunk": {
       "inputs": {
         "bun2nix": "bun2nix_2",
@@ -2537,6 +2553,7 @@
         "ghostty": "ghostty",
         "gitura": "gitura",
         "home": "home",
+        "homelab": "homelab",
         "hyprland": "hyprland",
         "ignis": "ignis",
         "lan-mouse": "lan-mouse",
