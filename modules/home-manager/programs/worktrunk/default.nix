@@ -69,6 +69,8 @@
               delete = "wt remove --force -D  {{ args }}";
               workspace = "wt switch --base=@ --create  {{ args }}";
               since-main = "git log --oneline {{ default_branch }}..HEAD";
+              # Detached so callers (T3 scripts, shells) aren't held open by the GUI.
+              review = "setsid -f gitura --local {{ worktree_path }} >/dev/null 2>&1";
               # RAYON_NUM_THREADS caps both the integration scan and the removal workers.
               prune = "RAYON_NUM_THREADS=4 wt step prune --min-age=2h {{ args }}";
               mv = ''
