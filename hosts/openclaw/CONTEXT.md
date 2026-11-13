@@ -1,6 +1,6 @@
 # CONTEXT
 
-`root@openclaw` is a Debian 13 LXC on Proxmox (2 vCPU, 4 GB) running OpenClaw.
+`root@openclaw` is a Debian 13 container running OpenClaw.
 It is not NixOS: Nix is installed multi-user, and the host is `kind = "home"`
 in `hosts/default.nix`, so `parts/hosts.nix` builds it as a standalone
 home-manager configuration (`homeConfigurations."root@openclaw"`) from the `ai`
@@ -19,8 +19,8 @@ FLAGS="--socks5-server=127.0.0.1:1055 --outbound-http-proxy-listen=127.0.0.1:105
 
 The home config points `HTTPS_PROXY`/`HTTP_PROXY` there (plus
 `NODE_USE_ENV_PROXY=1` for Node's fetch), and repeats it in Claude Code's
-`settings.env` so it holds however `claude` is launched. Adding TUN to the LXC
-on the Proxmox host would make the proxy unnecessary.
+`settings.env` so it holds however `claude` is launched. Giving the container
+a TUN device would make the proxy unnecessary.
 
 ## Hand-made state on the box
 
@@ -42,7 +42,7 @@ None of this is declarative; redo it on a rebuilt container.
 
 ## Deploying
 
-Build here, not on the box — 4 GB will not evaluate the profile:
+Build here, not on the box — it has too little memory to evaluate the profile:
 
 ```bash
 nix build --print-out-paths '.#homeConfigurations."root@openclaw".activationPackage'
