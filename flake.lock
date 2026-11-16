@@ -1017,11 +1017,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794602907,
-        "narHash": "sha256-2PTfM69Qbj9ce9gK9HEYQA7D+CE1I1jUsVXaJOF1MXY=",
+        "lastModified": 1794857463,
+        "narHash": "sha256-XCq71HkCFwupE9asuJIDFfczGGy++hDtk/FAZCjWosY=",
         "owner": "viicslen",
         "repo": "gitura",
-        "rev": "829a3e52cf112151768646bb08f67b7057f265ce",
+        "rev": "a29bb21739fd066c1c54294e5df73444b6c0224f",
         "type": "github"
       },
       "original": {
