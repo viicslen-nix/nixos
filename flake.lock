@@ -1082,11 +1082,11 @@
     "homelab": {
       "flake": false,
       "locked": {
-        "lastModified": 1794582001,
-        "narHash": "sha256-0KZGSsyoCBym/noMu3s5RAdN9PpGhV59un5l2dPd7eQ=",
+        "lastModified": 1794926682,
+        "narHash": "sha256-AVY3rB0f5qYNTcizW0T7+B2Vbh0syxhIyLJJixY1oQs=",
         "owner": "viicslen-nix",
         "repo": "homelab",
-        "rev": "9dceb61be548438a2eacb6122da6c5fb865b6475",
+        "rev": "fb82a15cb500815b91f28cea0dd7ce0a7429845d",
         "type": "github"
       },
       "original": {
