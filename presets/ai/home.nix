@@ -43,10 +43,19 @@
       default = "v2";
     };
 
-    # Not `~`: the gateway runs with HOME set to its state dir.
-    ai.integrations.gateway.settings.env_files = [
-      "${config.xdg.configHome}/mcp-gateway/firewall.env"
-    ];
+    ai.integrations.gateway.settings = {
+      # Not `~`: the gateway runs with HOME set to its state dir.
+      env_files = ["${config.xdg.configHome}/mcp-gateway/firewall.env"];
+      code_mode.enabled = true;
+      auth = {
+        enabled = true;
+        # Not a literal: gateway.yaml is in the world-readable store.
+        bearer_token = "auto";
+        single_user = true;
+        # Keep `/mcp` public, or every harness needs the token.
+        public_paths = ["/health" "/mcp"];
+      };
+    };
 
     ai.proxy = {
       default = true;
