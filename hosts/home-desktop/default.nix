@@ -16,6 +16,7 @@ with lib; {
     nixosModules.hardware.nvidia
     nixosModules.hardware.razer
     nixosModules.functionality.gaming
+    nixosModules.services.netbird
   ];
 
   services = {

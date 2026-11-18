@@ -1,4 +1,10 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  homeModules,
+  ...
+}: {
+  imports = [homeModules.programs.netbird];
+
   home.packages = with pkgs; [
     rpi-imager
     orca-slicer
