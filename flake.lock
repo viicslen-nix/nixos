@@ -1017,11 +1017,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794953538,
-        "narHash": "sha256-b9ZcFFeCZLfftxC6J8nGACmlK3SF7eyNtZypTn0oNgk=",
+        "lastModified": 1795014705,
+        "narHash": "sha256-oMhEAHQlx08SgaN9Wkjl1HlvYoSwBsZ52XrqW/+8LdI=",
         "owner": "viicslen",
         "repo": "gitura",
-        "rev": "9fedc795b8271aee3c5fea3bb765ca61a45899d5",
+        "rev": "383ace28b8725d73fb5261b72d4174582944612e",
         "type": "github"
       },
       "original": {
@@ -3219,11 +3219,11 @@
     "work": {
       "flake": false,
       "locked": {
-        "lastModified": 1793916821,
-        "narHash": "sha256-W5qlc4/2wPXHCgbD7tYhc2BUfpII7svo/6X7COnvoVQ=",
+        "lastModified": 1795015792,
+        "narHash": "sha256-U0bTWwtMv4O0oy8J8aQRvfWdEPmi6KXlOsQi+jS0t4o=",
         "owner": "viicslen-nix",
         "repo": "work",
-        "rev": "900dc58e3312e88e41430a197f558acfa78e5012",
+        "rev": "c421fde6f409e0a348b6fd1138ba91713a6ce261",
         "type": "github"
       },
       "original": {
