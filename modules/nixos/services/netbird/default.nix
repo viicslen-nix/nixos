@@ -3,6 +3,7 @@
     lib,
     pkgs,
     config,
+    options,
     ...
   }:
     with lib; let
@@ -28,6 +29,20 @@
             Include /etc/ssh/ssh_config.d/*.conf
           '';
         }
+        # optionalAttrs, not mkIf: without home-manager the option path itself doesn't exist.
+        (optionalAttrs (options ? home-manager) {
+          home-manager.sharedModules = mkIf config.services.graphical-desktop.enable [
+            {
+              home.autostart = [
+                {
+                  package = pkgs.netbird-ui;
+                  # netbird-ui ignores NB_* variables, so it must be pointed at the daemon's socket.
+                  args = ["--daemon-addr=${config.services.netbird.clients.default.environment.NB_DAEMON_ADDR}"];
+                }
+              ];
+            }
+          ];
+        })
         # NetBird registers with resolvconf -x, which makes dnsmasq forward everything to NetBird and NetBird back to dnsmasq.
         (mkIf config.services.dnsmasq.enable {
           services.netbird.clients.default = {
