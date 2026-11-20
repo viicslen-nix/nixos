@@ -86,7 +86,7 @@ update-subflake NAME *ARGS:
   nix flake update --flake "path:flakes/{{NAME}}"
   nix flake update "{{NAME}}" {{ARGS}}
 
-AI_PACKAGES := "ccstatusline coderabbit github.copilot-cli github.copilot-desktop nvim.mcp-hub openwiki openwork python.browser-harness python.cdp-use python.fetch-use python.jev-ultrafast python.mempalace superset.cli superset.desktop t3code.app-image t3code.nightly"
+AI_PACKAGES := "ccstatusline coderabbit open-code-review github.copilot-cli github.copilot-desktop nvim.mcp-hub openwiki openwork python.browser-harness python.cdp-use python.fetch-use python.jev-ultrafast python.mempalace superset.cli superset.desktop t3code.app-image t3code.nightly"
 
 # Update the AI stack: the ai subflake's inputs (opencode, pi, skill repos),
 # its vendored skills, the AI packages in flakes/packages, and the root
