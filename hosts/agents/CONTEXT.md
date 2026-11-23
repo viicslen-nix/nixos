@@ -22,10 +22,12 @@ than its idle load needs.
 
 ## First boot
 
-The container is created from this host's own image:
+The container is created from this host's own image. The stock tarball's xz
+pass takes far longer than the rest of the build, so recompress with zstd,
+which `pct create` also reads:
 
 ```bash
-nix build '.#nixosConfigurations.agents.config.system.build.tarball'
+nix build --impure -o /tmp/agents-tarball --expr 'let c = (builtins.getFlake "git+file:///etc/nixos?submodules=1").nixosConfigurations.agents; in c.config.system.build.tarball.override { compressCommand = "zstd -T3 -3"; compressionExtension = ".zst"; extraInputs = [c.pkgs.zstd]; }'
 ```
 
 `proxmox-lxc.nix` hands networking to networkd (DHCP from Proxmox), so the
