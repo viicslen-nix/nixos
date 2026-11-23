@@ -33,6 +33,9 @@ nix build --impure -o /tmp/agents-tarball --expr 'let c = (builtins.getFlake "gi
 `proxmox-lxc.nix` hands networking to networkd (DHCP from Proxmox), so the
 `core.network` NetworkManager is forced off. The container needs TUN for
 tailscaled and NetBird, `nesting`/`keyctl` for Docker, and `fuse` for envfs.
+envfs also sets its own fd limit to 1048576, above an unprivileged
+container's hard limit, so the container config needs
+`lxc.prlimit.nofile: 1048576` or `/bin` and `/usr/bin` never mount.
 
 ## Hand-made state
 
