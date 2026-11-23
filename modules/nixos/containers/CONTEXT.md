@@ -200,6 +200,13 @@ steps reach them at `127.0.0.1`. The workflows publish ephemeral host ports
 hold the fixed ones. The work dir is bind-mounted at the same path inside and
 out because sibling containers resolve job paths on the host.
 
+A job cannot start its own `tailscaled` here (`tailscale/github-action`): the
+container has no `/dev/net/tun` or `CAP_NET_ADMIN`. Passing them through would
+be worse, because in the host netns a second daemon flushes the host
+daemon's `ts-*` netfilter chains and fights it for the 100.64/10 routes. Jobs
+already reach the tailnet as this host through its MagicDNS, so the PR-Agent
+workflow in `FmTod/workflows` skips the join when the hub name resolves.
+
 Registration reads `RUNNER_TOKEN` from `/var/lib/actions-runner/token.env`
 once; the config it produces persists in `/var/lib/actions-runner/config`, so
 an expired token is harmless afterwards. Re-registering (after a wipe, or once
