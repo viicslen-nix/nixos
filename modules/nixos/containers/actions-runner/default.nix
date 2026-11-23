@@ -38,25 +38,27 @@
       };
 
       config = mkIf cfg.enable {
-        systemd.tmpfiles.rules = [
-          "d ${dataDir} 0700 root root -"
-          "d ${dataDir}/config 0700 root root -"
-          "d ${dataDir}/work 0755 root root -"
-        ];
+        systemd = {
+          tmpfiles.rules = [
+            "d ${dataDir} 0700 root root -"
+            "d ${dataDir}/config 0700 root root -"
+            "d ${dataDir}/work 0755 root root -"
+          ];
 
-        systemd.services.actions-runner-image = {
-          description = "Build the actions-runner image";
-          before = ["podman-actions-runner.service"];
-          requiredBy = ["podman-actions-runner.service"];
-          path = [config.virtualisation.podman.package];
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
+          services.actions-runner-image = {
+            description = "Build the actions-runner image";
+            before = ["podman-actions-runner.service"];
+            requiredBy = ["podman-actions-runner.service"];
+            path = [config.virtualisation.podman.package];
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+            };
+            script = "podman build --pull=newer -t ${image} ${containerfile}";
           };
-          script = "podman build --pull=newer -t ${image} ${containerfile}";
-        };
 
-        systemd.services.podman-actions-runner.restartTriggers = [containerfile];
+          services.podman-actions-runner.restartTriggers = [containerfile];
+        };
 
         virtualisation.oci-containers.containers.actions-runner = {
           inherit image;
