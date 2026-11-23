@@ -176,20 +176,28 @@ close() {
   tmux kill-session -t "=$1" 2>/dev/null || true
 }
 
-# Removes every worktree `wt list` marks integrated, via the `wt prune` alias.
+# Removes every worktree `wt list` marks integrated or `wt prune-merged` finds merged, via the `wt prune` alias.
 prune() {
-  local repo branches branch
+  local repo integrated merged branches branch
   {
     read -r repo
-    branches=$(cat)
+    integrated=$(cat)
   } < <(NO_COLOR=1 wt list --format=json --no-progressive |
     jq -r '(.items | map(select(.worktree.main)) | first | .worktree.path | split("/") | last),
              (.items[] | select(.display.state == "integrated") | .branch)')
-  if [ -z "$branches" ]; then
-    pause 'nothing is integrated'
+  if ! merged=$(wt prune-merged); then
+    pause 'checking merged PRs failed'
     return 0
   fi
-  printf 'Prune integrated worktrees?\n%s\n[y/N] ' "$branches"
+  # Reads the `Merged PR:` line `prune-merged` prints; keep the two in step.
+  merged=$(grep '^Merged PR:' <<<"$merged" || true)
+  # shellcheck disable=SC2086 # word-split the branch lists on purpose
+  branches=$(printf '%s\n' $integrated ${merged#Merged PR:} | sort -u)
+  if [ -z "$branches" ]; then
+    pause 'nothing is integrated or merged'
+    return 0
+  fi
+  printf 'Prune integrated and merged worktrees?\n%s\n[y/N] ' "$branches"
   read -r -n 1 answer
   echo
   case $answer in
