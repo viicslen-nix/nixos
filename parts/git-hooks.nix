@@ -22,7 +22,8 @@
         gitleaks = {
           enable = true;
           name = "gitleaks";
-          entry = "${pkgs.gitleaks}/bin/gitleaks dir --no-banner --redact";
+          # Replaces upstream's `git --pre-commit --staged` args, which need a git repo the check sandbox lacks.
+          args = ["dir" "--no-banner" "--redact"];
           pass_filenames = false;
         };
 
