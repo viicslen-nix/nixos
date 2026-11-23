@@ -34,11 +34,9 @@ _: {
       presets = ["base" "desktop"];
     };
 
-    openclaw = {
-      kind = "home";
-      user = "root";
+    agents = {
       system = "x86_64-linux";
-      presets = ["ai"];
+      presets = ["base" "dev" "work"];
     };
   };
 }

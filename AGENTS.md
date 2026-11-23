@@ -91,8 +91,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
   machine that gets only `hosts/<name>/home.nix` plus each preset's `home.nix`,
   as a standalone `homeConfigurations."<user>@<name>"` instead of a
   `nixosConfigurations` entry. There is no `osConfig`, so only presets whose
-  `home.nix` never reads it work there — today just `ai`. The only one is
-  `openclaw` (deploying it: `hosts/openclaw/CONTEXT.md`).
+  `home.nix` never reads it work there — today just `ai`. There are none
+  today; `parts/hosts.nix` keeps the path.
 - **preset** — a composable module bundle in `presets/<name>`
   (`base`, `desktop`, `dev`, `personal`, `linode`, `ai`), plus `work` and
   `homelab`, the private `viicslen-nix/work` and `viicslen-nix/homelab` repos
