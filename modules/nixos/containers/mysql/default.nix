@@ -44,6 +44,8 @@
             ];
             environment = {
               MYSQL_ROOT_PASSWORD = "secret";
+              # don't drop: under glibc malloc mysqld grows to ~4x the memory it tracks
+              LD_PRELOAD = "/usr/lib64/libjemalloc.so.2";
             };
             log-driver = config.modules.containers.settings.log-driver;
           };
