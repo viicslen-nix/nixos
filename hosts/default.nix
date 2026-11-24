@@ -36,7 +36,7 @@ _: {
 
     agents = {
       system = "x86_64-linux";
-      presets = ["base" "dev" "work"];
+      presets = ["base" "dev" "work" "homelab"];
     };
   };
 }
