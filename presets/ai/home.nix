@@ -59,7 +59,7 @@
 
     ai.proxy = {
       default = true;
-      baseUrl = lib.mkDefault "https://cliproxyapi.tailb6b9b6.ts.net";
+      baseUrl = "https://cliproxyapi.proxy.neoscode.com";
       apiKeyFile = lib.mkDefault "${config.xdg.configHome}/cliproxyapi/api-key";
       models = let
         thinking = api: name: {
