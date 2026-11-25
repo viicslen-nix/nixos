@@ -46,3 +46,10 @@ None of this is declarative; redo it on a rebuilt container.
 - The `tailscale up --ssh` login.
 - `t3 connect link` as `neoscode`, which registers the server with T3 Connect;
   the authorization lives in the T3 Code state dir.
+- `gh auth login -h github.com --insecure-storage` as `neoscode`. On the
+  workstations gh keeps its token in GNOME Keyring, which the compositor
+  starts and login unlocks; this box has neither, so the token goes in a
+  plaintext `~/.config/gh/hosts.yml` (0600). That is why `home.nix` unsets
+  `modules.programs.gh.user`: with it set, home-manager links `hosts.yml` read-only
+  into the store and gh cannot write the token. git (and T3's clone and PR
+  tools) authenticate through gh's credential helper.
