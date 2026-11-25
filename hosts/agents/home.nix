@@ -9,4 +9,6 @@
 
   # Keep null: gh must own a writable hosts.yml here.
   modules.programs.gh.user = lib.mkForce null;
+
+  programs.starship.settings.hostname.disabled = lib.mkForce false;
 }
