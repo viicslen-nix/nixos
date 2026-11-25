@@ -134,9 +134,13 @@ written before the switch:
     host-side after  owner=999:999       (unchanged — a remap, not a chown)
 
 So no migration, no `chown -R`, and the data is safe if the setting is ever
-turned off again. `:idmap` on a container with no user namespace is an identity
-map, not an error, so the annotation is unconditional and survives
-`userns = null`.
+turned off again. Under podman, `:idmap` on a container with no user namespace
+is an identity map, not an error, so the annotation survives `userns = null`.
+Docker is different. It rejects the mode (`invalid mode: idmap`) and the
+container never starts, which kept redis, mysql, qdrant and meilisearch down on
+`agents`, a Docker host. So the volumes take the suffix from
+`lib.containers.idmap config`, which is `":idmap"` on podman and empty on
+docker. Docker has no per-container user namespace here, so it needs no remap.
 
 Bind mounts of `/nix/store` paths (buggregator's and qdrant's `config`,
 centrifugo's config file) deliberately do **not** get `:idmap`: they are

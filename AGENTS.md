@@ -499,9 +499,11 @@ already happened. Treat every heavy Nix invocation as dangerous.
   visible to modules once it is added to `options.nix` **and** the subflake is
   committed.
 - **Container module helpers live in the lib subflake.**
-  `inputs.self.lib.containers` provides `mkHostOption`, `mkMkcertDomains` and
-  `mkTraefikLabels`; container modules take an `inputs` argument and
-  `inherit` from it, the same way 19 other modules reach `persistence`.
+  `inputs.self.lib.containers` provides `mkHostOption`, `mkMkcertDomains`,
+  `mkTraefikLabels` and `idmap`. A named volume is written
+  `"name:/path${idmap config}"`, never with a literal `:idmap`: Docker rejects
+  that mode and the container never starts. Container modules take an `inputs`
+  argument and `inherit` from it, the same way 19 other modules reach `persistence`.
   `mkTraefikLabels` deliberately omits `--network=local` so a container needing
   other flags first (local-ai's `--device`) can order them: write
   `extraOptions = ["--network=local"] ++ mkTraefikLabels {…};`. Label **order**

@@ -152,7 +152,7 @@
           "127.0.0.1:${toString (5900 + i.display)}:5900"
         ];
         volumes =
-          ["macos-${n}:/storage:idmap"]
+          ["macos-${n}:/storage${optionalString (engine == "podman") ":idmap"}"]
           ++ optionals (i.gpu && nvidia) [
             # The driver's Vulkan ICD and its RUNPATH deps live in the store, not in the Debian image.
             "/nix/store:/nix/store:ro"

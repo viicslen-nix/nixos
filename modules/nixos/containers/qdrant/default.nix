@@ -6,7 +6,7 @@
     ...
   }:
     with lib; let
-      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains;
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains idmap;
 
       name = "qdrant";
       namespace = "containers";
@@ -36,7 +36,7 @@
               "--network=local"
             ];
             volumes = [
-              "qdrant-data:/qdrant/storage:idmap"
+              "qdrant-data:/qdrant/storage${idmap config}"
               "${builtins.toString ./config}:/qdrant/config"
             ];
             log-driver = config.modules.containers.settings.log-driver;

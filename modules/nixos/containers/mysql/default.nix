@@ -6,7 +6,7 @@
     ...
   }:
     with lib; let
-      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains;
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains idmap;
 
       name = "mysql";
       namespace = "containers";
@@ -32,8 +32,8 @@
               "127.0.0.1:3306:3306"
             ];
             volumes = [
-              "percona-mysql:/var/lib/mysql:idmap"
-              "percona-mysql-config:/etc/my.cnf.d:idmap"
+              "percona-mysql:/var/lib/mysql${idmap config}"
+              "percona-mysql-config:/etc/my.cnf.d${idmap config}"
             ];
             networks = [
               "local"
