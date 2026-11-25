@@ -32,7 +32,7 @@ nix build --impure -o /tmp/agents-tarball --expr 'let c = (builtins.getFlake "gi
 
 `proxmox-lxc.nix` hands networking to networkd (DHCP from Proxmox), so the
 `core.network` NetworkManager is forced off. The container needs TUN for
-tailscaled and NetBird, `nesting`/`keyctl` for Docker, and `fuse` for envfs.
+tailscaled, `nesting`/`keyctl` for Docker, and `fuse` for envfs.
 envfs also sets its own fd limit to 1048576, above an unprivileged
 container's hard limit, so the container config needs
 `lxc.prlimit.nofile: 1048576` or `/bin` and `/usr/bin` never mount.
@@ -43,6 +43,6 @@ None of this is declarative; redo it on a rebuilt container.
 
 - `/home/neoscode/.ssh/agenix`: the portable agenix key every secret is
   encrypted to. Nothing decrypts until it is there.
-- `tailscale up --ssh` and `netbird up` logins.
+- The `tailscale up --ssh` login.
 - `t3 connect link` as `neoscode`, which registers the server with T3 Connect;
   the authorization lives in the T3 Code state dir.

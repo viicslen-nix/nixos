@@ -16,7 +16,6 @@ with lib; {
     nixosModules.containers.actions-runner
     nixosModules.features.miami-bus-tracker
     nixosModules.features.macos-vm
-    nixosModules.services.netbird
   ];
 
   boot.loader.efi.canTouchEfiVariables = true;

@@ -20,7 +20,6 @@ with lib; {
     nixosModules.hardware.display
     nixosModules.hardware.razer
     nixosModules.functionality.gaming
-    nixosModules.services.netbird
 
     # Imported for its options; disabled below.
     nixosModules.services.backups

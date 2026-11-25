@@ -1,7 +1,6 @@
 {
   lib,
   modulesPath,
-  nixosModules,
   ...
 }: let
   # git+https, not github: — the tarball fetcher drops the submodules every path: input needs.
@@ -9,7 +8,6 @@
 in {
   imports = [
     "${modulesPath}/virtualisation/proxmox-lxc.nix"
-    nixosModules.services.netbird
   ];
 
   proxmoxLXC.manageHostName = true;
