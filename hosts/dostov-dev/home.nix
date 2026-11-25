@@ -44,7 +44,6 @@ in {
     programs.zen-browser
     programs.webapps
     programs.thunderbird
-    programs.netbird
   ];
 
   home.packages = with pkgs; [

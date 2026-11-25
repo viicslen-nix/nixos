@@ -70,9 +70,50 @@
               workspace = "wt switch --base=@ --create  {{ args }}";
               since-main = "git log --oneline {{ default_branch }}..HEAD";
               # Detached so callers (T3 scripts, shells) aren't held open by the GUI.
-              review = "setsid -f gitura --focus --local {{ worktree_path }} >/dev/null 2>&1";
+              review = "setsid -f gitura --local {{ worktree_path }} >/dev/null 2>&1";
               # RAYON_NUM_THREADS caps both the integration scan and the removal workers.
-              prune = "RAYON_NUM_THREADS=4 wt step prune --min-age=2h {{ args }}";
+              prune-stale = "RAYON_NUM_THREADS=4 wt step prune --min-age=2h {{ args }}";
+              prune = ''
+                wt prune-stale {{ args }}
+                case " {{ args }} " in
+                  *" --dry-run "*) wt prune-merged ;;
+                  *) wt prune-merged --apply ;;
+                esac
+              '';
+              prune-merged = ''
+                prs=$(gh pr list --state merged --limit 1000 --json headRefName,headRefOid) || exit 1
+                open=$(gh pr list --state open --limit 1000 --json headRefName --jq '.[].headRefName') || exit 1
+                rows=$(wt list --format=json | jq -r --argjson prs "$prs" --arg open "$open" '
+                  ($open | split("\n")) as $o
+                  | .items[] | select(.worktree != null and (.worktree.main | not) and .branch != null)
+                  | .branch as $b | select($b | IN($o[]) | not)
+                  | [$prs[] | select(.headRefName == $b) | .headRefOid] as $oids | select($oids != [])
+                  | [$b, .worktree.path, ($oids | join(" "))] | @tsv') || exit 1
+                targets=""
+                tab=$(printf '\t')
+                while IFS="$tab" read -r branch path oids; do
+                  [ -n "$branch" ] || continue
+                  shipped=""
+                  for oid in $oids; do
+                    git -C "$path" merge-base --is-ancestor HEAD "$oid" 2>/dev/null && shipped=1
+                  done
+                  if [ -z "$shipped" ]; then
+                    echo "skip $branch: has commits its merged PR doesn't"
+                  elif [ -n "$(git -C "$path" status --porcelain --ignore-submodules=all)" ]; then
+                    echo "skip $branch: has local changes"
+                  else
+                    targets="$targets $branch"
+                  fi
+                done <<EOF
+                $rows
+                EOF
+                [ -n "$targets" ] || { echo "No clean worktrees with a merged PR"; exit 0; }
+                echo "Merged PR:$targets"
+                case " {{ args }} " in
+                  *" --apply "*) wt remove -f $targets ;;
+                  *) echo "Dry run; remove them with: wt prune-merged --apply" ;;
+                esac
+              '';
               mv = ''
                 if git diff --quiet HEAD && test -z "$(git ls-files --others --exclude-standard)"; then
                   wt switch --create {{ to }} --execute="{{ args }}"

@@ -134,9 +134,13 @@ written before the switch:
     host-side after  owner=999:999       (unchanged — a remap, not a chown)
 
 So no migration, no `chown -R`, and the data is safe if the setting is ever
-turned off again. `:idmap` on a container with no user namespace is an identity
-map, not an error, so the annotation is unconditional and survives
-`userns = null`.
+turned off again. Under podman, `:idmap` on a container with no user namespace
+is an identity map, not an error, so the annotation survives `userns = null`.
+Docker is different. It rejects the mode (`invalid mode: idmap`) and the
+container never starts, which kept redis, mysql, qdrant and meilisearch down on
+`agents`, a Docker host. So the volumes take the suffix from
+`lib.containers.idmap config`, which is `":idmap"` on podman and empty on
+docker. Docker has no per-container user namespace here, so it needs no remap.
 
 Bind mounts of `/nix/store` paths (buggregator's and qdrant's `config`,
 centrifugo's config file) deliberately do **not** get `:idmap`: they are
@@ -199,6 +203,13 @@ steps reach them at `127.0.0.1`. The workflows publish ephemeral host ports
 (`- 3306`, not `- 3306:3306`): the dev `mysql` and `redis` containers already
 hold the fixed ones. The work dir is bind-mounted at the same path inside and
 out because sibling containers resolve job paths on the host.
+
+A job cannot start its own `tailscaled` here (`tailscale/github-action`): the
+container has no `/dev/net/tun` or `CAP_NET_ADMIN`. Passing them through would
+be worse, because in the host netns a second daemon flushes the host
+daemon's `ts-*` netfilter chains and fights it for the 100.64/10 routes. Jobs
+already reach the tailnet as this host through its MagicDNS, so the PR-Agent
+workflow in `FmTod/workflows` skips the join when the hub name resolves.
 
 Registration reads `RUNNER_TOKEN` from `/var/lib/actions-runner/token.env`
 once; the config it produces persists in `/var/lib/actions-runner/config`, so

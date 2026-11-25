@@ -91,8 +91,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
   machine that gets only `hosts/<name>/home.nix` plus each preset's `home.nix`,
   as a standalone `homeConfigurations."<user>@<name>"` instead of a
   `nixosConfigurations` entry. There is no `osConfig`, so only presets whose
-  `home.nix` never reads it work there — today just `ai`. The only one is
-  `openclaw` (deploying it: `hosts/openclaw/CONTEXT.md`).
+  `home.nix` never reads it work there — today just `ai`. There are none
+  today; `parts/hosts.nix` keeps the path.
 - **preset** — a composable module bundle in `presets/<name>`
   (`base`, `desktop`, `dev`, `personal`, `linode`, `ai`), plus `work` and
   `homelab`, the private `viicslen-nix/work` and `viicslen-nix/homelab` repos
@@ -499,9 +499,11 @@ already happened. Treat every heavy Nix invocation as dangerous.
   visible to modules once it is added to `options.nix` **and** the subflake is
   committed.
 - **Container module helpers live in the lib subflake.**
-  `inputs.self.lib.containers` provides `mkHostOption`, `mkMkcertDomains` and
-  `mkTraefikLabels`; container modules take an `inputs` argument and
-  `inherit` from it, the same way 19 other modules reach `persistence`.
+  `inputs.self.lib.containers` provides `mkHostOption`, `mkMkcertDomains`,
+  `mkTraefikLabels` and `idmap`. A named volume is written
+  `"name:/path${idmap config}"`, never with a literal `:idmap`: Docker rejects
+  that mode and the container never starts. Container modules take an `inputs`
+  argument and `inherit` from it, the same way 19 other modules reach `persistence`.
   `mkTraefikLabels` deliberately omits `--network=local` so a container needing
   other flags first (local-ai's `--device`) can order them: write
   `extraOptions = ["--network=local"] ++ mkTraefikLabels {…};`. Label **order**

@@ -6,7 +6,7 @@
     ...
   }:
     with lib; let
-      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains;
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains idmap;
 
       name = "postgres";
       namespace = "containers";
@@ -35,7 +35,7 @@
               "--network=local"
             ];
             volumes = [
-              "pgdata:/var/lib/postgresql/data:idmap"
+              "pgdata:/var/lib/postgresql/data${idmap config}"
             ];
             environment = {
               POSTGRES_PASSWORD = "secret";

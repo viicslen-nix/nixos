@@ -6,7 +6,7 @@
     ...
   }:
     with lib; let
-      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains mkTraefikLabels;
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains mkTraefikLabels idmap;
 
       name = "local-ai";
       namespace = "containers";
@@ -29,7 +29,7 @@
             hostname = "local-ai";
             image = "localai/localai:latest-aio-gpu-nvidia-cuda-12";
             volumes = [
-              "localai-models:/build/models:idmap"
+              "localai-models:/build/models${idmap config}"
             ];
             environment = {
               DEBUG = "true";

@@ -1,6 +1,7 @@
 {
   flake.modules.nixos.actions-runner = {
     lib,
+    pkgs,
     config,
     ...
   }:
@@ -10,6 +11,15 @@
 
       cfg = config.modules.${namespace}.${name};
       dataDir = "/var/lib/actions-runner";
+
+      image = "localhost/actions-runner:mlh";
+      # Jobs call these from the runner container itself, unlike the hosted runners that ship them.
+      containerfile = pkgs.writeTextDir "Containerfile" ''
+        FROM docker.io/myoung34/github-runner:ubuntu-noble
+        RUN apt-get update \
+          && apt-get install -y --no-install-recommends mariadb-client libvips42t64 sudo \
+          && rm -rf /var/lib/apt/lists/*
+      '';
     in {
       options.modules.${namespace}.${name} = {
         enable = mkEnabledOption (mdDoc name);
@@ -28,14 +38,30 @@
       };
 
       config = mkIf cfg.enable {
-        systemd.tmpfiles.rules = [
-          "d ${dataDir} 0700 root root -"
-          "d ${dataDir}/config 0700 root root -"
-          "d ${dataDir}/work 0755 root root -"
-        ];
+        systemd = {
+          tmpfiles.rules = [
+            "d ${dataDir} 0700 root root -"
+            "d ${dataDir}/config 0700 root root -"
+            "d ${dataDir}/work 0755 root root -"
+          ];
+
+          services.actions-runner-image = {
+            description = "Build the actions-runner image";
+            before = ["podman-actions-runner.service"];
+            requiredBy = ["podman-actions-runner.service"];
+            path = [config.virtualisation.podman.package];
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+            };
+            script = "podman build --pull=newer -t ${image} ${containerfile}";
+          };
+
+          services.podman-actions-runner.restartTriggers = [containerfile];
+        };
 
         virtualisation.oci-containers.containers.actions-runner = {
-          image = "myoung34/github-runner:ubuntu-noble";
+          inherit image;
           environment = {
             ORG_NAME = cfg.org;
             RUNNER_SCOPE = "org";

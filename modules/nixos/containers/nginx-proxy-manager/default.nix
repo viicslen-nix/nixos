@@ -6,7 +6,7 @@
     ...
   }:
     with lib; let
-      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains;
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains idmap;
 
       name = "nginx-proxy-manager";
       namespace = "containers";
@@ -34,8 +34,8 @@
               "127.0.0.1:81:81"
             ];
             volumes = [
-              "nginx-proxy-manager:/data:idmap"
-              "letsencrypt:/etc/letsencrypt:idmap"
+              "nginx-proxy-manager:/data${idmap config}"
+              "letsencrypt:/etc/letsencrypt${idmap config}"
             ];
             extraOptions = [
               "--network=local"

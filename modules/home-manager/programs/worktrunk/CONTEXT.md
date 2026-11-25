@@ -108,3 +108,20 @@ template values worktrunk shell-quoted, so the old `"{{ worktree_path }}"`
 form passed a path containing `@` with its quotes still on; tmux could not
 find that directory and started the session in `~`. Don't wrap the values
 in an inner shell string again.
+
+## `prune-merged`
+
+`wt step prune` decides "merged" from git content alone, so a squash-merged
+branch drops out once the default branch moves past it, and it skips any dirty
+worktree — submodule pointer drift included. Upstream declined a `--force` for
+prune (max-sixty/worktrunk#4601). `prune-merged` asks GitHub instead: it takes
+worktrees whose branch has a merged PR and no open one, whose HEAD is contained
+in a merged PR's head, and that are clean once submodule changes are ignored;
+only those get `wt remove -f`, which also saves a `refs/wt-backup/*` ref. It is
+a dry run unless passed `--apply`.
+
+`prune` runs `prune-stale` (the `wt step prune` wrapper) and then
+`prune-merged --apply`; with `--dry-run` both only preview. The dashboard's
+prune lists both sets (integrated from `wt list`, merged from the
+`prune-merged` dry run) so its confirmation and session hand-off cover every
+worktree `wt prune` will remove.

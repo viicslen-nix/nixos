@@ -6,7 +6,7 @@
     ...
   }:
     with lib; let
-      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains;
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains idmap;
 
       name = "redis";
       namespace = "containers";
@@ -32,7 +32,7 @@
               "127.0.0.1:6379:6379"
             ];
             volumes = [
-              "redis:/data:idmap"
+              "redis:/data${idmap config}"
             ];
             extraOptions = [
               "--network=local"

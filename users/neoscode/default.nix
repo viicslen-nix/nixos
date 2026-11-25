@@ -85,7 +85,8 @@ in {
       if [ -z "$WAYLAND_DISPLAY" ]; then
         : "''${XDG_RUNTIME_DIR:=/run/user/$(id -u)}"
         export XDG_RUNTIME_DIR
-        for sock in "$XDG_RUNTIME_DIR"/wayland-[0-9]*; do
+        for n in 0 1 2 3 4 5 6 7 8 9; do
+          sock="$XDG_RUNTIME_DIR/wayland-$n"
           [ -S "$sock" ] || continue
           export WAYLAND_DISPLAY="''${sock##*/}"
           break

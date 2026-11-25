@@ -6,7 +6,7 @@
     ...
   }:
     with lib; let
-      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains;
+      inherit (inputs.self.lib.containers) mkHostOption mkMkcertDomains idmap;
 
       name = "meilisearch";
       namespace = "containers";
@@ -32,7 +32,7 @@
               "127.0.0.1:7700:7700"
             ];
             volumes = [
-              "meiliseach:/meili_data:idmap"
+              "meiliseach:/meili_data${idmap config}"
             ];
             extraOptions = [
               "--network=local"

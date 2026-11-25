@@ -3,7 +3,7 @@
 The `ai` preset: the AI harnesses, the `ai` subflake's profile, and the
 CLIProxyAPI proxy every harness uses by default. It used to be split between
 `dev` (harnesses) and `personal` (proxy); it became its own preset so a
-non-NixOS home host (`openclaw`) can take the same config without `dev`'s
+non-NixOS home host (then `openclaw`) can take the same config without `dev`'s
 toolchains or anything that needs a NixOS system.
 
 ## Home-only, and no `osConfig`

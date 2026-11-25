@@ -6,7 +6,7 @@
     ...
   }:
     with lib; let
-      inherit (inputs.self.lib.containers) mkHostOption;
+      inherit (inputs.self.lib.containers) mkHostOption idmap;
 
       name = "vitess";
       namespace = "containers";
@@ -86,7 +86,7 @@
               "127.0.0.1:${vtgate}:${vtgate}"
             ];
             volumes = optionals cfg.persistData [
-              "vttestserver-data:/vt/vtdataroot:idmap"
+              "vttestserver-data:/vt/vtdataroot${idmap config}"
             ];
             environment = {
               PORT = toString cfg.port;
