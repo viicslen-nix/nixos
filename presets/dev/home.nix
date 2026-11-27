@@ -158,7 +158,13 @@ in {
       pkgs.inputs.packages.github.copilot-desktop
     ];
 
+  programs.git.settings = {
+    commit.gpgSign = true;
+    gpg.format = "ssh";
+  };
+
   modules.programs = {
+    shellProfile.signingKey = osConfig.age.secrets.git-signing-key.path;
     zed.enable = desktop;
     tinkerwell.enable = desktop;
     t3code = {

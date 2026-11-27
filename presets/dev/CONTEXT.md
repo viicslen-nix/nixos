@@ -50,3 +50,21 @@ also means rewriting the absolute paths the server stores (`statev2.sqlite`:
 `~/.config/claude/projects/-home-<user>--t3-*` session dirs to the new encoded
 cwd, or Claude sessions stop resuming. The move to the XDG path was done on
 2026-10-30.
+
+## Commit signing from a key file
+
+git and jujutsu sign with plain `ssh-keygen` from
+`/run/agenix/git-signing-key`, the private half of the shell profile's
+`git-signing-key.pub`, exported from 1Password. It used to go through
+`op-ssh-sign`, which asks the 1Password GUI to approve each signature on the
+machine's own screen; over SSH, or on the headless `agents` host, nobody can,
+so commits hung. GitHub sees the same key, so commits stay "Verified".
+
+It lives here, not in the 1Password module, because headless dev hosts have no
+1Password. A host without `dev` (the handheld) does not sign at all. Only
+signing moved: SSH auth still goes through the 1Password agent where there is
+one, so a push over SSH still waits for an approval.
+
+The cost: anything running as the user can sign as them without asking. The
+key must be OpenSSH format (`op read "…/private key?ssh-format=openssh"`), or
+`ssh-keygen -Y sign` rejects it.

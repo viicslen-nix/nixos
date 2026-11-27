@@ -106,16 +106,9 @@ in {
     # Install fonts
     fonts.packages = fonts;
 
-    age.secrets.git-signing-key = {
-      file = ../../secrets/github/signing-key.age;
-      owner = head (attrNames users);
-    };
-
     modules = {
       programs = {
         onePassword = {
-          gitSignCommits = true;
-          gitSignKeyFile = config.age.secrets.git-signing-key.path;
           users = attrNames users;
           allowedCustomBrowsers = [
             ".zen-wrapped"

@@ -1,4 +1,9 @@
-{nixosModules, ...}: {
+{
+  lib,
+  users,
+  nixosModules,
+  ...
+}: {
   imports = [
     ../ai
     nixosModules.programs.corepack
@@ -21,6 +26,12 @@
 
   config = {
     home-manager.sharedModules = [./home.nix];
+
+    # System scope: home-manager agenix reports an unexpanded ${XDG_RUNTIME_DIR} path, which git cannot read.
+    age.secrets.git-signing-key = {
+      file = ../../secrets/github/signing-key.age;
+      owner = lib.head (lib.attrNames users);
+    };
 
     modules = {
       core.network.hosts = {
