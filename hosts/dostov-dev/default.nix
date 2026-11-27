@@ -167,6 +167,7 @@ with lib; {
     containers.actions-runner = {
       enable = true;
       org = "FmTod";
+      count = 2;
     };
 
     core.theming.disabledTargets = ["chromium"];

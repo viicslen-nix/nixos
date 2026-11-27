@@ -227,18 +227,20 @@ tmux-push HOST NAME='':
     if [ -n "{{NAME}}" ]; then echo "set -g @server_name {{NAME}}" > "$dir/local.conf"; fi; \
     tmux source-file "$dir/tmux.conf" 2>/dev/null || true' < flakes/home/modules/tmux/server.conf
 
-# (Re-)register this host's actions-runner container: drops its saved
+# (Re-)register one of this host's actions-runner containers: drops its saved
 # registration, writes a fresh token and restarts it. Run within the hour.
-# Usage: just register-runner [ORG]
-register-runner ORG='FmTod':
+# Usage: just register-runner [RUNNER] [ORG]  (RUNNER is 1..count)
+register-runner RUNNER='1' ORG='FmTod':
   #!/usr/bin/env bash
   set -euo pipefail
-  dir=/var/lib/actions-runner
+  [[ "{{RUNNER}}" =~ ^[1-9][0-9]*$ ]] || { echo "RUNNER must be a number, got '{{RUNNER}}'" >&2; exit 1; }
+  name=actions-runner; [ "{{RUNNER}}" = 1 ] || name="actions-runner-{{RUNNER}}"
+  dir=/var/lib/$name
   token=$(gh api -X POST "orgs/{{ORG}}/actions/runners/registration-token" -q .token)
   sudo install -d -m 700 "$dir" "$dir/config"
   sudo find "$dir/config" -mindepth 1 -delete
   printf 'RUNNER_TOKEN=%s\n' "$token" | sudo install -m 600 /dev/stdin "$dir/token.env"
-  for unit in podman-actions-runner docker-actions-runner; do
+  for unit in "podman-$name" "docker-$name"; do
     if systemctl cat "$unit.service" &>/dev/null; then
       sudo systemctl restart "$unit.service"
       echo "registered via $unit; check: gh api orgs/{{ORG}}/actions/runners -q '.runners[].name'"

@@ -214,6 +214,13 @@ workflow in `FmTod/workflows` skips the join when the hub name resolves.
 Registration reads `RUNNER_TOKEN` from `/var/lib/actions-runner/token.env`
 once; the config it produces persists in `/var/lib/actions-runner/config`, so
 an expired token is harmless afterwards. Re-registering (after a wipe, or once
-GitHub drops a runner offline for ~14 days) is `just register-runner`. The
+GitHub drops a runner offline for ~14 days) is `just register-runner [N]`. The
 token is not an agenix secret: it expires an hour after it is issued, so an
 encrypted copy would already be dead by the next registration.
+
+`count` runs that many identical containers, since a runner takes one job at a
+time. Runner 1 keeps the original unsuffixed names (`actions-runner`,
+`/var/lib/actions-runner`, runner name = hostname) so raising `count` doesn't
+orphan its registration; runner N is `actions-runner-N` everywhere, and each
+registers separately. Each keeps the `--memory`/`--cpus` cap, so the caps
+multiply with `count`.
