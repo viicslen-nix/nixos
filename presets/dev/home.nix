@@ -85,6 +85,7 @@ in {
       pkg-config
       phpWithExtensions
       phpWithExtensions.packages.composer
+      pkgs.inputs.packages.php.pun
       nodejs_22
       node-gyp
       bun
