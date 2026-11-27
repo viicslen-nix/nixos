@@ -539,7 +539,8 @@ already happened. Treat every heavy Nix invocation as dangerous.
   instead, via `just vendor-integration-skills <name> <owner/repo> …` (run in
   `flakes/ai`; `orca` and `superset` use it — Superset's pinned with
   `--pin cli-v<version>` to match the superset-cli package). `just update-skills` re-pulls
-  every one, `just skills` lists them with their origin, and `just skill-changes`
+  every one, re-pinning a pinned skill to the newest stable release with the
+  same tag prefix, `just skills` lists them with their origin, and `just skill-changes`
   previews upstream diffs for both these and the `flake = false` skill inputs. There is no manifest:
   `gh` records `github-repo`/`github-path`/`github-ref`/`github-tree-sha` in
   each skill's own **SKILL.md frontmatter**, which is what `update` and `list`
