@@ -16,6 +16,7 @@
       cfg = config.modules.${namespace}.${name};
 
       homeManagerLoaded = builtins.hasAttr "home-manager" options;
+      opSshSign = lib.getExe' pkgs._1password-gui "op-ssh-sign";
     in {
       options.modules.${namespace}.${name} = {
         enable = mkEnabledOption "1Password";
@@ -23,6 +24,11 @@
         gitSignKey = mkOption {
           type = types.str;
           description = "The public key to use for signing git commits";
+        };
+        gitSignKeyFile = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+          description = "Private key file git and jujutsu sign with directly, skipping the 1Password approval prompt; null signs through 1Password";
         };
         socket = mkOption {
           type = types.str;
@@ -119,15 +125,25 @@
               # Configure git to sign commits with the 1Password SSH key
               git.includes = mkIf cfg.gitSignCommits [
                 {
-                  contents = {
-                    commit.gpgSign = true;
-                    gpg.format = "ssh";
-                    "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
-                  };
+                  contents =
+                    {
+                      commit.gpgSign = true;
+                      gpg.format = "ssh";
+                    }
+                    // (
+                      if cfg.gitSignKeyFile == null
+                      then {"gpg \"ssh\"".program = opSshSign;}
+                      else {user.signingKey = cfg.gitSignKeyFile;}
+                    );
                 }
               ];
 
-              jujutsu.settings.signing.backends.ssh.program = mkIf cfg.gitSignCommits "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+              jujutsu.settings.signing = mkIf cfg.gitSignCommits (
+                if cfg.gitSignKeyFile == null
+                then {backends.ssh.program = opSshSign;}
+                # Force: the shell profile sets the public key, which ssh-keygen would resolve through the 1Password agent.
+                else {key = mkForce cfg.gitSignKeyFile;}
+              );
             };
 
             # Configure the 1Password quick access keybinding for gnome

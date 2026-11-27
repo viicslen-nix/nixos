@@ -4,6 +4,8 @@ in {
   "secrets/restic/env.age".publicKeys = [sshKey];
   "secrets/restic/password.age".publicKeys = [sshKey];
   "secrets/github/runner.age".publicKeys = [sshKey];
+  # OpenSSH private key of the 1Password commit-signing key.
+  "secrets/github/signing-key.age".publicKeys = [sshKey];
   # Just the PAT. Both file formats nix needs are shaped from it at
   # activation (see the base preset).
   "secrets/github/nix-token.age".publicKeys = [sshKey];
